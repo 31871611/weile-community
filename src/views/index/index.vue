@@ -10,7 +10,7 @@
           <i></i>
         </div>
 
-        <slider class="indexSideslip" :items="sliderList" :width="750" :height="280" :speed="5000" :sync="true"></slider>
+        <slider :items="sliderList" :width="750" :height="280" :speed="5000" :sync="true"></slider>
 
         <div class="indexNav">
           <a href="" class="open">小区开门</a>
