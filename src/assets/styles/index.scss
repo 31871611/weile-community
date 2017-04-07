@@ -1,0 +1,408 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+.index{
+  background: #f7f7f7;
+}
+
+
+// 当前小区
+.currentQuarters{
+  $h:80px;
+  height: pxTorem($h);
+  line-height: pxTorem($h);
+  background: #fff;
+  padding:0 pxTorem(20px);
+  @include display-flex();
+  @include align-items();
+  span{
+    @include flex(1);
+    display: block;
+    @include font-dpr(32px);
+    color: #394043;
+  }
+  i{
+    display: block;
+    width: pxTorem(16px);
+    height: pxTorem(30px);
+    @extend %icoRem;
+    background-image: url("../images/iconArrowR.png");
+  }
+}
+
+// 轮播
+.indexSideslip{
+  $h:240px;
+  height: pxTorem($h);
+}
+
+.indexNav{
+  margin-bottom: pxTorem(20px);
+  $h:184px;
+  height: pxTorem($h);
+  background: #fff;
+  @include display-flex();
+  a{
+    width: 100%;
+    display: block;
+    @include flex(1);
+    height: pxTorem($h - 32);
+    padding-top:pxTorem(32px);
+    text-align: center;
+    @include font-dpr(22px);
+    color: #6c7072;
+    &:before{
+      content: '\20';
+      display: block;
+      width: pxTorem(81px);
+      height: pxTorem(80px);
+      margin:0 auto pxTorem(18px);
+      @extend %icoRem;
+    }
+    // 小区开门
+    &.open{
+      &:before{
+        background-image: url("../images/icon_propertyservicesre_openthedoor@2x.png");
+      }
+    }
+    // 物业报修
+    &.repair{
+      &:before{
+        background-image: url("../images/icon_propertyservicesre_repair@2x.png");
+      }
+    }
+    // 投诉建议
+    &.complain{
+      &:before{
+        background-image: url("../images/icon_propertyservicesre_complain@2x.png");
+      }
+    }
+    // 生活缴费
+    &.payment{
+      &:before{
+        background-image: url("../images/icon_propertyservicesre_payment@2x.png");
+      }
+    }
+  }
+}
+
+.title{
+  height: pxTorem(72px);
+  margin:0 pxTorem(20px);
+  @include display-flex();
+  @include align-items(center);
+  @include justify-content();
+  h2{
+    height: pxTorem(28px);
+    line-height: pxTorem(28px);
+    color: #394043;
+    @include font-dpr(30px);
+    border-left:pxTorem(6px) solid $green-base;
+    padding-left:pxTorem(16px);
+  }
+  .more{
+    height: pxTorem(28px);
+    line-height: pxTorem(28px);
+    display: block;
+    color: #9c9fa1;
+    @include font-dpr(24px);
+    i{
+      margin-top:1px;
+      vertical-align: top;
+      margin-left:pxTorem(8px);
+      display: inline-block;
+      $w:22px;
+      width: pxTorem($w);
+      height: pxTorem($w);
+      @extend %icoRem;
+      background-image: url("../images/icon_homepage_more@2x.png");
+    }
+
+  }
+}
+
+// 活动专区
+.categoryHomeLayoutList{
+  margin-bottom: pxTorem(20px);
+  ul{
+    @extend %clearfix;
+    li{
+      position: relative;
+      $color:#f4f4f4;
+      width: 50%;
+      float: left;
+      &:nth-child(odd){
+        @include border1px($color,right)
+      }
+      &:before{
+        content: '\20';
+        display: block;
+        position: absolute;
+        border-top: 1px solid $color;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
+          &::after{
+            -webkit-transform: scaleY(0.7);
+            transform: scaleY(0.7);
+          }
+        }
+        @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
+          &::after{
+            -webkit-transform: scaleY(0.5);
+            transform: scaleY(0.5);
+          }
+        }
+      }
+      &:nth-last-child(1),&:nth-last-child(2){
+        &:before{
+          display: none;
+        }
+      }
+    }
+    a{
+      display: block;
+    }
+    img{
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+// 团购商品
+.groupBuy{
+  margin-bottom: pxTorem(20px);
+  background: #fff;
+  height: pxTorem(370px);
+  .scroll{
+    overflow: auto;
+    margin-left:pxTorem(20px);
+    $w:192px;
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar{
+      -webkit-opacity: 0;
+      opacity: 0;
+    }
+    ul{
+      width: 999rem
+    }
+    li{
+      width: pxTorem($w);
+      margin-right: pxTorem(18px);
+      float: left;
+    }
+    a{
+      display: block;
+    }
+    img{
+      width: pxTorem($w);
+      height: pxTorem($w);
+      vertical-align: middle;
+    }
+    h3{
+      overflow: hidden;
+      height: pxTorem(30px);
+      line-height: pxTorem(30px);
+      @include font-dpr(26px);
+      color: #3f4548;
+      margin:pxTorem(16px) 0 pxTorem(18px);
+    }
+    .price{
+      @include font-dpr(28px);
+      font-weight: bold;
+      color: #ff5823;
+      b{
+        @include font-dpr(20px);
+      }
+    }
+  }
+}
+
+// 推荐商品
+.recommend{
+  ul{
+    padding-left: pxTorem(20px);
+    @extend %clearfix;
+  }
+  li{
+    width: 50%;
+    float: left;
+    margin-bottom: pxTorem(20px);
+  }
+  .content{
+    margin-right: pxTorem(20px);
+    padding-bottom: pxTorem(24px);
+    background: #fff;
+    position: relative;
+  }
+  i{
+    font-style: normal;
+    &.activity,&.goIng{
+      position: absolute;
+      left:0;
+      top:pxTorem(-3px);
+      color: #fff;
+      padding-left:pxTorem(15px);
+      @include font-dpr(24px);
+      height: pxTorem(36px);
+      line-height: pxTorem(36px);
+      @extend %icoRem;
+    }
+    // 活动
+    &.activity{
+      width: pxTorem(76px - 15);
+      background-image: url("../images/tag_homepage_panicbuying@2x.png");
+    }
+    // 抢购中
+    &.goIng{
+      width: pxTorem(97px - 15);
+      background-image: url("../images/tag_homepage_activity@2x.png");
+    }
+  }
+  .photo{
+    $w:290px;
+    display: block;
+    width: pxTorem($w);
+    height: pxTorem($w);
+    img{
+      width: pxTorem($w);
+      vertical-align: middle;
+    }
+  }
+  h3{
+    overflow: hidden;
+    margin: pxTorem(16px) pxTorem(20px) pxTorem(20px);
+    height: pxTorem(60px);
+    line-height: pxTorem(60px / 2);
+    @include font-dpr(26px);
+    color: #3f4548;
+    b{
+      color: $green-base;
+      font-weight: normal;
+    }
+  }
+  .bottom{
+    margin:0 pxTorem(20px);
+    height: pxTorem(40px);
+    @include display-flex();
+    @include align-items(center);
+    @include justify-content();
+  }
+  .price{
+    @include font-dpr(32px);
+    font-weight: bold;
+    color: #ff5823;
+    b{
+      @include font-dpr(20px);
+    }
+  }
+  .go{
+    text-align: center;
+    width: pxTorem(98px);
+    height: pxTorem(40px);
+    line-height: pxTorem(40px);
+    background: $green-base;
+    color: #fff;
+    @include font-dpr(24px);
+    @include border-radius(pxTorem(4px));
+  }
+  .num{
+    $w:34px;
+    width: pxTorem($w);
+    height: pxTorem($w);
+    @extend %icoRem;
+    background-image: url("../images/icon_homepage_add@2x.png");
+  }
+}
+
+
+// 底部导航
+.appNav{
+  $h:97px;
+  height: pxTorem($h);
+  background: #fff;
+  @include border1px(#cacaca,top);
+  @include display-flex();
+  a{
+    width: 100%;
+    display: block;
+    @include flex(1);
+    height: pxTorem($h - 16);
+    padding-top:pxTorem(16px);
+    text-align: center;
+    &:before{
+      content: '\20';
+      display: block;
+      width: pxTorem(38px);
+      height: pxTorem(38px);
+      margin:0 auto pxTorem(8px);
+      @extend %icoRem;
+    }
+    // 首页
+    &.home{
+      &:before{
+        background-image: url("../images/icon_menu_homepage_n@2x.png");
+      }
+    }
+    // 社区
+    &.community{
+      &:before{
+        //background-image: url("../images/icon_menu_mine_n@2x.png");
+      }
+    }
+    // 便利店
+    &.convenient{
+      &:before{
+        background-image: url("../images/icon_menu_store_n@2x.png");
+      }
+    }
+    // 购物车
+    &.shopping{
+      &:before{
+        background-image: url("../images/icon_menu_shoppingtrolley_n@2x.png");
+      }
+    }
+    // 我的
+    &.my{
+      &:before{
+        background-image: url("../images/icon_menu_mine_n@2x.png");
+      }
+    }
+    &.select{
+      // 首页
+      &.home{
+        &:before{
+          background-image: url("../images/icon_menu_homepage_p@2x.png");
+        }
+      }
+      // 社区
+      &.community{
+        &:before{
+          //background-image: url("../images/icon_menu_mine_n@2x.png");
+        }
+      }
+      // 便利店
+      &.convenient{
+        &:before{
+          background-image: url("../images/icon_menu_store_p@2x.png");
+        }
+      }
+      // 购物车
+      &.shopping{
+        &:before{
+          background-image: url("../images/icon_menu_shoppingtrolley_p@2x.png");
+        }
+      }
+      // 我的
+      &.my{
+        &:before{
+          background-image: url("../images/icon_menu_mine_p@2x.png");
+        }
+      }
+    }
+  }
+}

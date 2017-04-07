@@ -1,0 +1,141 @@
+<template>
+  <div class="wrap">
+    <article class="main">
+      <div class="mainScroll index">
+
+        <div class="currentQuarters">
+          <span>锦艺测试小区</span>
+          <i></i>
+        </div>
+
+        <div class="indexSideslip">
+          轮播
+        </div>
+
+        <div class="indexNav">
+          <a href="" class="open">小区开门</a>
+          <a href="" class="repair">物业报修</a>
+          <a href="" class="complain">投诉建议</a>
+          <a href="" class="payment">生活缴费</a>
+        </div>
+
+        <div class="categoryHomeLayoutList">
+          <ul>
+            <li v-for="list in categoryHomeLayoutList">
+              <a href="">
+                <img :src="list.imageUrl" alt="">
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="groupBuy">
+          <div class="title">
+            <h2>团购</h2>
+            <a href="" class="more">更多<i></i></a>
+          </div>
+          <div class="scroll">
+            <ul>
+              <li v-for="list in groupBuyList">
+                <a href="">
+                  <img :src="list.url" alt="">
+                  <h3>{{list.name}}</h3>
+                  <div class="price">
+                    <b>￥</b><strong>{{list.priceYuan}}</strong>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="recommend">
+          <div class="title">
+            <h2>推荐商品</h2>
+            <a href="" class="more">更多<i></i></a>
+          </div>
+          <ul>
+            <li v-for="list in recommendList">
+              <div class="content">
+                <i class="activity">活动</i>
+                <i class="goIng">抢购中</i>
+                <router-link :to="{path:'commodity/' + list.commodityId}" class="photo">
+                  <img :src="list.url" :alt="list.commodityId">
+                </router-link>
+                <h3>{{list.name}}</h3>
+                <div class="bottom">
+                  <div class="price">
+                    <b>￥</b><strong>{{list.priceYuan}}</strong>
+                  </div>
+                  <div class="go">
+                    马上抢
+                  </div>
+                  <div class="num">
+                  </div>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </article>
+    <footer>
+      <div class="appNav">
+        <router-link to="/" class="home">首页</router-link>
+        <router-link to="a" class="community">社区</router-link>
+        <router-link to="b" class="convenient">便利店</router-link>
+        <router-link to="c" class="shopping">购物车</router-link>
+        <router-link to="d" class="my">我的</router-link>
+      </div>
+    </footer>
+
+  </div>
+
+
+
+
+</template>
+<script type="text/ecmascript-6">
+
+export default {
+  name: 'home',
+  data() {
+    return {
+      categoryHomeLayoutList : null,
+      groupBuyList : null,
+      recommendList : null
+    }
+  },
+  mounted() {
+    let _this = this;
+
+    this.$http.post('/community/homePage', {
+        distributionCommunityId: 10
+      })
+      .then(function(res) {
+        // console.log(res)
+        let data = res.data || {}
+        if (res.resultCode == 0) {
+
+          // 活动专区
+          _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
+          // 团购商品
+          _this.groupBuyList = data.groupBuy.data;
+          // 商品推荐
+          _this.recommendList = data.recommend.data;
+//          console.log(JSON.stringify(_this.recommendList));
+          console.log(data.categoryHomeLayoutList);
+
+        }
+      })
+      .catch(function(error) {
+        console.log(error)
+      })
+  },
+  methods: {},
+  components: {
+  }
+}
+</script>
+<style scoped lang="scss" src="../../assets/styles/index.scss"></style>

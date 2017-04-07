@@ -1,0 +1,74 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+.commodity{
+
+}
+
+
+
+
+
+
+
+
+.commodityFooter{
+  $h:98px;
+  height: pxTorem($h);
+  @include display-flex();
+  .shopping{
+    @include border1px(#ccc,top);
+    @include flex(1);
+    background: #fff;
+    div{
+      position: relative;
+      margin:pxTorem(18px) auto pxTorem(6px);
+      width: pxTorem(39px);
+      height: pxTorem(38px);
+      @extend %icoRem;
+      background-image:url("../images/icon_menu_shoppingtrolley_n@2x.png");
+    }
+    b{
+      position: absolute;
+      left:pxTorem(26px);
+      top:pxTorem(-10px);
+      @include font-dpr(20px);
+      color: $green-base;
+      padding:0 pxTorem(6px);
+      @include border-radius(pxTorem(15px));
+      border:2px solid $green-base;
+      background: #fff;
+    }
+    span{
+      display: block;
+      @include font-dpr(22px);
+      text-align: center;
+      color: #6c7072;
+    }
+  }
+  .add{
+    @include flex(1);
+    background: #ff9800;
+    text-align: center;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    color: #fff;
+    @include font-dpr(32px);
+  }
+  .pay{
+    @include flex(1);
+    background: $green-base;
+    text-align: center;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    color: #fff;
+    @include font-dpr(32px);
+  }
+}
+
+
+
+
+

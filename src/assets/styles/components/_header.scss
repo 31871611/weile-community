@@ -1,0 +1,45 @@
+@charset "UTF-8";
+@import "../common/css3";
+@import "../common/common";
+
+.header{
+  $h:88px;
+  position: relative;
+  h2{
+    position: absolute;
+    left:0;
+    top:0;
+    width:100%;
+    overflow: hidden;
+    height:pxTorem($h);
+    line-height:pxTorem($h);
+    @include font-dpr(36px);
+    text-align:center;
+    color:#333333;
+  }
+  .left,.right{
+    height:pxTorem($h);
+    position: relative;
+  }
+  .left{
+    float: left;
+  }
+  .right{
+    float: right;
+  }
+  // 返回
+  .return{
+    padding:0 pxTorem(20px);
+    height:pxTorem($h);
+    @include display-flex();
+    @include align-items();
+    &:after{
+      content: '\20';
+      display: block;
+      width: pxTorem(16px);
+      height: pxTorem(30px);
+      @extend %icoRem;
+      background-image: url("../images/iconArrowL.png");
+    }
+  }
+}
