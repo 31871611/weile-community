@@ -4,9 +4,12 @@
 
 // 选择小区
 .selectQuarters{
+  background: #f7f7f7;
   $h:88px;
-  margin:pxTorem(20px) 0;
-  background: #fff;
+  ul{
+    margin:pxTorem(20px) 0;
+    background: #fff;
+  }
   li{
     height: pxTorem($h);
     line-height: pxTorem($h);

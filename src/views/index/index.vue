@@ -1,16 +1,16 @@
 <template>
+<div class="h">
+
   <div class="wrap">
     <article class="main">
       <div class="mainScroll index">
 
-        <div class="currentQuarters">
-          <span>锦艺测试小区</span>
+        <div class="currentQuarters" @click="goSelectQuarters(true)">
+          <span>{{textCurrentQuarters}}</span>
           <i></i>
         </div>
 
-        <div class="indexSideslip">
-          轮播
-        </div>
+        <slider class="indexSideslip" :items="sliderList" :width="750" :height="280" :speed="5000" :sync="true"></slider>
 
         <div class="indexNav">
           <a href="" class="open">小区开门</a>
@@ -92,16 +92,26 @@
 
   </div>
 
+  <select-quarters v-if="isSelectQuarters" @back="goSelectQuarters" @select="selectCurrentQuarters"></select-quarters>
 
-
+  <router-view></router-view>
+</div>
 
 </template>
 <script type="text/ecmascript-6">
+import selectQuarters from './selectQuarters.vue';
+import slider from './slider.vue';
 
 export default {
   name: 'home',
   data() {
     return {
+      sliderList:[
+        {src:'http://cms-bucket.nosdn.127.net/4b54654acfbb459f876b7127d448c5da20170407122527.jpeg?imageView&thumbnail=750y380&quality=45&type=webp&interlace=1&enlarge=1',href:'/home/'},
+        {src:'http://img1.126.net/channel19/027392/750380_0405.jpg',href:'/home/'}
+      ],
+      textCurrentQuarters:'锦艺测试小区',
+      isSelectQuarters:false,
       categoryHomeLayoutList : null,
       groupBuyList : null,
       recommendList : null
@@ -133,8 +143,18 @@ export default {
         console.log(error)
       })
   },
-  methods: {},
+  methods: {
+    goSelectQuarters:function(is){
+      // 显示
+      this.isSelectQuarters = is
+    },
+    selectCurrentQuarters:function(txt){
+      this.textCurrentQuarters = txt;
+    }
+  },
   components: {
+    selectQuarters,
+    slider
   }
 }
 </script>

@@ -12,7 +12,11 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      children:[{
+        path: '/selectQuarters',
+        component: resolve => require(['@/views/index/selectQuarters'], resolve)
+      }]
     }, {
       path: '/list',
       name: 'list',

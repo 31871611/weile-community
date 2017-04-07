@@ -5,6 +5,10 @@
 .header{
   $h:88px;
   position: relative;
+  height:pxTorem($h);
+  overflow: hidden;
+  background: #fff;
+  @include border1px(#f4f4f4,bottom);
   h2{
     position: absolute;
     left:0;
@@ -28,7 +32,7 @@
     float: right;
   }
   // 返回
-  .return{
+  .back{
     padding:0 pxTorem(20px);
     height:pxTorem($h);
     @include display-flex();
