@@ -2,13 +2,30 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll commodity">
+        <div class="commodityPhoto">
+          <img src="" alt="">
+        </div>
 
-        销量：1554件
-        规格：500ml
 
-        此商品参与
+        <div class="">
+          <h1>标题</h1>
+          <div>
+            <span class="price">￥21.00</span>
+            <span class="originalCost">￥26.00</span>
+          </div>
 
-        图文详情
+          限购5件
+          加1减
+        </div>
+
+        <ul class="type">
+          <li>销量：1554件</li>
+          <li>规格：500ml</li>
+        </ul>
+
+        <div>此商品参与</div>
+
+        <div>图文详情</div>
         <div>
           图片
           文字

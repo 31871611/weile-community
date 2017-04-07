@@ -4,13 +4,22 @@
 
 
 .commodity{
-
+  background: #f7f7f7;
 }
 
 
+// 详情主图片
+.commodityPhoto{
+  img{
+    width: 100%;
+    vertical-align: middle;
+  }
+}
 
-
-
+h1{
+  @include font-dpr(30px);
+  color: #3f4548;
+}
 
 
 
