@@ -16,14 +16,274 @@
   }
 }
 
-h1{
-  @include font-dpr(30px);
-  color: #3f4548;
+// 抢购倒记时-未开始
+.commodityRushTime{
+  $h:108px;
+  height: pxTorem(108px);
+  padding:0 0 0 pxTorem(20px);
+  background: #00b94c;
+  @include display-flex();
+  @include align-items();
+  @include justify-content();
+  .priceNum{
+    @include display-flex();
+    @include align-items();
+    color: #fff;
+  }
+  .price{
+    margin-right: pxTorem(15px);
+    @include font-dpr(50px);
+    b{
+      @include font-dpr(22px);
+      font-weight: normal;
+    }
+  }
+  .originalCost{
+    @include opacity(70);
+    @include font-dpr(24px);
+    display: block;
+    text-decoration:line-through;
+  }
+  .limit{
+    @include font-dpr(24px);
+    display: block;
+  }
+  .time{
+    position:relative;
+    text-align: center;
+    margin-right: pxTorem(45px);
+    p{
+      margin-bottom: pxTorem(10px);
+      color: #007e34;
+    }
+    .start{
+      width: pxTorem(226px);
+      height: pxTorem(30px);
+      background: #00923c;
+      color: #fff;
+      @include border-radius(pxTorem(4px));
+    }
+    i{
+      position: absolute;
+      right:pxTorem(-28px);
+      top:0;
+      width: pxTorem(34px);
+      height: pxTorem(70px);
+      background: #f00;
+    }
+  }
+
+}
+
+// 抢购进行中
+.commodityRushGo{
+  $h:108px;
+  height: pxTorem(108px);
+  padding:0 pxTorem(20px);
+  background: #ff5823;
+  @include display-flex();
+  @include align-items();
+  @include justify-content();
+
+  .priceNum{
+    @include display-flex();
+    @include align-items();
+  }
+  .iconClock{
+    display: block;
+    width: pxTorem(36px);
+    height: pxTorem(40px);
+    background: #f00;
+  }
+
+  .endTime{
+    margin-left: pxTorem(15px);
+    color: #fffbcd;
+    span{
+      display: block;
+    }
+  }
+
+  .time{
+    position:relative;
+    text-align: center;
+    margin-right: pxTorem(45px);
+    p{
+      margin-bottom: pxTorem(10px);
+      color: #fdfa19;
+    }
+    .start{
+      width: pxTorem(226px);
+      height: pxTorem(30px);
+      background: #fdfa19;
+      color: #ff5823;
+      @include border-radius(pxTorem(4px));
+    }
+    i{
+      position: absolute;
+      right:pxTorem(-28px);
+      top:0;
+      width: pxTorem(34px);
+      height: pxTorem(70px);
+      background: #f00;
+    }
+  }
+
+}
+
+// 抢购结束
+.commodityRushEnd{
+  $h:108px;
+  height: pxTorem(108px - 20);
+  background: #c2c2c2;
+  color: #fff;
+  padding:pxTorem(20px) 0 0 pxTorem(20px);
+  h3{
+    @include font-dpr(32px);
+    margin-bottom: pxTorem(4px);
+  }
+  p{
+    @include font-dpr(24px);
+  }
 }
 
 
+.commodityTitle{
+  $infoH:34px;
+  background: #fff;
+  padding:pxTorem(20px) pxTorem(20px) pxTorem(20px) pxTorem(30px);
+  margin-bottom: pxTorem(20px);
+  h1{
+    @include font-dpr(30px);
+    color: #3f4548;
+  }
+  .info{
+    margin-top: pxTorem(24px);
+    @include display-flex();
+    @include align-items();
+    @include justify-content(space-between);
+  }
+  .left,.right{
+    @include display-flex();
+    @include align-items();
+  }
+  // 现价格
+  .price{
+    display: block;
+    margin-right: pxTorem(14px);
+    @include font-dpr(40px);
+    color: #ff5823;
+    b{
+      @include font-dpr(24px);
+    }
+  }
+  // 原价
+  .originalCost{
+    height: pxTorem($infoH);
+    line-height: pxTorem($infoH + 2);
+    color:#9c9fa1;
+    @include font-dpr(24px);
+  }
+  // 库存
+  .repertory{
+    display: block;
+    color:#9c9fa1;
+    @include font-dpr(24px);
+  }
+  // 限购
+  .limit{
+    margin-right: pxTorem(14px);
+    height: pxTorem($infoH);
+    line-height: pxTorem($infoH + 2);
+    color:#9c9fa1;
+    @include font-dpr(24px);
+  }
+  // 数量加减
+  .selectNum{
+    @include display-flex();
+    input{
+      display: block;
+      width: pxTorem(56px);
+      height: pxTorem($infoH);
+      border:0;
+      color: #3f4548;
+      text-align: center;
+      @include font-dpr(28px);
+    }
+  }
+  .reduce,.add{
+    display: block;
+    width: pxTorem($infoH);
+    height: pxTorem($infoH);
+    @extend %icoRem;
+  }
+  .reduce{
+    background-image: url("../images/icon_minus_n@2x.png");
+  }
+  .add{
+    background-image: url("../images/icon_homepage_add@2x.png");
+  }
+}
 
-.commodityFooter{
+
+.commodityType{
+  background: #fff;
+  margin-bottom: pxTorem(20px);
+  li{
+    @include font-dpr(30px);
+    color:#3f4548;
+    overflow: hidden;
+    height: pxTorem(87px);
+    line-height: pxTorem(87px);
+    @include border1px(#e6e6e6);
+    padding:0 pxTorem(20px);
+    &:last-child{
+      &:after{
+        display: none;
+      }
+    }
+  }
+}
+
+
+.commodityCue{
+  background: #fff;
+  margin-bottom: pxTorem(20px);
+  @include font-dpr(30px);
+  color:#ff5823;
+  overflow: hidden;
+  height: pxTorem(87px);
+  line-height: pxTorem(87px);
+  padding:0 pxTorem(20px);
+}
+
+.commodityContent{
+  h2{
+    background: #fff;
+    @include font-dpr(30px);
+    color:#3f4548;
+    overflow: hidden;
+    height: pxTorem(87px);
+    line-height: pxTorem(87px);
+    padding:0 pxTorem(20px);
+  }
+  .txt{
+    img{
+      width: 100%;
+      vertical-align: middle;
+    }
+    p{
+      //line-height: 2em;
+      @include font-dpr(24px);
+      color:#3f4548;
+      padding:pxTorem(20px);
+    }
+  }
+}
+
+
+// 正常
+.commodityFooterNormal{
   $h:98px;
   height: pxTorem($h);
   @include display-flex();
@@ -76,8 +336,83 @@ h1{
     @include font-dpr(32px);
   }
 }
-
-
-
-
+// 已售、立即购买
+.commodityFooterNot,.commodityFooterBuy{
+  $h:98px;
+  height: pxTorem($h - 13);
+  padding-top: pxTorem(13px);
+  @include border1px(#ccc,top);
+  div{
+    @include font-dpr(32px);
+    margin:0 pxTorem(20px) 0;
+    text-align: center;
+    color: #fff;
+    height: pxTorem(70px);
+    line-height: pxTorem(70px);
+  }
+}
+// 已售
+.commodityFooterNot{
+  div{
+    background: #c6c6c6;
+  }
+}
+// 立即购买
+.commodityFooterBuy{
+  div{
+    background: $green-base;
+  }
+}
+// 加入购物车
+.commodityFooterCart{
+  $h:98px;
+  height: pxTorem($h);
+  @include border1px(#ccc,top);
+  @include display-flex();
+  .shopping{
+    margin-left:pxTorem(18px);
+    div{
+      position: relative;
+      margin:pxTorem(30px) auto 0;
+      width: pxTorem(39px);
+      height: pxTorem(38px);
+      @extend %icoRem;
+      background-image:url("../images/icon_menu_shoppingtrolley_n@2x.png");
+    }
+    b{
+      position: absolute;
+      left:pxTorem(26px);
+      top:pxTorem(-10px);
+      @include font-dpr(20px);
+      color: $green-base;
+      padding:0 pxTorem(6px);
+      @include border-radius(pxTorem(15px));
+      border:2px solid $green-base;
+      background: #fff;
+    }
+    span{
+      display: block;
+      @include font-dpr(22px);
+      text-align: center;
+      color: #6c7072;
+    }
+  }
+  .price{
+    margin-left:pxTorem(18px);
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    @include flex(1);
+    @include font-dpr(30px);
+    color: #ff5823;
+  }
+  .add{
+    width: pxTorem(256px);
+    background: $green-base;
+    text-align: center;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    color: #fff;
+    @include font-dpr(32px);
+  }
+}
 
