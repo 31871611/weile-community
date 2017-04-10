@@ -93,8 +93,6 @@
   </div>
 
   <select-quarters v-if="isSelectQuarters" @back="goSelectQuarters" @select="selectCurrentQuarters"></select-quarters>
-
-  <router-view></router-view>
 </div>
 
 </template>
