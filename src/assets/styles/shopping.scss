@@ -11,3 +11,88 @@
 
 }
 
+
+.footerInfo{
+  $h:66px;
+  height: pxTorem($h);
+  line-height: pxTorem($h);
+  background: #f7f7f7;
+  padding: 0 pxTorem(20px);
+  color: #6c7072;
+  @include font-dpr(24px);
+}
+
+.footerCart{
+  $h:98px;
+  @include display-flex();
+  .box{
+    @include display-flex();
+    @include align-items();
+    @include flex(1);
+    background: #fbfbfb;
+    @include border1px(#e6e6e6,top);
+  }
+  input[type='radio']{
+    width: pxTorem(36px);
+    height: pxTorem(36px);
+    display: block;
+    margin:0 pxTorem(16px) 0 pxTorem(24px);
+    position: relative;
+    //清除默认input格式
+    border:0;
+    @include appearance(none);
+    outline:none;
+    background:none;
+    &:after{
+      position: absolute;
+      left:0;
+      top:0;
+      width: pxTorem(36px);
+      height: pxTorem(36px);
+      content: '\20';
+      @extend %icoRem;
+      background-image: url("../images/icon_shoppingtrolley_circle_n@2x.png");
+    }
+    &:checked{
+      &:after{
+        background-image: url("../images/icon_shoppingtrolley_selet_p@2x.png");
+      }
+    }
+  }
+  label{
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    display: block;
+    @include font-dpr(28px);
+    color: #3f4548;
+    padding-right:pxTorem(32px);
+  }
+  .total{
+    color: #3f4548;
+    span{
+      display: block;
+      @include font-dpr(30px);
+    }
+    b{
+      color: $orange-base;
+      font-weight: normal;
+    }
+    em{
+      @include font-dpr(22px);
+      display: block;
+      font-style: normal;
+    }
+  }
+  .next{
+    width: pxTorem(198px);
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    text-align: center;
+    background: $green-base;
+    color:#fff;
+    @include font-dpr(32px);
+  }
+  .del{
+    background:#fa5741;
+  }
+}

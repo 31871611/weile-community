@@ -8,11 +8,19 @@
       </div>
     </article>
     <footer>
+      <div class="footerInfo">
+        差1.00元免配送费
+      </div>
       <div class="footerCart">
-        <div class="total">
-          合计：<b>￥0.00</b><em>(已选0件)</em>
+        <div class="box">
+          <input id="all" type="radio" />
+          <label for="all">全选</label>
+          <div class="total">
+            <span>合计：<b>￥200.00</b></span>
+            <em>已优惠￥50</em>
+          </div>
         </div>
-        <div class="next">去结算</div>
+        <div class="next del">去结算</div>
       </div>
       <div class="appNav">
         <router-link to="home" class="home">首页</router-link>
