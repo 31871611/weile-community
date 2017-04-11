@@ -1,0 +1,87 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+
+
+
+// 商品专题
+.subject{
+  background: #f7f7f7;
+  .adPhoto{
+    img{
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+
+// 商品列表
+.subjectList{
+  @import "components/list";
+  @include listCol;
+  margin-top:pxTorem(32px);
+}
+
+
+// 加入购物车
+.footerCart{
+  @import "components/footerCart";
+  @include footerCart;
+}
+
+
+
+// 已经到最底了
+.mostFooter{
+  padding:pxTorem(35px) 0 pxTorem(50px);
+  margin:0 pxTorem(20px);
+  text-align: center;
+  @include display-flex();
+  @include align-items();
+  @include justify-content(center);
+  span{
+    color: #6c7072;
+    margin:0 pxTorem(34px);
+  }
+  &:before,&:after{
+    content: '\20';
+    background: #e6e6e6;
+    height: 1px;
+    display: block;
+    @include flex(1);
+  }
+}
+
+
+.floatShopping{
+  $h:102px;
+  width: pxTorem($h);
+  height: pxTorem($h - 28);
+  padding-top:pxTorem(28px);
+  background: $green-base;
+  @include border-radius(100%);
+  position: absolute;
+  right:pxTorem(28px);
+  bottom:pxTorem(88px + 24px);
+  i{
+    margin: 0 auto;
+    display: block;
+    width: pxTorem(43px);
+    height: pxTorem(42px);
+    background: #f00;
+    @extend %icoRem;
+  }
+  b{
+    position: absolute;
+    right:0;
+    top:0;
+    color: #fff;
+    background: $orange-base;
+    @include font-dpr(20px);
+    padding:pxTorem(2px) pxTorem(8px);
+    @include border-radius(pxTorem(15px));
+  }
+}

@@ -82,10 +82,10 @@
     </article>
     <footer>
       <div class="appNav">
-        <router-link to="/" class="home">首页</router-link>
+        <router-link to="home" class="home">首页</router-link>
         <router-link to="a" class="community">社区</router-link>
-        <router-link to="b" class="convenient">便利店</router-link>
-        <router-link to="c" class="shopping">购物车</router-link>
+        <router-link to="store" class="convenient">便利店</router-link>
+        <router-link to="shopping" class="shopping">购物车</router-link>
         <router-link to="d" class="my">我的</router-link>
       </div>
     </footer>

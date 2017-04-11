@@ -10,17 +10,29 @@ export default new Router({
   // mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
-      component: Home,
-      children:[{
-        path: '/selectQuarters',
-        component: resolve => require(['@/views/index/selectQuarters'], resolve)
-      }]
+      component: Home
     }, {
       path: '/list',
       name: 'list',
       component: resolve => require(['@/views/list/list'], resolve)
+    }, {
+      path: '/sale',
+      name: 'sale',
+      component: resolve => require(['@/views/list/sale'], resolve)
+    }, {
+      path: '/subject',
+      name: 'subject',
+      component: resolve => require(['@/views/list/subject'], resolve)
+    }, {
+      path: '/store',
+      name: 'store',
+      component: resolve => require(['@/views/store/store'], resolve)
+    }, {
+      path: '/shopping',
+      name: 'shopping',
+      component: resolve => require(['@/views/shopping/shopping'], resolve)
     },
     {
       path: '/commodity',

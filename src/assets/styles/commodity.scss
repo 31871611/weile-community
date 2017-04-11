@@ -403,7 +403,7 @@
     line-height: pxTorem($h);
     @include flex(1);
     @include font-dpr(30px);
-    color: #ff5823;
+    color: $orange-base;
   }
   .add{
     width: pxTorem(256px);

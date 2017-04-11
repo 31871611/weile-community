@@ -2,21 +2,151 @@
 @import "common/css3";
 @import "common/common";
 
-
-.content{
+.search{
+  $h:56px;
+  margin: pxTorem(16px) pxTorem(20px);
+  height: pxTorem($h);
   @include display-flex();
+  .box{
+    background: #f1f1f1;
+    height: pxTorem($h);
+    @include display-flex();
+    @include align-items();
+    @include flex(1);
+    @include border-radius(pxTorem(8px));
+  }
+  i{
+    margin:0 pxTorem(10px);
+    width: pxTorem(20px);
+    height: pxTorem(20px);
+    background: #f00;
+    display: block;
+  }
+  input[type='search']{
+    @include font-dpr(28px);
+    display: block;
+    width: 100%;
+    @include flex(1);
+    height: pxTorem($h);
+    border:0;
+    background: none;
+  }
+  .exit{
+    @include font-dpr(28px);
+    padding-left:pxTorem(20px);
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    color: $green-base;
+  }
 }
 
-.scrollY{
-  overflow-y:auto;
-  -webkit-overflow-scrolling: touch;
+.searchList{
+  z-index: 99;
+  position: absolute;
+  top:pxTorem(56px + 16 + 16);
+  right:0;
+  left:0;
+  bottom:0;
+  background: #fff;
+  ul{
+
+  }
+  li{
+    height: pxTorem(88px);
+    a{
+      display: block;
+      @include font-dpr(30px);
+      padding:0 pxTorem(20px);
+      height: pxTorem(88px);
+      line-height: pxTorem(88px);
+      @include border1px(#f4f4f4);
+      @include display-flex();
+      @include align-items();
+    }
+    span{
+      display: block;
+      @include flex(1);
+    }
+    i{
+      display: block;
+      width: pxTorem(16px);
+      height: pxTorem(30px);
+      @extend %icoRem;
+      background-image: url("../images/iconArrowR.png");
+    }
+  }
+  .exit{
+    @include font-dpr(28px);
+    color: $green-base;
+    height: pxTorem(70px);
+    line-height: pxTorem(70px);
+    text-align: center;
+    width: pxTorem(206px);
+    border:1px solid $green-base;
+    @include border-radius(pxTorem(6px));
+    margin: pxTorem(50px) auto 0;
+    &:active{
+      background: $green-base;
+      color: #fff;
+    }
+  }
+}
+
+// 当前没有数据哦
+.notData{
+  @import "components/notData";
+  @include notData;
+}
+
+.scrollNotice{
+  margin-top: pxTorem(18px);
+  $h:36px;
+  height: pxTorem($h);
+  padding:pxTorem(18px) 0;
+  background: #feefed;
+  @include display-flex();
+  i{
+    margin:0 pxTorem(16px) 0 pxTorem(20px);
+    width: pxTorem($h);
+    height: pxTorem($h);
+    @extend %icoRem;
+    background-image: url("../images/icon_store_zoumadeng@2x.png");
+  }
+  div{
+    @include flex(1);
+    height: pxTorem($h);
+    overflow: hidden;
+  }
+  p{
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    color: #fa5741;
+    @include font-dpr(24px);
+  }
+}
+
+.content{
+  margin-top: pxTorem(18px);
+  @include display-flex();
+  height: 100%;
 }
 
 .classifyList{
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar{
+    -webkit-opacity: 0;
+    opacity: 0;
+  }
+
   $h:98px;
-  $pl:35px;
+  $pl:28px;
   width: pxTorem(180px);
   margin-right: pxTorem(16px);
+  ul{
+
+  }
   li{
     padding-left:pxTorem($pl);
     height: pxTorem($h);
@@ -33,6 +163,14 @@
 }
 
 .contentList{
+  overflow-y:auto;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar{
+    -webkit-opacity: 0;
+    opacity: 0;
+  }
+
   width: 100%;
   @include flex(1);
   $h:126px;
@@ -109,7 +247,7 @@
   // 价格
   .price{
     @include font-dpr(36px);
-    color: #ff5823;
+    color: $orange-base;
     b{
       font-weight: normal;
       @include font-dpr(20px);
@@ -155,7 +293,11 @@
 }
 
 
-
+// 加入购物车
+.footerCart{
+  @import "components/footerCart";
+  @include footerCart;
+}
 
 
 
