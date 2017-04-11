@@ -1,0 +1,54 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+// 支付结果
+.payResult{
+  height: 100%;
+  background: #f7f7f7;
+  overflow: hidden;
+  i{
+    width: pxTorem(156px);
+    height: pxTorem(156px);
+    display: block;
+    margin:pxTorem(120px) auto 0;
+    @extend %icoRem;
+    &.success{
+      background-image: url("../images/icon_payment_success@2x.png");
+    }
+    &.error{
+      background-image: url("../images/icon_payment_fail@2x.png");
+    }
+  }
+  .txt{
+    margin-top:pxTorem(48px);
+    @include font-dpr(32px);
+    color: #3f4548;
+    display: block;
+    text-align: center;
+  }
+  .buy{
+    margin: pxTorem(130px) auto 0;
+    width: pxTorem(376px);
+    height: pxTorem(76px);
+    line-height: pxTorem(76px);
+    text-align: center;
+    background: $green-base;
+    color: #fff;
+    @include font-dpr(30px);
+    @include border-radius(pxTorem(60px));
+  }
+  .orderDetails{
+    margin: pxTorem(32px) auto 0;
+    width: pxTorem(376px - 4);
+    height: pxTorem(76px - 4);
+    line-height: pxTorem(76px - 4);
+    text-align: center;
+    border:2px solid $green-base;
+    @include font-dpr(30px);
+    @include border-radius(pxTorem(60px));
+  }
+}
+
+
+

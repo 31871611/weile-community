@@ -33,11 +33,18 @@ export default new Router({
       path: '/shopping',
       name: 'shopping',
       component: resolve => require(['@/views/shopping/shopping'], resolve)
-    },
-    {
+    },{
       path: '/commodity',
       name: 'commodity',
       component: resolve => require(['@/views/commodity/commodity'], resolve)
+    },{
+      path: '/payorder',
+      name: 'payorder',
+      component: resolve => require(['@/views/payorder/payorder'], resolve)
+    },{
+      path: '/payResult',
+      name: 'payResult',
+      component: resolve => require(['@/views/payResult/payResult'], resolve)
     },{
       path: '/login',
       name: 'login',

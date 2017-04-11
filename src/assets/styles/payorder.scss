@@ -1,0 +1,277 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+
+
+
+// 订单确认
+.payOrder{
+  background: #f7f7f7;
+}
+
+.payOrderTitle{
+  $h:60px;
+  height: pxTorem($h);
+  line-height: pxTorem($h);
+  padding-left: pxTorem(20px);
+  color: #999999;
+  @include font-dpr(24px);
+}
+
+
+.payOrderAddress{
+  background: #fff;
+  padding:pxTorem(20px) pxTorem(20px) pxTorem(14px);
+  @include display-flex();
+  @include align-items();
+  .box{
+    @include flex(1);
+    position: relative;
+    color: #43515a;
+    @include font-dpr(28px);
+  }
+  span{
+    display: block;
+    line-height: pxTorem(44px);
+    &.name{
+
+    }
+    &.tel{
+      position: absolute;
+      right: 0;
+      top:0;
+    }
+  }
+  p{
+    line-height: pxTorem(44px);
+  }
+  .arrowR{
+    margin-left:pxTorem(24px);
+    display: block;
+    width: pxTorem(16px);
+    height: pxTorem(30px);
+    @extend %icoRem;
+    background-image: url("../images/iconArrowR.png");
+  }
+}
+
+
+.payOrderTime{
+  $h:88px;
+  margin: pxTorem(20px) 0 0;
+  padding:0 pxTorem(20px);
+  background: #fff;
+  @include border1px(#e6e6e6);
+  height: pxTorem($h);
+  @include font-dpr(28px);
+  span{
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    &.fl{
+      float: left;
+    }
+    &.fr{
+      float: right;
+    }
+  }
+}
+
+.payOrderTextarea{
+  $h:88px;
+  background: #fff;
+  @include font-dpr(28px);
+  padding:pxTorem(28px) pxTorem(20px);
+
+}
+
+
+.goodsList{
+  background: #fff;
+  width: 100%;
+  $h:130px;
+  $infoH:34px;
+  li{
+    height: pxTorem($h);
+    @include border1px(#e6e6e6);
+    padding:pxTorem(20px) pxTorem(20px) pxTorem(20px) pxTorem(20px);
+    @include display-flex();
+    &:last-child{
+      &:after{
+        display: none;
+      }
+    }
+  }
+  .photo{
+    position: relative;
+    width: pxTorem($h);
+    height: pxTorem($h);
+    margin-right:pxTorem(20px);
+    img{
+      width: pxTorem($h);
+      height: pxTorem($h);
+      vertical-align: middle;
+    }
+    i{
+      font-style: normal;
+      &.activity,&.goIng{
+        position: absolute;
+        left:0;
+        top:pxTorem(-3px);
+        color: #fff;
+        padding-left:pxTorem(12px);
+        @include font-dpr(24px);
+        height: pxTorem(32px);
+        line-height: pxTorem(32px);
+        @extend %icoRem;
+      }
+    }
+  }
+  .box{
+    position: relative;
+    @include flex(1);
+    height: 100%;
+    width: 100%;
+  }
+  h3{
+    overflow: hidden;
+    height: pxTorem(60px);
+    line-height: pxTorem(60px / 2);
+    @include font-dpr(28px);
+    color: #3f4548;
+    b{
+      color: $green-base;
+      font-weight: normal;
+    }
+  }
+  .bottom{
+    position: absolute;
+    left:0;
+    bottom:0;
+    width: 100%;
+    height: pxTorem(40px);
+    @include display-flex();
+    @include align-items(center);
+    @include justify-content();
+  }
+  // 价格
+  .price{
+    @include font-dpr(30px);
+    color: $orange-base;
+  }
+  .num{
+    @include font-dpr(30px);
+  }
+}
+
+
+.payOrderInfo{
+  $h:42px;
+  margin: pxTorem(20px) 0 pxTorem(50px);
+  background: #fff;
+  @include font-dpr(28px);
+  li{
+    @include border1px(#e6e6e6);
+    padding:pxTorem(24px) pxTorem(20px);
+    @include display-flex();
+    @include align-items();
+    &:last-child{
+      &:after{
+        display: none;
+      }
+    }
+  }
+  i{
+    &.give{
+      width: pxTorem($h);
+      height: pxTorem($h);
+      @extend %icoRem;
+      background-color: #f00;
+      display: block;
+      margin-right: pxTorem(14px);
+    }
+  }
+  span{
+    display: block;
+    @include flex(1);
+    line-height: pxTorem(42px);
+    &.prompt{
+      color: #999;
+    }
+  }
+  strong{
+    margin-left: pxTorem(64px);
+    b{
+      color: $orange-base;
+      font-weight: normal;
+    }
+  }
+}
+
+
+
+// 下单确认
+.footerCart{
+  @import "components/footerCart";
+  @include footerCart;
+}
+
+
+// 确认订单-添加地址列表
+.payOrderSelectAddress{
+  ul{
+    background: #fff;
+  }
+  li{
+    position: relative;
+    @include border1px(#e6e6e6);
+    @include font-dpr(28px);
+    padding:pxTorem(16px) pxTorem(20px);
+    div{
+      color: #3f4548;
+    }
+    span{
+      line-height: pxTorem(40px);
+      &.name{
+        min-width: pxTorem(104px);
+      }
+      &.tel{}
+    }
+    p{
+      line-height: pxTorem(40px);
+      color: #6c7072;
+    }
+    i{
+      position: absolute;
+      right: pxTorem(20px);
+      top:0;
+      width: pxTorem(20px);
+      height: pxTorem(20px);
+      background-color: #f00;
+    }
+    //不可配送
+    &.select{
+      span,p{
+        color: #bbb;
+      }
+    }
+  }
+}
+
+
+// 确认订单-添加地址按钮
+.payOrderAddAddress{
+  $h:80px;
+  @include border1px(#e6e6e6,top);
+  padding:pxTorem(20px);
+  div{
+    background: $green-base;
+    @include border-radius(pxTorem(4px));
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    text-align: center;
+    color: #fff;
+    @include font-dpr(32px);
+  }
+}
