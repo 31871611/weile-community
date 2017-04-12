@@ -1,0 +1,112 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+// 订单详情
+.userOrderDetails{
+  background: #f7f7f7;
+
+  .tel{
+    $h:88px;
+    height: pxTorem($h);
+    margin-top:pxTorem(20px);
+    a{
+      padding:0 pxTorem(20px);
+      background: #fff;
+      height: pxTorem($h);
+      @include display-flex();
+      @include align-items();
+      @include justify-content();
+    }
+    span{
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      color: #43515a;
+      @include font-dpr(30px);
+    }
+    i{
+      display: block;
+      width: pxTorem(36px);
+      height: pxTorem(36px);
+      @extend %icoRem;
+      background-image: url("../images/shop_order_phone@2x.png");
+    }
+  }
+
+  .orderList{
+    @import "components/userOrderList";
+    @include userOrderList;
+  }
+
+
+  .orderInfoList{
+    $h:88px;
+    background: #fff;
+    margin:pxTorem(20px) 0;
+    li{
+      padding:pxTorem(26px) pxTorem(20px);
+      @include border1px(#e6e6e6);
+      @include display-flex();
+      @include align-items();
+      &:last-child{
+        &:after{
+          display: none;
+        }
+      }
+    }
+    span{
+      display: block;
+      @include font-dpr(30px);
+      &:nth-child(1){
+        color: #69747b;
+        width: pxTorem(195px);
+      }
+      &:nth-child(2){
+        color: #43515a;
+        @include flex(1);
+      }
+    }
+  }
+
+  .hint{
+    margin:0 pxTorem(20px) pxTorem(50px);
+    color: #999;
+  }
+
+}
+
+
+.userOrderDetailsBtn{
+  @include border1px(#c6c6c6,top);
+  background: #fff;
+  @include display-flex();
+  $h:70px;
+  padding:pxTorem(14px) pxTorem(56px);
+  span{
+    display: block;
+    @include flex(1);
+    @include font-dpr(30px);
+    text-align: center;
+    @include border-radius(pxTorem(4px));
+    &:nth-child(1){
+      color: $green-base;
+      //border: 1px solid $green-base;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      //@include border1px($green-base,top);
+      @include box-shadow(0 0 2px $green-base);
+    }
+    &:nth-child(2){
+      margin-left:pxTorem(60px);
+      color: #fff;
+      background: $green-base;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+    }
+  }
+}
+
+.userOrderDetailsPayBtn{
+  @import "components/btn";
+  @include one;
+}

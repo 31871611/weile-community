@@ -262,16 +262,6 @@
 
 // 确认订单-添加地址按钮
 .payOrderAddAddress{
-  $h:80px;
-  @include border1px(#e6e6e6,top);
-  padding:pxTorem(20px);
-  div{
-    background: $green-base;
-    @include border-radius(pxTorem(4px));
-    height: pxTorem($h);
-    line-height: pxTorem($h);
-    text-align: center;
-    color: #fff;
-    @include font-dpr(32px);
-  }
+  @import "components/btn";
+  @include one(div);
 }

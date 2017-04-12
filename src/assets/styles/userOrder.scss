@@ -1,0 +1,45 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+.userOrder{
+  background: #f7f7f7;
+}
+
+
+.userOrderTab{
+  $h:68px;
+  height: pxTorem($h);
+  @include display-flex();
+  a{
+    text-align: center;
+    @include flex(1);
+    width: 100%;
+    color: #69747b;
+    @include font-dpr(26px);
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    &.select{
+      span{
+        vertical-align: top;
+        height: pxTorem($h - 10px);
+        line-height: pxTorem($h - 10px);
+        display:inline-block;
+        padding:0 pxTorem(14px);
+        border-bottom: 2px solid $green-base;
+      }
+    }
+  }
+}
+
+.userOrderList{
+  padding-bottom: pxTorem(50px);
+  @import "components/userOrderList";
+  @include userOrderList;
+}
+
+// 没有数据
+.notData{
+  @import "components/notData";
+  @include notData;
+}

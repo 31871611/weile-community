@@ -17,9 +17,10 @@
   }
   i{
     margin:0 pxTorem(10px);
-    width: pxTorem(20px);
-    height: pxTorem(20px);
-    background: #f00;
+    width: pxTorem(24px);
+    height: pxTorem(26px);
+    @extend %icoRem;
+    background-image: url("../images/icon_search@2x.png");
     display: block;
   }
   input[type='search']{

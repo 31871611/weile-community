@@ -49,6 +49,22 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: resolve => require(['@/views/login/login'], resolve)
+    },{
+      path: '/userOrder',
+      name: 'userOrder',
+      component: resolve => require(['@/views/userOrder/userOrder'], resolve)
+    },{
+      path: '/userOrderDetails',
+      name: 'userOrderDetails',
+      component: resolve => require(['@/views/userOrderDetails/userOrderDetails'], resolve)
+    },{
+      path: '/userApplyBack',
+      name: 'userApplyBack',
+      component: resolve => require(['@/views/userApplyBack/userApplyBack'], resolve)
+    },{
+      path: '/userAddAddress',
+      name: 'userAddAddress',
+      component: resolve => require(['@/views/userAddress/addAddress'], resolve)
     }, {
       path: '*',
       component: Home

@@ -1,0 +1,94 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+// 申请退单
+.userApplyBack{
+  background: #f7f7f7;
+
+  .info{
+    $h:88px;
+    height: pxTorem($h);
+    background: #fff;
+    @include display-flex();
+    @include align-items();
+    @include justify-content();
+    padding:0 pxTorem(20px);
+    margin-top:pxTorem(20px);
+    @include font-dpr(28px);
+    span{
+      display: block;
+      color: #43515a;
+    }
+    strong{
+      display: block;
+      color: $orange-base;
+    }
+    em{
+      display: block;
+      font-style: normal;
+      color: #999;
+    }
+  }
+
+  .title{
+    $h:60px;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    padding:0 pxTorem(20px);
+    color: #999;
+    @include font-dpr(24px);
+  }
+
+
+  .selectExitList{
+    background: #fff;
+    $h:88px;
+    li{
+      @include border1px(#e6e6e6);
+      height: pxTorem($h);
+      &:last-child{
+        &:after{
+          display: none;
+        }
+      }
+    }
+    label{
+      height: pxTorem($h);
+      @include display-flex();
+      @include align-items();
+      @include justify-content();
+      padding:0 pxTorem(20px);
+    }
+    span{
+      display: block;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      @include font-dpr(28px);
+      color: #43515a;
+    }
+    input[type='radio']{
+      $w:30px;
+      display: block;
+      //清除默认input格式
+      border:0;
+      @include appearance(none);
+      outline:none;
+      width: pxTorem($w);
+      height: pxTorem($w);
+      position: relative;
+      @extend %icoRem;
+      background-image: url("../images/icon_select_n@2x.png");
+      &:checked{
+        background-image: url("../images/icon_select_p@2x.png");
+      }
+    }
+  }
+}
+
+// 按钮
+.userApplyBackBtn{
+  @import "components/btn";
+  @include one;
+}
+

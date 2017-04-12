@@ -1,0 +1,24 @@
+@charset "UTF-8";
+@import "../common/css3";
+@import "../common/common";
+
+// 底部一个按钮
+@mixin one($label:span,$bg:$green-base){
+  @include border1px(#c6c6c6,top);
+  background: #fff;
+  @include display-flex();
+  $h:70px;
+  padding:pxTorem(14px) pxTorem(20px);
+  #{$label} {
+    display: block;
+    @include flex(1);
+    @include font-dpr(30px);
+    text-align: center;
+    @include border-radius(pxTorem(4px));
+    color: #fff;
+    background: $bg;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+  }
+}
+

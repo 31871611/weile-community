@@ -316,32 +316,16 @@
     @include font-dpr(32px);
   }
 }
-// 已售、立即购买
-.commodityFooterNot,.commodityFooterBuy{
-  $h:98px;
-  height: pxTorem($h - 13);
-  padding-top: pxTorem(13px);
-  @include border1px(#ccc,top);
-  div{
-    @include font-dpr(32px);
-    margin:0 pxTorem(20px) 0;
-    text-align: center;
-    color: #fff;
-    height: pxTorem(70px);
-    line-height: pxTorem(70px);
-  }
-}
-// 已售
+
+// 已售.按钮
 .commodityFooterNot{
-  div{
-    background: #c6c6c6;
-  }
+  @import "components/btn";
+  @include one(div,#c6c6c6);
 }
-// 立即购买
+// 立即购买.按钮
 .commodityFooterBuy{
-  div{
-    background: $green-base;
-  }
+  @import "components/btn";
+  @include one(div);
 }
 // 加入购物车
 .commodityFooterCart{
