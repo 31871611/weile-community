@@ -1,0 +1,180 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+
+
+
+// 我的优惠券
+.userCoupon{
+  background: #f7f7f7;
+  .hint{
+    $h:54px;
+    height: pxTorem($h);
+    text-align: center;
+    margin-top:pxTorem(20px);
+    span{
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      display: inline-block;
+      background: #898989;
+      color: #fff;
+      @include font-dpr(28px);
+      padding:0 pxTorem(28px);
+      @include border-radius(pxTorem(24px));
+    }
+  }
+
+  .see{
+    $h:60px;
+    margin:pxTorem(20px) pxTorem(20px) pxTorem(50px);
+    border:1px solid #a9b2bb;
+    @include border-radius(pxTorem(6px));
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    text-align: center;
+    color: #6a757b;
+    @include font-dpr(24px);
+    background: #fff;
+  }
+}
+
+
+
+// 优惠券列表
+.userCouponList{
+  $h:172px;
+  margin:0 pxTorem(20px);
+  li{
+    margin-top: pxTorem(20px);
+    height: pxTorem($h);
+    @extend %icoRem;
+    background-size: 100% 100%;
+    background-image: url("../images/icon_coupon_big@2x.png");
+    @include display-flex();
+    position: relative;
+    // 不可用
+    &.disabled{
+      .not{
+        display: block;
+        position: absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        top:0;
+        background: rgba(0,0,0,.5);
+        color: #fff;
+        text-align: center;
+        @include font-dpr(24px);
+        @include display-flex();
+        @include align-items();
+        @include justify-content(center);
+      }
+    }
+    // 失效
+    &.invalid{
+
+    }
+  }
+  .not{
+    display: none;
+    div{
+
+    }
+    p{
+
+    }
+  }
+  .left{
+    width: 33%;
+  }
+  .right{
+    @include flex(1);
+    width: 100%;
+    padding-left:pxTorem(20px);
+  }
+  .Price{
+    display: block;
+    text-align: center;
+    @include font-dpr(54px);
+    color: #333;
+    margin:pxTorem(30px) 0 pxTorem(14px);
+    b{
+      font-weight: normal;
+      @include font-dpr(24px);
+    }
+  }
+  h3{
+    padding-top: pxTorem(28px);
+    @include font-dpr(26px);
+    color: #525254;
+  }
+  em{
+    margin-top:pxTorem(16px);
+    margin-bottom:pxTorem(12px);
+    display: block;
+    font-style: normal;
+    @include font-dpr(26px);
+    color: #926f07;
+  }
+  span{
+    &.txt{
+      display: block;
+      text-align: center;
+      color: #333;
+    }
+    &.overdue{
+      display: inline-block;
+      @include font-dpr(20px);
+      background: #ff5823;
+      color: #fff;
+      padding: 0 pxTorem(6px);
+      height: pxTorem(22px);
+      line-height: pxTorem(22px);
+    }
+    &.set{
+      display: block;
+      text-align: center;
+      width: pxTorem(162px);
+      height: pxTorem(44px);
+      line-height: pxTorem(44px);
+      color: #fff;
+      background: #e69a06;
+      @include border-radius(pxTorem(6px));
+      &.select{
+        background: #c1b59f;
+      }
+    }
+  }
+  i{
+
+    &.arrowR{
+      position: absolute;
+      right:pxTorem(42px - 20);
+      top:50%;
+      margin-top:pxTorem(-30px);
+      width: pxTorem(60px);
+      height: pxTorem(60px);
+      @include display-flex();
+      @include align-items();
+      @include justify-content(center);
+      &:after{
+        content: '\20';
+        display: block;
+        width: pxTorem(13px);
+        height: pxTorem(24px);
+        @extend %icoRem;
+        background-image: url("../images/icon_coupon_arrow@2x.png");
+      }
+    }
+  }
+}
+
+
+// 当前没有数据哦
+.notData{
+  @import "components/notData";
+  @include notData;
+}
+

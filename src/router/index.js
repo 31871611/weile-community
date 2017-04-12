@@ -65,6 +65,10 @@ export default new Router({
       path: '/userAddAddress',
       name: 'userAddAddress',
       component: resolve => require(['@/views/userAddress/addAddress'], resolve)
+    },{
+      path: '/userCoupon',
+      name: 'userCoupon',
+      component: resolve => require(['@/views/userCoupon/userCoupon'], resolve)
     }, {
       path: '*',
       component: Home
