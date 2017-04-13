@@ -50,6 +50,10 @@ export default new Router({
       name: 'login',
       component: resolve => require(['@/views/login/login'], resolve)
     },{
+      path: '/userHome',
+      name: 'userHome',
+      component: resolve => require(['@/views/userHome/userHome'], resolve)
+    },{
       path: '/userOrder',
       name: 'userOrder',
       component: resolve => require(['@/views/userOrder/userOrder'], resolve)
@@ -69,6 +73,10 @@ export default new Router({
       path: '/userCoupon',
       name: 'userCoupon',
       component: resolve => require(['@/views/userCoupon/userCoupon'], resolve)
+    },{
+      path: '/couponDetails',
+      name: 'couponDetails',
+      component: resolve => require(['@/views/userCoupon/couponDetails'], resolve)
     }, {
       path: '*',
       component: Home

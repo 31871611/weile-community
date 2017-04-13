@@ -1,0 +1,111 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+
+
+
+// 个人中心
+.userHome{
+  background: #f7f7f7;
+  .bg{
+    $imgW:105px;
+    $h:290px;
+    height: pxTorem($h);
+    background: #00bb9c;
+    @include display-flex();
+    @include align-items();
+    @include justify-content(center);
+    .center{
+      text-align: center;
+    }
+    .face{
+      width: pxTorem($imgW);
+      height: pxTorem($imgW);
+      margin: 0 auto pxTorem(26px);
+      @include border-radius(50%);
+      border:pxTorem(5px) solid #fff;
+    }
+    img{
+      @include border-radius(50%);
+      width: pxTorem($imgW);
+      height: pxTorem($imgW);
+      vertical-align: middle;
+    }
+    span{
+      color: #fff;
+      @include font-dpr(30px);
+    }
+  }
+
+  .address{
+    $h:99px;
+    height: pxTorem($h);
+    margin-bottom: pxTorem(20px);
+    @include display-flex();
+    @include align-items();
+    background: #fff;
+    padding:0 pxTorem(20px);
+    i{
+      display: block;
+      &.map{
+        width: pxTorem(26px);
+        height: pxTorem(33px);
+        @extend %icoRem;
+        background: $green-base;
+        margin-right: pxTorem(20px);
+      }
+      &.arrowR{
+        width: pxTorem(16px);
+        height: pxTorem(30px);
+        margin-left:pxTorem(20px);
+        @extend %icoRem;
+        background-image: url("../images/iconArrowR.png");
+      }
+    }
+    div{
+      @include flex(1);
+    }
+    strong{
+      display: block;
+      @include font-dpr(30px);
+      color: #3f4548;
+    }
+    span{
+      display: block;
+      @include font-dpr(24px);
+      color: #9c9fa1;
+    }
+  }
+
+  .list{
+    $h:160px;
+    @extend %clearfix;
+    background: #fff;
+    li{
+      width: 33.333%;
+      @include display-flex();
+      @include align-items();
+      @include justify-content(center);
+      height: pxTorem($h);
+      float: left;
+      &:active{
+        background: #dedede;
+      }
+    }
+    div{
+      text-align: center;
+    }
+    img{
+      width: 50%;
+      vertical-align: middle;
+    }
+    span{
+      margin-top:pxTorem(20px);
+      display: block;
+      color: #43515a;
+    }
+  }
+}
+
