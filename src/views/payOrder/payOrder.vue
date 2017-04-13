@@ -49,11 +49,20 @@
           <li>
             <i class="give"></i>
             <span>胡椒粉一瓶</span>
-            <strong>￥0.00</strong>
+            <strong>￥10.00</strong>
           </li>
           <li>
             <span>胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶</span>
-            <strong>￥0.00</strong>
+            <strong>￥10.00</strong>
+          </li>
+          <li>
+            <span>优惠方式二：满5件打5折</span>
+            <strong>-￥10.00</strong>
+          </li>
+          <li>
+            <span><b>5元优惠券</b></span>
+            <strong>-￥5.00</strong>
+            <i class="arrowR"></i>
           </li>
           <li>
             <span class="prompt">共计2件商品</span>
@@ -88,6 +97,21 @@
               <i></i>
             </li>
           </ul>
+        </div>
+
+
+        <!-- 订单可用优惠券弹窗 -->
+        <div class="availableCouponAlert">
+          <h2>订单可用优惠券弹窗</h2>
+          <ul>
+            <li>
+              <label for="">
+                <span>1元优惠券</span>
+                <input type="radio">
+              </label>
+            </li>
+          </ul>
+          <div class="btn">关闭</div>
         </div>
 
 

@@ -191,6 +191,15 @@
       display: block;
       margin-right: pxTorem(14px);
     }
+    // 箭头
+    &.arrowR{
+      margin-left:pxTorem(5px);
+      display: block;
+      width: pxTorem(16px);
+      height: pxTorem(30px);
+      @extend %icoRem;
+      background-image: url("../images/iconArrowR.png");
+    }
   }
   span{
     display: block;
@@ -200,12 +209,12 @@
       color: #999;
     }
   }
+  b{
+    color: $orange-base;
+    font-weight: normal;
+  }
   strong{
     margin-left: pxTorem(64px);
-    b{
-      color: $orange-base;
-      font-weight: normal;
-    }
   }
 }
 
@@ -265,3 +274,25 @@
   @import "components/btn";
   @include one(div);
 }
+
+
+// 订单可用优惠券弹窗
+.availableCouponAlert{
+  h2{}
+  ul{
+    li{}
+    label{}
+    span{}
+  }
+  .btn{
+    $h:93px;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    text-align: center;
+    background: $green-base;
+    color: #fff;
+    @include font-dpr(36px);
+  }
+}
+
+
