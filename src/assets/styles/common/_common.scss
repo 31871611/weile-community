@@ -60,7 +60,7 @@ $browser-default-font-size: 64px;
 
 
 // 1像素
-@mixin border1px($color,$type:bottom){
+@mixin border1px($color:#e6e6e6,$type:bottom){
   position: relative;
   &:after{
     content: '\20';

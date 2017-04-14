@@ -78,6 +78,31 @@
 
           </ul>
         </div>
+
+        <!-- 领取优惠券弹窗 -->
+        <div class="indexSetCouponAlert" style="display: none">
+          <div class="box">
+            <div class="bg"></div>
+            <div class="list">
+              <ul>
+                <li v-for="v in 5">
+                  <div class="left">
+                    <strong class="Price"><b>￥</b>100</strong>
+                  </div>
+                  <div class="right">
+                    <!--可用券-->
+                    <i class="steVoucher"></i>
+                    <span class="txt">订单满100元</span>
+                    <span class="txt">(不含运费)可用</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <p class="hint">优惠券已放入您的帐户，请在[我的]页面查看</p>
+            <i class="exit"></i>
+          </div>
+        </div>
+
       </div>
     </article>
     <footer>

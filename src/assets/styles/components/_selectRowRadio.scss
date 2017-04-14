@@ -1,0 +1,83 @@
+@charset "UTF-8";
+@import "../common/css3";
+@import "../common/common";
+
+
+
+/**
+
+        <ul class="userSelectAddress">
+          <li class="select">
+            <label>
+              <i class="map"></i>
+              <span>橘园创意广场</span>
+              <input type="radio" />
+            </label>
+          </li>
+          <li>
+            <label>
+              <i class="map"></i>
+              <span>橘园创意广场</span>
+              <input type="radio" />
+            </label>
+          </li>
+        </ul>
+
+
+*/
+
+// 选择某行---例：地址
+@mixin selectRowRadio($h:88px,$fontSize:30px,$display:none){
+  li{
+    @include border1px(#e6e6e6);
+    &:last-child{
+      &:after{
+        display: none;
+      }
+    }
+  }
+  label{
+    background: #fff;
+    padding:0 pxTorem(20px);
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    @include display-flex();
+    @include align-items();
+  }
+  i{
+
+    &.map{
+      margin-right:pxTorem(24px);
+      display: block;
+      width: pxTorem(23px);
+      height: pxTorem(28px);
+      @extend %icoRem;
+      background-image: url("../images/icon_activity_location@2x.png");
+    }
+  }
+  span{
+    display: block;
+    @include flex(1);
+    color: #43515a;
+    @include font-dpr($fontSize);
+  }
+  input[type='radio']{
+    display: $display;
+    $w:30px;
+    margin-left:pxTorem(24px);
+    //清除默认input格式
+    border:0;
+    @include appearance(none);
+    outline:none;
+    width: pxTorem($w);
+    height: pxTorem($w);
+    position: relative;
+    @extend %icoRem;
+    background-image: url("../images/icon_select_n@2x.png");
+    &:checked{
+      display: block;
+      background-image: url("../images/icon_select_p@2x.png");
+    }
+  }
+}
+

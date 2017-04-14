@@ -278,11 +278,24 @@
 
 // 订单可用优惠券弹窗
 .availableCouponAlert{
-  h2{}
+  background: #fff;
+  h2{
+    height: pxTorem(76px);
+    line-height: pxTorem(76px);
+    text-align: center;
+    @include font-dpr(30px);
+    color: #41525a;
+    @include border1px(#e6e6e6);
+  }
   ul{
-    li{}
-    label{}
-    span{}
+    @import "components/selectRowRadio";
+    @include selectRowRadio($h:70px,$fontSize:24px);
+    margin-bottom: pxTorem(38px);
+    li{
+      &:last-child{
+        @include border1px;
+      }
+    }
   }
   .btn{
     $h:93px;

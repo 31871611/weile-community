@@ -223,4 +223,88 @@
 }
 
 
-
+// 领取优惠券弹窗
+.indexSetCouponAlert{
+  position: fixed;
+  left:0;
+  top:0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  @include display-flex();
+  @include align-items();
+  @include justify-content(center);
+  //background: rgba(0,0,0,.5);
+  .box{
+    padding-bottom: pxTorem(30px);
+    width: pxTorem(540px);
+    background: #fff;
+    @include border-radius(pxTorem(6px));
+    position: relative;
+  }
+  .bg{
+    $h:197px;
+    height: pxTorem($h);
+    width: pxTorem(540px);
+    @extend %icoRem;
+    background-size:100% 100%;
+    background-image: url("../images/icon_coupon_panel_pic@2x.png");
+  }
+  .list{
+    margin: 0 auto;
+    width: pxTorem(446px);
+    max-height:pxTorem(360px);
+    overflow-y: auto;
+  }
+  ul{
+    @import "components/couponList";
+    @include couponList;
+    width: pxTorem(412px);
+    margin: 0 auto;
+    li{
+      background-image: url("../images/icon_coupon_small@2x.png");
+      height: pxTorem(128px);
+    }
+    span{
+      &.txt{
+        position: relative;
+      }
+    }
+  }
+  .hint{
+    margin-top: pxTorem(20px);
+    text-align: center;
+    @include font-dpr(20px);
+    color: #999;
+  }
+  i{
+    &.exit{
+      width: pxTorem(44px);
+      height: pxTorem(44px);
+      background: rgba(255,255,255,.5);
+      position: absolute;
+      right:pxTorem(-44px);
+      top:pxTorem(-64px);
+      @include border-radius(50%);
+      @include rotate(45deg);
+      &:after,&:before{
+        content: '\20';
+        background: #fff;
+        display: block;
+        position: absolute;
+        top:50%;
+        left:50%;
+      }
+      &:after{
+        width: 2px;
+        height: pxTorem(24px);
+        margin:pxTorem(-12px) 0 0 -1px;
+      }
+      &:before{
+        width: pxTorem(24px);
+        height: 2px;
+        margin:-1px 0 0 pxTorem(-12px);
+      }
+    }
+  }
+}

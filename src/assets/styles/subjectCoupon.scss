@@ -1,0 +1,24 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+
+
+
+
+// 专题优惠券
+.subject{
+  background: #f7f7f7;
+  .adPhoto{
+    img{
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
+}
+
+// 优惠券列表
+.subjectCouponList{
+  @import "components/couponList";
+  @include couponList;
+}

@@ -42,47 +42,8 @@
 
 
   .selectExitList{
-    background: #fff;
-    $h:88px;
-    li{
-      @include border1px(#e6e6e6);
-      height: pxTorem($h);
-      &:last-child{
-        &:after{
-          display: none;
-        }
-      }
-    }
-    label{
-      height: pxTorem($h);
-      @include display-flex();
-      @include align-items();
-      @include justify-content();
-      padding:0 pxTorem(20px);
-    }
-    span{
-      display: block;
-      height: pxTorem($h);
-      line-height: pxTorem($h);
-      @include font-dpr(28px);
-      color: #43515a;
-    }
-    input[type='radio']{
-      $w:30px;
-      display: block;
-      //清除默认input格式
-      border:0;
-      @include appearance(none);
-      outline:none;
-      width: pxTorem($w);
-      height: pxTorem($w);
-      position: relative;
-      @extend %icoRem;
-      background-image: url("../images/icon_select_n@2x.png");
-      &:checked{
-        background-image: url("../images/icon_select_p@2x.png");
-      }
-    }
+    @import "components/selectRowRadio";
+    @include selectRowRadio($display:block);
   }
 }
 

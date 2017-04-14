@@ -63,110 +63,31 @@
     }
   }
 
-  .setDefault{
+  .setDefault {
     margin-top: pxTorem(20px);
 
-    background: #fff;
-    $h:88px;
-    label{
-      height: pxTorem($h);
-      @include display-flex();
-      @include align-items();
-      @include justify-content();
-      padding:0 pxTorem(20px);
-    }
-    span{
-      display: block;
-      height: pxTorem($h);
-      line-height: pxTorem($h);
-      @include font-dpr(30px);
-      color: #43515a;
-    }
-    input[type='radio']{
-      $w:30px;
-      display: block;
-      //清除默认input格式
-      border:0;
-      @include appearance(none);
-      outline:none;
-      width: pxTorem($w);
-      height: pxTorem($w);
-      position: relative;
-      @extend %icoRem;
-      background-image: url("../images/icon_select_n@2x.png");
-      &:checked{
-        background-image: url("../images/icon_select_p@2x.png");
-      }
-    }
+    @import "components/selectRowRadio";
+    @include selectRowRadio($display:block);
   }
 }
 
 
 
-.userAddAddressBtn{
-  @import "components/btn";
-  @include one;
-}
-
 // 选择小区
 .userSelectAddress{
+  margin-top:pxTorem(20px);
   $h:88px;
   ul{
 
   }
-  padding-top:pxTorem(20px);
-  li{
-    @include border1px(#e6e6e6);
-    background: #fff;
-    &:last-child{
-      &:after{
-        display: none;
-      }
-    }
-    &.select{
-      input[type='radio']{
-        display: block;
-      }
-    }
-  }
-  label{
-    padding:0 pxTorem(20px);
-    height: pxTorem($h);
-    line-height: pxTorem($h);
-    @include display-flex();
-    @include align-items();
-  }
-  i{
-    margin-right:pxTorem(24px);
-    display: block;
-    width: pxTorem(23px);
-    height: pxTorem(28px);
-    @extend %icoRem;
-    background-image: url("../images/icon_activity_location@2x.png");
-  }
-  span{
-    display: block;
-    @include flex(1);
-    color: #43515a;
-    @include font-dpr(30px);
-  }
-  input[type='radio']{
-    display: none;
-    $w:30px;
-    margin-left:pxTorem(24px);
-    //清除默认input格式
-    border:0;
-    @include appearance(none);
-    outline:none;
-    width: pxTorem($w);
-    height: pxTorem($w);
-    position: relative;
-    @extend %icoRem;
-    background-image: url("../images/icon_select_n@2x.png");
-    &:checked{
-      background-image: url("../images/icon_select_p@2x.png");
-    }
-  }
+  @import "components/selectRowRadio";
+  @include selectRowRadio;
+
 }
 
 
+// 提交按钮
+.userAddAddressBtn{
+  @import "components/btn";
+  @include one;
+}

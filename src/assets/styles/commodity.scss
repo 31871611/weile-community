@@ -225,10 +225,9 @@
   }
 }
 
-
+// 优惠说明
 .commodityCue{
   background: #fff;
-  margin-bottom: pxTorem(20px);
   @include font-dpr(30px);
   color:#ff5823;
   overflow: hidden;
@@ -237,7 +236,52 @@
   padding:0 pxTorem(20px);
 }
 
+
+// 提示领取优惠券
+.commoditySetCoupon{
+  $h:88px;
+  height: pxTorem($h);
+  @include display-flex();
+  @include align-items();
+  padding:0 pxTorem(20px);
+  background: #fff;
+  @include border1px(#e6e6e6,top);
+
+  b{
+    text-align: center;
+    background: $orange-base;
+    display: block;
+    width: pxTorem(100px);
+    height: pxTorem(42px);
+    line-height: pxTorem(42px);
+    color: #fff;
+    @include font-dpr(24px);
+    margin-right: pxTorem(18px);
+    @include border-radius(pxTorem(6px));
+  }
+  span{
+    width: 100%;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    display: block;
+    @include flex(1);
+    color: #6a737a;
+    @include font-dpr(30px);
+    overflow: hidden;
+  }
+  i{
+    margin-left: pxTorem(18px);
+    display: block;
+    width: pxTorem(16px);
+    height: pxTorem(30px);
+    @extend %icoRem;
+    background-image: url("../images/iconArrowR.png");
+  }
+}
+
+// 图文详情
 .commodityContent{
+  margin-top: pxTorem(20px);
   h2{
     background: #fff;
     @include font-dpr(30px);
@@ -380,3 +424,21 @@
   }
 }
 
+// 领取优惠券弹窗
+.commoditySetCouponAlert{
+  background: #fff;
+  ul{
+    @import "components/couponList";
+    @include couponList;
+    padding-bottom: pxTorem(20px);
+  }
+  .btn{
+    $h:93px;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    text-align: center;
+    background: $green-base;
+    color: #fff;
+    @include font-dpr(36px);
+  }
+}

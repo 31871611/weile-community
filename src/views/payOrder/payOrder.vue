@@ -105,9 +105,21 @@
           <h2>订单可用优惠券弹窗</h2>
           <ul>
             <li>
-              <label for="">
+              <label for="a1">
                 <span>1元优惠券</span>
-                <input type="radio">
+                <input id="a1" type="radio" name="availableCoupon" />
+              </label>
+            </li>
+            <li>
+              <label for="a2">
+                <span>1元优惠券</span>
+                <input id="a2" type="radio" name="availableCoupon" />
+              </label>
+            </li>
+            <li>
+              <label for="a3">
+                <span>1元优惠券</span>
+                <input id="a3" type="radio" name="availableCoupon" />
               </label>
             </li>
           </ul>

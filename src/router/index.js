@@ -26,6 +26,10 @@ export default new Router({
       name: 'subject',
       component: resolve => require(['@/views/list/subject'], resolve)
     }, {
+      path: '/subjectCoupon',
+      name: 'subjectCoupon',
+      component: resolve => require(['@/views/list/subjectCoupon'], resolve)
+    }, {
       path: '/store',
       name: 'store',
       component: resolve => require(['@/views/store/store'], resolve)

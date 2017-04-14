@@ -2,6 +2,16 @@
 @import "../common/css3";
 @import "../common/common";
 
+
+
+/*
+
+      <div class="commodityFooterNot">
+        <span>已售罄</span>
+      </div>
+
+*/
+
 // 底部一个按钮
 @mixin one($label:span,$bg:$green-base){
   @include border1px(#c6c6c6,top);

@@ -29,14 +29,14 @@
         <ul class="userSelectAddress">
           <li class="select">
             <label>
-              <i></i>
+              <i class="map"></i>
               <span>橘园创意广场</span>
               <input type="radio" />
             </label>
           </li>
           <li class="select">
             <label>
-              <i></i>
+              <i class="map"></i>
               <span>橘园创意广场</span>
               <input type="radio" />
             </label>
