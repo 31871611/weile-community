@@ -6,17 +6,17 @@ import Home from '@/views/index/index'
 Vue.use(Router)
 
 export default new Router({
-  linkActiveClass:'select',
+  //linkActiveClass:'select',
   // mode: 'history',
   routes: [
     {
-      path: '/home',
+      path: '/',
       name: 'home',
       component: Home
     }, {
-      path: '/list',
-      name: 'list',
-      component: resolve => require(['@/views/list/list'], resolve)
+      path: '/community',
+      name: 'community',
+      component: resolve => require(['@/views/community/community'], resolve)
     }, {
       path: '/sale',
       name: 'sale',

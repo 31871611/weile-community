@@ -17,8 +17,8 @@ let wechatInfo = navigator.userAgent.match(/(MicroMessenger\/[\d\.]+)/i) || ['ot
 function encryptData(encryptType, data, session, key) {
   let result = {}
   let _d = {
-    encryptType: encryptType || 0,
-    data: data,
+    encryptType: encryptType,
+    data: data
   }
   switch (+_d.encryptType) {
     case 0:
@@ -77,7 +77,14 @@ fetch.interceptors.request.use(function(config) {
   let _d = config.data || {}
   let key = _d.key || HLXK_KEY
   let session = _d.session || HLXK_SESSION
-  let encryptType = _d.encryptType
+  let encryptType = config.encryptType || 0
+  /*
+  * encryptType : 0 明文, 1 AES加密
+  * _d :
+  * session ：
+  * key :
+  *
+  * */
   config.data = qs.stringify(encryptData(encryptType, _d, session, key))
   config.url = isProduction ? config.url : '/api' + config.url
   return config

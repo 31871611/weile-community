@@ -84,21 +84,18 @@
         </div>
         <div class="next del">去结算</div>
       </div>
-      <div class="appNav">
-        <router-link to="home" class="home">首页</router-link>
-        <router-link to="community" class="community">社区</router-link>
-        <router-link to="store" class="convenient">便利店</router-link>
-        <router-link to="shopping" class="shopping">购物车</router-link>
-        <router-link to="user" class="my">我的</router-link>
-      </div>
+      <app-nav :select-class="'shopping'"></app-nav>
     </footer>
   </div>
 
 </template>
 <script>
-
+import appNav from '../common/appNav.vue';
 export default {
-  name: 'shopping'
+  name: 'shopping',
+  components: {
+    appNav
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/shopping.scss"></style>

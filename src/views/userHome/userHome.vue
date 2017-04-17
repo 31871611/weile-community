@@ -54,14 +54,19 @@
         </ul>
       </div>
     </article>
-
+    <footer>
+      <app-nav :select-class="'userHome'"></app-nav>
+    </footer>
   </div>
 
 </template>
 <script>
-
+import appNav from '../common/appNav.vue';
 export default {
-  name: 'userHome'
+  name: 'userHome',
+  components: {
+    appNav
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userHome.scss"></style>

@@ -1,5 +1,5 @@
 <template>
-<div class="h">
+<div class="view">
 
   <div class="wrap">
     <article class="main">
@@ -10,7 +10,7 @@
           <i></i>
         </div>
 
-        <slider :items="sliderList" :width="750" :height="280" :speed="5000" :sync="true"></slider>
+        <slider :items="sliderList" :width="640" :height="240" :speed="5000" :sync="true"></slider>
 
         <div class="indexNav">
           <a href="" class="open">小区开门</a>
@@ -106,24 +106,38 @@
       </div>
     </article>
     <footer>
-      <div class="appNav">
-        <router-link to="/" class="home">首页</router-link>
-        <router-link to="a" class="community">社区</router-link>
-        <router-link to="store" class="convenient">便利店</router-link>
-        <router-link to="c" class="shopping">购物车</router-link>
-        <router-link to="d" class="my">我的</router-link>
-      </div>
+      <app-nav :select-class="'home'"></app-nav>
     </footer>
 
   </div>
 
-  <select-quarters v-if="isSelectQuarters" @back="goSelectQuarters" @select="selectCurrentQuarters"></select-quarters>
+  <!-- 小区列表 -->
+  <transition name="SlideRightLeft">
+    <div class="wrap fullPosition" v-if="isSelectQuarters">
+      <header>
+        <div class="header">
+          <h2>选择小区</h2>
+          <div class="left">
+            <div class="back" @click="goSelectQuarters(false)"></div>
+          </div>
+        </div>
+      </header>
+      <article class="main">
+        <div class="mainScroll selectQuarters">
+          <ul>
+            <li v-for="(list, index) in lists" @click="selectCurrentQuarters(lists[index])">{{list.name}}</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </transition>
 </div>
 
 </template>
 <script type="text/ecmascript-6">
-import selectQuarters from './selectQuarters.vue';
+import simplestorage from 'simplestorage.js'
 import slider from './slider.vue';
+import appNav from '../common/appNav.vue';
 
 export default {
   name: 'home',
@@ -133,22 +147,33 @@ export default {
         {src:'http://cms-bucket.nosdn.127.net/4b54654acfbb459f876b7127d448c5da20170407122527.jpeg?imageView&thumbnail=750y380&quality=45&type=webp&interlace=1&enlarge=1',href:'/home/'},
         {src:'http://img1.126.net/channel19/027392/750380_0405.jpg',href:'/home/'}
       ],
-      textCurrentQuarters:'锦艺测试小区',
-      isSelectQuarters:false,
-      categoryHomeLayoutList : null,
-      groupBuyList : null,
-      recommendList : null
+      textCurrentQuarters : '锦艺测试小区',   // 当前小区
+      isSelectQuarters : false,             // 是否显示切换小区
+      lists : null,                         // 小区列表
+      categoryHomeLayoutList : null,        // 活动专区
+      groupBuyList : null,                  // 团购商品
+      recommendList : null                  // 商品推荐
     }
   },
   mounted() {
-    let _this = this;
+    // 获取初始数据
+    this.init();
 
-    this.$http.post('/community/homePage', {
-        distributionCommunityId: 10
-      })
-      .then(function(res) {
-        // console.log(res)
-        let data = res.data || {}
+  },
+  methods: {
+    // 获取初始数据
+    init:function(id,callback){
+      let _this = this;
+      // 小区id
+      let distributionCommunityId = id || 1;
+      // 获取首页数据
+      this.$http.post('/community/homePage', {
+        "distributionCommunityId":distributionCommunityId
+      },{
+        "encryptType":0
+      }).then(function(res) {
+        //console.log(res)
+        let data = res.data || {};
         if (res.resultCode == 0) {
 
           // 活动专区
@@ -157,27 +182,58 @@ export default {
           _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           _this.recommendList = data.recommend.data;
-//          console.log(JSON.stringify(_this.recommendList));
-          console.log(data.categoryHomeLayoutList);
+          //console.log(JSON.stringify(_this.recommendList));
+          //console.log(data.categoryHomeLayoutList);
 
+          // 修改小区后
+          callback && callback();
         }
-      })
-      .catch(function(error) {
+      }).catch(function(error) {
         console.log(error)
       })
-  },
-  methods: {
-    goSelectQuarters:function(is){
-      // 显示
-      this.isSelectQuarters = is
     },
-    selectCurrentQuarters:function(txt){
-      this.textCurrentQuarters = txt;
+    // 是否显示小区列表
+    goSelectQuarters:function(is){
+      let _this = this;
+      if(is){
+        // 获取小区列表
+        this.$http.post('/community/getDistributionCommunityList', {
+        },{
+          "encryptType":1
+        }).then(function(res){
+          if(res.resultCode != 0){
+            alert('获取小区列表出错！');
+            return false;
+          }
+          _this.lists = res.data;
+          console.log(res.data);
+          //显示列表弹窗
+          _this.isSelectQuarters = is;
+        }).catch(function(error) {
+          console.log(error)
+        })
+      }else{
+        // 关闭列表弹窗
+        _this.isSelectQuarters = is;
+      }
+    },
+
+    selectCurrentQuarters:function(data){
+      let _this = this;
+      // 获取修改后小区信息
+      _this.init(data.id,function(){
+        // 修改当前小区文字
+        _this.textCurrentQuarters = data.name;
+        // 保存当前小区信息
+        simplestorage.set('HLXK_DISTRIBUTION', data);
+        // 关闭列表弹窗
+        _this.isSelectQuarters = false;
+      });
     }
   },
   components: {
-    selectQuarters,
-    slider
+    slider,
+    appNav
   }
 }
 </script>
