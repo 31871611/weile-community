@@ -59,7 +59,7 @@
               <div class="content">
                 <i class="activity">活动</i>
                 <i class="goIng">抢购中</i>
-                <router-link :to="{path:'commodity/' + list.commodityId}" class="photo">
+                <router-link :to="{path:'commodity/',query: { id: list.commodityId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
                 </router-link>
                 <h3>{{list.name}}</h3>
@@ -206,7 +206,7 @@ export default {
             return false;
           }
           _this.lists = res.data;
-          console.log(res.data);
+          //console.log(res.data);
           //显示列表弹窗
           _this.isSelectQuarters = is;
         }).catch(function(error) {
@@ -217,7 +217,7 @@ export default {
         _this.isSelectQuarters = is;
       }
     },
-
+    // 选择小区
     selectCurrentQuarters:function(data){
       let _this = this;
       // 获取修改后小区信息

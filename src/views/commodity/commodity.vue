@@ -48,11 +48,11 @@
         </div>
 
         <div class="commodityTitle">
-          <h1>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h1>
+          <h1>{{list.name}}</h1>
           <div class="info">
             <div class="left">
               <div class="priceNum">
-                <span class="price"><b>￥</b>21.00</span>
+                <span class="price"><b>￥</b>{{list.priceYuan}}</span>
                 <span class="repertory">(库存300件)</span>
               </div>
               <span class="originalCost">￥26.00</span>
@@ -163,23 +163,34 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import simplestorage from 'simplestorage.js'
+
 export default {
   name: 'commodity',
   data() {
     return {
+      list:''
     }
   },
   mounted() {
-//    this.$http.post('/community/homePage', {
-//        distributionCommunityId: 10
-//      }).then(function(res) {
-//        let data = res.data || {}
-//        if (res.resultCode == 0) {
-//
-//        }
-//      }).catch(function(error) {
-//        console.log(error)
-//      })
+    let _this = this;
+
+    this.$http.post('/community/getCommodityDetail', {
+      "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+      "commodityId": this.$route.query.id
+    },{
+      "encryptType":1
+    }).then(function(res) {
+      console.log(res.data);
+      if (res.resultCode != 0) {
+        return false;
+      }
+      _this.list = res.data
+      //console.log(JSON.stringify(res.data));
+
+    }).catch(function(error) {
+      console.log(error)
+    })
   },
   methods: {
 
