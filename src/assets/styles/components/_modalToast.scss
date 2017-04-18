@@ -1,0 +1,44 @@
+@charset "UTF-8";
+@import "../common/css3";
+@import "../common/common";
+
+
+// 黑色框简单提示
+.modalToast{
+  @include display-flex();
+  @include align-items();
+  @include justify-content(center);
+  position: fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  z-index: 100;
+  .box{
+    padding: pxTorem(15px);
+    @include border-radius(pxTorem(8px));
+    background: rgba(0, 0, 0, 0.7);
+    text-align:center;
+  }
+  i{
+    vertical-align: middle;
+    display: inline-block;
+    width: pxTorem(30px);
+    height: pxTorem(30px);
+    background: #f00;
+    // 成功
+    &.success{}
+    // 错误
+    &.error{}
+    // 警告
+    &.warning{}
+    // 通知
+    &.info{}
+  }
+  span{
+    display: block;
+    @include font-dpr(28px);
+    color:#fff;
+  }
+}
+

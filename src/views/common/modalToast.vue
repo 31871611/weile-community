@@ -1,0 +1,44 @@
+<template>
+
+  <div class="modalToast" v-if="is">
+    <div class="box">
+      <i :class="icon" v-show="icon"></i>
+      <span>{{txt}}</span>
+    </div>
+  </div>
+
+</template>
+<script>
+/*
+  icon：成功success、错误error、警告warning、通知info
+  time：显示秒数
+  <modal-toast :icon="'error'" :txt="'标题'" :time="10"></modal-toast>
+*/
+export default {
+  props:{
+    icon:String,
+    txt:{
+      type:String,
+      default:'提示文字'
+    },
+    time:{
+      type:Number,
+      default: 3
+    }
+  },
+  data(){
+    return{
+      is:true
+    }
+  },
+  mounted() {
+    let _this = this;
+
+    // 多少秒后关闭
+    setTimeout(function(){
+      _this.is = false;
+    },this.time * 1000)
+  }
+}
+</script>
+<style scoped lang="scss" src="../../assets/styles/components/_modalToast.scss"></style>
