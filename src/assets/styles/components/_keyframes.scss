@@ -35,8 +35,14 @@
   }
 }
 
+
 /*******************************************************************/
 
+
+/*
+  点击进入：v-enter-active、v-enter
+  点击退出：v-leave-active、v-leave
+*/
 // 左右滑动
 .SlideRightLeft-enter-active{
   @include animation(SlideRightToLeft 400ms);
@@ -44,6 +50,7 @@
 .SlideRightLeft-leave-active{
   @include animation(SlideLeftToRight 400ms);
 }
+
 //从右往左滑动显示
 @include keyframes(SlideRightToLeft){
   0%{
