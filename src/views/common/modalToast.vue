@@ -12,7 +12,8 @@
 /*
   icon：成功success、错误error、警告warning、通知info
   time：显示秒数
-  <modal-toast :icon="'error'" :txt="'标题'" :time="10"></modal-toast>
+  <modal-toast :icon="'error'" :txt="'标题'" :time="10" ref="modalToast"></modal-toast>
+  this.$refs.modalToast.is = true;
 */
 export default {
   props:{
@@ -28,7 +29,7 @@ export default {
   },
   data(){
     return{
-      is:true
+      is:false
     }
   },
   mounted() {
