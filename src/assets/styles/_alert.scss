@@ -1,0 +1,139 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+/*
+
+
+modalAlert、modal
+actionsheet上拉
+
+*/
+
+
+
+//结算弹窗确定取消
+.modalAlert{
+  @include display-flex();
+  @include align-items();
+  @include justify-content(center);
+  position: fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  top:0;
+  background: rgba(0,0,0,.3);
+  @include border-radius(pxTorem(4px));
+  z-index:100;
+
+  .box{
+    z-index:29;
+    background:#fff;
+    width:85%;
+    @include border-radius(pxTorem(4px));
+  }
+  .title{
+    padding-top: pxTorem(30px);
+    h2{
+      text-align: center;
+      @include font-dpr(32px);
+      color:#333;
+    }
+  }
+  .content{
+    $h:72px;
+    padding: pxTorem(20px) pxTorem(40px) pxTorem(30px);
+    border-bottom: 1px solid #ddd;
+    min-height: pxTorem($h);
+    p{
+      color:#999;
+      @include font-dpr(32px);
+      text-align: center;
+      line-height: pxTorem($h);
+    }
+  }
+  .btns{
+    $h:70px;
+    @include display-flex();
+    button{
+      background: #fff;
+      border:0;
+      padding:0;
+      display: block;
+      text-align: center;
+      height:pxTorem($h);
+      line-height:pxTorem($h);
+      width:100%;
+      @include flex(1);
+      color:#333;
+      @include font-dpr(30px);
+      &.cancel{
+        border-right:1px solid #dddddd;
+      }
+      &.confirm{
+        color: #26a2ff;
+      }
+    }
+  }
+}
+
+
+
+//用户中心-修改性别弹窗
+.alertUserSex{
+  z-index:27;
+  position: fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  .box{
+    background:#fff;
+    position: absolute;
+    left:0;
+    bottom: 0;
+    width:100%;
+    z-index:29;
+  }
+  h2{
+    @include font-dpr(32px);
+    margin-left:pxTorem(30px);
+    height:pxTorem(50px);
+    line-height:pxTorem(50px);
+    padding-top:pxTorem(10px);
+  }
+  ul{
+    li{
+      height:pxTorem(80px);
+      line-height:pxTorem(80px);
+      margin:0 pxTorem(30px);
+      @include font-dpr(28px);
+      &:nth-child(1){
+        border-bottom: 1px solid #cccccc;
+      }
+    }
+  }
+  .btn{
+    margin:0;
+    a{
+      height:pxTorem(90px);
+      line-height:pxTorem(90px);
+      border-top: 1px solid #cccccc;
+      color:#999999;
+      @include font-dpr(28px);
+    }
+    text-align:center;
+  }
+}
+
+
+//半透明遮罩
+.opacity{
+  z-index:28;
+  position: fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  background:rgba(0,0,0,.3);
+}
