@@ -10,7 +10,7 @@
 </template>
 <script>
 /*
-  icon：成功success、错误error、警告warning、通知info
+  icon：成功success、错误error、警告warning、通知info、加载中loading
   time：显示秒数
   <modal-toast :icon="'error'" :txt="'标题'" :time="10" ref="modalToast"></modal-toast>
   this.$refs.modalToast.is = true;
