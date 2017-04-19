@@ -2,17 +2,8 @@
 @import "common/css3";
 @import "common/common";
 
-/*
 
-
-modalAlert、modal
-actionsheet上拉
-
-*/
-
-
-
-//结算弹窗确定取消
+// 确定取消弹窗
 .modalAlert{
   @include display-flex();
   @include align-items();
@@ -78,51 +69,66 @@ actionsheet上拉
 }
 
 
+/*
 
-//用户中心-修改性别弹窗
-.alertUserSex{
-  z-index:27;
+  <div class="modalActionSheet">
+    <div class="box">
+      <h2>标题</h2>
+      <ul>
+        <li>列表</li>
+        <li>列表</li>
+        <li>列表</li>
+      </ul>
+      <div class="btn">
+        按钮
+      </div>
+    </div>
+  </div>
+
+*/
+
+// actionSheet上拉
+.modalActionSheet{
+  $h:78px;
+  $fontSize:32px;
+  z-index:100;
   position: fixed;
   left:0;
   top:0;
   bottom:0;
   right:0;
   .box{
-    background:#fff;
     position: absolute;
     left:0;
     bottom: 0;
     width:100%;
-    z-index:29;
+    z-index:101;
+    text-align: center;
+    background: #e0e0e0;
   }
   h2{
-    @include font-dpr(32px);
-    margin-left:pxTorem(30px);
-    height:pxTorem(50px);
-    line-height:pxTorem(50px);
-    padding-top:pxTorem(10px);
+    background:#fff;
+    @include font-dpr($fontSize);
+    height:pxTorem($h);
+    line-height:pxTorem($h);
   }
   ul{
+    margin-bottom: pxTorem(10px);
     li{
-      height:pxTorem(80px);
-      line-height:pxTorem(80px);
-      margin:0 pxTorem(30px);
-      @include font-dpr(28px);
-      &:nth-child(1){
-        border-bottom: 1px solid #cccccc;
-      }
+      background:#fff;
+      color: #333;
+      height:pxTorem($h);
+      line-height:pxTorem($h);
+      @include font-dpr($fontSize);
+      border-bottom: 1px solid #e0e0e0;
     }
   }
   .btn{
-    margin:0;
-    a{
-      height:pxTorem(90px);
-      line-height:pxTorem(90px);
-      border-top: 1px solid #cccccc;
-      color:#999999;
-      @include font-dpr(28px);
-    }
-    text-align:center;
+    color: #333;
+    height:pxTorem($h);
+    line-height:pxTorem($h);
+    @include font-dpr($fontSize);
+    background-color: #fff;
   }
 }
 
