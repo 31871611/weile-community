@@ -1,16 +1,16 @@
 <template>
 
-  <div class="modalAlert">
+  <div class="modalAlert" v-if="is">
     <div class="box">
-      <div class="title">
+      <div class="title" v-show="title">
         <h2>{{title}}</h2>
       </div>
       <div class="content">
         <p>{{content}}</p>
       </div>
       <div class="btns">
-        <button class="cancel" v-show="onCancel" @click="onCancel">取消</button>
-        <button class="confirm" @click="onOk">确定</button>
+        <button class="cancel" v-show="onCancel" @click="op(1)">取消</button>
+        <button class="confirm" @click="op(2)">确定</button>
       </div>
     </div>
   </div>
@@ -18,37 +18,54 @@
 </template>
 <script>
 /*
- http://cycgit.github.io/demo/alert/alert.js
+ <modal-alert ref="modalAlert"></modal-alert>
+ this.$refs.modalAlert.alert({
+    title: '你确定删除吗?',
+    content: '删除不可以恢复...',
+    onOk: function () {
+      alert('你刚点了确定!');
+    },
+    onCancel: function () {
+      alert('你刚点了取消!');
+    }
+  })
+ content：必选
+ onOk()：必选
 */
 export default {
   props:{
-    title:{
-      type:String,
-      default:'标题'
-    },
-    content:{
-      type:String,
-      default:'内容'
-    },
-    onCancel:{
-      type: Function,
-      required: false
-    },
-    onOk:{
-      type: Function,
-      required: false
-    }
+
   },
   data(){
     return{
-      is:false
+      is: false,
+      onCancel: false,
+      onOk: false,
+      title: false,
+      content: false
     }
   },
-  mounted() {
-    let _this = this;
+  created() {
+
   },
   methods:{
-
+    op(type){
+      this.is = false;
+      if(type == '1'){
+        if(this.onCancel) this.onCancel()
+      }else{
+        if(this.onOk) this.onOk()
+      }
+      this.onCancel = false;
+      this.onOk = false;
+    },
+    alert(setting){
+      this.title = setting.title ||  false;
+      this.content = setting.content || false;
+      this.onOk = setting.onOk || false;
+      this.onCancel = setting.onCancel || false;
+      this.is = true
+    }
   }
 }
 </script>
