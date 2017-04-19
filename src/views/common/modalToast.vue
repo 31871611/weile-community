@@ -11,7 +11,7 @@
 <script>
 /*
   icon：成功success、错误error、警告warning、通知info、加载中loading
-  time：显示秒数
+  time：显示秒数，0一直运行
   <modal-toast :icon="'error'" :txt="'标题'" :time="10" ref="modalToast"></modal-toast>
   this.$refs.modalToast.is = true;
 */
@@ -35,10 +35,13 @@ export default {
   mounted() {
     let _this = this;
 
-    // 多少秒后关闭
-    setTimeout(function(){
-      _this.is = false;
-    },this.time * 1000)
+    if(_this.time !== 0){
+      // 多少秒后关闭
+      setTimeout(function(){
+        _this.is = false;
+      },this.time * 1000)
+    }
+
   }
 }
 </script>
