@@ -9,9 +9,10 @@ import fetch from './utils/fetch'
 Vue.prototype.$http = fetch
 
 // register global utility filters.
-// Object.keys(filters).forEach(key => {
-//   Vue.filter(key, filters[key])
-// })
+import * as filters from './filters'
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 FastClick.attach(document.body)
 
