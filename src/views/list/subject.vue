@@ -63,7 +63,6 @@
       </div>
 
       <div class="floatShopping">
-        <i></i>
         <b>30</b>
       </div>
 

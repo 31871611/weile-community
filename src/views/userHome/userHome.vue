@@ -22,36 +22,125 @@
         </div>
         <ul class="list">
           <li>
-            <div>
-              <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
-              <span>我的话题</span>
-            </div>
+            <a href="">
+              <div>
+                <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
+                <span>我的话题</span>
+              </div>
+            </a>
           </li>
           <li>
-            <div>
-              <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
-              <span>我的活动</span>
-            </div>
+            <a href="">
+              <div>
+                <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
+                <span>我的活动</span>
+              </div>
+            </a>
           </li>
           <li>
-            <div>
-              <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
-              <span>我的报修</span>
-            </div>
+            <a href="">
+              <div>
+                <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
+                <span>我的报修</span>
+              </div>
+            </a>
           </li>
           <li>
-            <div>
-              <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
-              <span>我的投诉</span>
-            </div>
+            <a href="">
+              <div>
+                <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
+                <span>我的投诉</span>
+              </div>
+            </a>
           </li>
           <li>
-            <div>
-              <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
-              <span>我的硬件</span>
-            </div>
+            <a href="">
+              <div>
+                <img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">
+                <span>我的硬件</span>
+              </div>
+            </a>
           </li>
         </ul>
+
+        <ul class="linkList">
+          <li>
+            <a href="">
+              <i class="myrepair"></i>
+              <span>我的报修</span>
+              <em>有问题物业来办</em>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="paymentrecord"></i>
+              <span>缴费记录</span>
+              <em>生活缴费，轻松缴纳</em>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+        </ul>
+        <ul class="linkList">
+          <li>
+            <a href="">
+              <i class="myorder"></i>
+              <span>我的订单</span>
+              <em>社区购物，免费赠送</em>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="mygroupbuy"></i>
+              <span>我的团购</span>
+              <em>来团购，更优惠</em>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="mycoupon"></i>
+              <span>我的优惠券</span>
+              <em>优惠生活，天天购物</em>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+        </ul>
+        <ul class="linkList">
+          <li>
+            <a href="">
+              <i class="mytopic"></i>
+              <span>我的话题</span>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="myactivity"></i>
+              <span>我的活动</span>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+        </ul>
+        <ul class="linkList">
+          <li>
+            <a href="">
+              <i class="myaddress"></i>
+              <span>我的住址</span>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="myreceiptaddress"></i>
+              <span>我的收货地址</span>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+        </ul>
+
+
       </div>
     </article>
     <footer>

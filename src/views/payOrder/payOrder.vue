@@ -47,7 +47,7 @@
 
         <ul class="payOrderInfo">
           <li>
-            <i class="give"></i>
+            <i class="give">赠</i>
             <span>胡椒粉一瓶</span>
             <strong>￥10.00</strong>
           </li>

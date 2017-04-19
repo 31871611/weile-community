@@ -65,11 +65,12 @@
     }
     i{
       position: absolute;
-      right:pxTorem(-28px);
-      top:0;
+      right:pxTorem(-30px);
+      top:pxTorem(-4px);
       width: pxTorem(34px);
       height: pxTorem(70px);
-      background: #f00;
+      @extend %icoRem;
+      background-image: url("../images/icon_lightning@2x.png");
     }
   }
 
@@ -91,9 +92,10 @@
   }
   .iconClock{
     display: block;
-    width: pxTorem(36px);
-    height: pxTorem(40px);
-    background: #f00;
+    width: pxTorem(39px);
+    height: pxTorem(43px);
+    @extend %icoRem;
+    background-image: url("../images/icon_clock@2x.png");
   }
 
   .endTime{
@@ -121,11 +123,12 @@
     }
     i{
       position: absolute;
-      right:pxTorem(-28px);
-      top:0;
+      right:pxTorem(-30px);
+      top:pxTorem(-4px);
       width: pxTorem(34px);
       height: pxTorem(70px);
-      background: #f00;
+      @extend %icoRem;
+      background-image: url("../images/icon_lightning@2x.png");
     }
   }
 

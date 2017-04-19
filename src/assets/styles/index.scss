@@ -84,7 +84,7 @@
 
 .title{
   height: pxTorem(72px);
-  margin:0 pxTorem(20px);
+  padding:0 pxTorem(20px);
   @include display-flex();
   @include align-items(center);
   @include justify-content();
@@ -118,8 +118,11 @@
 }
 
 // 活动专区
-.categoryHomeLayoutList{
+.activityHomeLayoutList{
   margin-bottom: pxTorem(20px);
+  .title{
+    background: #fff;
+  }
   ul{
     @extend %clearfix;
     li{

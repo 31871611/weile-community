@@ -57,27 +57,19 @@
 
 
 .floatShopping{
-  $h:102px;
+  $h:144px;
   width: pxTorem($h);
-  height: pxTorem($h - 28);
-  padding-top:pxTorem(28px);
-  background: $green-base;
+  height: pxTorem($h);
   @include border-radius(100%);
   position: absolute;
   right:pxTorem(28px);
   bottom:pxTorem(88px + 24px);
-  i{
-    margin: 0 auto;
-    display: block;
-    width: pxTorem(43px);
-    height: pxTorem(42px);
-    background: #f00;
-    @extend %icoRem;
-  }
+  @extend %icoRem;
+  background-image: url("../images/icon_shoppingcart1@2x.png");
   b{
     position: absolute;
-    right:0;
-    top:0;
+    right:pxTorem(10px);
+    top:pxTorem(10px);
     color: #fff;
     background: $orange-base;
     @include font-dpr(20px);

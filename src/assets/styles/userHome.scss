@@ -85,14 +85,18 @@
     background: #fff;
     li{
       width: 33.333%;
-      @include display-flex();
-      @include align-items();
-      @include justify-content(center);
       height: pxTorem($h);
       float: left;
       &:active{
         background: #dedede;
       }
+    }
+    a{
+      width: 100%;
+      height: pxTorem($h);
+      @include display-flex();
+      @include align-items();
+      @include justify-content(center);
     }
     div{
       text-align: center;
@@ -107,5 +111,91 @@
       color: #43515a;
     }
   }
+
+  .linkList{
+    $h:88px;
+    margin-top: pxTorem(20px);
+    li{
+      height: pxTorem($h);
+      background: #fff;
+      @include border1px(#e6e6e6);
+      &:last-child{
+        &:after{
+          display: none;
+        }
+      }
+    }
+    a{
+      height: pxTorem($h);
+      display: block;
+      @include display-flex();
+      @include align-items();
+      padding:0 pxTorem(20px);
+    }
+    i{
+      display: block;
+      width: pxTorem(52px);
+      height: pxTorem(52px);
+      @extend %icoRem;
+      margin-right: pxTorem(20px);
+      // 我的报修
+      &.myrepair{
+        background-image: url("../images/icon_myrepair@2x.png");
+      }
+      // 缴费记录
+      &.paymentrecord{
+        background-image: url("../images/icon_paymentrecord@2x.png");
+      }
+      // 我的订单
+      &.myorder{
+        background-image: url("../images/icon_myorder@2x.png");
+      }
+      // 我的团购
+      &.mygroupbuy{
+        background-image: url("../images/icon_mygroupbuy@2x.png");
+      }
+      // 我的优惠券
+      &.mycoupon{
+        background-image: url("../images/icon_mine_coupon@2x.png");
+      }
+      // 我的话题
+      &.mytopic{
+        background-image: url("../images/icon_mine_topic@2x.png");
+      }
+      // 我的活动
+      &.myactivity{
+        background-image: url("../images/icon_mine_activity@2x.png");
+      }
+      // 我的住址
+      &.myaddress{
+        background-image: url("../images/icon_myaddress@2x.png");
+      }
+      // 我的收货地址
+      &.myreceiptaddress{
+        background-image: url("../images/icon_myreceiptaddress@2x.png");
+      }
+      // 箭头
+      &.arrowR{
+        width: pxTorem(16px);
+        height: pxTorem(30px);
+        margin-left:pxTorem(20px);
+        margin-right: 0;
+        background-image: url("../images/iconArrowR.png");
+      }
+    }
+    span{
+      display: block;
+      @include flex(1);
+      @include font-dpr(30px);
+      color: #43515a;
+    }
+    em{
+      display: block;
+      font-style: normal;
+      @include font-dpr(26px);
+      color: #999;
+    }
+  }
+
 }
 

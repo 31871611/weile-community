@@ -19,7 +19,20 @@
           <a href="" class="payment">生活缴费</a>
         </div>
 
-        <div class="categoryHomeLayoutList">
+        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
+          <div class="title">
+            <h2>活动专区</h2>
+          </div>
+          <ul>
+            <li v-for="list in activityHomeLayoutList">
+              <a href="">
+                <img :src="list.imageUrl" alt="">
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
           <ul>
             <li v-for="list in categoryHomeLayoutList">
               <a href="">
@@ -32,7 +45,6 @@
         <div class="groupBuy">
           <div class="title">
             <h2>团购</h2>
-            <a href="" class="more">更多<i></i></a>
           </div>
           <div class="scroll">
             <ul>
@@ -52,25 +64,29 @@
         <div class="recommend">
           <div class="title">
             <h2>推荐商品</h2>
-            <a href="" class="more">更多<i></i></a>
+            <router-link to="store" class="more">
+              更多<i></i>
+            </router-link>
           </div>
           <ul>
             <li v-for="list in recommendList">
               <div class="content">
-                <i class="activity">活动</i>
-                <i class="goIng">抢购中</i>
+                <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
+                <i class="goIng" v-if="list.isFlashSale == 1">抢购中</i>
                 <router-link :to="{path:'commodity/',query: { id: list.commodityId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
                 </router-link>
                 <h3>{{list.name}}</h3>
                 <div class="bottom">
                   <div class="price">
-                    <b>￥</b><strong>{{list.priceYuan}}</strong>
+                    <b>￥</b>
+                    <strong v-if="list.isFlashSale != 1">{{list.priceYuan | price}}</strong>
+                    <strong v-if="list.isFlashSale == 1">{{list.flashSalePrice | price}}</strong>
                   </div>
-                  <div class="go">
+                  <div class="go" v-if="list.isFlashSale == 1">
                     马上抢
                   </div>
-                  <div class="num">
+                  <div class="num" v-if="list.isFlashSale != 1">
                   </div>
                 </div>
               </div>
@@ -112,8 +128,8 @@
   </div>
 
   <!-- 小区列表 -->
-  <transition name="SlideRightLeft">
-    <div class="wrap fullPosition" v-if="isSelectQuarters">
+  <transition name="SlideRightLeft" v-if="isSelectQuarters">
+    <div class="wrap fullPosition">
       <header>
         <div class="header">
           <h2>选择小区</h2>
@@ -131,6 +147,8 @@
       </article>
     </div>
   </transition>
+
+
 </div>
 
 </template>
@@ -150,7 +168,8 @@ export default {
       textCurrentQuarters : '锦艺测试小区',   // 当前小区
       isSelectQuarters : false,             // 是否显示切换小区
       lists : null,                         // 小区列表
-      categoryHomeLayoutList : null,        // 活动专区
+      activityHomeLayoutList : null,        // 活动专区
+      categoryHomeLayoutList : null,        // 活动专区2.有的没有这个值
       groupBuyList : null,                  // 团购商品
       recommendList : null                  // 商品推荐
     }
@@ -158,7 +177,6 @@ export default {
   mounted() {
     // 获取初始数据
     this.init();
-
   },
   methods: {
     // 获取初始数据
@@ -176,14 +194,16 @@ export default {
         let data = res.data || {};
         if (res.resultCode == 0) {
 
+          // 活动专区...
+          _this.categoryHomeLayoutList = data.categoryHomeLayoutList
           // 活动专区
-          _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
+          _this.activityHomeLayoutList = data.activityHomeLayoutList;
           // 团购商品
           _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           _this.recommendList = data.recommend.data;
-          //console.log(JSON.stringify(_this.recommendList));
-          //console.log(data.categoryHomeLayoutList);
+          //console.log(JSON.stringify(data));
+          //console.log(typeof data.recommend.data[0].isFlashSale);
 
           // 修改小区后
           callback && callback();
@@ -238,3 +258,4 @@ export default {
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/index.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/_alert.scss"></style>
