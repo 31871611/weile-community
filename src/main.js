@@ -14,7 +14,7 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-FastClick.attach(document.body)
+//FastClick.attach(document.body)
 
 new Vue({
   el: '#app',
