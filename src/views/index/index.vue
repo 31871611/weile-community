@@ -219,7 +219,7 @@ export default {
           _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           _this.recommendList = data.recommend.data;
-          //console.log(JSON.stringify(data));
+          console.log(JSON.stringify(data));
           //console.log(JSON.stringify(_this.activityHomeLayoutList));
           console.log(_this.adLists);
 
