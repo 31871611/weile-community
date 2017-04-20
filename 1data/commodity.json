@@ -1,0 +1,57 @@
+{
+  "flashSalePrice": 0,
+  "nowTime": 1492679807134,
+  "categoryId": 500059,
+  "commodityId": 500145,
+  "activityId": 0,
+  "telephone": "0371-55372728",
+  "images": [
+    {
+      "img": "http://img.v89.com/group1/M04/07/90/rBAA11j1hB2AILCkAAL_pEYBetM754_1600*1071.jpg",
+      "video": "http://ugcdl.video.gtimg.com/flv/77/165/d0394rdg2wk.p712.1.mp4",
+      "info": "测试呀呀呀呀呀呀呀哎呀呀呀 测试呀呀呀呀呀呀呀哎呀呀呀 测试呀呀呀呀呀呀呀哎呀呀呀 测试呀呀呀呀呀呀呀哎呀呀呀 测试呀呀呀呀呀呀呀哎呀呀呀 测试呀呀呀呀呀呀呀哎呀呀呀 "
+    },
+    {
+      "img": "http://img.v89.com/group1/M05/07/90/rBAA11j1hFqAHJVZAADxXEn49Aw408_748*565.jpg",
+      "video": "",
+      "info": "测试呦呦有哟与哟育有  测试呦呦有哟与哟育有  v测试呦呦有哟与哟育有  测试呦呦有哟与哟育有  测试呦呦有哟与哟育有  "
+    }
+  ],
+  "activityType": 0,
+  "urls": [
+    "http://img.v89.com/group1/M03/07/90/rBAA11j1hA6Ae-iNAAJawbsRdYE517_1024*848_640x640!.jpg"
+  ],
+  "price": 10,
+  "unit": "千克",
+  "discountStr": "",
+  "communityType": "1",
+  "originalPrice": null,
+  "inventory": 87,
+  "brand": "",
+  "intruduction": "",
+  "manu": null,
+  "spec": "",
+  "amountLimit": 0,
+  "businessBeginTime": "00:00",
+  "businessEndTime": "24:00",
+  "isHouseUser": "0",
+  "priceYuan": 0.01,
+  "shopCarCount": 0,
+  "flashLimit": 0,
+  "amountAll": 0,
+  "isFlash": 0,
+  "groupBuy": false,
+  "shopCarPrice": 0,
+  "isNewUser": 1,
+  "totalShopCarCount": 0,
+  "totalShopCarPrice": 0,
+  "flashSaleInventory": 0,
+  "startTimeStr": "",
+  "flashPercent": 0,
+  "isNewUserGood": 0,
+  "name": "苹果",
+  "count": 13,
+  "endTime": 0,
+  "startTime": 0,
+  "status": 0
+}
