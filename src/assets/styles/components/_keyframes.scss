@@ -43,7 +43,7 @@
   点击进入Enter：v-enter -> v-enter-active
   点击退出Leave：v-leave -> v-leave-active
 */
-// 左右滑动.进入时先设置为x：100%，在变为0
+// 左右滑动.进入时先设置为x：100%，在修改为0
 .SlideRightLeft-enter-active, .SlideRightLeft-leave-active {
   transition: all 0.2s linear;
   transform:translate3d(0, 0, 0);
