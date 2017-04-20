@@ -51,7 +51,21 @@
 <script>
 
 export default {
-  name: 'subjectCoupon'
+  name: 'subjectCoupon',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/subjectCoupon.scss"></style>

@@ -13,7 +13,21 @@
 
 export default {
   name: 'appNav',
-  props:['selectClass']
+  props:['selectClass'],
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 

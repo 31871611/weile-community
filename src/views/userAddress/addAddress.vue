@@ -58,7 +58,21 @@
 <script>
 
 export default {
-  name: 'userAddAddress'
+  name: 'userAddAddress',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userAddAddress.scss"></style>

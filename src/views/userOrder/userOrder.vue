@@ -49,7 +49,21 @@
 <script>
 
 export default {
-  name: 'userOrder'
+  name: 'userOrder',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userOrder.scss"></style>

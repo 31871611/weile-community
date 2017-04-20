@@ -36,10 +36,16 @@
     @extend %icoRem;
   }
   .reduce{
-    background-image: url("../images/icon_minus_n@2x.png");
+    background-image: url("../images/icon_minus_p@2x.png");
+    &.select{
+      background-image: url("../images/icon_minus_n@2x.png");
+    }
   }
   .add{
-    background-image: url("../images/icon_homepage_add@2x.png");
+    background-image: url("../images/icon_store_add@2x.png");
+    &.select{
+      background-image: url("../images/icon_homepage_add@2x.png");
+    }
   }
 }
 

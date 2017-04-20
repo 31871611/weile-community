@@ -93,6 +93,17 @@
 import appNav from '../common/appNav.vue';
 export default {
   name: 'shopping',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
   components: {
     appNav
   }

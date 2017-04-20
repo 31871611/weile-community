@@ -95,7 +95,10 @@
     width: pxTorem($w);
     height: pxTorem($w);
     @extend %icoRem;
-    background-image: url("../images/icon_homepage_add@2x.png");
+    background-image: url("../images/icon_store_add@2x.png");
+    &.select{
+      background-image: url("../images/icon_homepage_add@2x.png");
+    }
   }
 }
 

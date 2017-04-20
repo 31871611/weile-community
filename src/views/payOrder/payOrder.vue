@@ -146,7 +146,21 @@
 <script>
 
 export default {
-  name: 'payOrder'
+  name: 'payOrder',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/payOrder.scss"></style>

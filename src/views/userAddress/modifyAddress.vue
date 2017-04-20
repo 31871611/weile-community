@@ -20,7 +20,21 @@
 <script>
 
 export default {
-  name: 'userModifyAddress'
+  name: 'userModifyAddress',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userModifyAddress.scss"></style>

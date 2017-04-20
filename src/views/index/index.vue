@@ -10,7 +10,7 @@
           <i></i>
         </div>
 
-        <slider :items="sliderList" :width="640" :height="240" :speed="5000" :sync="true"></slider>
+        <slider :items="adLists" :width="640" :height="240" :speed="5000" :sync="true"></slider>
 
         <div class="indexNav">
           <a href="" class="open">小区开门</a>
@@ -25,9 +25,18 @@
           </div>
           <ul>
             <li v-for="list in activityHomeLayoutList">
-              <a href="">
-                <img :src="list.imageUrl" alt="">
+              <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
+                <img :src="list.imageUrl" alt="自定义url">
               </a>
+              <router-link v-else-if="list.type == 3" to="/sale">
+                <img :src="list.imageUrl" alt="限时抢购">
+              </router-link>
+              <router-link v-else-if="list.type == 5" :to="{path:'subject',query: { id: list.link }}">
+                <img :src="list.imageUrl" alt="专题活动优惠券活动">
+              </router-link>
+              <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link }}">
+                <img :src="list.imageUrl" alt="商品详情">
+              </router-link>
             </li>
           </ul>
         </div>
@@ -73,10 +82,10 @@
               <div class="content">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
                 <i class="goIng" v-if="list.isFlashSale == 1">抢购中</i>
-                <router-link :to="{path:'commodity/',query: { id: list.commodityId }}" class="photo">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
                 </router-link>
-                <h3>{{list.name}}</h3>
+                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                 <div class="bottom">
                   <div class="price">
                     <b>￥</b>
@@ -128,8 +137,8 @@
   </div>
 
   <!-- 小区列表 -->
-  <transition name="SlideRightLeft" v-if="isSelectQuarters">
-    <div class="wrap fullPosition">
+  <transition name="SlideRightLeft">
+    <div class="wrap fullPosition" v-if="isSelectQuarters">
       <header>
         <div class="header">
           <h2>选择小区</h2>
@@ -141,7 +150,7 @@
       <article class="main">
         <div class="mainScroll selectQuarters">
           <ul>
-            <li v-for="(list, index) in lists" @click="selectCurrentQuarters(lists[index])">{{list.name}}</li>
+            <li v-for="(list, index) in quartersLists" @click="selectCurrentQuarters(list)">{{list.name}}</li>
           </ul>
         </div>
       </article>
@@ -162,14 +171,21 @@ export default {
   data() {
     return {
       sliderList:[
-        {src:'http://cms-bucket.nosdn.127.net/4b54654acfbb459f876b7127d448c5da20170407122527.jpeg?imageView&thumbnail=750y380&quality=45&type=webp&interlace=1&enlarge=1',href:'/home/'},
-        {src:'http://img1.126.net/channel19/027392/750380_0405.jpg',href:'/home/'}
+        {
+          image:'http://cms-bucket.nosdn.127.net/4b54654acfbb459f876b7127d448c5da20170407122527.jpeg?imageView&thumbnail=750y380&quality=45&type=webp&interlace=1&enlarge=1',
+          href:'/home/'
+        },
+        {
+          image:'http://img1.126.net/channel19/027392/750380_0405.jpg',
+          href:'/home/'
+        }
       ],
-      textCurrentQuarters : '锦艺测试小区',   // 当前小区
+      textCurrentQuarters : simplestorage.get('HLXK_DISTRIBUTION').name || '锦艺测试小区',   // 当前小区
       isSelectQuarters : false,             // 是否显示切换小区
-      lists : null,                         // 小区列表
+      adLists: '',                           // 广告
+      quartersLists : null,                 // 小区列表
       activityHomeLayoutList : null,        // 活动专区
-      categoryHomeLayoutList : null,        // 活动专区2.有的没有这个值
+      categoryHomeLayoutList : null,        // 活动专区2...
       groupBuyList : null,                  // 团购商品
       recommendList : null                  // 商品推荐
     }
@@ -183,7 +199,7 @@ export default {
     init:function(id,callback){
       let _this = this;
       // 小区id
-      let distributionCommunityId = id || 1;
+      let distributionCommunityId = id || simplestorage.get('HLXK_DISTRIBUTION').id;
       // 获取首页数据
       this.$http.post('/community/homePage', {
         "distributionCommunityId":distributionCommunityId
@@ -194,8 +210,9 @@ export default {
         let data = res.data || {};
         if (res.resultCode == 0) {
 
-          // 活动专区...
-          _this.categoryHomeLayoutList = data.categoryHomeLayoutList
+          _this.adLists = data.advInfos;
+          // 活动专区...有的没有这个数据？
+          _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
           // 活动专区
           _this.activityHomeLayoutList = data.activityHomeLayoutList;
           // 团购商品
@@ -203,7 +220,8 @@ export default {
           // 商品推荐
           _this.recommendList = data.recommend.data;
           //console.log(JSON.stringify(data));
-          //console.log(typeof data.recommend.data[0].isFlashSale);
+          //console.log(JSON.stringify(_this.activityHomeLayoutList));
+          console.log(_this.adLists);
 
           // 修改小区后
           callback && callback();
@@ -225,7 +243,7 @@ export default {
             alert('获取小区列表出错！');
             return false;
           }
-          _this.lists = res.data;
+          _this.quartersLists = res.data;
           //console.log(res.data);
           //显示列表弹窗
           _this.isSelectQuarters = is;
@@ -249,7 +267,12 @@ export default {
         // 关闭列表弹窗
         _this.isSelectQuarters = false;
       });
+    },
+    // 跳转到外部url
+    toLink:function(url){
+      location.href = url;
     }
+
   },
   components: {
     slider,

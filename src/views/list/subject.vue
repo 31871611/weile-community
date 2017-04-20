@@ -3,51 +3,32 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll subject">
-        <div class="adPhoto">
-          <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
+        <div class="adPhoto" v-for="(list,index) in lists.imageList">
+          <img :src="list.imageUrl" alt="">
         </div>
 
 
         <div class="subjectList">
 
           <ul>
-            <li>
+            <li v-for="(list,index) in lists.data">
               <div class="content">
-                <i class="activity">活动</i>
-                <i class="goIng">抢购中</i>
-                <router-link :to="{path:'commodity/' + 10}" class="photo">
-                  <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
+                <i class="activity" v-if="list.isActivity == 1">活动</i>
+                <i class="goIng" v-if="list.isFlashSale == 1">抢购中</i>
+                <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
+                  <img :src="list.url" alt="">
                 </router-link>
-                <h3>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
+                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                 <div class="bottom">
                   <div class="price">
-                    <b>￥</b><strong>110</strong>
+                    <b>￥</b>
+                    <strong v-if="list.isFlashSale != 1">{{list.priceYuan | price}}</strong>
+                    <strong v-if="list.isFlashSale == 1">{{list.flashSalePrice | price}}</strong>
                   </div>
-                  <div class="go">
+                  <div class="go" v-if="list.isFlashSale == 1">
                     马上抢
                   </div>
-                  <div class="num">
-                  </div>
-                </div>
-              </div>
-            </li>
-
-            <li v-for="list in 11">
-              <div class="content">
-                <i class="activity">活动</i>
-                <i class="goIng">抢购中</i>
-                <router-link :to="{path:'commodity/' + 10}" class="photo">
-                  <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-                </router-link>
-                <h3>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h3>
-                <div class="bottom">
-                  <div class="price">
-                    <b>￥</b><strong>110</strong>
-                  </div>
-                  <div class="go">
-                    马上抢
-                  </div>
-                  <div class="num">
+                  <div class="num" v-if="list.isFlashSale != 1">
                   </div>
                 </div>
               </div>
@@ -79,9 +60,44 @@
 
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
 
 export default {
-  name: 'subject'
+  name: 'subject',
+  data() {
+    return{
+      lists:''
+    }
+  },
+  mounted() {
+    let _this = this;
+    // 获取数据列表
+    this.$http.post('/community/getThematicCommodityPage', {
+      "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+      'thematicId':this.$route.query.id,
+      'pageIndex':1,
+      'pageSize':5
+    },{
+      "encryptType":1
+    }).then(function(res){
+      console.log(res);
+      if(res.resultCode != 0){
+        alert(res.msg);
+        return false;
+      }
+      _this.lists = res.data;
+      //console.log(JSON.stringify(_this.lists));
+
+    }).catch(function(error) {
+      console.log(error)
+    })
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/subject.scss"></style>

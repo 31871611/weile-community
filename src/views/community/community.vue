@@ -8,7 +8,21 @@
 <script>
 
 export default {
-  name: 'community'
+  name: 'community',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style></style>

@@ -74,8 +74,8 @@
   <div class="modalActionSheet">
     <div class="box">
       <h2>标题</h2>
-      <ul>
-        <li>列表</li>
+      <ul v-for="(index,list) in lists">
+        <li @click="">{{list}}</li>
         <li>列表</li>
         <li>列表</li>
       </ul>

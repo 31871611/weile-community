@@ -16,12 +16,19 @@
 export default {
   name: 'payResult',
   data() {
-    return {}
+    return{
+
+    }
   },
   mounted() {
 
   },
-  methods: {}
+  methods: {
+
+  },
+  components: {
+
+  }
 
 }
 </script>

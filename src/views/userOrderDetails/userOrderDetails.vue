@@ -88,7 +88,21 @@
 <script>
 
 export default {
-  name: 'userOrderDetails'
+  name: 'userOrderDetails',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userOrderDetails.scss"></style>

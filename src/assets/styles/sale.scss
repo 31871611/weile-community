@@ -8,13 +8,18 @@
 
 // 限时抢购
 .sale{
+  background: #f7f7f7;
   $h:176px;
   $infoH:42px;
+  ul{
+    //margin-top:pxTorem(20px);
+  }
   li{
+    background: #fff;
     height: pxTorem($h);
     @include border1px(#dddddd);
     padding:pxTorem(20px);
-    @include display-flex();
+    position: relative;
     &:last-child{
       &:after{
         display: none;
@@ -23,16 +28,17 @@
   }
   .photo{
     position: relative;
+    height: pxTorem($h);
+    @include display-flex();
+  }
+  img{
+    display: block;
     width: pxTorem($h);
     height: pxTorem($h);
-    margin-right:pxTorem(20px);
-    img{
-      width: pxTorem($h);
-      height: pxTorem($h);
-      vertical-align: middle;
-    }
+    vertical-align: middle;
   }
   .box{
+    margin-left:pxTorem(20px);
     position: relative;
     @include flex(1);
     height: 100%;
@@ -109,9 +115,5 @@
 
 
 
-// 当前没有数据哦
-.notData{
-  @import "components/notData";
-  @include notData;
-}
+
 

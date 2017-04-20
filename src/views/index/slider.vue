@@ -1,22 +1,12 @@
 <!-- slider 组件 for VUE 2.x -->
 <template>
   <div class="vue-only-slider">
-    <ul :style="{
-      width:`${scaleW}px`,
-      height:`${sliderHeight}px`
-    }">
-      <li v-for="(item,index) in itemsForDom" :key="index" :style="{
-        width:scaleW+'px',
-        transform:'translate3d('+index*scaleW+'px, 0, 0)'
-      }">
+    <ul :style="{width:`${scaleW}px`,height:`${sliderHeight}px`}">
+      <li v-for="(item,index) in itemsForDom" :key="index" :style="{width:scaleW+'px',transform:'translate3d('+index*scaleW+'px, 0, 0)'}">
       	<a v-if="item.href" :href="item.href">
-          <img :src="item.src" :style="{
-            height:`${sliderHeight}px`
-          }">
+          <img :src="item.image" :style="{height:`${sliderHeight}px`}">
         </a>
-        <img :src="item.src" v-else :style="{
-          height:`${sliderHeight}px`
-        }">
+        <img :src="item.image" v-else :style="{height:`${sliderHeight}px`}">
       </li>
     </ul>
     <div class="pagination" v-if="pagination">

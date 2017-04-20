@@ -44,30 +44,12 @@
   点击退出：v-leave-active、v-leave
 */
 // 左右滑动
-.SlideRightLeft-enter-active{
-  @include animation(SlideRightToLeft 400ms);
+.SlideRightLeft-enter-active, .SlideRightLeft-leave-active {
+  transition: all 0.2s linear;
+  transform:translate3d(0, 0, 0);
 }
-.SlideRightLeft-leave-active{
-  @include animation(SlideLeftToRight 400ms);
+.SlideRightLeft-enter, .SlideRightLeft-leave-active {
+  opacity: 0;
+  transform:translate3d(100%, 0, 0);
 }
-
-//从右往左滑动显示
-@include keyframes(SlideRightToLeft){
-  0%{
-    @include translate3D(100%,0,0);
-  }
-  100%{
-    @include translate3D(0,0,0);
-  }
-}
-//从左往右滑动显示
-@include keyframes(SlideLeftToRight){
-  0%{
-    @include translate3D(0,0,0);
-  }
-  100%{
-    @include translate3D(100%,0,0);
-  }
-}
-
 /***************************************************************************/

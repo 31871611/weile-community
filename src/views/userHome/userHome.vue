@@ -153,6 +153,17 @@
 import appNav from '../common/appNav.vue';
 export default {
   name: 'userHome',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
   components: {
     appNav
   }

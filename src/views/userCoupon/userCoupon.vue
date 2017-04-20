@@ -144,7 +144,21 @@
 <script>
 
 export default {
-  name: 'userCoupon'
+  name: 'userCoupon',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userCoupon.scss"></style>

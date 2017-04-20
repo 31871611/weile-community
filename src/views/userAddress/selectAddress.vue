@@ -14,7 +14,21 @@
 <script>
 
 export default {
-  name: 'userSelectAddress'
+  name: 'userSelectAddress',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userSelectAddress.scss"></style>

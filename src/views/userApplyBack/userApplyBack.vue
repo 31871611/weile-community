@@ -76,7 +76,21 @@
 <script>
 
 export default {
-  name: 'userApplyBack'
+  name: 'userApplyBack',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userApplyBack.scss"></style>

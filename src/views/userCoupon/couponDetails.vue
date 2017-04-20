@@ -83,7 +83,21 @@
 <script>
 
 export default {
-  name: 'couponDetails'
+  name: 'couponDetails',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
+  components: {
+
+  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/couponDetails.scss"></style>

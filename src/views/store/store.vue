@@ -141,6 +141,17 @@ import appNav from '../common/appNav.vue';
 
 export default {
   name: 'store',
+  data() {
+    return{
+
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+
+  },
   components: {
     appNav
   }
