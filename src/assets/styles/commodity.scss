@@ -295,15 +295,18 @@
     padding:0 pxTorem(20px);
   }
   .txt{
+    background: #fff;
+    padding:0 pxTorem(20px) pxTorem(20px);
     img{
       width: 100%;
       vertical-align: middle;
     }
     p{
       //line-height: 2em;
-      @include font-dpr(24px);
+      @include font-dpr(26px);
       color:#3f4548;
-      padding:pxTorem(20px);
+      padding-top: pxTorem(10px);
+      //padding:pxTorem(20px);
     }
   }
 }
