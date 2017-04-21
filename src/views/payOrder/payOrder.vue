@@ -71,33 +71,7 @@
         </ul>
 
 
-        <div class="payOrderSelectAddress">
-          <div class="payOrderTitle">
-            可配送地址
-          </div>
-          <ul>
-            <li>
-              <div><span class="name">姓名</span><span class="tel">130000000000</span></div>
-              <p>地址地址地址地址地址地址地址地址地址地址地址地址地址地址</p>
-              <i></i>
-            </li>
-            <li>
-              <div><span class="name">姓名</span><span class="tel">130000000000</span></div>
-              <p>地址地址地址地址地址地址地址地址地址地址地址地址地址地址</p>
-              <i></i>
-            </li>
-          </ul>
-          <div class="payOrderTitle">
-            不可配送地址
-          </div>
-          <ul>
-            <li class="select">
-              <div><span class="name">姓名</span><span class="tel">130000000000</span></div>
-              <p>地址地址地址地址地址地址地址地址地址地址地址地址地址地址</p>
-              <i></i>
-            </li>
-          </ul>
-        </div>
+
 
 
         <!-- 订单可用优惠券弹窗 -->
@@ -130,9 +104,6 @@
       </div>
     </article>
     <footer>
-      <div class="payOrderAddAddress">
-        <div>提交</div>
-      </div>
       <div class="footerCart">
         <div class="total">
           还需支付：<b>￥0.00</b>
