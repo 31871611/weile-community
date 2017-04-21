@@ -214,11 +214,12 @@ export default {
       _this.$refs.modalToast.is = true;
       // 提交
       if(this.path == '/userAddress/modify'){
+        // 防止手动修改url值
         if(_this.distributionCommunityId == _this.$route.query.communityId){
-
+          _this.distributionCommunityId = _this.$route.query.communityId
         }
         if(_this.addressId == _this.$route.query.addressId){
-
+          _this.addressId = _this.$route.query.addressId
         }
         // 修改地址
         _this.modify();
