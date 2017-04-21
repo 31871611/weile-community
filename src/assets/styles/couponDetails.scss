@@ -8,7 +8,7 @@
 
 // 优惠券详情
 .couponDetails{
-  background: #f7f7f7;
+  background: $bg-base;
 
   .userCouponList{
     @import "components/couponList";

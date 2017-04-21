@@ -8,7 +8,7 @@
 
 // 订单确认
 .payOrder{
-  background: #f7f7f7;
+  background: $bg-base;
 }
 
 .payOrderTitle{
@@ -232,55 +232,7 @@
 }
 
 
-// 确认订单-添加地址列表
-.payOrderSelectAddress{
-  ul{
-    background: #fff;
-  }
-  li{
-    position: relative;
-    @include border1px(#e6e6e6);
-    @include font-dpr(28px);
-    padding:pxTorem(16px) pxTorem(20px);
-    div{
-      color: #3f4548;
-    }
-    span{
-      line-height: pxTorem(50px);
-      display: inline-block;
-      &.name{
-        min-width: pxTorem(104px);
-      }
-      &.tel{}
-    }
-    p{
-      line-height: pxTorem(40px);
-      color: #6c7072;
-    }
-    i{
-      position: absolute;
-      right: pxTorem(20px);
-      top:0;
-      width: pxTorem(70px);
-      height: pxTorem(66px);
-      @extend %icoRem;
-      background-image: url("../images/icon_location_ attestation@2x.png");
-    }
-    //不可配送
-    &.select{
-      span,p{
-        color: #bbb;
-      }
-    }
-  }
-}
 
-
-// 确认订单-添加地址按钮
-.payOrderAddAddress{
-  @import "components/btn";
-  @include one(div);
-}
 
 
 // 订单可用优惠券弹窗

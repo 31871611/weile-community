@@ -8,7 +8,7 @@
 
 // 我的优惠券
 .userCoupon{
-  background: #f7f7f7;
+  background: $bg-base;
   .hint{
     $h:54px;
     height: pxTorem($h);

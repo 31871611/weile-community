@@ -6,33 +6,13 @@
 /*******************************************************************/
 
 //过渡.从下往上滑动
-.SlideTopBottom-enter-active{
-  @include animation(SlideBottomToTop 400ms);
+.SlideTopBottom-enter-active, .SlideTopBottom-leave-active {
+  @include transition(all 0.2s linear);
+  @include translate3D(0,0,0);
 }
-.SlideTopBottom-leave-active{
-  @include animation(SlideTopToBottom 400ms);
-}
-//从下往上滑动显示
-@include keyframes(SlideBottomToTop){
-  0%{
-    @include translate3D(0,100%,0);
-    @include opacity(50);
-  }
-  100%{
-    @include translate3D(0,0,0);
-    @include opacity(100);
-  }
-}
-//从上往下滑动显示
-@include keyframes(SlideTopToBottom){
-  0%{
-    @include translate3D(0,0,0);
-    @include opacity(100);
-  }
-  100%{
-    @include translate3D(0,100%,0);
-    @include opacity(50);
-  }
+.SlideTopBottom-enter, .SlideTopBottom-leave-active {
+  @include opacity(0);
+  @include translate3D(0,100%,0);
 }
 
 
@@ -45,11 +25,11 @@
 */
 // 左右滑动.进入时先设置为x：100%，在修改为0
 .SlideRightLeft-enter-active, .SlideRightLeft-leave-active {
-  transition: all 0.2s linear;
-  transform:translate3d(0, 0, 0);
+  @include transition(all 0.2s linear);
+  @include translate3D(0,0,0);
 }
 .SlideRightLeft-enter, .SlideRightLeft-leave-active {
-  opacity: 0;
-  transform:translate3d(100%, 0, 0);
+  //opacity: 0;
+  @include translate3D(100%,0,0);
 }
 /***************************************************************************/
