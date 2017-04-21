@@ -70,6 +70,10 @@ export default new Router({
       name: 'userApplyBack',
       component: resolve => require(['@/views/userApplyBack/userApplyBack'], resolve)
     },{
+      path: '/userAddress',
+      name: 'userAddress',
+      component: resolve => require(['@/views/userAddress/userAddress'], resolve)
+    },{
       path: '/userAddAddress',
       name: 'userAddAddress',
       component: resolve => require(['@/views/userAddress/addAddress'], resolve)
