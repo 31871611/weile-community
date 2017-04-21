@@ -4,6 +4,8 @@
 
 // 添加地址
 .userAddAddress{
+  $fontSize:30px;
+  $labelWidth:150px;
   background: $bg-base;
   padding-top: pxTorem(20px);
 
@@ -14,14 +16,20 @@
     @include border1px(#e6e6e6);
     padding:0 pxTorem(20px);
     @include display-flex();
+    @include font-dpr($fontSize);
+    color: #43515c;
+    label{
+      display: block;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      width: pxTorem($labelWidth);
+    }
     input{
       border: 0;
       @include flex(1);
       display: block;
       height: pxTorem($h);
       line-height: pxTorem($h);
-      @include font-dpr(30px);
-      color: #43515c;
     }
   }
 
@@ -34,40 +42,70 @@
     @include align-items();
     @include justify-content();
     padding:0 pxTorem(20px);
-    span{
+    @include font-dpr($fontSize);
+    color: #43515c;
+    label{
       display: block;
       height: pxTorem($h);
       line-height: pxTorem($h);
-      @include font-dpr(30px);
-      color: #999;
-      &.select{
-        color: #43515c;
-      }
+      width: pxTorem($labelWidth);
+    }
+    span{
+      @include flex(1);
+      display: block;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      //color: #999;
+      //&.select{
+        //color: #43515c;
+      //}
     }
     i{
       display: block;
       width: pxTorem(16px);
-      height: pxTorem(30px);
+      height: pxTorem($fontSize);
       @extend %icoRem;
       background-image: url("../images/iconArrowR.png");
     }
   }
 
   .detailedAddress{
+    $h:88px;
     background: #fff;
-    @include font-dpr(30px);
-    padding:pxTorem(27px) pxTorem(20px);
-    color: #999;
-    &.select{
-      color: #43515c;
+    min-height: pxTorem(150px);
+    padding:0 pxTorem(20px);
+    @include display-flex();
+    @include font-dpr($fontSize);
+    color: #43515c;
+    label{
+      display: block;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+      width: pxTorem($labelWidth);
+    }
+    //div{
+    //  @include flex(1);
+    //  padding:pxTorem(22px) pxTorem(20px);
+    //  color: #999;
+    //  &.select{
+    //    color: #43515c;
+    //  }
+    //}
+    textarea{
+      display: block;
+      @include flex(1);
+      padding:pxTorem(22px) 0 0;
+      @include appearance(none);
+      outline: none;
+      border: 0;
+      resize: none;
     }
   }
 
   .setDefault {
     margin-top: pxTorem(20px);
-
     @import "components/selectRowRadio";
-    @include selectRowRadio($display:block);
+    @include selectRowRadio($display:block,$label:i);
   }
 }
 
@@ -76,12 +114,19 @@
 // 选择小区
 .userSelectAddress{
   margin-top:pxTorem(20px);
+  background: $bg-base;
+  position: absolute;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+  z-index: 88;
   $h:88px;
   ul{
 
   }
   @import "components/selectRowRadio";
-  @include selectRowRadio;
+  @include selectRowRadio($label:i);
 
 }
 

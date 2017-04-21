@@ -21,7 +21,10 @@
     position: relative;
     @include border1px(#e6e6e6);
     @include font-dpr(28px);
-    padding:pxTorem(16px) pxTorem(20px);
+    a{
+      display: block;
+      padding:pxTorem(16px) pxTorem(20px);
+    }
     div{
       color: #3f4548;
     }
@@ -59,5 +62,5 @@
 // 确认订单-添加地址按钮
 .userAddressBtn{
   @import "components/btn";
-  @include one(div);
+  @include one(a);
 }
