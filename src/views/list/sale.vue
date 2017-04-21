@@ -14,7 +14,7 @@
                 </div>
                 <div class="bottom">
                   <div class="time" data-startTime="list.startTime" >
-                    距结束：<div>{{list.d}}天{{list.h}}:{{list.m}}:{{list.s}}</div>
+                    距结束：<div>{{list.time}}</div>
                   </div>
                   <div class="go" v-if="list.inventory > 0">马上抢</div>
                   <div class="go select" v-else>抢光了</div>
@@ -103,10 +103,7 @@ export default {
         if(m < 10) m = '0' + m;
         if(s < 10) s = '0' + s;
 
-        Vue.set(_this.lists[index],'d',d);
-        Vue.set(_this.lists[index],'h',h);
-        Vue.set(_this.lists[index],'m',m);
-        Vue.set(_this.lists[index],'s',s);
+        Vue.set(_this.lists[index],'time',d+'天'+h+':'+m+':'+s);
 
         time = setTimeout(getTime,1000);
 
