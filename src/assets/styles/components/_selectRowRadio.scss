@@ -27,7 +27,7 @@
 */
 
 // 选择某行---例：地址
-@mixin selectRowRadio($h:88px,$fontSize:30px,$display:none){
+@mixin selectRowRadio($h:88px,$fontSize:30px,$display:none,$label:input){
   li{
     @include border1px(#e6e6e6);
     &:last-child{
@@ -54,6 +54,22 @@
       @extend %icoRem;
       background-image: url("../images/icon_activity_location@2x.png");
     }
+
+    @if $label == i{
+      &.radio{
+        display: $display;
+        $w:30px;
+        margin-left:pxTorem(24px);
+        width: pxTorem($w);
+        height: pxTorem($w);
+        @extend %icoRem;
+        background-image: url("../images/icon_select_n@2x.png");
+        &.select{
+          display: block;
+          background-image: url("../images/icon_select_p@2x.png");
+        }
+      }
+    }
   }
   span{
     display: block;
@@ -61,22 +77,24 @@
     color: #43515a;
     @include font-dpr($fontSize);
   }
-  input[type='radio']{
-    display: $display;
-    $w:30px;
-    margin-left:pxTorem(24px);
-    //清除默认input格式
-    border:0;
-    @include appearance(none);
-    outline:none;
-    width: pxTorem($w);
-    height: pxTorem($w);
-    position: relative;
-    @extend %icoRem;
-    background-image: url("../images/icon_select_n@2x.png");
-    &:checked{
-      display: block;
-      background-image: url("../images/icon_select_p@2x.png");
+  @if  $label == input{
+    input[type='radio']{
+      display: $display;
+      $w:30px;
+      margin-left:pxTorem(24px);
+      //清除默认input格式
+      border:0;
+      @include appearance(none);
+      outline:none;
+      width: pxTorem($w);
+      height: pxTorem($w);
+      position: relative;
+      @extend %icoRem;
+      background-image: url("../images/icon_select_n@2x.png");
+      &:checked{
+        display: block;
+        background-image: url("../images/icon_select_p@2x.png");
+      }
     }
   }
 }

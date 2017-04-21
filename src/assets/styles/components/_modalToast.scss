@@ -15,7 +15,7 @@
   height:100%;
   z-index: 100;
   .box{
-    padding: pxTorem(15px);
+    padding: pxTorem(15px) pxTorem(25px);
     @include border-radius(pxTorem(8px));
     background: rgba(0, 0, 0, 0.7);
     text-align:center;
@@ -23,9 +23,8 @@
   i{
     vertical-align: middle;
     display: inline-block;
-    width: pxTorem(30px);
-    height: pxTorem(30px);
-    background: #f00;
+    //width: pxTorem(30px);
+    //height: pxTorem(30px);
     // 成功
     &.success{}
     // 错误
@@ -34,6 +33,18 @@
     &.warning{}
     // 通知
     &.info{}
+    // 加载中
+    &.loading{
+      height: pxTorem(40px);
+      width: pxTorem(40px);
+      border-radius: 100%;
+      display: inline-block;
+      margin: 10px;
+      border: 2px solid #fff;
+      border-bottom-color: transparent;
+      vertical-align: middle;
+      @include animation(rotate 0.75s 0 linear infinite);
+    }
   }
   span{
     display: block;
