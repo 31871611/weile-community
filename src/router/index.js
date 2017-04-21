@@ -72,11 +72,17 @@ export default new Router({
     },{
       path: '/userAddress',
       name: 'userAddress',
-      component: resolve => require(['@/views/userAddress/userAddress'], resolve)
-    },{
-      path: '/userAddAddress',
-      name: 'userAddAddress',
-      component: resolve => require(['@/views/userAddress/addAddress'], resolve)
+      component: resolve => require(['@/views/userAddress/userAddress'], resolve),
+      children:[
+        {
+          path: 'add',
+          component: resolve => require(['@/views/userAddress/addAddress'], resolve)
+        },
+        {
+          path: 'modify',
+          component: resolve => require(['@/views/userAddress/addAddress'], resolve)
+        }
+      ]
     },{
       path: '/userCoupon',
       name: 'userCoupon',
