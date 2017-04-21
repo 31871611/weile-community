@@ -93,7 +93,8 @@ export default {
       // 将数据传递到修改页面
       let data = _this.list[this.$route.query.index];
       //console.log(data);
-      _this.distributionCommunityId = this.$route.query.communityId;
+      _this.distributionCommunityId = data.communityId;
+      _this.addressId = data.addressId;
       _this.name = data.name;
       _this.mobile = data.mobile;
       _this.address = data.address;
@@ -165,7 +166,7 @@ export default {
       _this.isDefault ? _this.isDefault = 1 : _this.isDefault = 0;
       // 修改地址数据
       this.$http.post('/community/modifyReceiptAddress', {
-        'addressId':this.$route.query.addressId,
+        'addressId':_this.addressId,
         'name':_this.name,
         'mobile':_this.mobile,
         "distributionCommunityId": _this.distributionCommunityId,
@@ -189,12 +190,36 @@ export default {
     save:function(){
       let _this = this;
       // 验证
+      /**
+       用户名不能为空、乱码了？
+       手机号，不能为空、格式长度等
+       详细地址不能为空
 
+       修改地址：addressId对比？communityId对比
+     */
+      if(_this.name == ''){
+        alert('请输入收货人姓名');
+        return false;
+      }
+      if(_this.mobile == '' && _this.mobile.length != 11){
+        alert('请输入正确的手机号码');
+        return false;
+      }
+      if(_this.address == ''){
+        alert('请补充详细地址');
+        return false;
+      }
 
       // 显示加载中
       _this.$refs.modalToast.is = true;
       // 提交
       if(this.path == '/userAddress/modify'){
+        if(_this.distributionCommunityId == _this.$route.query.communityId){
+
+        }
+        if(_this.addressId == _this.$route.query.addressId){
+
+        }
         // 修改地址
         _this.modify();
       }else if(this.path == '/userAddress/add'){
