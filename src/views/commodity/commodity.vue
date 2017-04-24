@@ -109,7 +109,8 @@
                 <div class="right">
                   <h3>指定商品使用{{coupon.couponType}}</h3>
                   <em>{{coupon.effectiveTime}} - {{coupon.failureTime}}</em>
-                  <span class="set select">立即领取</span>
+                  <!-- getLimit领取数量限制，已领提示：亲~不可多领取哦！ -->
+                  <span class="set" :class="{'select':coupon.stock <= 0}" @click="getCoupon(coupon.couponId,coupon.getLimit)">立即领取</span>
                   <!--可用券-->
                   <i class="steVoucher"></i>
                   <!--箭头-->
@@ -185,11 +186,13 @@ export default {
     }).then(function(res) {
       //console.log(res.data);
       if (res.resultCode != 0) {
+        alert(res.msg);
         return false;
       }
       _this.list = res.data;
+      // 计算倒记时
       _this.computeTime(res.data.nowTime,res.data.startTime,res.data.endTime);
-      console.log(JSON.stringify(res.data));
+      //console.log(JSON.stringify(res.data));
 
     }).catch(function(error) {
       console.log(error)
@@ -204,10 +207,11 @@ export default {
     }).then(function(res) {
       //console.log(res.data);
       if (res.resultCode != 0) {
+        alert(res.msg);
         return false;
       }
       _this.couponList = res.data;
-      //console.log(_this.couponList);
+      console.log(JSON.stringify(_this.couponList));
 
     }).catch(function(error) {
       console.log(error)
@@ -260,6 +264,28 @@ export default {
         _this.countdown = d+'天'+h+':'+m+':'+s;
         //console.log(_this.countdown);
       },1000);
+    },
+    // 领取优惠券
+    getCoupon:function(id,limit){
+      alert(id + '|' + limit);
+
+      this.$http.post('/community/getStoreCouponToUser', {
+        "storeId": simplestorage.get('HLXK_DISTRIBUTION').id,
+        "couponId": id
+      },{
+        "encryptType":1
+      }).then(function(res) {
+        console.log(res);
+        if (res.resultCode != 0) {
+          alert(res.msg);
+          return false;
+        }
+        //_this.couponList = res.data;
+        //console.log(JSON.stringify(_this.couponList));
+
+      }).catch(function(error) {
+        console.log(error)
+      })
 
     }
   }
