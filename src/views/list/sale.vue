@@ -2,7 +2,7 @@
 
   <div class="wrap">
     <article class="main">
-      <div class="mainScroll sale" v-show="lists.length > 0">
+      <div class="mainScroll sale" v-if="!isData">
         <ul class="">
           <li v-for="(list,index) in lists">
             <router-link class="photo" :to="{path:'commodity',query: { id: list.goodsId }}">
@@ -16,8 +16,9 @@
                   <div class="time" data-startTime="list.startTime" >
                     距结束：<div>{{list.time}}</div>
                   </div>
-                  <div class="go" v-if="list.inventory > 0">马上抢</div>
-                  <div class="go select" v-else>抢光了</div>
+                  <!-- 当时时间 > 开始时间.抢购未开始 -->
+                  <div class="go" v-if="list.sysTime > list.startTime && list.inventory > 0">马上抢</div>
+                  <div class="go select" v-if="list.inventory <= 0">抢光了</div>
                 </div>
               </div>
             </router-link>
@@ -25,7 +26,9 @@
         </ul>
       </div>
 
-      <not-data></not-data>
+      <not-data v-if="isData"></not-data>
+
+      <loading ref="loading" :txt="'加载中'" :icon="'loading'" :time="0"></loading>
 
     </article>
   </div>
@@ -35,17 +38,21 @@
 import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue';
+import loading from '../common/modalToast.vue';
 
+let timer = [];
 
 export default {
   name: 'sale',
   data() {
     return{
-      lists:''
+      lists:'',
+      isData:false
     }
   },
   mounted() {
     let _this = this;
+    _this.$refs.loading.is = true;
     // 获取数据列表
     this.$http.post('/community/getFlashSaleGoodsList', {
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
@@ -59,8 +66,14 @@ export default {
         alert(res.msg);
         return false;
       }
+      // 显示加载中
+      _this.$refs.loading.is = false;
       _this.lists = res.data.flashSaleGoodsList;
-      //console.log(_this.lists);
+      // 无数据
+      if(_this.lists.length <= 0){
+        _this.isData = true;
+        return false;
+      }
       for(var i = 0;i < _this.lists.length;i++){
         _this.timer(i,_this.lists[i]);
       }
@@ -68,15 +81,20 @@ export default {
       console.log(error)
     })
   },
+  beforeDestroy:function(){
+    // 清除倒记时定时器
+    for(let i = 0;i < timer.length;i++){
+      clearInterval(timer[i]);
+    }
+
+  },
   methods: {
     timer:function(index,data){
       let _this = this;
-      var time;
-      getTime();
 
-
-      function getTime(){
+      timer[index] = setInterval(function(){
         // 现在时间大于活动结束时间
+        //console.log(data.startTime + '|' + data.endTime);
         if(data.startTime > data.endTime){
           console.log('活动已结束！');
           return false;
@@ -87,17 +105,17 @@ export default {
         data.sysTime = data.sysTime + 1000;
         // 剩余时间小于等于0
         if(surplus<=0){
-          clearInterval(time);
+          clearTimeout(timer[index]);
           console.log('活动已结束！');
           return false;
         }
         //console.log('剩余：'+surplus);
 
-        var ds = 60*60*24*1000,
-            d = parseInt(surplus/ds),
-            h = parseInt((surplus-d*ds)/(60*60*1000)),
-            m = parseInt((surplus - d*ds - h*3600*1000)/(60*1000)),
-            s = parseInt((surplus-d*ds-h*3600*1000-m*60*1000)/1000);
+        let ds = 60*60*24*1000,
+          d = parseInt(surplus/ds),
+          h = parseInt((surplus-d*ds)/(60*60*1000)),
+          m = parseInt((surplus - d*ds - h*3600*1000)/(60*1000)),
+          s = parseInt((surplus-d*ds-h*3600*1000-m*60*1000)/1000);
         //console.log(d + '天' + h + '小时' + m + '分' + s + '秒');
         if(h < 10) h = '0' + h;
         if(m < 10) m = '0' + m;
@@ -105,14 +123,13 @@ export default {
 
         Vue.set(_this.lists[index],'time',d+'天'+h+':'+m+':'+s);
 
-        time = setTimeout(getTime,1000);
-
-      }
+      },1000);
 
     }
   },
   components: {
-    notData
+    notData,
+    loading
   }
 }
 </script>
