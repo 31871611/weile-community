@@ -284,4 +284,5 @@ export default {
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/index.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/_selectQuarters.scss"></style>
 <style scoped lang="scss" src="../../assets/styles/_alert.scss"></style>
