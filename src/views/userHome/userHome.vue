@@ -91,12 +91,12 @@
         </ul>
         <ul class="linkList">
           <li>
-            <a href="">
+            <router-link to="userOrder">
               <i class="myorder"></i>
               <span>我的订单</span>
               <em>社区购物，免费赠送</em>
               <i class="arrowR"></i>
-            </a>
+            </router-link>
           </li>
           <li>
             <a href="">
@@ -107,12 +107,12 @@
             </a>
           </li>
           <li>
-            <a href="">
+            <router-link to="userCoupon">
               <i class="mycoupon"></i>
               <span>我的优惠券</span>
               <em>优惠生活，天天购物</em>
               <i class="arrowR"></i>
-            </a>
+            </router-link>
           </li>
         </ul>
         <ul class="linkList">
