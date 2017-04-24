@@ -142,6 +142,7 @@
 
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
 
 export default {
   name: 'userCoupon',
@@ -151,7 +152,25 @@ export default {
     }
   },
   mounted() {
+    let _this = this;
+    // 获取数据列表
+    this.$http.post('/community/getMyStoreCouponList', {
+      "communityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+      'status':0        //0：未使用，1：已失效
+    },{
+      "encryptType":1
+    }).then(function(res){
+      console.log(res);
+      if(res.resultCode != 0){
+        alert(res.msg);
+        return false;
+      }
+      _this.lists = res.data;
+      //console.log(JSON.stringify(_this.lists));
 
+    }).catch(function(error) {
+      console.log(error)
+    })
   },
   methods: {
 
