@@ -44,7 +44,9 @@
         </transition>
 
 
-        <modal-toast ref="modalToast" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+        <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+
+        <modal-toast ref="modalError" :txt="textError" :time="3"></modal-toast>
 
       </div>
     </article>
@@ -76,7 +78,8 @@ export default {
       address:'',                 //必
       isDefault:false,            //"1"表示是 “0”不设为默认地址
       isSelectQuarters:false,     //选择小区弹窗
-      quartersLists:''            //小区列表
+      quartersLists:'',           //小区列表
+      textError:''                //错误提示
     }
   },
   created() {
@@ -153,7 +156,7 @@ export default {
           alert(res.msg);
           return false;
         }
-        _this.$refs.modalToast.is = false;
+        _this.$refs.modalLoading.is = false;
         _this.$router.back();
       }).catch(function(error) {
         console.log(error)
@@ -180,7 +183,7 @@ export default {
           alert(res.msg);
           return false;
         }
-        _this.$refs.modalToast.is = false;
+        _this.$refs.modalLoading.is = false;
         _this.$router.back();
       }).catch(function(error) {
         console.log(error)
@@ -190,28 +193,24 @@ export default {
     save:function(){
       let _this = this;
       // 验证
-      /**
-       用户名不能为空、乱码了？
-       手机号，不能为空、格式长度等
-       详细地址不能为空
-
-       修改地址：addressId对比？communityId对比
-     */
       if(_this.name == ''){
-        alert('请输入收货人姓名');
+        _this.textError = '请输入收货人姓名';
+        _this.$refs.modalError.is = true;
         return false;
       }
-      if(_this.mobile == '' && _this.mobile.length != 11){
-        alert('请输入正确的手机号码');
+      if(_this.mobile == '' || _this.mobile.length != 11 || !/^(13|14|15|17|18)\d{9}$/.test(_this.mobile)){
+        _this.textError = '请输入正确的手机号码';
+        _this.$refs.modalError.is = true;
         return false;
       }
       if(_this.address == ''){
-        alert('请补充详细地址');
+        _this.textError = '请补充详细地址';
+        _this.$refs.modalError.is = true;
         return false;
       }
 
       // 显示加载中
-      _this.$refs.modalToast.is = true;
+      _this.$refs.modalLoading.is = true;
       // 提交
       if(this.path == '/userAddress/modify'){
         // 防止手动修改url值
