@@ -53,8 +53,9 @@
     text-align: center;
     margin-right: pxTorem(45px);
     p{
-      margin-bottom: pxTorem(10px);
+      margin-bottom: pxTorem(6px);
       color: #007e34;
+      @include font-dpr(26px);
     }
     .start{
       width: pxTorem(226px);
@@ -111,8 +112,9 @@
     text-align: center;
     margin-right: pxTorem(45px);
     p{
-      margin-bottom: pxTorem(10px);
+      margin-bottom: pxTorem(6px);
       color: #fdfa19;
+      @include font-dpr(26px);
     }
     .start{
       width: pxTorem(226px);
@@ -186,6 +188,7 @@
     line-height: pxTorem($infoH + 2);
     color:#9c9fa1;
     @include font-dpr(24px);
+    text-decoration:line-through;
   }
   // 库存
   .repertory{
@@ -237,6 +240,7 @@
   height: pxTorem(87px);
   line-height: pxTorem(87px);
   padding:0 pxTorem(20px);
+  @include border1px(#e6e6e6);
 }
 
 
@@ -248,7 +252,6 @@
   @include align-items();
   padding:0 pxTorem(20px);
   background: #fff;
-  @include border1px(#e6e6e6,top);
 
   b{
     text-align: center;
@@ -432,10 +435,17 @@
 
 // 领取优惠券弹窗
 .commoditySetCouponAlert{
+  width: 100%;
+  position: absolute;
+  left:0;
+  bottom:0;
   background: #fff;
+  z-index: 90;
   ul{
     @import "components/couponList";
     @include couponList;
+    max-height: pxTorem((172px + 20) * 3);
+    overflow-y: auto;
     padding-bottom: pxTorem(20px);
   }
   .btn{

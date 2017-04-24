@@ -59,7 +59,7 @@ footer{
 /****************************************************/
 
 // 引入头部
-@import "components/header";
+//@import "components/header";
 
 // 首页底部导航
 @import "components/appNav";
@@ -89,12 +89,24 @@ footer{
   bottom:0;
 }
 
+//半透明遮罩
+.opacity{
+  z-index:88;
+  position: fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  background:rgba(0,0,0,.3);
+}
+
 
 /*
 
-  透明      99
+  透明      88
   提示弹窗  100
-  提示弹窗  88
+  浮动弹窗  90
   浮动购物车
 
 */
+

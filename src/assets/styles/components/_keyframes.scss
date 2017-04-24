@@ -6,11 +6,11 @@
 /*******************************************************************/
 
 //过渡.从下往上滑动
-.SlideTopBottom-enter-active, .SlideTopBottom-leave-active {
+.SlideBottomTop-enter-active, .SlideBottomTop-leave-active {
   @include transition(all 0.2s linear);
   @include translate3D(0,0,0);
 }
-.SlideTopBottom-enter, .SlideTopBottom-leave-active {
+.SlideBottomTop-enter, .SlideBottomTop-leave-active {
   @include opacity(0);
   @include translate3D(0,100%,0);
 }
