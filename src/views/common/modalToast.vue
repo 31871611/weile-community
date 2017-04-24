@@ -32,13 +32,15 @@ export default {
       is:false
     }
   },
-  mounted() {
+  beforeUpdate() {
     let _this = this;
+    let t = null;
 
     if(_this.time !== 0){
       // 多少秒后关闭
-      setTimeout(function(){
+      t = setTimeout(function(){
         _this.is = false;
+        clearTimeout(t);
       },this.time * 1000)
     }
 
