@@ -58,13 +58,13 @@
           <div class="scroll">
             <ul>
               <li v-for="list in groupBuyList">
-                <a href="">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId }}">
                   <img :src="list.url" alt="">
                   <h3>{{list.name}}</h3>
                   <div class="price">
                     <b>￥</b><strong>{{list.priceYuan}}</strong>
                   </div>
-                </a>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -73,15 +73,13 @@
         <div class="recommend">
           <div class="title">
             <h2>推荐商品</h2>
-            <router-link to="store" class="more">
-              更多<i></i>
-            </router-link>
+            <router-link to="store" class="more">更多<i></i></router-link>
           </div>
           <ul>
             <li v-for="list in recommendList">
               <div class="content">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
-                <i class="goIng" v-if="list.isFlashSale == 1">抢购中</i>
+                <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
                 <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
                 </router-link>
@@ -89,13 +87,18 @@
                 <div class="bottom">
                   <div class="price">
                     <b>￥</b>
-                    <strong v-if="list.isFlashSale != 1">{{list.priceYuan | price}}</strong>
-                    <strong v-if="list.isFlashSale == 1">{{list.flashSalePrice | price}}</strong>
+                    <!--
+                      flashSaleStatus，为0时显示价格，剩下显示抢购价格
+                      会不会出现flashSaleStatus为""，isFlashSale为1的状态
+                      isFlashSale，为""时显示价格，1时显示抢购价格
+                    -->
+                    <strong v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}</strong>
+                    <strong v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}</strong>
                   </div>
                   <div class="go" v-if="list.isFlashSale == 1">
                     马上抢
                   </div>
-                  <div class="num" v-if="list.isFlashSale != 1">
+                  <div class="num" v-if="list.isFlashSale != 1 && list.inventory > 0">
                   </div>
                 </div>
               </div>
@@ -219,9 +222,9 @@ export default {
           _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           _this.recommendList = data.recommend.data;
-          console.log(JSON.stringify(data));
+          console.log(JSON.stringify(_this.recommendList));
           //console.log(JSON.stringify(_this.activityHomeLayoutList));
-          console.log(_this.adLists);
+          //console.log(_this.adLists);
 
           // 修改小区后
           callback && callback();
