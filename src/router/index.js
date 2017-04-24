@@ -1,11 +1,12 @@
 // require.ensure 是 Webpack 的特殊语法, 用来设置 code-split point
 import Vue from 'vue'
+import simplestorage from 'simplestorage.js'
 import Router from 'vue-router'
 import Home from '@/views/index/index'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   //linkActiveClass:'select',
   // mode: 'history',
   routes: [
@@ -13,6 +14,10 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    }, {
+      path: '/selectQuarters',
+      name: 'selectQuarters',
+      component: resolve => require(['@/views/index/selectQuarters'], resolve)
     }, {
       path: '/community',
       name: 'community',
@@ -97,3 +102,36 @@ export default new Router({
     }
   ]
 })
+
+/**
+
+  最少要有游客的session
+  还需要小区信息
+
+  是否登录
+
+**/
+router.beforeEach((to, from, next) => {
+  //console.log(to);
+  console.log(simplestorage.get('HLXK_SESSION'));
+  console.log(localStorage.getItem('simpleStorage'));
+  if(localStorage.getItem('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
+
+
+
+
+
+    //if(to.meta.requireAuth){
+    //
+    //}else{
+    //  next()
+    //}
+    next();
+  }else{
+    // 去选择小区
+    console.log('去选择小区');
+    next({ path: '/selectQuarters' });
+  }
+})
+
+export default router;
