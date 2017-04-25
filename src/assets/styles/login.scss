@@ -31,9 +31,17 @@
       margin-left: pxTorem(14px);
       margin-right: pxTorem(28px);
       display: block;
-      width: pxTorem(20px);
-      height: pxTorem(20px);
-      background: #f00;
+      @extend %icoRem;
+      &.tel{
+        width: pxTorem(26px);
+        height: pxTorem(34px);
+        background-image: url("../images/icon_login_phone@2x.png");
+      }
+      &.password{
+        width: pxTorem(30px);
+        height: pxTorem(34px);
+        background-image: url("../images/icon_login_password@2x.png");
+      }
     }
     input{
       display: block;
