@@ -1,11 +1,11 @@
 import { VERSION } from './config'
-import cryptoUtils from './cryptoUtils'
 import Promise from 'es6-promise'
 Promise.polyfill()
 import axios from 'axios'
 import qs from 'qs'
 import Fingerprint from 'fingerprintjs'
 import simplestorage from 'simplestorage.js'
+import cryptoUtils from './cryptoUtils'
 
 let isProduction = process.env.NODE_ENV === 'production'
 
@@ -75,8 +75,8 @@ const fetch = axios.create({
 // request interceptor
 fetch.interceptors.request.use(function(config) {
   let _d = config.data || {}
-  let key = _d.key || HLXK_KEY
-  let session = _d.session || HLXK_SESSION
+  let key = _d.key || simplestorage.get('HLXK_KEY')
+  let session = _d.session || simplestorage.get('HLXK_SESSION')
   let encryptType = config.encryptType || 0
   /*
   * encryptType : 0 明文, 1 AES加密
@@ -95,7 +95,7 @@ fetch.interceptors.request.use(function(config) {
 // response interceptor
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
-  let key = _d.key || HLXK_KEY
+  let key = _d.key || simplestorage.get('HLXK_KEY')
   return decryptData(response.data, key)
 }, function(error) {
   return Promise.reject(error)
