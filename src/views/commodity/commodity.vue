@@ -101,21 +101,23 @@
           <div class="commoditySetCouponAlert" v-show="isCouponList">
             <ul>
               <li v-for="(coupon,index) in couponList">
-                <div class="left">
-                  <strong class="Price"><b>￥</b>{{coupon.faceValue / 1000}}</strong>
-                  <span class="txt">订单满{{coupon.orderMoney / 1000}}元</span>
-                  <span class="txt">(不含运费)可用</span>
-                </div>
-                <div class="right">
-                  <h3>指定商品使用{{coupon.couponType}}</h3>
-                  <em>{{coupon.effectiveTime}} - {{coupon.failureTime}}</em>
-                  <!-- getLimit领取数量限制，已领提示：亲~不可多领取哦！ -->
-                  <span class="set" :class="{'select':coupon.stock <= 0}" @click="getCoupon(coupon.couponId,coupon.getLimit)">立即领取</span>
-                  <!--可用券-->
-                  <i class="steVoucher"></i>
-                  <!--箭头-->
-                  <i class="arrowR"></i>
-                </div>
+                <a href="http://www.baidu.com">
+                  <div class="left">
+                    <strong class="Price"><b>￥</b>{{coupon.faceValue / 1000}}</strong>
+                    <span class="txt">订单满{{coupon.orderMoney / 1000}}元</span>
+                    <span class="txt">(不含运费)可用</span>
+                  </div>
+                  <div class="right">
+                    <h3>指定商品使用{{coupon.couponType}}</h3>
+                    <em>{{coupon.effectiveTime}} - {{coupon.failureTime}}</em>
+                    <!-- getLimit领取数量限制，已领提示：亲~不可多领取哦！ -->
+                    <span class="set" :class="{'select':coupon.stock <= 0}" @click.stop.prevent="getCoupon(coupon.couponId,coupon.getLimit)">立即领取</span>
+                    <!--可用券-->
+                    <i class="steVoucher"></i>
+                    <!--箭头-->
+                    <i class="arrowR"></i>
+                  </div>
+                </a>
               </li>
             </ul>
             <div class="btn" @click="couponListAlert">
