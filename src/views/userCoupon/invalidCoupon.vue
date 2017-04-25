@@ -2,12 +2,12 @@
 
   <div class="wrap">
     <article class="main">
-      <div class="mainScroll userCoupon" v-if="is">
+      <div class="mainScroll userCoupon">
         <div class="hint"><span>您有{{failNum}}张优惠券即将过期</span></div>
 
         <ul class="userCouponList">
           <li v-for="list in lists">
-            <router-link :to="{path:'couponDetails',query:{id:list.couponId}}">
+            <a href="">
               <div class="left">
                 <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
                 <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
@@ -22,7 +22,7 @@
                 <!--箭头-->
                 <i class="arrowR"></i>
               </div>
-            </router-link>
+            </a>
             <div class="not">
               当前小区不可用
               点击切换
@@ -114,12 +114,12 @@
 
         </ul>
 
-        <router-link to="invalidCoupon" class="see">
+        <div class="see">
           查看已失效的券
-        </router-link>
+        </div>
       </div>
 
-      <div class="notData" v-if="isNotData">
+      <div class="notData" style="display: none">
         <div class="box">
           <i></i>
           <span>当前没有数据哦~</span>
@@ -140,8 +140,6 @@ export default {
   name: 'userCoupon',
   data() {
     return{
-      is:false,
-      isNotData:false,
       failNum:'',            // 即将过期数量
       lists:''               // 未使用优惠券
     }
@@ -167,14 +165,6 @@ export default {
       console.log(JSON.stringify(res.data));
       // 隐藏加载中
       _this.$refs.modalLoading.is = false;
-      if(res.data.list.length > 0){
-        // 显示列表数据
-        _this.is = true;
-      }else{
-        // 显示没数据提示
-        _this.isNotData = true;
-      }
-
 
     }).catch(function(error) {
       console.log(error)

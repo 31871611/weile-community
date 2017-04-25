@@ -6,17 +6,19 @@
 
         <ul class="userCouponList">
           <li>
-            <div class="left">
-              <strong class="Price"><b>￥</b>100</strong>
-              <span class="txt">订单满100元</span>
-              <span class="txt">(不含运费)可用</span>
-            </div>
-            <div class="right">
-              <h3>指定商品使用</h3>
-              <em>2016.01.01-2016.12.31</em>
-              <!--可用券-->
-              <i class="steVoucher"></i>
-            </div>
+            <a href="">
+              <div class="left">
+                <strong class="Price"><b>￥</b>100</strong>
+                <span class="txt">订单满100元</span>
+                <span class="txt">(不含运费)可用</span>
+              </div>
+              <div class="right">
+                <h3>指定商品使用</h3>
+                <em>2016.01.01-2016.12.31</em>
+                <!--可用券-->
+                <i class="steVoucher"></i>
+              </div>
+            </a>
           </li>
         </ul>
 
@@ -81,6 +83,7 @@
 
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
 
 export default {
   name: 'couponDetails',
@@ -90,7 +93,25 @@ export default {
     }
   },
   mounted() {
+    let _this = this;
+    // 显示加载中
+    //_this.$refs.modalLoading.is = true;
+    // 获取数据列表
+    this.$http.post('/community/getMyStoreCouponList', {
+      "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+      "couponId":this.$route.query.id
+    },{
+      "encryptType":1
+    }).then(function(res){
+      console.log(res);
+      if(res.resultCode != 0){
+        alert(res.msg);
+        return false;
+      }
 
+    }).catch(function(error) {
+      console.log(error)
+    })
   },
   methods: {
 

@@ -29,8 +29,6 @@
     @extend %icoRem;
     background-size: 100% 100%;
     background-image: url("../images/icon_coupon_big@2x.png");
-    @include display-flex();
-    @include align-items();
     position: relative;
     // 不可用
     &.disabled{
@@ -57,6 +55,12 @@
         color: #666;
       }
     }
+  }
+  a{
+    height: pxTorem($h);
+    @include display-flex();
+    @include align-items();
+    //position: relative;
   }
   // 不可用提示
   .not{
