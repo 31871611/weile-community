@@ -14,7 +14,10 @@
                 <span class="txt">(不含运费)可用</span>
               </div>
               <div class="right">
-                <h3>指定商品使用{{list.couponType}}</h3>
+                <h3 v-if="list.couponType == 0">全店通用(团购商品除外)</h3>
+                <h3 v-else-if="list.couponType == 1">指定商品适用</h3>
+                <h3 v-else-if="list.couponType == 2">指定品类适用</h3>
+                <h3 v-else-if="list.couponType == 3">{{list.couponType}}</h3>
                 <em>{{list.effectiveTime}}-{{list.failureTime}}</em>
                 <span class="overdue" v-if="list.failureType == 1">即将过期</span>
                 <!--可用券-->
@@ -54,60 +57,6 @@
                 <p>当前小区不可用</p>
                 <p>点击切换</p>
               </div>
-            </div>
-          </li>
-
-          <li class="invalid">
-            <a href="">
-              <div class="left">
-                <strong class="Price"><b>￥</b>100</strong>
-                <span class="txt">订单满100元</span>
-                <span class="txt">(不含运费)可用</span>
-              </div>
-              <div class="right">
-                <h3>指定商品使用</h3>
-                <em>2016.01.01-2016.12.31</em>
-                <!--<span class="set">立即领取</span>-->
-                <!--灰色券-->
-                <i class="notVoucher"></i>
-                <!--箭头-->
-                <!--<i class="arrowR"></i>-->
-                <!--已过期-->
-                <i class="expired"></i>
-                <!--已使用-->
-                <!--<i class="alreadyUse"></i>-->
-              </div>
-            </a>
-            <div class="not">
-              当前小区不可用
-              点击切换
-            </div>
-          </li>
-
-          <li class="invalid">
-            <a href="">
-              <div class="left">
-                <strong class="Price"><b>￥</b>100</strong>
-                <!--<span class="txt">订单满100元</span>-->
-                <!--<span class="txt">(不含运费)可用</span>-->
-              </div>
-              <div class="right">
-                <h3>指定商品使用</h3>
-                <em>2016.01.01-2016.12.31</em>
-                <!--<span class="set">立即领取</span>-->
-                <!--灰色券-->
-                <i class="notVoucher"></i>
-                <!--箭头-->
-                <!--<i class="arrowR"></i>-->
-                <!--已过期-->
-                <!--<i class="expired"></i>-->
-                <!--已使用-->
-                <i class="alreadyUse"></i>
-              </div>
-            </a>
-            <div class="not">
-              当前小区不可用
-              点击切换
             </div>
           </li>
 
