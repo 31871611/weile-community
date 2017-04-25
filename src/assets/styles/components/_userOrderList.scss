@@ -40,6 +40,9 @@
     background: #fff;
     margin-top: pxTorem(20px);
   }
+  a{
+    display: block;
+  }
   strong{
     color: $orange-base;
     @include font-dpr(24px);
