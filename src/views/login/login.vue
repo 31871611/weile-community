@@ -83,6 +83,10 @@ export default {
           simplestorage.set('HLXK_AUTH',data.authorizationStatus);
           //跳转到相关页面
           _this.$router.push(_this.url);
+        }else{
+          _this.textError = res.msg;
+          _this.$refs.modalError.is = true;
+          return false;
         }
       }).catch(function(error) {
         console.log(error)
