@@ -1,0 +1,38 @@
+{
+
+ "userCardId": "用户券编号",
+
+ "couponId": "优惠券编号",
+
+ "couponType": "优惠券类型 0.全程通用 1.指定商品 2.商品分类 3.指定商品专题活动, 状态有4种, ui上提示根据策划规定的显示",
+
+ "faceValue": "面值 单位：厘",
+
+ "orderMoney": "订单金额大于等于，才可以使用优惠券(0为不限制，单位：厘),所有优惠券都是不含运费的",
+
+ "effectiveTime": "使用时间-开始时间 yyyy.MM.dd",
+
+ "failureTime": "使用时间-结束时间 yyyy.MM.dd",
+
+ "storeGoodList": [
+
+   "image": "商品图片地址",
+   "goodId": "商品编号",
+   "goodName": "商品名称"
+
+ ],//优惠券适用商品列表--仅限指定商品类型优惠券有数据
+
+ "storeGoodsCategoryList": [
+ "goodsCategoryId": "商品分类编号",
+ "goodsCategoryName": "商品分类名称"
+
+ ],//优惠券适用商品分类列表--仅限指定商品分类类型优惠券有数据
+
+ "activityId": "优惠券适用商品专题编号-仅限指定商品专题类型优惠券有数据",
+
+ "explain": "优惠券使用说明",
+
+   "whetherSuperpositionUse": "是否可参与其它活动叠加使用(0：能，1：不能)"
+
+}
+
