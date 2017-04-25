@@ -125,16 +125,9 @@ const router = new Router({
   ]
 })
 
-/**
-
-  最少要有游客的session
-  还需要小区信息
-
-  是否登录
-
-**/
 router.beforeEach((to, from, next) => {
   //console.log(to);
+  // 是否有游客session
   if(!simplestorage.get('HLXK_SESSION')){
     // 以游客方式登录
     fetch.post('/community/touristLogin').then(function(res) {
@@ -153,6 +146,7 @@ router.beforeEach((to, from, next) => {
   }
 
   function go(){
+    // 是否有小区信息
     if(simplestorage.get('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
       // 是否需要登录
       if(to.meta.requireAuth){
@@ -168,7 +162,6 @@ router.beforeEach((to, from, next) => {
         next()
       }
     }else{
-      console.log(to.path);
       // 去选择小区
       next({ path: '/selectQuarters',query: { url: to.fullPath }});
     }
