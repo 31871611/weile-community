@@ -114,6 +114,11 @@ const router = new Router({
       name: 'userCoupon',
       component: resolve => require(['@/views/userCoupon/userCoupon'], resolve)
     },{
+      // 失效优惠券
+      path: '/invalidCoupon',
+      name: 'invalidCoupon',
+      component: resolve => require(['@/views/userCoupon/invalidCoupon'], resolve)
+    },{
       // 优惠券详情
       path: '/couponDetails',
       name: 'couponDetails',
