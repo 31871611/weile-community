@@ -56,7 +56,17 @@ export default {
     }
   },
   mounted() {
+    /*
+     /community/getMyStoreOrder
 
+     {
+     "status":"1",
+     "pageSize":"10",
+     "pageIndex":"1",
+     "isGroupBuyingOrder":"0"
+     }
+
+    */
   },
   methods: {
 
