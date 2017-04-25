@@ -1,0 +1,148 @@
+[
+
+  {
+    "data": [
+      {
+        "goodsTotalNum": 12,
+        "payAmount": 5000,
+        "createTime": 1489048660000,
+        "couponAmount": 22000,
+        "status": 1,
+        "userCardPackageId": 12,
+        "statusStr": "待发货",
+        "discountSnapshotId": null,
+        "refundStatusStr": "无需退款",
+        "goodsList": [
+          {
+            "amount": 12,
+            "unit": "件",
+            "price": 2000,
+            "goodsName": "新测试2"
+          }
+        ],
+        "createTimeStr": "2017/03/09 16:37:40",
+        "refundStatus": null,
+        "payStatus": 0,
+        "payStatusStr": "未付款",
+        "distributionAmount": 3000,
+        "orderId": 10000110
+      },
+      {
+        "goodsTotalNum": 11,
+        "payAmount": 58000,
+        "createTime": 1489040541000,
+        "couponAmount": 0,
+        "status": 1,
+        "userCardPackageId": null,
+        "statusStr": "待发货",
+        "discountSnapshotId": null,
+        "refundStatusStr": "无需退款",
+        "goodsList": [
+          {
+            "amount": 11,
+            "unit": "瓶",
+            "price": 5000,
+            "goodsName": "金龙鱼 面条 家常系列 鸡蛋挂面（800g）"
+          }
+        ],
+        "createTimeStr": "2017/03/09 14:22:21",
+        "refundStatus": null,
+        "payStatus": 0,
+        "payStatusStr": "未付款",
+        "distributionAmount": 3000,
+        "orderId": 10000109
+      },
+      {
+        "goodsTotalNum": 2,
+        "payAmount": 7000,
+        "createTime": 1489038826000,
+        "couponAmount": 0,
+        "status": 1,
+        "userCardPackageId": null,
+        "statusStr": "待发货",
+        "discountSnapshotId": null,
+        "refundStatusStr": "无需退款",
+        "goodsList": [
+          {
+            "amount": 2,
+            "unit": "件",
+            "price": 2000,
+            "goodsName": "新测试2"
+          }
+        ],
+        "createTimeStr": "2017/03/09 13:53:46",
+        "refundStatus": null,
+        "payStatus": 0,
+        "payStatusStr": "未付款",
+        "distributionAmount": 3000,
+        "orderId": 10000108
+      },
+      {
+        "goodsTotalNum": 1,
+        "payAmount": 13700,
+        "createTime": 1488959343000,
+        "couponAmount": 0,
+        "status": 1,
+        "userCardPackageId": null,
+        "statusStr": "待发货",
+        "discountSnapshotId": null,
+        "refundStatusStr": "无需退款",
+        "goodsList": [
+          {
+            "amount": 1,
+            "unit": "千克",
+            "price": 11000,
+            "goodsName": "王老吉"
+          }
+        ],
+        "createTimeStr": "2017/03/08 15:49:03",
+        "refundStatus": null,
+        "payStatus": 0,
+        "payStatusStr": "未付款",
+        "distributionAmount": 3000,
+        "orderId": 10000105
+      },
+      {
+        "goodsTotalNum": 0,
+        "payAmount": 13700,
+        "createTime": 1488959185000,
+        "couponAmount": 0,
+        "status": 1,
+        "userCardPackageId": null,
+        "statusStr": "待发货",
+        "discountSnapshotId": null,
+        "refundStatusStr": "无需退款",
+        "goodsList": [],
+        "createTimeStr": "2017/03/08 15:46:25",
+        "refundStatus": null,
+        "payStatus": 0,
+        "payStatusStr": "未付款",
+        "distributionAmount": 3000,
+        "orderId": 10000103
+      },
+      {
+        "goodsTotalNum": 0,
+        "payAmount": 4000,
+        "createTime": 1488958941000,
+        "couponAmount": 0,
+        "status": 1,
+        "userCardPackageId": null,
+        "statusStr": "待发货",
+        "discountSnapshotId": null,
+        "refundStatusStr": "无需退款",
+        "goodsList": [],
+        "createTimeStr": "2017/03/08 15:42:21",
+        "refundStatus": null,
+        "payStatus": 0,
+        "payStatusStr": "未付款",
+        "distributionAmount": 3000,
+        "orderId": 10000101
+      }
+    ],
+    "resultCode": 0,
+    "encryptCode": "0",
+    "act": "getMyStoreOrder",
+    "msg": "操作成功"
+  }
+
+]
