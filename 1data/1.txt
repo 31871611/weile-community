@@ -34,8 +34,23 @@
 购物车，分小区
 
 {
-  id : 5,
-  list : []
+    "HLXK_SESSION": "eyJ0b2tlbiI6IjZiMTEzYTdjNDVhOTQxZjk4YmNkOGU2ODAxNzRhODJmIiwic2Vzc2lvbktleSI6IjY0ZTJhYzQ4Njg5MzQyMWY5YTA3Y2U2YzkzZTFmYWY2In0=",
+    "HLXK_KEY": "b02d3cf6ae214dbc",
+    "HLXK_DISTRIBUTION": {
+        "authorizationStatus": 0,
+        "communityId": 6,
+        "ifCheck": false,
+        "name": "怡心苑",
+        "id": 5
+    },
+    "HLXK_STATUS": true,
+    "HLXK_AUTH": 0,
+    "购物车":[
+      "小区":{
+             "id" : 5,
+             "list" : []
+      }
+    ]
 }
 
 
