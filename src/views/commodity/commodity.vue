@@ -78,7 +78,7 @@
 
         <div class="commodityCue" v-if="false">此商品参与【满20减10】【满50减40】活动</div>
         <div class="commoditySetCoupon" v-for="(coupon,index) in couponList" @click="couponListAlert">
-          <b>优惠券{{coupon.couponType}}</b>
+          <b>优惠券</b>
           <span>{{coupon.couponName}}</span>
           <i></i>
         </div>
@@ -101,14 +101,17 @@
           <div class="commoditySetCouponAlert" v-show="isCouponList">
             <ul>
               <li v-for="(coupon,index) in couponList">
-                <a href="http://www.baidu.com">
+                <router-link :to="{path:'couponDetails',query:{id:coupon.couponId}}">
                   <div class="left">
                     <strong class="Price"><b>￥</b>{{coupon.faceValue / 1000}}</strong>
                     <span class="txt">订单满{{coupon.orderMoney / 1000}}元</span>
                     <span class="txt">(不含运费)可用</span>
                   </div>
                   <div class="right">
-                    <h3>指定商品使用{{coupon.couponType}}</h3>
+                    <h3 v-if="coupon.couponType == 0">全店通用(团购商品除外)</h3>
+                    <h3 v-else-if="coupon.couponType == 1">指定商品适用</h3>
+                    <h3 v-else-if="coupon.couponType == 2">指定品类适用</h3>
+                    <h3 v-else-if="coupon.couponType == 3">{{list.couponType}}</h3>
                     <em>{{coupon.effectiveTime}} - {{coupon.failureTime}}</em>
                     <!-- getLimit领取数量限制，已领提示：亲~不可多领取哦！ -->
                     <span class="set" :class="{'select':coupon.stock <= 0}" @click.stop.prevent="getCoupon(coupon.couponId,coupon.getLimit)">立即领取</span>
@@ -117,7 +120,7 @@
                     <!--箭头-->
                     <i class="arrowR"></i>
                   </div>
-                </a>
+                </router-link>
               </li>
             </ul>
             <div class="btn" @click="couponListAlert">

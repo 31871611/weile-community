@@ -60,7 +60,6 @@
             </div>
           </li>
 
-
         </ul>
 
         <router-link to="invalidCoupon" class="see">
@@ -68,12 +67,7 @@
         </router-link>
       </div>
 
-      <div class="notData" v-if="isNotData">
-        <div class="box">
-          <i></i>
-          <span>当前没有数据哦~</span>
-        </div>
-      </div>
+      <not-data v-if="isNotData"></not-data>
 
       <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
     </article>
@@ -83,6 +77,7 @@
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
+import notData from '../common/notData.vue'
 import modalToast from '../common/modalToast.vue'
 
 export default {
@@ -133,7 +128,8 @@ export default {
 
   },
   components: {
-    modalToast
+    modalToast,
+    notData
   }
 }
 </script>
