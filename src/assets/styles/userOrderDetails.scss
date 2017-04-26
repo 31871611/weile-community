@@ -128,4 +128,5 @@
 .userOrderDetailsPayBtn{
   @import "components/btn";
   @include one;
+  @include one($label:a);
 }
