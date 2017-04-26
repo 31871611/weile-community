@@ -62,6 +62,8 @@
           </li>
         </ul>
       </div>
+
+      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
     </article>
 
     <footer>
@@ -74,12 +76,13 @@
 
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
+import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'userApplyBack',
   data() {
     return{
-      id:this.$route.query.id,
       txt:''
     }
   },
@@ -89,18 +92,14 @@ export default {
   methods: {
     submit:function(){
       let _this = this;
-      if(_this.id == ""){
-        alert('不能为空');
-        return false;
-      }
       if(_this.txt == ""){
-        alert('不能为空');
+        alert('取消原因还未选择');
         return false;
       }
-
-      //_this.$refs.modalLoading.is = true;
+      // 显示加载中
+      _this.$refs.modalLoading.is = true;
       this.$http.post('/community/cancelStoreOrder',{
-        "orderId":_this.id,
+        "orderId":_this.$route.query.id,
         "cancelReason":_this.txt,   //申请退单原因
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
       },{
@@ -114,7 +113,7 @@ export default {
         // 判断团购
         //_this.list = res.data;
         // 隐藏加载中
-        //_this.$refs.modalLoading.is = false;
+        _this.$refs.modalLoading.is = false;
         //console.log(JSON.stringify(_this.list));
 
       }).catch(function(error) {
@@ -124,7 +123,7 @@ export default {
     }
   },
   components: {
-
+    modalToast
   }
 }
 </script>
