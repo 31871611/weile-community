@@ -21,9 +21,9 @@
     line-height: pxTorem($h);
     &.select{
       span{
-        vertical-align: top;
+        //vertical-align: top;
         height: pxTorem($h - 10px);
-        line-height: pxTorem($h - 10px);
+        //line-height: pxTorem($h - 10px);
         display:inline-block;
         padding:0 pxTorem(14px);
         border-bottom: 2px solid $green-base;

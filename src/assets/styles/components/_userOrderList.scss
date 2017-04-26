@@ -74,11 +74,16 @@
       @include justify-content();
       @include font-dpr(24px);
     }
+    div{
+      @include flex(1);
+    }
     h3{
       color: #43515a;
+      margin-right: pxTorem(20px);
     }
     span{
       color: #43515a;
+      margin-left: pxTorem(20px);
     }
     strong{
       display: block;
@@ -88,6 +93,7 @@
       display: block;
       width: pxTorem($w);
       height: pxTorem($w);
+      margin-right: pxTorem(20px);
     }
   }
   .bottom{
