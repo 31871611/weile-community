@@ -14,10 +14,9 @@
   bottom:0;
   top:0;
   background: rgba(0,0,0,.3);
-  @include border-radius(pxTorem(4px));
   z-index:100;
 
-  .box{
+  .alert{
     z-index:29;
     background:#fff;
     width:85%;
