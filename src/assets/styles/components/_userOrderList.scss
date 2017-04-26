@@ -48,52 +48,50 @@
     @include font-dpr(24px);
   }
   .top{
-    $h:60px;
     @include border1px(#e6e6e6);
     @include display-flex();
     @include align-items();
     @include justify-content();
-    padding:0 pxTorem(20px);
+    padding:pxTorem(16px) pxTorem(20px);
     span{
       display: block;
       &.time{
-        height: pxTorem($h);
-        line-height: pxTorem($h);
         color: #69747b;
         @include font-dpr(24px);
       }
       &.state{
-        height: pxTorem($h);
-        line-height: pxTorem($h);
         color: #ff9800;
         @include font-dpr(26px);
       }
     }
   }
   .center{
-    $h:60px;
-    padding:pxTorem(10px) pxTorem(20px);
-    div{
+    padding:pxTorem(16px) pxTorem(20px) 0;
+    section{
+      padding:0 0 pxTorem(16px) 0;
       @include display-flex();
       @include align-items();
       @include justify-content();
       @include font-dpr(24px);
     }
+    h3{
+      color: #43515a;
+    }
     span{
       color: #43515a;
-      @include font-dpr(24px);
-      height: pxTorem($h);
-      line-height: pxTorem($h);
     }
     strong{
       display: block;
-      height: pxTorem($h);
-      line-height: pxTorem($h);
+    }
+    img{
+      $w:122px;
+      display: block;
+      width: pxTorem($w);
+      height: pxTorem($w);
     }
   }
   .bottom{
-    padding:0 pxTorem(20px);
-    $h:84px;
+    padding:pxTorem(16px) pxTorem(20px);
     @include border1px(#e6e6e6,top);
     @include display-flex();
     @include align-items();
@@ -103,14 +101,10 @@
       @include font-dpr(28px);
       display: block;
       color: #43515a;
-      height: pxTorem($h);
-      line-height: pxTorem($h);
     }
     strong{
       @include font-dpr(28px);
       display: block;
-      height: pxTorem($h);
-      line-height: pxTorem($h);
     }
     b{
       font-weight: normal;

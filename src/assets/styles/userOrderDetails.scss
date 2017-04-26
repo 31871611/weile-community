@@ -36,6 +36,25 @@
   .orderList{
     @import "components/userOrderList";
     @include userOrderList;
+    .top{
+      span{
+        &.time{
+          @include font-dpr(28px);
+        }
+      }
+    }
+    .center{
+      h3{
+        @include font-dpr(30px);
+      }
+      strong{
+        @include font-dpr(32px);
+        margin-top:pxTorem(10px);
+      }
+      span{
+        @include font-dpr(30px);
+      }
+    }
   }
 
 
