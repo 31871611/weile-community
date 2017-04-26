@@ -108,8 +108,9 @@
       <div class="userOrderDetailsPayBtn" v-if="list.payStatus == 2 && list.status == 1">
         <span @click="cancelOrder(list.orderId,'已支付金额将在3-10个工作日退回原账户，您是否需要取消订单?')">取消订单</span>
       </div>
-      <div class="userOrderDetailsPayBtn" v-if="list.payStatus == 2 && list.status == 2">
-        <span @click="applyReturn">申请退单</span>
+      <!--  v-if="list.payStatus == 2 && list.status == 2" -->
+      <div class="userOrderDetailsPayBtn">
+        <router-link :to="{path:'userApplyBack',query:{id:list.orderId}}">申请退单</router-link>
       </div>
       <div class="userOrderDetailsPayBtn" v-if="list.status == 6">
         <span @click="cancelReturn(list.orderId,'您是否需要取消退单?')">取消退单</span>
@@ -188,20 +189,14 @@ export default {
       console.log(error)
     })
 
-
-
   },
   methods: {
     // 取消订单
     cancelOrder:function(id,txt){
       console.log(id + '|' + txt);
     },
-    // 申请退单
-    applyReturn:function(id){
-      console.log('去退单界面' + id);
-    },
     // 取消退单
-    cancelReturn:function(){
+    cancelReturn:function(id,txt){
       console.log(id + '|' + txt);
     },
     // 立即支付
