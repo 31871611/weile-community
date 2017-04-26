@@ -1,20 +1,21 @@
 <template>
+
   <div class="wrap">
     <article class="main">
       <div class="mainScroll commodity">
 
         <div class="commodityPhoto">
-          <img :src="list.urls" alt="">
+          <img v-for="img in list.urls" :src="img" alt="">
         </div>
 
         <!-- "isFlash": 0,//是否抢购活动：0不是，1是 -->
-        <div v-if="list.isFlash === 1">
+        <template v-if="list.isFlash === 1">
           <!-- 抢购倒记时-未开始.当前时间还没到活动开始时间 -->
           <div class="commodityRushTime" v-if="list.nowTime < list.startTime && list.flashSaleInventory > 0">
             <div class="priceNum">
               <span class="price"><b>￥</b>{{list.flashSalePrice / 1000 | price}}</span>
               <div>
-                <span class="originalCost">￥{{list.priceYuan | price}}</span>
+                <span class="originalCost">￥{{list.price | price}}</span>
                 <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
               </div>
             </div>
@@ -48,10 +49,11 @@
             <h3>特价库存已被抢光...</h3>
             <p>部分用户未付款，还有机会哦</p>
           </div>
-        </div>
+        </template>
 
+        <!---->
         <div class="commodityTitle">
-          <h1>{{list.name}}</h1>
+          <h1><b v-if="list.isHouseUser==1">[住户专享]</b>{{list.name}}<i v-if="list.activityId != 0 && list.activityType == 1">活动</i></h1>
           <div class="info">
             <div class="left">
               <div class="priceNum">
@@ -70,14 +72,15 @@
             </div>
           </div>
         </div>
+        <!---->
 
         <ul class="commodityType">
           <li v-if="list.count">销量：{{list.count}}件</li>
           <li v-if="list.spec">规格：{{list.spec}}</li>
         </ul>
 
-        <div class="commodityCue" v-if="false">此商品参与【满20减10】【满50减40】活动</div>
-        <div class="commoditySetCoupon" v-for="(coupon,index) in couponList" @click="couponListAlert">
+        <div class="commodityCue" v-if="list.activityId">{{list.discountStr}}</div>
+        <div class="commoditySetCoupon" v-if="!list.groupBuy && couponList.length > 0" v-for="(coupon,index) in couponList" @click="couponListAlert">
           <b>优惠券</b>
           <span>{{coupon.couponName}}</span>
           <i></i>
@@ -111,9 +114,9 @@
                     <h3 v-if="coupon.couponType == 0">全店通用(团购商品除外)</h3>
                     <h3 v-else-if="coupon.couponType == 1">指定商品适用</h3>
                     <h3 v-else-if="coupon.couponType == 2">指定品类适用</h3>
-                    <h3 v-else-if="coupon.couponType == 3">{{list.couponType}}</h3>
+                    <h3 v-else-if="coupon.couponType == 3">指定商品适用</h3>
+                    <h3 v-else>全店通用（团购商品除外）</h3>
                     <em>{{coupon.effectiveTime}} - {{coupon.failureTime}}</em>
-                    <!-- getLimit领取数量限制，已领提示：亲~不可多领取哦！ -->
                     <span class="set" :class="{'select':coupon.stock <= 0}" @click.stop.prevent="getCoupon(coupon.couponId,coupon.getLimit)">立即领取</span>
                     <!--可用券-->
                     <i class="steVoucher"></i>

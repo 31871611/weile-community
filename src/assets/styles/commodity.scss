@@ -161,6 +161,10 @@
   h1{
     @include font-dpr(30px);
     color: #3f4548;
+    b{
+      font-weight: normal;
+      color: $green-base;
+    }
   }
   .info{
     margin-top: pxTorem(24px);
