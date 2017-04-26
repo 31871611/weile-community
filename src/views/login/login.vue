@@ -9,7 +9,7 @@
       <input type="tel" placeholder="请输入手机号码" autofocus v-model="telephone" />
     </div>
     <div class="itemInfo">
-      <i class="tel"></i>
+      <i class="password"></i>
       <input type="password" placeholder="请输入密码(不少于6位数)" v-model="password" />
     </div>
     <div class="itemInfo" v-if="false">
