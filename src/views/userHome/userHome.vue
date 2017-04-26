@@ -99,12 +99,12 @@
             </router-link>
           </li>
           <li>
-            <a href="">
+            <router-link :to="{path:'/userOrder',query:{group:1}}">
               <i class="mygroupbuy"></i>
               <span>我的团购</span>
               <em>来团购，更优惠</em>
               <i class="arrowR"></i>
-            </a>
+            </router-link>
           </li>
           <li>
             <router-link to="userCoupon">
