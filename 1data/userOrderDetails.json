@@ -1,0 +1,75 @@
+[
+  {
+    "data": {
+      "payMethodStr": "微信支付",       //支付方式
+      "createTime": 1489048660000,      //创建时间
+      "couponAmount": 22000,            //优惠券金额
+      "userCardPackageId": 12,          //卡包id
+      "consignee": "zhou",              //收货人
+      "statusStr": "待发货",             //订单状态字符串
+      "giftsList": [],                  //赠品信息
+      "refundStatusStr": "无需退款",      //退款状态字符串
+      "cancelReason": "",                   //取消原因
+      "expectedTimeTypeStr": "尽快送达",  //送达方式
+      "goodsList": [
+        {
+          "amount": 12,                 //商品数量
+          "unit": "件",                //单位
+          "price": 2000,              //价格
+          "imageUrl": "http://img.v89.com/group1/M08/07/8B/rBAA11g_szuAHZT3AARr2n_VKg4231_960*1280_220x220!.jpg",//图片url
+          "goodsName": "新测试2"//商品名称
+        }
+      ],
+      "refundStatus": 0,            //退款状态：0表示无需退款，1表示待退款，2表示退款中 3-已退款
+      "distributionAmount": 3000,   //配送费
+      "orderId": 10000110,          //订单id
+      "payMethod": 2,               //付款方式：1-支付宝 2-微信
+      "goodsTotalNum": 12,            //商品总数
+      "payAmount": 5000,            //支付金额（厘）
+      "rejectReason": "",           //拒绝原因
+      "status": 1,                  //订单状态：1.等待确认,2.送货中,3.订单完成,4.商户取消订单,5.用户取消订单,6.用户退单申请
+      "activityList": [],           //优惠活动列表串
+      "discountSnapshotId": "",     //优惠信息id
+      "createTimeStr": "2017/03/09 16:37:40",//创建时间字符串
+      "orderNo": "000100042017030906002",//订单编号
+      "expectedTimeType": 1,//送货时间类型：1-尽快送达 2-具体时间段
+      "address": "欧尚6号楼1号楼1904",//地址
+      "payStatus": 0,//付款状态：0表示未付款，1表示付款中（请求了第三方接口，但未回调），2表示已付款
+      "isGroupBuyingOrder": false,//是否团购订单
+      "payStatusStr": "未付款",//付款状态字符串
+      "telephone": "13425632357",//联系电话
+      "comments": "",//备注
+      "mobile": "15880071502"//收货人联系方式
+    },
+    "resultCode": 0,
+    "encryptCode": "0",
+    "act": "getStoreOrderDetail",
+    "msg": "操作成功"
+  },
+
+
+  {
+    "createTime": 1489580435000,
+    "couponAmount": 0,
+    "userCardPackageId": null,
+    "statusStr": "用户取消订单",
+    "giftsList": [],
+    "refundStatusStr": "未知状态",
+    "cancelReason": "",
+    "refundStatus": 0,
+    "distributionAmount": 0,
+    "orderId": 106305,
+    "payMethod": 2,
+    "payAmount": 4900,          // 是不是总的价格
+    "rejectReason": "",
+    "status": 5,
+    "activityList": [],
+    "discountSnapshotId": "",
+    "expectedTimeType": 1,
+    "payStatus": 0,
+    "isGroupBuyingOrder": false,
+    "payStatusStr": "未付款",
+    "comments": "",
+  }
+
+]

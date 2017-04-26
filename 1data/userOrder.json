@@ -2,141 +2,30 @@
 
   {
     "data": [
-      {
-        "goodsTotalNum": 12,
-        "payAmount": 5000,
-        "createTime": 1489048660000,
-        "couponAmount": 22000,
-        "status": 1,
-        "userCardPackageId": 12,
-        "statusStr": "待发货",
-        "discountSnapshotId": null,
-        "refundStatusStr": "无需退款",
-        "goodsList": [
-          {
-            "amount": 12,
-            "unit": "件",
-            "price": 2000,
-            "goodsName": "新测试2"
-          }
-        ],
-        "createTimeStr": "2017/03/09 16:37:40",
-        "refundStatus": null,
-        "payStatus": 0,
-        "payStatusStr": "未付款",
-        "distributionAmount": 3000,
-        "orderId": 10000110
-      },
-      {
-        "goodsTotalNum": 11,
-        "payAmount": 58000,
-        "createTime": 1489040541000,
-        "couponAmount": 0,
-        "status": 1,
-        "userCardPackageId": null,
-        "statusStr": "待发货",
-        "discountSnapshotId": null,
-        "refundStatusStr": "无需退款",
-        "goodsList": [
-          {
-            "amount": 11,
-            "unit": "瓶",
-            "price": 5000,
-            "goodsName": "金龙鱼 面条 家常系列 鸡蛋挂面（800g）"
-          }
-        ],
-        "createTimeStr": "2017/03/09 14:22:21",
-        "refundStatus": null,
-        "payStatus": 0,
-        "payStatusStr": "未付款",
-        "distributionAmount": 3000,
-        "orderId": 10000109
-      },
-      {
-        "goodsTotalNum": 2,
-        "payAmount": 7000,
-        "createTime": 1489038826000,
-        "couponAmount": 0,
-        "status": 1,
-        "userCardPackageId": null,
-        "statusStr": "待发货",
-        "discountSnapshotId": null,
-        "refundStatusStr": "无需退款",
-        "goodsList": [
-          {
-            "amount": 2,
-            "unit": "件",
-            "price": 2000,
-            "goodsName": "新测试2"
-          }
-        ],
-        "createTimeStr": "2017/03/09 13:53:46",
-        "refundStatus": null,
-        "payStatus": 0,
-        "payStatusStr": "未付款",
-        "distributionAmount": 3000,
-        "orderId": 10000108
-      },
-      {
-        "goodsTotalNum": 1,
-        "payAmount": 13700,
-        "createTime": 1488959343000,
-        "couponAmount": 0,
-        "status": 1,
-        "userCardPackageId": null,
-        "statusStr": "待发货",
-        "discountSnapshotId": null,
-        "refundStatusStr": "无需退款",
-        "goodsList": [
-          {
-            "amount": 1,
-            "unit": "千克",
-            "price": 11000,
-            "goodsName": "王老吉"
-          }
-        ],
-        "createTimeStr": "2017/03/08 15:49:03",
-        "refundStatus": null,
-        "payStatus": 0,
-        "payStatusStr": "未付款",
-        "distributionAmount": 3000,
-        "orderId": 10000105
-      },
-      {
-        "goodsTotalNum": 0,
-        "payAmount": 13700,
-        "createTime": 1488959185000,
-        "couponAmount": 0,
-        "status": 1,
-        "userCardPackageId": null,
-        "statusStr": "待发货",
-        "discountSnapshotId": null,
-        "refundStatusStr": "无需退款",
-        "goodsList": [],
-        "createTimeStr": "2017/03/08 15:46:25",
-        "refundStatus": null,
-        "payStatus": 0,
-        "payStatusStr": "未付款",
-        "distributionAmount": 3000,
-        "orderId": 10000103
-      },
-      {
-        "goodsTotalNum": 0,
-        "payAmount": 4000,
-        "createTime": 1488958941000,
-        "couponAmount": 0,
-        "status": 1,
-        "userCardPackageId": null,
-        "statusStr": "待发货",
-        "discountSnapshotId": null,
-        "refundStatusStr": "无需退款",
-        "goodsList": [],
-        "createTimeStr": "2017/03/08 15:42:21",
-        "refundStatus": null,
-        "payStatus": 0,
-        "payStatusStr": "未付款",
-        "distributionAmount": 3000,
-        "orderId": 10000101
+        {
+          "goodsTotalNum": 12,          //商品总数
+          "payAmount": 5000,            //支付金额（厘）
+          "createTime": 1489048660000,  //创建时间
+          "couponAmount": 22000,        //优惠券金额
+          "status": 1,                  //订单状态：1.等待确认,2.送货中,3.订单完成,4.商户取消订单,5.用户取消订单,6.用户退单申请
+          "userCardPackageId": 12,      //卡包id
+          "statusStr": "待发货",        //订单状态字符串
+          "discountSnapshotId": null,   //优惠信息id
+          "refundStatusStr": "无需退款", //退款状态字符串
+          "goodsList": [
+        {
+          "amount": 12,                 //数量
+          "unit": "件",                 //单位
+          "price": 2000,                //价格
+          "goodsName": "新测试2"         //商品名称
+        }
+      ],
+        "createTimeStr": "2017/03/09 16:37:40",   //创建时间字符串
+        "refundStatus": null,                     //退款状态：0表示无需退款，1表示待退款，2表示退款中 3-已退款
+        "payStatus": 0,                           //付款状态：0表示未付款，1表示付款中（请求了第三方接口，但未回调），2表示已付款
+        "payStatusStr": "未付款",                 //付款状态字符串
+        "distributionAmount": 3000,               //配送费
+        "orderId": 10000110                       //订单id
       }
     ],
     "resultCode": 0,
