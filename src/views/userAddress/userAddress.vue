@@ -13,7 +13,7 @@
             <router-link :to="{path:'/userAddress/modify',query: { index: index,communityId: list.communityId,addressId:list.addressId }}">
               <div><span class="name">{{list.name}}</span><span class="tel">{{list.mobile}}</span></div>
               <p>{{list.communityName}} | {{list.address}}</p>
-              <i v-if="list.isAuthenAddress"></i>
+              <i class="auth" v-if="list.isAuthenAddress"></i>
             </router-link>
           </li>
         </ul>
@@ -25,7 +25,7 @@
             <a href="javascript:;">
               <div><span class="name">{{list.name}}</span><span class="tel">{{list.mobile}}</span></div>
               <p>{{list.communityName}} | {{list.address}}</p>
-              <i v-if="list.isAuthenAddress"></i>
+              <i class="auth" v-if="list.isAuthenAddress"></i>
             </a>
           </li>
         </ul>
