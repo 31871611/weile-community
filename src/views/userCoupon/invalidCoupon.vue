@@ -16,7 +16,8 @@
                 <h3 v-if="list.couponType == 0">全店通用(团购商品除外)</h3>
                 <h3 v-else-if="list.couponType == 1">指定商品适用</h3>
                 <h3 v-else-if="list.couponType == 2">指定品类适用</h3>
-                <h3 v-else-if="list.couponType == 3">{{list.couponType}}</h3>
+                <h3 v-else-if="list.couponType == 3">指定商品适用</h3>
+                <h3 v-else>{{list.couponType}}</h3>
                 <em>{{list.effectiveTime}}-{{list.failureTime}}</em>
                 <span class="overdue" v-if="list.failureType == 1">即将过期</span>
                 <!--可用券-->
