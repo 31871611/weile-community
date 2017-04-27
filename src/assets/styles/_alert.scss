@@ -32,14 +32,14 @@
   }
   .content{
     $h:72px;
-    padding: pxTorem(20px) pxTorem(40px) pxTorem(30px);
+    padding: pxTorem(20px) pxTorem(40px) pxTorem(20px);
     border-bottom: 1px solid #ddd;
     min-height: pxTorem($h);
     p{
       color:#999;
       @include font-dpr(32px);
       text-align: center;
-      line-height: pxTorem($h);
+      //line-height: pxTorem($h);
     }
   }
   .btns{
