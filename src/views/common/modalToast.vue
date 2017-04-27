@@ -14,6 +14,8 @@
   time：显示秒数，0一直运行
   <modal-toast :icon="'error'" :txt="'标题'" :time="10" ref="modalToast"></modal-toast>
   this.$refs.modalToast.is = true;
+
+  文字提示完还需要有个回调
 */
 export default {
   props:{
