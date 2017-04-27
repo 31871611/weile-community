@@ -8,7 +8,7 @@
         <a href="javascript:;" :class="{'select':status == 1}" @click="init(1)"><span>待确认</span></a>
         <a href="javascript:;" :class="{'select':status == 2}" @click="init(2)"><span>待收货</span></a>
         <a href="javascript:;" :class="{'select':status == 3}" @click="init(3)"><span>已完成</span></a>
-        <a href="javascript:;" :class="{'select':status == 4}" @click="init(4)"><span>商户取消</span></a>
+        <!--<a href="javascript:;" :class="{'select':status == 4}" @click="init(4)"><span>商户取消</span></a>-->
         <a href="javascript:;" :class="{'select':status == 5}" @click="init(5)"><span>已取消</span></a>
         <a href="javascript:;" :class="{'select':status == 6}" @click="init(6)"><span>退单中</span></a>
       </div>
