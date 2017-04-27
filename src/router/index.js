@@ -87,12 +87,15 @@ const router = new Router({
       // 我的订单详情
       path: '/userOrderDetails',
       name: 'userOrderDetails',
-      component: resolve => require(['@/views/userOrderDetails/userOrderDetails'], resolve)
-    },{
-      // 申请退货
-      path: '/userApplyBack',
-      name: 'userApplyBack',
-      component: resolve => require(['@/views/userApplyBack/userApplyBack'], resolve)
+      component: resolve => require(['@/views/userOrderDetails/userOrderDetails'], resolve),
+      children:[
+        {
+          // 申请退货
+          path: '/userApplyBack',
+          name: 'userApplyBack',
+          component: resolve => require(['@/views/userApplyBack/userApplyBack'], resolve)
+        }
+      ]
     },{
       // 我的地址
       path: '/userAddress',

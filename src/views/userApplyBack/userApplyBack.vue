@@ -1,12 +1,12 @@
 <template>
 
-  <div class="wrap">
+  <div class="wrap fullPosition">
 
     <article class="main">
       <div class="mainScroll userApplyBack">
         <div class="info">
           <span>退款金额收到商品破损</span>
-          <strong>￥10.00</strong>
+          <strong>￥{{list.payAmount / 1000 | price}}</strong>
         </div>
 
         <div class="info">
@@ -64,6 +64,10 @@
       </div>
 
       <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+
+      <modal-toast ref="modalToast" :txt="'申请退单成功'" :time="2"></modal-toast>
+
+      <modal-toast ref="modalInfo" :txt="'取消原因还未选择'" :time="2"></modal-toast>
     </article>
 
     <footer>
@@ -81,6 +85,7 @@ import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'userApplyBack',
+  props:['list'],
   data() {
     return{
       txt:''
@@ -93,7 +98,7 @@ export default {
     submit:function(){
       let _this = this;
       if(_this.txt == ""){
-        alert('取消原因还未选择');
+        _this.$refs.modalInfo.is = true;
         return false;
       }
       // 显示加载中
@@ -110,12 +115,14 @@ export default {
           alert(res.msg);
           return false;
         }
-        // 判断团购
-        //_this.list = res.data;
         // 隐藏加载中
         _this.$refs.modalLoading.is = false;
-        //console.log(JSON.stringify(_this.list));
-
+        // 提示申请退单成功
+        _this.$refs.modalToast.is = true;
+        setTimeout(function(){
+          // 返回我的订单
+          _this.$router.push('userOrder');
+        },1000)
       }).catch(function(error) {
         console.log(error)
       })
