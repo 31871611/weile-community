@@ -21,40 +21,10 @@
 }
 
 
-.payOrderAddress{
-  background: #fff;
-  padding:pxTorem(20px) pxTorem(20px) pxTorem(14px);
-  @include display-flex();
-  @include align-items();
-  .box{
-    @include flex(1);
-    position: relative;
-    color: #43515a;
-    @include font-dpr(28px);
-  }
-  span{
-    display: block;
-    line-height: pxTorem(44px);
-    &.name{
-
-    }
-    &.tel{
-      position: absolute;
-      right: 0;
-      top:0;
-    }
-  }
-  p{
-    line-height: pxTorem(44px);
-  }
-  .arrowR{
-    margin-left:pxTorem(24px);
-    display: block;
-    width: pxTorem(16px);
-    height: pxTorem(30px);
-    @extend %icoRem;
-    background-image: url("../images/iconArrowR.png");
-  }
+// 默认地址
+.defaultAddress{
+  @import "components/addressList";
+  @include addressList;
 }
 
 

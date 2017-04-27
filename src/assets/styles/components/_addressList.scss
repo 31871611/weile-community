@@ -1,0 +1,82 @@
+@charset "UTF-8";
+@import "../common/css3";
+@import "../common/common";
+
+/*
+
+<ul>
+  <li>
+    <a href="">
+      <div><span class="name">用户名</span><span class="tel">手机号</span></div>
+      <p>小区名 | 详细地址</p>
+      <i class="auth"></i>
+      <i class="arrowR"></i>
+    </a>
+  </li>
+</ul>
+
+
+*/
+// 地址列表
+@mixin addressList(){
+  background: #fff;
+  li{
+    position: relative;
+    @include border1px(#e6e6e6);
+    @include font-dpr(28px);
+    &:last-child{
+      &:after{
+        display: none;
+      }
+    }
+    a{
+      display: block;
+      padding:pxTorem(16px) pxTorem(20px);
+    }
+    div{
+      color: #3f4548;
+    }
+    span{
+      line-height: pxTorem(50px);
+      display: inline-block;
+      &.name{
+        min-width: pxTorem(104px);
+      }
+      &.tel{}
+    }
+    p{
+      line-height: pxTorem(40px);
+      color: #6c7072;
+    }
+    i{
+      @extend %icoRem;
+      // 认证
+      &.auth{
+        position: absolute;
+        right: pxTorem(50px);
+        top:0;
+        width: pxTorem(70px);
+        height: pxTorem(66px);
+        background-image: url("../images/icon_location_ attestation@2x.png");
+      }
+      // 三角箭头
+      &.arrowR{
+        position: absolute;
+        right:pxTorem(20px);
+        top:50%;
+        display: block;
+        width: pxTorem(16px);
+        height: pxTorem(30px);
+        margin-top:pxTorem(-15px);
+        background-image: url("../images/iconArrowR.png");
+      }
+    }
+    //不可配送
+    &.select{
+      span,p{
+        color: #bbb;
+      }
+    }
+  }
+}
+
