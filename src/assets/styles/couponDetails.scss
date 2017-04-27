@@ -45,6 +45,28 @@
       height: pxTorem(22px);
       line-height: pxTorem(22px);
     }
+
+  }
+  .titleLink{
+    @include border1px(#e6e6e6);
+    background: #fff;
+    $h:60px;
+    height: pxTorem($h);
+    a{
+      @include display-flex();
+      @include align-items();
+      @include justify-content();
+      padding:0 pxTorem(20px);
+      height: pxTorem($h);
+    }
+    h2{
+      color: #43515a;
+      @include font-dpr(28px);
+      border-left:pxTorem(4px) solid $green-base;
+      padding-left:pxTorem(15px);
+      height: pxTorem(22px);
+      line-height: pxTorem(22px);
+    }
     i{
       display: block;
       width: pxTorem(16px);
@@ -54,6 +76,7 @@
     }
   }
 
+  // 适用商品
   .goods{
     $w:188px;
     padding:pxTorem(25px) 0 pxTorem(4px) pxTorem(20px);
@@ -82,6 +105,7 @@
     }
   }
 
+  // 适用分类
   .applyCategory{
     background: #fff;
     margin-bottom: pxTorem(20px);
@@ -98,14 +122,18 @@
       float: left;
       margin-right: 4%;
       margin-bottom: pxTorem(40px);
-      color: #fff;
       background: $green-base;
       @include border-radius(pxTorem(6px));
       overflow: hidden;
     }
+    a{
+      display: block;
+      color: #fff;
+    }
   }
 
 
+  // 使用说明
   .illustrate{
     background: #fff;
     padding:pxTorem(10px) pxTorem(20px) pxTorem(20px);

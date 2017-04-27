@@ -13,66 +13,86 @@
                 <span class="txt">(不含运费)可用</span>
               </div>
               <div class="right">
-                <h3>指定商品使用{{lists.couponType}}</h3>
+                <h3 v-if="lists.couponType == 0">全店通用(团购商品除外)</h3>
+                <h3 v-else-if="lists.couponType == 1">指定商品适用</h3>
+                <h3 v-else-if="lists.couponType == 2">指定品类适用</h3>
+                <h3 v-else-if="lists.couponType == 3">指定商品适用</h3>
+                <h3 v-else>{{lists.couponType}}</h3>
                 <em>{{lists.effectiveTime}} - {{lists.failureTime}}</em>
                 <!--可用券-->
                 <i class="steVoucher"></i>
+                <span class="explain" v-if="lists.whetherSuperpositionUse == 1">不与其他优惠活动叠加使用</span>
               </div>
             </a>
           </li>
         </ul>
 
-        <div class="not">
-          当前没有适用商品
-        </div>
-
-        <div class="title">
-          <h2>查看适用商品</h2>
-          <i></i>
-        </div>
-
-
-        <div class="title">
-          <h2>适用商品</h2>
-        </div>
-        <ul class="goods">
-          <li>
-            <a href="">
-              <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-              <p>超新鲜青柠檬</p>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-              <p>超新鲜青柠檬</p>
-            </a>
-          </li>
-          <li>
-            <a href="">
-              <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-              <p>超新鲜青柠檬超新鲜青柠檬</p>
-            </a>
-          </li>
-        </ul>
-
-        <div class="applyCategory">
-          <ul>
-            <li>分类分类1</li>
-            <li>分类分类1</li>
-            <li>分类分类1</li>
-            <li>分类分类1</li>
-            <li>分类分类1</li>
+        <template v-if="lists.couponType == 1">
+          <div class="title" v-if="lists.storeGoodList">
+            <h2>适用商品</h2>
+          </div>
+          <ul class="goods" v-if="lists.storeGoodList">
+            <li v-for="good in lists.storeGoodList">
+              <router-link :to="{path:'commodity',query:{id:good.goodId}}">
+                <img :src="good.image" alt="">
+                <p>{{good.goodName}}</p>
+              </router-link>
+            </li>
           </ul>
-        </div>
+          <div class="not" v-else>
+            当前没有适用商品
+          </div>
+        </template>
 
-        <div class="title">
+        <template v-else-if="lists.couponType == 2">
+          <div class="title" v-if="lists.storeGoodsCategoryList">
+            <h2>适用品类</h2>
+          </div>
+          <div class="applyCategory" v-if="lists.storeGoodsCategoryList">
+            <ul>
+              <li v-for="category in lists.storeGoodsCategoryList">
+                <!-- 去便利店分类 -->
+                <router-link :to="{path:'/',query:{id:category.goodsCategoryId}}">
+                  {{category.goodsCategoryName}}
+                </router-link>
+              </li>
+            </ul>
+          </div>
+          <div class="not" v-else>
+            当前没有适用品类
+          </div>
+        </template>
+
+        <template v-else-if="lists.couponType == 3">
+          <!-- 不知道连接去哪.3.指定商品专题活动 -->
+          <div class="titleLink" v-if="lists.activityId">
+            <router-link :to="{path:'/',query:{id:lists.activityId}}">
+              <h2>查看适用商品</h2>
+              <i></i>
+            </router-link>
+          </div>
+          <div class="not" v-else>
+            当前没有适用商品
+          </div>
+        </template>
+
+        <template v-else>
+          <!-- 去便利店 -->
+          <div class="titleLink">
+            <router-link to="/">
+              <h2>查看适用商品</h2>
+              <i></i>
+            </router-link>
+          </div>
+        </template>
+
+
+        <div class="title" v-if="lists.explain">
           <h2>使用说明</h2>
         </div>
-        <div class="illustrate">
+        <div class="illustrate" v-if="lists.explain">
           <p>{{lists.explain}}</p>
         </div>
-
 
       </div>
 
@@ -82,6 +102,32 @@
 
 </template>
 <script>
+/*
+
+"activityId": "优惠券适用商品专题编号-仅限指定商品专题类型优惠券有数据",
+
+"couponType": "优惠券类型
+  0.全程通用
+  1.指定商品
+  2.商品分类
+  3.指定商品专题活动, 状态有4种, ui上提示根据策划规定的显示",
+
+"storeGoodList": [
+
+   "image": "商品图片地址",
+   "goodId": "商品编号",
+   "goodName": "商品名称"
+
+],//优惠券适用商品列表--仅限指定商品类型优惠券有数据
+
+"storeGoodsCategoryList": [
+      "goodsCategoryId": "商品分类编号",
+      "goodsCategoryName": "商品分类名称"
+
+],//优惠券适用商品分类列表--仅限指定商品分类类型优惠券有数据
+
+
+*/
 import simplestorage from 'simplestorage.js'
 
 export default {
