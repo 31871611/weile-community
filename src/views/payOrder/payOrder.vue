@@ -7,14 +7,22 @@
         <div class="payOrderTitle">
           配送地址
         </div>
-        <div class="payOrderAddress">
-          <div class="box">
-            <span class="name">收货人：张小姐</span>
-            <span class="tel">1370888888</span>
-            <p>收货人收货人收货人收货人收货人收货人收货人收货人收货人</p>
-          </div>
-          <i class="arrowR"></i>
-        </div>
+
+        <ul class="defaultAddress">
+          <li>
+            <router-link to="userAddress">
+              <template v-if="address">
+                <div><span class="name">{{address.name}}</span><span class="tel">{{address.mobile}}</span></div>
+                <p>{{address.communityName}} | {{address.address}}</p>
+                <i class="auth" v-if="address.isAuthenAddress"></i>
+              </template>
+              <template v-else>
+                请选择收货地址
+                <i class="arrowR"></i>
+              </template>
+            </router-link>
+          </li>
+        </ul>
 
         <div class="payOrderTime">
           <span class="fl">送达时间</span>
@@ -70,10 +78,6 @@
           </li>
         </ul>
 
-
-
-
-
         <!-- 订单可用优惠券弹窗 -->
         <div class="availableCouponAlert">
           <h2>订单可用优惠券弹窗</h2>
@@ -115,19 +119,52 @@
 
 </template>
 <script>
+/*
+
+ /community/getPayInfo
+
+ {
+  "goodsInfo":"[{goodsId:25,price:22000,amount:1},{goodsId:24,price:1000,amount:1}]",
+  "distributionCommunityId":"1",
+  "isFlashOrder":0
+ }
+
+*/
+import simplestorage from 'simplestorage.js'
 
 export default {
   name: 'payOrder',
   data() {
     return{
-
+      address:''
     }
   },
   mounted() {
+    let _this = this;
 
+    _this.getDefaultAddress();
   },
   methods: {
+    getDefaultAddress:function(){
+      let _this = this;
 
+      this.$http.post('/community/getDefaultAddress', {
+        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id
+      },{
+        "encryptType":1
+      }).then(function(res){
+        console.log(res);
+        if(res.resultCode != 0){
+          alert(res.msg);
+          return false;
+        }
+        _this.address = res.data;
+        console.log(JSON.stringify(_this.address));
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+    }
   },
   components: {
 
