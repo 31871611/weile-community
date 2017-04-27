@@ -120,8 +120,7 @@ export default {
         // 提示申请退单成功
         _this.$refs.modalToast.is = true;
         setTimeout(function(){
-          // 返回我的订单
-          _this.$router.push('userOrder');
+          _this.$router.back();
         },1000)
       }).catch(function(error) {
         console.log(error)
