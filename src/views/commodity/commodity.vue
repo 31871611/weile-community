@@ -115,7 +115,7 @@
                     <h3 v-else-if="coupon.couponType == 1">指定商品适用</h3>
                     <h3 v-else-if="coupon.couponType == 2">指定品类适用</h3>
                     <h3 v-else-if="coupon.couponType == 3">指定商品适用</h3>
-                    <h3 v-else>全店通用（团购商品除外）</h3>
+                    <h3 v-else>{{coupon.couponType}}</h3>
                     <em>{{coupon.effectiveTime}} - {{coupon.failureTime}}</em>
                     <span class="set" :class="{'select':coupon.stock <= 0}" @click.stop.prevent="getCoupon(coupon.couponId,coupon.getLimit)">立即领取</span>
                     <!--可用券-->
