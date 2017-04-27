@@ -97,6 +97,7 @@ export default {
     modalToast
   },
   beforeRouteUpdate(to, from, next){
+    // 进入下一连接=改变会运行，to.name == 'userAddress'只在返回时运行
     if(to.name == 'userAddress'){
       this.init();
     }
