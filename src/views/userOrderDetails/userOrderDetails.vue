@@ -1,5 +1,5 @@
 <template>
-
+<div class="view">
   <div class="wrap">
     <article class="main">
       <div class="mainScroll userOrderDetails">
@@ -98,6 +98,8 @@
       </div>
 
       <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+
+      <modal-alert ref="modalAlert"></modal-alert>
     </article>
 
     <footer>
@@ -108,8 +110,7 @@
       <div class="userOrderDetailsPayBtn" v-if="list.payStatus == 2 && list.status == 1">
         <span @click="cancelOrder(list.orderId,'已支付金额将在3-10个工作日退回原账户，您是否需要取消订单?')">取消订单</span>
       </div>
-      <!--  v-if="list.payStatus == 2 && list.status == 2" -->
-      <div class="userOrderDetailsPayBtn">
+      <div class="userOrderDetailsPayBtn" v-if="list.payStatus == 2 && list.status == 2">
         <router-link :to="{path:'userApplyBack',query:{id:list.orderId}}">申请退单</router-link>
       </div>
       <div class="userOrderDetailsPayBtn" v-if="list.status == 6">
@@ -118,6 +119,11 @@
     </footer>
   </div>
 
+  <transition name="SlideRightLeft">
+    <router-view :list="list"></router-view>
+  </transition>
+
+</div>
 </template>
 <script>
 /*
@@ -157,6 +163,7 @@
 */
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
+import modalAlert from '../common/modalAlert.vue'
 
 export default {
   name: 'userOrderDetails',
@@ -167,45 +174,123 @@ export default {
   },
   mounted() {
     let _this = this;
-    // 显示加载中
-    _this.$refs.modalLoading.is = true;
-    this.$http.post('/community/getStoreOrderDetail',{
-      "orderId":this.$route.query.id,
-      "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
-    },{
-      "encryptType":1
-    }).then(function(res) {
-      //console.log(res);
-      if(res.resultCode != 0){
-        alert(res.msg);
-        return false;
-      }
-      _this.list = res.data;
-      // 隐藏加载中
-      _this.$refs.modalLoading.is = false;
-      console.log(JSON.stringify(_this.list));
-
-    }).catch(function(error) {
-      console.log(error)
-    })
+    _this.init();
 
   },
+  beforeRouteUpdate (to, from, next) {
+    //console.log(to.name);
+    if(to.name == 'userOrderDetails'){
+      this.init();
+    }
+    next();
+  },
   methods: {
+    init:function(){
+      let _this = this;
+      // 显示加载中
+      _this.$refs.modalLoading.is = true;
+      this.$http.post('/community/getStoreOrderDetail',{
+        "orderId":this.$route.query.id,
+        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+      },{
+        "encryptType":1
+      }).then(function(res) {
+        //console.log(res);
+        if(res.resultCode != 0){
+          alert(res.msg);
+          return false;
+        }
+        _this.list = res.data;
+        // 隐藏加载中
+        _this.$refs.modalLoading.is = false;
+        //console.log(JSON.stringify(_this.list));
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+    },
     // 取消订单
     cancelOrder:function(id,txt){
-      console.log(id + '|' + txt);
+      let _this = this;
+      // 提示是否取消
+      this.$refs.modalAlert.alert({
+        content: txt,
+        onOk: function () {
+          // 显示加载中
+          _this.$refs.modalLoading.is = true;
+          this.$http.post('/community/cancelStoreOrder',{
+            "orderId":id,
+            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+          },{
+            "encryptType":1
+          }).then(function(res) {
+            //console.log(res);
+            if(res.resultCode != 0){
+              alert(res.msg);
+              return false;
+            }
+            // 隐藏加载中
+            _this.$refs.modalLoading.is = false;
+            // 返回我的订单 || 我的团购
+            if(_this.list.isGroupBuyingOrder){
+              _this.$router.push({ path: 'userOrder', query: { group: 1 }})
+            }else{
+              _this.$router.push('userOrder');
+            }
+          }).catch(function(error) {
+            console.log(error)
+          })
+        },
+        onCancel: function () {
+          return false;
+        }
+      })
     },
     // 取消退单
     cancelReturn:function(id,txt){
-      console.log(id + '|' + txt);
+      let _this = this;
+      // 提示是否取消
+      this.$refs.modalAlert.alert({
+        content: txt,
+        onOk: function () {
+          // 显示加载中
+          _this.$refs.modalLoading.is = true;
+          this.$http.post('/community/cancelApplication',{
+            "orderId":id,
+            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+          },{
+            "encryptType":1
+          }).then(function(res) {
+            console.log(res);
+            if(res.resultCode != 0){
+              alert(res.msg);
+              return false;
+            }
+            // 隐藏加载中
+            _this.$refs.modalLoading.is = false;
+            // 返回我的订单 || 我的团购
+            if(_this.list.isGroupBuyingOrder){
+              _this.$router.push({ path: 'userOrder', query: { group: 1 }})
+            }else{
+              _this.$router.push('userOrder');
+            }
+          }).catch(function(error) {
+            console.log(error)
+          })
+        },
+        onCancel: function () {
+          return false;
+        }
+      })
     },
     // 立即支付
     toPay:function(){
-
+      alert('支付');
     }
   },
   components: {
-    modalToast
+    modalToast,
+    modalAlert
   }
 }
 </script>
