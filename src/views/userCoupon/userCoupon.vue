@@ -3,11 +3,11 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll userCoupon" v-if="is">
-        <div class="hint"><span>您有{{failNum}}张优惠券即将过期</span></div>
+        <div class="hint" v-if="failNum > 0"><span>您有{{failNum}}张优惠券即将过期</span></div>
 
         <ul class="userCouponList">
-          <li v-for="list in lists">
-            <router-link :to="{path:'couponDetails',query:{id:list.couponId}}">
+          <li v-for="list in lists" :class="{'disabled':!list.commutityType}">
+            <router-link :to="{path:'couponDetails',query:{id:list.userCardId}}">
               <div class="left">
                 <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
                 <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
@@ -17,7 +17,8 @@
                 <h3 v-if="list.couponType == 0">全店通用(团购商品除外)</h3>
                 <h3 v-else-if="list.couponType == 1">指定商品适用</h3>
                 <h3 v-else-if="list.couponType == 2">指定品类适用</h3>
-                <h3 v-else-if="list.couponType == 3">{{list.couponType}}</h3>
+                <h3 v-else-if="list.couponType == 3">指定商品适用</h3>
+                <h3 v-else>{{list.couponType}}</h3>
                 <em>{{list.effectiveTime}}-{{list.failureTime}}</em>
                 <span class="overdue" v-if="list.failureType == 1">即将过期</span>
                 <!--可用券-->
@@ -29,34 +30,6 @@
             <div class="not">
               当前小区不可用
               点击切换
-            </div>
-          </li>
-
-
-
-          <li class="disabled">
-            <a href="">
-              <div class="left">
-                <strong class="Price"><b>￥</b>100</strong>
-                <span class="txt">订单满100元</span>
-                <span class="txt">(不含运费)可用</span>
-              </div>
-              <div class="right">
-                <h3>指定商品使用</h3>
-                <em>2016.01.01-2016.12.31</em>
-                <span class="overdue">即将过期</span>
-                <span class="set">立即领取</span>
-                <!--可用券-->
-                <i class="steVoucher"></i>
-                <!--箭头-->
-                <i class="arrowR"></i>
-              </div>
-            </a>
-            <div class="not">
-              <div>
-                <p>当前小区不可用</p>
-                <p>点击切换</p>
-              </div>
             </div>
           </li>
 
@@ -76,6 +49,23 @@
 
 </template>
 <script>
+/*
+
+ // 我的优惠券
+ "userCardId": "用户券编号",
+ "couponId": "优惠券编号",
+ 我的优惠券与商品详情页的优惠券，进优惠券详情时使用不同id
+
+ "couponType": "优惠券类型 0.全程通用 1.指定商品 2.商品分类 3.指定商品专题活动, 状态有4种, ui上提示根据策划规定的显示",
+ 0：全店通用(团购商品除外)
+ 1：指定商品适用
+ 2：指定品类适用
+ 3：
+
+ commutityType
+ 识别是否是当前小区的优惠券，0不是  1是
+
+*/
 import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue'
 import modalToast from '../common/modalToast.vue'
