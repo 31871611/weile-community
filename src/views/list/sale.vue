@@ -3,7 +3,7 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll sale" v-if="!isData">
-        <ul class="">
+        <ul class="saleList">
           <li v-for="(list,index) in lists">
             <router-link class="photo" :to="{path:'commodity',query: { id: list.goodsId }}">
               <img :src="list.imageUrl" alt="">
@@ -61,7 +61,7 @@ export default {
     },{
       "encryptType":1
     }).then(function(res){
-      //console.log(res);
+      console.log(res);
       if(res.resultCode != 0){
         alert(res.msg);
         return false;
@@ -94,9 +94,7 @@ export default {
 
       timer[index] = setInterval(function(){
         // 现在时间大于活动结束时间
-        //console.log(data.startTime + '|' + data.endTime);
         if(data.startTime > data.endTime){
-          console.log('活动已结束！');
           return false;
         }
         // 剩余时间.结束时间-现在时间
@@ -104,18 +102,20 @@ export default {
         // 系统时间加一秒
         data.sysTime = data.sysTime + 1000;
         // 剩余时间小于等于0
-        if(surplus<=0){
+        if(surplus <= 0){
           clearTimeout(timer[index]);
+          //_this.lists.splice(index,1);
+          document.querySelector('.saleList').getElementsByTagName('li')[index].style.display = 'none';
           console.log('活动已结束！');
           return false;
         }
         //console.log('剩余：'+surplus);
 
         let ds = 60*60*24*1000,
-          d = parseInt(surplus/ds),
-          h = parseInt((surplus-d*ds)/(60*60*1000)),
-          m = parseInt((surplus - d*ds - h*3600*1000)/(60*1000)),
-          s = parseInt((surplus-d*ds-h*3600*1000-m*60*1000)/1000);
+            d = parseInt(surplus/ds),
+            h = parseInt((surplus-d*ds)/(60*60*1000)),
+            m = parseInt((surplus - d*ds - h*3600*1000)/(60*1000)),
+            s = parseInt((surplus-d*ds-h*3600*1000-m*60*1000)/1000);
         //console.log(d + '天' + h + '小时' + m + '分' + s + '秒');
         if(h < 10) h = '0' + h;
         if(m < 10) m = '0' + m;
