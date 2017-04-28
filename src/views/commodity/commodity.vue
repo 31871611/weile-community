@@ -51,19 +51,31 @@
           </div>
         </template>
 
-        <!---->
+        <!-- 价格、原价、库存，的显示微信与ios不同 -->
         <div class="commodityTitle">
           <h1><b v-if="list.isHouseUser==1">[住户专享]</b>{{list.name}}<i v-if="list.activityId != 0 && list.activityType == 1">活动</i></h1>
           <div class="info">
             <div class="left">
               <div class="priceNum">
-                <span class="price"><b>￥</b>{{list.priceYuan | price}}</span>
-                <span class="repertory">(库存{{list.inventory}}件)</span>
+                <template v-if="list.originalPrice">
+                  <span class="price"><b>￥</b>{{list.price / 1000 | price}}</span>
+                </template>
+                <template v-else>
+                  <span class="price" v-if="list.nowTime > list.startTime && list.endTime > list.nowTime && list.flashSaleInventory > 0"><b>￥</b>{{list.flashSalePrice / 1000 | price}}</span>
+                  <span class="price" v-else><b>￥</b>{{list.price / 1000 | price}}</span>
+                </template>
+
+                <span class="repertory" v-if="list.nowTime > list.startTime && list.endTime > list.nowTime && list.inventory">(库存{{list.inventory}}件)</span>
               </div>
+              <!-- 有原价显示原价 -->
+              <!-- 没原价 && 抢购库存 > 0 -->
               <span class="originalCost" v-if="list.originalPrice">￥{{list.originalPrice / 1000 | price}}</span>
+              <span class="originalCost" v-if="!list.originalPrice && list.flashSaleInventory > 0">￥{{list.price / 1000 | price}}</span>
             </div>
             <div class="right">
-              <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
+              <span class="limit" v-if="list.flashSalePrice != null && list.nowTime > list.startTime && list.endTime > list.nowTime && list.flashSaleInventory > 0 && list.flashLimit != 0">限购{{list.flashLimit}}件</span>
+              <span class="limit" v-if="list.activityId !=0 && list.flashLimit != 0">限购{{list.flashLimit}}件</span>
+              <span class="limit" v-if="list.groupBuy && list.amountLimit != 0">限购{{list.amountLimit}}件</span>
               <div class="selectNum">
                 <div class="reduce"></div>
                 <input type="text" value="1" />
@@ -80,9 +92,9 @@
         </ul>
 
         <div class="commodityCue" v-if="list.activityId">{{list.discountStr}}</div>
-        <div class="commoditySetCoupon" v-if="!list.groupBuy && couponList.length > 0" v-for="(coupon,index) in couponList" @click="couponListAlert">
+        <div class="commoditySetCoupon" v-if="!list.groupBuy && couponList.length > 0" @click="couponListAlert">
           <b>优惠券</b>
-          <span>{{coupon.couponName}}</span>
+          <span v-for="(coupon,index) in couponList">{{coupon.couponName}}</span>
           <i></i>
         </div>
 
@@ -138,31 +150,52 @@
       </div>
     </article>
     <footer>
-      <div class="commodityFooterNormal">
-        <div class="shopping">
-          <div><b>1</b></div>
-          <span>购物车</span>
+      <!-- 有抢购活动时，结束时间 > 现在时间 && 现在时间 > 开始时间 -->
+      <template v-if="list.endTime > list.nowTime && list.nowTime > list.startTime">
+
+        <div class="commodityFooterNot" v-if="list.flashSaleInventory <= 0 && list.inventory <= 0">
+          <div class="not">已售罄</div>
         </div>
-        <div class="add">
-          加入购物车
+
+        <div class="commodityFooterCart" v-if="list.flashSaleInventory <= 0 && list.inventory > 0">
+          <div class="shopping">
+            <div><b>1</b></div>
+          </div>
+          <div class="price">￥211.00</div>
+          <div class="add">加入购物车</div>
         </div>
-        <div class="pay">
-          立即购买
+
+        <div class="commodityFooterNormal" v-if="list.flashSaleInventory > 0">
+          <div class="shopping">
+            <div><b>1</b></div>
+            <span>购物车</span>
+          </div>
+          <div class="add">
+            加入购物车
+          </div>
+          <div class="pay">
+            立即购买
+          </div>
         </div>
-      </div>
-      <div class="commodityFooterNot">
+
+      </template>
+      <!-- 库存<=0 -->
+      <div class="commodityFooterNot" v-else-if="list.inventory <= 0">
         <div class="not">已售罄</div>
       </div>
-      <div class="commodityFooterBuy">
+      <!-- 团购时.单独显示立即购买 -->
+      <div class="commodityFooterBuy" v-else-if="list.groupBuy">
         <div class="buy">立即购买</div>
       </div>
-      <div class="commodityFooterCart">
+      <!-- 什么情况显示？距开抢 -->
+      <div class="commodityFooterCart" v-else>
         <div class="shopping">
           <div><b>1</b></div>
         </div>
-        <div class="price">￥21.00</div>
+        <div class="price">￥212.00</div>
         <div class="add">加入购物车</div>
       </div>
+
 
     </footer>
   </div>
@@ -200,7 +233,7 @@ export default {
       _this.list = res.data;
       // 计算倒记时
       _this.computeTime(res.data.nowTime,res.data.startTime,res.data.endTime);
-      //console.log(JSON.stringify(res.data));
+      console.log(JSON.stringify(res.data));
 
     }).catch(function(error) {
       console.log(error)
@@ -219,7 +252,7 @@ export default {
         return false;
       }
       _this.couponList = res.data;
-      console.log(JSON.stringify(_this.couponList));
+      //console.log(JSON.stringify(_this.couponList));
 
     }).catch(function(error) {
       console.log(error)
