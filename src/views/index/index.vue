@@ -19,7 +19,7 @@
           <a href="" class="payment">生活缴费</a>
         </div>
 
-        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
+        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList.length > 0">
           <div class="title">
             <h2>活动专区</h2>
           </div>
@@ -41,9 +41,10 @@
           </ul>
         </div>
 
-        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
+        <!-- 推荐分类 -->
+        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList.length > 0">
           <ul>
-            <li v-for="list in categoryHomeLayoutList">
+            <li v-for="list in categoryHomeLayoutList" :style="{'width':categoryHomeLayoutList.length == 1 ? '100%' : ''}">
               <a href="">
                 <img :src="list.imageUrl" alt="">
               </a>
@@ -62,7 +63,7 @@
                   <img :src="list.url" alt="">
                   <h3>{{list.name}}</h3>
                   <div class="price">
-                    <b>￥</b><strong>{{list.priceYuan}}</strong>
+                    <b>￥</b><strong>{{list.price / 1000 | price}}</strong>
                   </div>
                 </router-link>
               </li>
@@ -212,7 +213,6 @@ export default {
         //console.log(res)
         let data = res.data || {};
         if (res.resultCode == 0) {
-
           _this.adLists = data.advInfos;
           // 活动专区...有的没有这个数据？
           _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
@@ -222,12 +222,15 @@ export default {
           _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           _this.recommendList = data.recommend.data;
-          console.log(JSON.stringify(_this.recommendList));
+          console.log(JSON.stringify(res.data));
           //console.log(JSON.stringify(_this.activityHomeLayoutList));
           //console.log(_this.adLists);
 
           // 修改小区后
           callback && callback();
+        }else{
+          console.log(res.msg);
+          alert(res.msg);
         }
       }).catch(function(error) {
         console.log(error)
