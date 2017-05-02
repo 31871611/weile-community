@@ -77,7 +77,7 @@
             <router-link to="store" class="more">更多<i></i></router-link>
           </div>
           <ul>
-            <li v-for="list in recommendList">
+            <li v-for="(list,index) in recommendList">
               <div class="content">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
                 <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
@@ -99,7 +99,8 @@
                   <div class="go" v-if="list.isFlashSale == 1">
                     马上抢
                   </div>
-                  <div class="num" v-if="list.isFlashSale != 1 && list.inventory > 0">
+                  {{list.inventory}}
+                  <div class="num" v-if="list.isFlashSale != 1 && list.inventory > 0" @click="add(index,list)">
                   </div>
                 </div>
               </div>
@@ -135,7 +136,7 @@
       </div>
     </article>
     <footer>
-      <app-nav :select-class="'home'"></app-nav>
+      <app-nav :select-class="'home'" :shoppingNum="shoppingNum"></app-nav>
     </footer>
 
   </div>
@@ -166,6 +167,7 @@
 
 </template>
 <script type="text/ecmascript-6">
+import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import slider from './slider.vue';
 import appNav from '../common/appNav.vue';
@@ -191,7 +193,8 @@ export default {
       activityHomeLayoutList : null,        // 活动专区
       categoryHomeLayoutList : null,        // 活动专区2...
       groupBuyList : null,                  // 团购商品
-      recommendList : null                  // 商品推荐
+      recommendList : null,                 // 商品推荐
+      shoppingNum:0                         // 购物车数量
     }
   },
   mounted() {
@@ -222,8 +225,8 @@ export default {
           _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           _this.recommendList = data.recommend.data;
-          console.log(JSON.stringify(res.data));
-          //console.log(JSON.stringify(_this.activityHomeLayoutList));
+          //console.log(JSON.stringify(res.data));
+          console.log(JSON.stringify(_this.recommendList));
           //console.log(_this.adLists);
 
           // 修改小区后
@@ -277,8 +280,16 @@ export default {
     // 跳转到外部url
     toLink:function(url){
       location.href = url;
+    },
+    // 添加购物车
+    add:function(index,list){
+      // jsp只用到3个值：商品id、商品库存、小区id
+      // 已添加到本地的只修改库存数
+      // 首页点击的时候如果没有库存了提示
+      // 详情页进入的时候没有库存的按钮变为灰色
+      console.log(index);
+      console.log(list);
     }
-
   },
   components: {
     slider,

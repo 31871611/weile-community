@@ -45,9 +45,23 @@
     },
     "HLXK_STATUS": true,
     "HLXK_AUTH": 0,
-    "购物车":[
-      {"小区id":[{"a" : "aa"},{}]}
+    "HLXK_SHOPPING":[
+      {
+        "distributionCommunityId":5,
+        "id":1,
+        "amount":1,
+        "list":[{"a" : "aa"},{}]
+      }
     ]
+}
+
+
+
+// 是否登录？
+for(var i = 0;i < HLXK_SHOPPING.length; i++){
+  if(HLXK_SHOPPING[i].distributionCommunityId == distributionCommunityId){
+    shopping[i].list
+  }
 }
 
 
