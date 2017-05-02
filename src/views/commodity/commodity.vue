@@ -152,6 +152,13 @@
       </div>
     </article>
     <footer>
+      <!--
+          团购商品，是立即购买
+          没有库存的显示已售罄
+          普通商品是加入购物车
+          抢购商品是，显示两个按钮
+      -->
+
       <!-- 有抢购活动时，结束时间 > 现在时间 && 现在时间 > 开始时间 -->
       <template v-if="list.endTime > list.nowTime && list.nowTime > list.startTime">
 
