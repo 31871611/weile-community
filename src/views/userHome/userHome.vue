@@ -12,14 +12,14 @@
             <span>用户名</span>
           </div>
         </div>
-        <div class="address">
-          <i class="map"></i>
-          <div>
-            <strong>福州 融侨锦江</strong>
-            <span>005座003单元012房</span>
-          </div>
-          <i class="arrowR"></i>
-        </div>
+        <!--<div class="address">-->
+          <!--<i class="map"></i>-->
+          <!--<div>-->
+            <!--<strong>福州 融侨锦江</strong>-->
+            <!--<span>005座003单元012房</span>-->
+          <!--</div>-->
+          <!--<i class="arrowR"></i>-->
+        <!--</div>-->
         <!--<ul class="list">-->
           <!--<li>-->
             <!--<a href="">-->

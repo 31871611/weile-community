@@ -114,6 +114,9 @@
 
   .linkList{
     $h:88px;
+    &:last-child{
+      margin-bottom: pxTorem(50px);
+    }
     margin-top: pxTorem(20px);
     li{
       height: pxTorem($h);
