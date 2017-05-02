@@ -1,5 +1,5 @@
 <template>
-
+<div class="view">
   <div class="wrap">
 
     <article class="main">
@@ -156,6 +156,9 @@
     </footer>
   </div>
 
+  <router-view></router-view>
+
+</div>
 </template>
 <script>
 import appNav from '../common/appNav.vue';
