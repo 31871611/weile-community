@@ -94,7 +94,9 @@
         <div class="commodityCue" v-if="list.activityId">{{list.discountStr}}</div>
         <div class="commoditySetCoupon" v-if="!list.groupBuy && couponList.length > 0" @click="couponListAlert">
           <b>优惠券</b>
-          <span v-for="(coupon,index) in couponList">{{coupon.couponName}}</span>
+          <div>
+            <span v-for="(coupon,index) in couponList">{{coupon.couponName}}</span>
+          </div>
           <i></i>
         </div>
 
@@ -277,7 +279,6 @@ export default {
       timer = setInterval(function(){
         // 现在时间大于活动结束时间
         if(startTime > endTime){
-          console.log('活动已结束！');
           return false;
         }
         // 剩余时间.结束时间-现在时间
@@ -287,6 +288,7 @@ export default {
         // 剩余时间小于等于0
         if(surplus<=0){
           clearInterval(timer);
+          document.querySelector('.commodityRushGo').style.display = 'none';
           console.log('活动已结束！');
           return false;
         }

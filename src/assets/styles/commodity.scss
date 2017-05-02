@@ -269,15 +269,18 @@
     margin-right: pxTorem(18px);
     @include border-radius(pxTorem(6px));
   }
+  div{
+    height: pxTorem($h);
+    @include flex(1);
+    overflow: hidden;
+  }
   span{
-    width: 100%;
     height: pxTorem($h);
     line-height: pxTorem($h);
-    display: block;
-    @include flex(1);
+    display: inline-block;
+    margin-right: pxTorem(10px);
     color: #6a737a;
     @include font-dpr(30px);
-    overflow: hidden;
   }
   i{
     margin-left: pxTorem(18px);
