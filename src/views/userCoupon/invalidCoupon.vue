@@ -1,6 +1,6 @@
 <template>
 
-  <div class="wrap">
+  <div class="wrap fullPosition">
     <article class="main">
       <div class="mainScroll userCoupon" v-if="is">
 

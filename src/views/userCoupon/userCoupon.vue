@@ -1,4 +1,6 @@
 <template>
+<div class="view">
+
 
   <div class="wrap">
     <article class="main">
@@ -46,6 +48,12 @@
     </article>
 
   </div>
+
+  <transition name="SlideRightLeft">
+    <router-view></router-view>
+  </transition>
+
+</div>
 
 </template>
 <script>
