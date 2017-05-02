@@ -47,6 +47,17 @@
       &:before{
         background-image: url("../images/icon_menu_shoppingtrolley_n@2x.png");
       }
+      position: relative;
+      b{
+        position: absolute;
+        left:55%;
+        top:pxTorem(10px);
+        color: #fff;
+        background: $orange-base;
+        @include font-dpr(20px);
+        padding:pxTorem(2px) pxTorem(8px);
+        @include border-radius(pxTorem(15px));
+      }
     }
     // 我的
     &.my{
