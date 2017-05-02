@@ -67,9 +67,15 @@
             <span>优惠方式二：满5件打5折</span>
             <strong>-￥10.00</strong>
           </li>
-          <li @click="couponAlert">
-            <span><b>{{(couponPrice / 1000) || (lists.couponList[0].faceValue / 1000)}}元优惠券</b></span>
-            <strong>-￥{{(couponPrice / 1000) || (lists.couponList[0].faceValue / 1000) | price}}</strong>
+          <li @click="couponAlert" if="lists.couponList.length > 0">
+            <template v-if="isUseCoupon">
+              <span><b>不使用优惠券</b></span>
+            </template>
+            <template v-else>
+              <!-- lists.couponList[0]报错... -->
+              <span><b>{{couponPrice / 1000 || lists.couponList[0].faceValue / 1000}}元优惠券</b></span>
+              <strong>-￥{{couponPrice / 1000 || lists.couponList[0].faceValue / 1000 | price}}</strong>
+            </template>
             <i class="arrowR"></i>
           </li>
           <li>
@@ -92,7 +98,7 @@
                   <i class="radio" :class="{'select':index == couponIndex}"></i>
                 </label>
               </li>
-              <li @click="selectCoupon(-1,0)">
+              <li @click="selectCoupon(-1,'不使用优惠券')">
                 <label>
                   <span :class="{'select':-1 == couponIndex}">不使用优惠券</span>
                   <i class="radio" :class="{'select':-1 == couponIndex}"></i>
@@ -128,9 +134,11 @@ export default {
     return{
       address:'',                 // 默认地址
       lists:'',                   // 结算信息
+      isUseCoupon:false,          // 是否使用优惠券
       couponIndex:0,              // 优惠券列表索引
       couponPrice:'',             // 选中优惠券价格
       isCouponAlert:false         // 是否显示优惠券弹窗
+
     }
   },
   mounted() {
@@ -187,8 +195,13 @@ export default {
     // 选择优惠券
     selectCoupon:function(index,faceValue){
       this.couponIndex = index;
-      // 不使用优惠券...
-      this.couponPrice = faceValue;
+      if(faceValue == '不使用优惠券'){
+        // 不使用优惠券
+        this.isUseCoupon = true
+      }else{
+        this.isUseCoupon = false;
+        this.couponPrice = faceValue;
+      }
       // 关闭优惠券弹窗
       this.isCouponAlert = !this.isCouponAlert
     }
