@@ -93,7 +93,7 @@ const router = new Router({
           // 申请退货
           path: '/userApplyBack',
           name: 'userApplyBack',
-          component: resolve => require(['@/views/userApplyBack/userApplyBack'], resolve)
+          component: resolve => require(['@/views/userOrderDetails/userApplyBack'], resolve)
         }
       ]
     },{
@@ -103,11 +103,11 @@ const router = new Router({
       component: resolve => require(['@/views/userAddress/userAddress'], resolve),
       children:[
         {
-          path: 'add',
+          path: '/userAddressAdd',
           component: resolve => require(['@/views/userAddress/addAddress'], resolve)
         },
         {
-          path: 'modify',
+          path: '/userAddressModify',
           component: resolve => require(['@/views/userAddress/addAddress'], resolve)
         }
       ]
@@ -115,17 +115,18 @@ const router = new Router({
       // 我的优惠券
       path: '/userCoupon',
       name: 'userCoupon',
-      component: resolve => require(['@/views/userCoupon/userCoupon'], resolve)
-    },{
-      // 失效优惠券
-      path: '/invalidCoupon',
-      name: 'invalidCoupon',
-      component: resolve => require(['@/views/userCoupon/invalidCoupon'], resolve)
-    },{
-      // 优惠券详情
-      path: '/couponDetails',
-      name: 'couponDetails',
-      component: resolve => require(['@/views/userCoupon/couponDetails'], resolve)
+      component: resolve => require(['@/views/userCoupon/userCoupon'], resolve),
+      children:[
+        {
+          // 优惠券详情
+          path: '/couponDetails',
+          component: resolve => require(['@/views/userCoupon/couponDetails'], resolve)
+        },{
+          // 失效优惠券
+          path: '/invalidCoupon',
+          component: resolve => require(['@/views/userCoupon/invalidCoupon'], resolve)
+        }
+      ]
     }, {
       path: '*',
       component: Home
