@@ -87,8 +87,7 @@ export default {
   },
   mounted() {
     let _this = this;
-
-    if(this.path == '/userAddress/modify'){
+    if(this.path == '/userAddressModify'){
       if(!_this.list){
         _this.$router.back();
         return false;
@@ -212,7 +211,7 @@ export default {
       // 显示加载中
       _this.$refs.modalLoading.is = true;
       // 提交
-      if(this.path == '/userAddress/modify'){
+      if(this.path == '/userAddressModify'){
         // 防止手动修改url值
         if(_this.distributionCommunityId == _this.$route.query.communityId){
           _this.distributionCommunityId = _this.$route.query.communityId
@@ -222,7 +221,7 @@ export default {
         }
         // 修改地址
         _this.modify();
-      }else if(this.path == '/userAddress/add'){
+      }else if(this.path == '/userAddressAdd'){
         // 增加地址
         _this.add();
       }

@@ -10,7 +10,7 @@
         </div>
         <ul v-if="canDeliverAddressInfos.length > 0">
           <li v-for="(list,index) in canDeliverAddressInfos">
-            <router-link :to="{path:'/userAddress/modify',query: { index: index,communityId: list.communityId,addressId:list.addressId }}">
+            <router-link :to="{path:'/userAddressModify',query: { index: index,communityId: list.communityId,addressId:list.addressId }}">
               <div><span class="name">{{list.name}}</span><span class="tel">{{list.mobile}}</span></div>
               <p>{{list.communityName}} | {{list.address}}</p>
               <i class="auth" v-if="list.isAuthenAddress"></i>
@@ -34,7 +34,7 @@
     </article>
     <footer>
       <div class="userAddressBtn">
-        <router-link to="/userAddress/add">
+        <router-link to="userAddressAdd">
           新增地址
         </router-link>
       </div>
