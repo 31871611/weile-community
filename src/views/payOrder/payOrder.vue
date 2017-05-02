@@ -1,5 +1,5 @@
 <template>
-
+<div class="view">
   <div class="wrap">
 
     <article class="main">
@@ -37,15 +37,15 @@
         </div>
         <div class="goodsList">
           <ul>
-            <li v-for="list in 2">
-              <a href="" class="photo">
-                <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
+            <li v-for="list in lists.goodsList">
+              <a href="javascript:;" class="photo">
+                <img :src="list.imageUrl" alt="">
               </a>
               <div class="box">
-                <h3>标题标题标题标题标题标题</h3>
+                <h3>{{list.goodsName}}</h3>
                 <div class="bottom">
-                  <strong class="price">￥200</strong>
-                  <span class="num">x1</span>
+                  <strong class="price">￥{{list.price / 1000 | price}}</strong>
+                  <span class="num">x{{list.amount}}</span>
                 </div>
               </div>
             </li>
@@ -67,42 +67,41 @@
             <span>优惠方式二：满5件打5折</span>
             <strong>-￥10.00</strong>
           </li>
-          <li>
-            <span><b>5元优惠券</b></span>
-            <strong>-￥5.00</strong>
+          <li @click="couponAlert">
+            <span><b>{{(couponPrice / 1000) || (lists.couponList[0].faceValue / 1000)}}元优惠券</b></span>
+            <strong>-￥{{(couponPrice / 1000) || (lists.couponList[0].faceValue / 1000) | price}}</strong>
             <i class="arrowR"></i>
           </li>
           <li>
-            <span class="prompt">共计2件商品</span>
-            <strong>合计：<b>￥0.00</b></strong>
+            <span class="prompt">共计{{lists.goodsNum}}件商品</span>
+            <strong>合计：<b>￥{{lists.totalAmount}}</b></strong>
           </li>
         </ul>
 
-        <!-- 订单可用优惠券弹窗 -->
-        <div class="availableCouponAlert">
-          <h2>订单可用优惠券弹窗</h2>
-          <ul>
-            <li>
-              <label for="a1">
-                <span>1元优惠券</span>
-                <input id="a1" type="radio" name="availableCoupon" />
-              </label>
-            </li>
-            <li>
-              <label for="a2">
-                <span>1元优惠券</span>
-                <input id="a2" type="radio" name="availableCoupon" />
-              </label>
-            </li>
-            <li>
-              <label for="a3">
-                <span>1元优惠券</span>
-                <input id="a3" type="radio" name="availableCoupon" />
-              </label>
-            </li>
-          </ul>
-          <div class="btn">关闭</div>
-        </div>
+        <!-- 半透明遮罩 -->
+        <div class="opacity" v-if="isCouponAlert" @click="couponAlert"></div>
+
+        <transition name="SlideBottomTop">
+          <!-- 订单可用优惠券弹窗 -->
+          <div class="availableCouponAlert" v-if="isCouponAlert">
+            <h2>订单可用优惠券弹窗</h2>
+            <ul>
+              <li v-for="(list,index) in lists.couponList" v-if="list.orderMoney < lists.payAmount" @click="selectCoupon(index,list.faceValue)">
+                <label>
+                  <span :class="{'select':index == couponIndex}">{{list.faceValue / 1000}}元优惠券</span>
+                  <i class="radio" :class="{'select':index == couponIndex}"></i>
+                </label>
+              </li>
+              <li @click="selectCoupon(-1,0)">
+                <label>
+                  <span :class="{'select':-1 == couponIndex}">不使用优惠券</span>
+                  <i class="radio" :class="{'select':-1 == couponIndex}"></i>
+                </label>
+              </li>
+            </ul>
+            <div class="btn" @click="couponAlert">关闭</div>
+          </div>
+        </transition>
 
 
       </div>
@@ -110,33 +109,28 @@
     <footer>
       <div class="footerCart">
         <div class="total">
-          还需支付：<b>￥0.00</b>
+          还需支付：<b>￥{{lists.payAmount}}</b>
         </div>
         <div class="next">立即下单</div>
       </div>
     </footer>
   </div>
 
+  <router-view></router-view>
+</div>
 </template>
 <script>
-/*
-
- /community/getPayInfo
-
- {
-  "goodsInfo":"[{goodsId:25,price:22000,amount:1},{goodsId:24,price:1000,amount:1}]",
-  "distributionCommunityId":"1",
-  "isFlashOrder":0
- }
-
-*/
 import simplestorage from 'simplestorage.js'
 
 export default {
   name: 'payOrder',
   data() {
     return{
-      address:''
+      address:'',                 // 默认地址
+      lists:'',                   // 结算信息
+      couponIndex:0,              // 优惠券列表索引
+      couponPrice:'',             // 选中优惠券价格
+      isCouponAlert:false         // 是否显示优惠券弹窗
     }
   },
   mounted() {
@@ -148,8 +142,28 @@ export default {
     getDefaultAddress:function(){
       let _this = this;
 
+      // 默认地址
       this.$http.post('/community/getDefaultAddress', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id
+      },{
+        "encryptType":1
+      }).then(function(res){
+        //console.log(res);
+        if(res.resultCode != 0){
+          alert(res.msg);
+          return false;
+        }
+        _this.address = res.data;
+        //console.log(JSON.stringify(_this.address));
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+      // 获取结算信息
+      this.$http.post('/community/getPayInfo', {
+        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+        "goodsInfo":"[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]",
+        "isFlashOrder":0  //是否抢购商品：1是，0否
       },{
         "encryptType":1
       }).then(function(res){
@@ -158,12 +172,25 @@ export default {
           alert(res.msg);
           return false;
         }
-        _this.address = res.data;
-        console.log(JSON.stringify(_this.address));
+        _this.lists = res.data;
+        console.log(JSON.stringify(_this.lists));
 
       }).catch(function(error) {
         console.log(error)
       })
+
+    },
+    // 优惠券弹窗
+    couponAlert:function(){
+      this.isCouponAlert = !this.isCouponAlert
+    },
+    // 选择优惠券
+    selectCoupon:function(index,faceValue){
+      this.couponIndex = index;
+      // 不使用优惠券...
+      this.couponPrice = faceValue;
+      // 关闭优惠券弹窗
+      this.isCouponAlert = !this.isCouponAlert
     }
   },
   components: {
