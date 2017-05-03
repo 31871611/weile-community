@@ -298,12 +298,27 @@ export default {
 
       // 需要获取原有数据进行添加
       let lists = simplestorage.get('HLXK_SHOPPING') || [];
-      let obj = {
-        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-        "id":list.commodityId,
-        "amount":1
+      // 商品是否存在
+      if(lists.length > 0){
+        console.log('有')
+        for(let i = 0;i < lists.length;i++){
+          if(lists[i].id == list.commodityId){
+            // 已存在商品
+            // 添加库存 list.inventory
+            console.log('已存在商品')
+          }
+        }
+      }else{
+        console.log('没')
+        // 添加
+        let obj = {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "id":list.commodityId,
+          "amount":1
+        }
+        lists.push(obj);
       }
-      lists.push(obj);
+
       console.log(lists);
 
       // 会重置
