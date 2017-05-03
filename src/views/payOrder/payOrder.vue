@@ -163,6 +163,9 @@ export default {
       }
     }
   },
+  created() {
+
+  },
   mounted() {
     let _this = this;
 
@@ -174,10 +177,12 @@ export default {
     getData() {
       let _this = this;
 
+      let goods = "[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]";
+
       this.$http.post('/community/getPayInfo', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "goodsInfo":"[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]",
-        "isFlashOrder":0        //是否抢购商品：1是，0否
+        "isFlashOrder":this.$route.query.isFlashOrder || 0        //是否抢购商品：1是，0否
       },{
         "encryptType":1
       }).then(function(res){
@@ -245,19 +250,13 @@ export default {
   },
   watch: {
     '$route' () {
-
+      // 修改地址
       if(this.$route.query.address){
         this.address = JSON.parse(this.$route.query.address);
       }
-
     }
   }
 }
-/*
 
-
-
-
-*/
 </script>
 <style scoped lang="scss" src="../../assets/styles/payOrder.scss"></style>
