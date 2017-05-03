@@ -54,11 +54,13 @@
 
 
         <ul class="payOrderInfo">
-          <li>
+
+          <li v-for="list in lists.giftsList">
             <i class="give">赠</i>
-            <span>胡椒粉一瓶</span>
+            <span>{{list.giftName}}</span>
             <strong>￥10.00</strong>
           </li>
+
           <li>
             <span>胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶</span>
             <strong>￥10.00</strong>
@@ -67,20 +69,24 @@
             <span>优惠方式二：满5件打5折</span>
             <strong>-￥10.00</strong>
           </li>
+          <li v-if="lists.distributionAmount">
+            <span>配送费：</span>
+            <strong>￥{{lists.distributionAmount / 1000 | price}}</strong>
+          </li>
           <li @click="couponAlert" if="lists.couponList.length > 0">
             <template v-if="isUseCoupon">
               <span><b>不使用优惠券</b></span>
             </template>
             <template v-else>
               <!-- lists.couponList[0]报错... -->
-              <span><b>{{couponPrice / 1000 || lists.couponList[0].faceValue / 1000}}元优惠券</b></span>
-              <strong>-￥{{couponPrice / 1000 || lists.couponList[0].faceValue / 1000 | price}}</strong>
+              <span><b>{{couponPrice / 1000 }}元优惠券</b></span>
+              <strong>-￥{{couponPrice / 1000 | price}}</strong>
             </template>
             <i class="arrowR"></i>
           </li>
           <li>
             <span class="prompt">共计{{lists.goodsNum}}件商品</span>
-            <strong>合计：<b>￥{{lists.totalAmount}}</b></strong>
+            <strong>合计：<b>￥{{(lists.totalAmount - couponPrice) / 1000 | price}}</b></strong>
           </li>
         </ul>
 
@@ -115,7 +121,7 @@
     <footer>
       <div class="footerCart">
         <div class="total">
-          还需支付：<b>￥{{lists.payAmount}}</b>
+          还需支付：<b>￥{{(lists.payAmount - couponPrice) / 1000 | price}}</b>
         </div>
         <div class="next">立即下单</div>
       </div>
@@ -126,6 +132,17 @@
 </div>
 </template>
 <script>
+/*
+
+ "payAmount": 120000,
+ "totalAmount": 120000,
+
+ "activityList": [],        // 活动
+ "giftsList": [],           // 赠品
+ "isFlashOrder": "0",       // 是否抢购订单，0否，1是
+ "isNewUser": 0             // 是否新用户，1是，0不是
+
+*/
 import simplestorage from 'simplestorage.js'
 
 export default {
@@ -144,9 +161,36 @@ export default {
   mounted() {
     let _this = this;
 
+    _this.getData();
     _this.getDefaultAddress();
   },
   methods: {
+    getData() {
+      let _this = this;
+
+      // 获取结算信息
+      this.$http.post('/community/getPayInfo', {
+        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+        "goodsInfo":"[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]",
+        "isFlashOrder":0  //是否抢购商品：1是，0否
+      },{
+        "encryptType":1
+      }).then(function(res){
+        console.log(res);
+        if(res.resultCode != 0){
+          alert(res.msg);
+          return false;
+        }
+        _this.lists = res.data;
+        _this.couponPrice = res.data.couponList[0].faceValue
+        console.log(JSON.stringify(_this.lists));
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+    },
+    // 获取默认地址
     getDefaultAddress:function(){
       let _this = this;
 
@@ -167,26 +211,6 @@ export default {
         console.log(error)
       })
 
-      // 获取结算信息
-      this.$http.post('/community/getPayInfo', {
-        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
-        "goodsInfo":"[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]",
-        "isFlashOrder":0  //是否抢购商品：1是，0否
-      },{
-        "encryptType":1
-      }).then(function(res){
-        console.log(res);
-        if(res.resultCode != 0){
-          alert(res.msg);
-          return false;
-        }
-        _this.lists = res.data;
-        console.log(JSON.stringify(_this.lists));
-
-      }).catch(function(error) {
-        console.log(error)
-      })
-
     },
     // 优惠券弹窗
     couponAlert:function(){
@@ -198,6 +222,7 @@ export default {
       if(faceValue == '不使用优惠券'){
         // 不使用优惠券
         this.isUseCoupon = true
+        this.couponPrice = 0;
       }else{
         this.isUseCoupon = false;
         this.couponPrice = faceValue;
