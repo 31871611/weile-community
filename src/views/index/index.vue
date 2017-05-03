@@ -283,13 +283,34 @@ export default {
     },
     // 添加购物车
     add:function(index,list){
-      // jsp只用到3个值：商品id、商品库存、小区id
-      // 已添加到本地的只修改库存数
-      // 首页点击的时候如果没有库存了提示
-      // 详情页进入的时候没有库存的按钮变为灰色.不添加到购物车？在加入购物车按钮加入购物车...
-      // 结算成功需要把购物车中信息删除
-      console.log(index);
-      console.log(list);
+      /*
+       jsp只用到3个值：商品id、商品库存、小区id
+        已添加到本地的只修改库存数
+        首页点击的时候如果没有库存了提示
+        详情页进入的时候没有库存的按钮变为灰色.不添加到购物车？在加入购物车按钮加入购物车...
+        结算成功需要把购物车中信息删除
+
+        已登录是先添加到本地还是购物车
+        进入购物在一次提交？。。。
+
+      */
+
+
+      // 需要获取原有数据进行添加
+      let lists = simplestorage.get('HLXK_SHOPPING') || [];
+      let obj = {
+        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+        "id":list.commodityId,
+        "amount":1
+      }
+      lists.push(obj);
+      console.log(lists);
+
+      // 会重置
+      simplestorage.set('HLXK_SHOPPING',lists);
+
+      //console.log(index);
+      //console.log(list);
     }
   },
   components: {
