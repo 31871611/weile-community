@@ -11,6 +11,7 @@
   $h:68px;
   height: pxTorem($h);
   @include display-flex();
+  background: #fff;
   a{
     text-align: center;
     @include flex(1);

@@ -69,17 +69,18 @@ export default {
   props:['list'],
   data() {
     return{
-      path:this.$route.path,      //当前url，分:新增、修改
-      addressId:'',               //修改地址时使用
-      name:'',                    //必
-      mobile:'',                  //必
+      parentPath:'',              // 上一级url，在新增、修改成功时后退，带参数
+      path:this.$route.path,      // 当前url，分:新增、修改
+      addressId:'',               // 修改地址时使用
+      name:'',                    // 必
+      mobile:'',                  // 必
       distributionCommunityName:simplestorage.get('HLXK_DISTRIBUTION').name || '选择小区',
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id || '',
-      address:'',                 //必
-      isDefault:false,            //"1"表示是 “0”不设为默认地址
-      isSelectQuarters:false,     //选择小区弹窗
-      quartersLists:'',           //小区列表
-      textError:''                //错误提示
+      address:'',                 // 必
+      isDefault:false,            // "1"表示是 “0”不设为默认地址
+      isSelectQuarters:false,     // 选择小区弹窗
+      quartersLists:'',           // 小区列表
+      textError:''                // 错误提示
     }
   },
   created() {
@@ -87,7 +88,7 @@ export default {
   },
   mounted() {
     let _this = this;
-    if(this.path == '/userAddressModify'){
+    if(this.path == '/userAddress/modify'){
       if(!_this.list){
         _this.$router.back();
         return false;
@@ -150,13 +151,19 @@ export default {
       },{
         "encryptType":1
       }).then(function(res){
-        console.log(res);
+        //console.log(res);
         if(res.resultCode != 0){
           alert(res.msg);
           return false;
         }
         _this.$refs.modalLoading.is = false;
-        _this.$router.back();
+        //_this.$router.back();
+        _this.$router.replace({
+          path: _this.parentPath,
+          query:{
+            'reload':1
+          }
+        });
       }).catch(function(error) {
         console.log(error)
       })
@@ -183,7 +190,13 @@ export default {
           return false;
         }
         _this.$refs.modalLoading.is = false;
-        _this.$router.back();
+        //_this.$router.back();
+        _this.$router.replace({
+          path: _this.parentPath,
+          query:{
+            'reload':1
+          }
+        });
       }).catch(function(error) {
         console.log(error)
       })
@@ -211,7 +224,7 @@ export default {
       // 显示加载中
       _this.$refs.modalLoading.is = true;
       // 提交
-      if(this.path == '/userAddressModify'){
+      if(this.path == '/userAddress/modify'){
         // 防止手动修改url值
         if(_this.distributionCommunityId == _this.$route.query.communityId){
           _this.distributionCommunityId = _this.$route.query.communityId
@@ -221,7 +234,7 @@ export default {
         }
         // 修改地址
         _this.modify();
-      }else if(this.path == '/userAddressAdd'){
+      }else if(this.path == '/userAddress/add' || this.path == '/payorder/address/add'){
         // 增加地址
         _this.add();
       }
@@ -230,6 +243,11 @@ export default {
   },
   components: {
     modalToast
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.parentPath = from.fullPath;
+    })
   }
 }
 </script>

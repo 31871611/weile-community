@@ -1,4 +1,5 @@
 <template>
+<div class="view">
 
   <div class="wrap">
     <article class="main">
@@ -208,6 +209,8 @@
 
     </footer>
   </div>
+
+</div>
 </template>
 <script type="text/ecmascript-6">
 import simplestorage from 'simplestorage.js'

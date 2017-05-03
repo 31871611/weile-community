@@ -1,5 +1,5 @@
 <template>
-<div class="view">
+<div class="view fullPosition">
 
 
   <div class="wrap">
@@ -9,7 +9,7 @@
 
         <ul class="userCouponList">
           <li v-for="list in lists" :class="{'disabled':!list.commutityType}">
-            <router-link :to="{path:'couponDetails',query:{id:list.userCardId}}">
+            <router-link :to="{path:'userCoupon/details',query:{id:list.userCardId}}">
               <div class="left">
                 <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
                 <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
@@ -37,7 +37,7 @@
 
         </ul>
 
-        <router-link to="invalidCoupon" class="see">
+        <router-link to="userCoupon/invalid" class="see">
           查看已失效的券
         </router-link>
       </div>
@@ -99,14 +99,14 @@ export default {
     },{
       "encryptType":1
     }).then(function(res){
-      console.log(res);
+      //console.log(res);
       if(res.resultCode != 0){
         alert(res.msg);
         return false;
       }
       _this.failNum = res.data.failNum;
       _this.lists = res.data.list;
-      console.log(JSON.stringify(res.data));
+      //console.log(JSON.stringify(res.data));
       // 隐藏加载中
       _this.$refs.modalLoading.is = false;
       if(res.data.list.length > 0){

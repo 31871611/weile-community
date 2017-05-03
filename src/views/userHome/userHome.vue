@@ -156,7 +156,9 @@
     </footer>
   </div>
 
-  <router-view></router-view>
+  <transition name="SlideRightLeft">
+    <router-view></router-view>
+  </transition>
 
 </div>
 </template>

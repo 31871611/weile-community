@@ -1,5 +1,5 @@
 <template>
-<div class="view">
+<div class="view fullPosition">
 
   <div class="wrap">
 
@@ -8,13 +8,21 @@
         <div class="title" v-if="canDeliverAddressInfos.length > 0">
           可配送地址
         </div>
+
         <ul v-if="canDeliverAddressInfos.length > 0">
           <li v-for="(list,index) in canDeliverAddressInfos">
-            <router-link :to="{path:'/userAddressModify',query: { index: index,communityId: list.communityId,addressId:list.addressId }}">
+
+            <a v-if="source == 'payorder'" href="javascript:;" @click="selectAddress(list)">
+              <div><span class="name">{{list.name}}</span><span class="tel">{{list.mobile}}</span></div>
+              <p>{{list.communityName}} | {{list.address}}</p>
+              <i class="auth" v-if="list.isAuthenAddress"></i>
+            </a>
+            <router-link v-else :to="{path:'/userAddress/modify',query: { index: index,communityId: list.communityId,addressId:list.addressId }}">
               <div><span class="name">{{list.name}}</span><span class="tel">{{list.mobile}}</span></div>
               <p>{{list.communityName}} | {{list.address}}</p>
               <i class="auth" v-if="list.isAuthenAddress"></i>
             </router-link>
+
           </li>
         </ul>
         <div class="title" v-if="noDeliverAddressInfos.length > 0">
@@ -34,7 +42,10 @@
     </article>
     <footer>
       <div class="userAddressBtn">
-        <router-link to="userAddressAdd">
+        <router-link to="address/add" v-if="source == 'payorder'">
+          新增地址
+        </router-link>
+        <router-link to="userAddress/add" v-else>
           新增地址
         </router-link>
       </div>
@@ -59,8 +70,10 @@ export default {
   name: 'userAddress',
   data() {
     return{
-      canDeliverAddressInfos:'',
-      noDeliverAddressInfos:''
+      canDeliverAddressInfos:'',                  // 可配送地址
+      noDeliverAddressInfos:'',                   // 不可配送地址
+      parentUrl:'',                               // 上一级url，结算、用户中心
+      source:this.$route.query.source || ''       // 来源.从结算过来
     }
   },
   mounted() {
@@ -90,19 +103,39 @@ export default {
       }).catch(function(error) {
         console.log(error)
       })
+    },
+    // 只选择地址不修改
+    selectAddress:function(list){
+      let _this = this;
+      alert('选择地址');
+      _this.$router.push({
+        path: '/payorder',
+        query:{
+          'address':JSON.stringify(list)
+        }
+      });
     }
   },
   components: {
     notData,
     modalToast
   },
-  beforeRouteUpdate(to, from, next){
-    // 进入下一连接=改变会运行，to.name == 'userAddress'只在返回时运行
-    if(to.name == 'userAddress'){
-      this.init();
+  watch: {
+    '$route' () {
+      if(this.$route.query.reload == '1'){
+        this.init();
+      }
     }
-    next();
-  }
+  },
+  //beforeRouteUpdate(to, from, next){
+    // 要修改...
+    //console.log(to);
+    // 进入下一连接=改变会运行，to.name == 'userAddress'只在返回时运行
+    //if(to.name == 'userAddress'){
+    //  this.init();
+    //}
+    //next();
+  //}
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userAddress.scss"></style>

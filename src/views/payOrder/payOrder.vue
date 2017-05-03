@@ -10,7 +10,7 @@
 
         <ul class="defaultAddress">
           <li>
-            <router-link to="userAddress">
+            <router-link :to="{path:'payorder/address',query:{source:'payorder'}}">
               <template v-if="address">
                 <div><span class="name">{{address.name}}</span><span class="tel">{{address.mobile}}</span></div>
                 <p>{{address.communityName}} | {{address.address}}</p>
@@ -61,53 +61,49 @@
             <strong>￥10.00</strong>
           </li>
 
-          <li>
-            <span>胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶胡椒粉一瓶</span>
-            <strong>￥10.00</strong>
-          </li>
-          <li>
-            <span>优惠方式二：满5件打5折</span>
-            <strong>-￥10.00</strong>
+          <li v-for="list in lists.activityList">
+            <span>{{list.activityName}}</span>
+            <span>{{list.discountStr}}</span>
+            <strong>￥{{list.discountMoney}}</strong>
           </li>
           <li v-if="lists.distributionAmount">
             <span>配送费：</span>
             <strong>￥{{lists.distributionAmount / 1000 | price}}</strong>
           </li>
           <li @click="couponAlert" if="lists.couponList.length > 0">
-            <template v-if="isUseCoupon">
+            <template v-if="coupon.isUse">
               <span><b>不使用优惠券</b></span>
             </template>
             <template v-else>
-              <!-- lists.couponList[0]报错... -->
-              <span><b>{{couponPrice / 1000 }}元优惠券</b></span>
-              <strong>-￥{{couponPrice / 1000 | price}}</strong>
+              <span><b>{{coupon.price / 1000 }}元优惠券</b></span>
+              <strong>-￥{{coupon.price / 1000 | price}}</strong>
             </template>
             <i class="arrowR"></i>
           </li>
           <li>
             <span class="prompt">共计{{lists.goodsNum}}件商品</span>
-            <strong>合计：<b>￥{{(lists.totalAmount - couponPrice) / 1000 | price}}</b></strong>
+            <strong>合计：<b>￥{{(lists.totalAmount - coupon.price) / 1000 | price}}</b></strong>
           </li>
         </ul>
 
         <!-- 半透明遮罩 -->
-        <div class="opacity" v-if="isCouponAlert" @click="couponAlert"></div>
+        <div class="opacity" v-if="coupon.isAlert" @click="couponAlert"></div>
 
         <transition name="SlideBottomTop">
           <!-- 订单可用优惠券弹窗 -->
-          <div class="availableCouponAlert" v-if="isCouponAlert">
+          <div class="availableCouponAlert" v-if="coupon.isAlert">
             <h2>订单可用优惠券弹窗</h2>
             <ul>
               <li v-for="(list,index) in lists.couponList" v-if="list.orderMoney < lists.payAmount" @click="selectCoupon(index,list.faceValue)">
                 <label>
-                  <span :class="{'select':index == couponIndex}">{{list.faceValue / 1000}}元优惠券</span>
-                  <i class="radio" :class="{'select':index == couponIndex}"></i>
+                  <span :class="{'select':index == coupon.index}">{{list.faceValue / 1000}}元优惠券</span>
+                  <i class="radio" :class="{'select':index == coupon.index}"></i>
                 </label>
               </li>
               <li @click="selectCoupon(-1,'不使用优惠券')">
                 <label>
-                  <span :class="{'select':-1 == couponIndex}">不使用优惠券</span>
-                  <i class="radio" :class="{'select':-1 == couponIndex}"></i>
+                  <span :class="{'select':-1 == coupon.index}">不使用优惠券</span>
+                  <i class="radio" :class="{'select':-1 == coupon.index}"></i>
                 </label>
               </li>
             </ul>
@@ -121,24 +117,32 @@
     <footer>
       <div class="footerCart">
         <div class="total">
-          还需支付：<b>￥{{(lists.payAmount - couponPrice) / 1000 | price}}</b>
+          还需支付：<b>￥{{(lists.payAmount - coupon.price) / 1000 | price}}</b>
         </div>
         <div class="next">立即下单</div>
       </div>
     </footer>
   </div>
 
-  <router-view></router-view>
+  <transition name="SlideRightLeft">
+    <router-view></router-view>
+  </transition>
+
 </div>
 </template>
 <script>
 /*
 
- "payAmount": 120000,
- "totalAmount": 120000,
+  商品、地址、抢购
+
+
+ "payAmount": 120000,       // 支付金额
+ "totalAmount": 120000,     // 全部商品总价
 
  "activityList": [],        // 活动
  "giftsList": [],           // 赠品
+
+
  "isFlashOrder": "0",       // 是否抢购订单，0否，1是
  "isNewUser": 0             // 是否新用户，1是，0不是
 
@@ -151,11 +155,12 @@ export default {
     return{
       address:'',                 // 默认地址
       lists:'',                   // 结算信息
-      isUseCoupon:false,          // 是否使用优惠券
-      couponIndex:0,              // 优惠券列表索引
-      couponPrice:'',             // 选中优惠券价格
-      isCouponAlert:false         // 是否显示优惠券弹窗
-
+      coupon:{
+        isUse:false,              // 是否使用优惠券
+        index:0,                  // 优惠券列表索引
+        price:'',                 // 选中优惠券价格
+        isAlert:false             // 是否显示优惠券弹窗
+      }
     }
   },
   mounted() {
@@ -165,25 +170,25 @@ export default {
     _this.getDefaultAddress();
   },
   methods: {
+    // 获取结算信息
     getData() {
       let _this = this;
 
-      // 获取结算信息
       this.$http.post('/community/getPayInfo', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "goodsInfo":"[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]",
-        "isFlashOrder":0  //是否抢购商品：1是，0否
+        "isFlashOrder":0        //是否抢购商品：1是，0否
       },{
         "encryptType":1
       }).then(function(res){
-        console.log(res);
+        //console.log(res);
         if(res.resultCode != 0){
           alert(res.msg);
           return false;
         }
         _this.lists = res.data;
-        _this.couponPrice = res.data.couponList[0].faceValue
-        console.log(JSON.stringify(_this.lists));
+        _this.coupon.price = res.data.couponList[0].faceValue
+        //console.log(JSON.stringify(_this.lists));
 
       }).catch(function(error) {
         console.log(error)
@@ -212,28 +217,47 @@ export default {
       })
 
     },
+    // 修改地址
+    modifyAddress:function(){
+
+    },
     // 优惠券弹窗
     couponAlert:function(){
-      this.isCouponAlert = !this.isCouponAlert
+      this.coupon.isAlert = !this.coupon.isAlert
     },
     // 选择优惠券
     selectCoupon:function(index,faceValue){
-      this.couponIndex = index;
+      this.coupon.index = index;
       if(faceValue == '不使用优惠券'){
         // 不使用优惠券
-        this.isUseCoupon = true
-        this.couponPrice = 0;
+        this.coupon.isUse = true;
+        this.coupon.price = 0;
       }else{
-        this.isUseCoupon = false;
-        this.couponPrice = faceValue;
+        this.coupon.isUse = false;
+        this.coupon.price = faceValue;
       }
       // 关闭优惠券弹窗
-      this.isCouponAlert = !this.isCouponAlert
+      this.coupon.isAlert = !this.coupon.isAlert
     }
   },
   components: {
 
+  },
+  watch: {
+    '$route' () {
+
+      if(this.$route.query.address){
+        this.address = JSON.parse(this.$route.query.address);
+      }
+
+    }
   }
 }
+/*
+
+
+
+
+*/
 </script>
 <style scoped lang="scss" src="../../assets/styles/payOrder.scss"></style>

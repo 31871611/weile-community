@@ -1,5 +1,6 @@
 <template>
-<div class="view">
+<div class="view fullPosition">
+
   <div class="wrap">
     <article class="main">
       <div class="mainScroll userOrderDetails">

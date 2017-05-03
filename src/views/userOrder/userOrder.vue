@@ -1,6 +1,6 @@
 <template>
 
-  <div class="wrap">
+  <div class="wrap fullPosition">
     <header>
       <div class="userOrderTab">
         <!-- 0全部,1.等待确认,2.待收货,3.订单完成,4.商户取消订单,5.用户取消订单,6.用户退单申请,-1表示4+5 -->

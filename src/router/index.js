@@ -4,6 +4,14 @@ import simplestorage from 'simplestorage.js'
 import Router from 'vue-router'
 import fetch from '../utils/fetch'
 import Home from '@/views/index/index'
+import userOrder from '@/views/userOrder/userOrder'                           // 我的订单
+import userOrderDetails from '@/views/userOrderDetails/userOrderDetails'     // 我的订单详情
+import userApplyBack from '@/views/userOrderDetails/userApplyBack'          // 申请退货
+import userAddress from '@/views/userAddress/userAddress'               // 我的地址
+import userAddressAdd from '@/views/userAddress/addAddress'             // 添加、修改地址
+import userCoupon from '@/views/userCoupon/userCoupon'                  // 我的优惠券
+import couponDetails from '@/views/userCoupon/couponDetails'            // 优惠券详情
+import invalidCoupon from '@/views/userCoupon/invalidCoupon'            // 失效优惠券
 
 Vue.use(Router)
 
@@ -59,7 +67,21 @@ const router = new Router({
       // 结算
       path: '/payorder',
       name: 'payorder',
-      component: resolve => require(['@/views/payorder/payorder'], resolve)
+      component: resolve => require(['@/views/payorder/payorder'], resolve),
+      children:[
+        {
+          // 我的地址
+          path: 'address',
+          name: 'userAddress',
+          component: userAddress,
+          children:[
+            {
+              path: 'add',
+              component: userAddressAdd
+            }
+          ]
+        }
+      ]
     },{
       // 支付结束
       path: '/payResult',
@@ -77,54 +99,60 @@ const router = new Router({
       component: resolve => require(['@/views/userHome/userHome'], resolve),
       meta:{
         requireAuth: true
-      }
-    },{
-      // 我的订单
-      path: '/userOrder',
-      name: 'userOrder',
-      component: resolve => require(['@/views/userOrder/userOrder'], resolve)
-    },{
-      // 我的订单详情
-      path: '/userOrderDetails',
-      name: 'userOrderDetails',
-      component: resolve => require(['@/views/userOrderDetails/userOrderDetails'], resolve),
+      },
       children:[
         {
-          // 申请退货
-          path: '/userApplyBack',
-          name: 'userApplyBack',
-          component: resolve => require(['@/views/userOrderDetails/userApplyBack'], resolve)
-        }
-      ]
-    },{
-      // 我的地址
-      path: '/userAddress',
-      name: 'userAddress',
-      component: resolve => require(['@/views/userAddress/userAddress'], resolve),
-      children:[
-        {
-          path: '/userAddressAdd',
-          component: resolve => require(['@/views/userAddress/addAddress'], resolve)
+          // 我的订单
+          path: '/userOrder',
+          name: 'userOrder',
+          component: userOrder
         },
         {
-          path: '/userAddressModify',
-          component: resolve => require(['@/views/userAddress/addAddress'], resolve)
-        }
-      ]
-    },{
-      // 我的优惠券
-      path: '/userCoupon',
-      name: 'userCoupon',
-      component: resolve => require(['@/views/userCoupon/userCoupon'], resolve),
-      children:[
+          // 我的订单详情
+          path: '/userOrderDetails',
+          name: 'userOrderDetails',
+          component: userOrderDetails,
+          children:[
+            {
+              // 申请退货
+              path: '/userApplyBack',
+              name: 'userApplyBack',
+              component: userApplyBack
+            }
+          ]
+        },
         {
-          // 优惠券详情
-          path: '/couponDetails',
-          component: resolve => require(['@/views/userCoupon/couponDetails'], resolve)
-        },{
-          // 失效优惠券
-          path: '/invalidCoupon',
-          component: resolve => require(['@/views/userCoupon/invalidCoupon'], resolve)
+          // 我的优惠券
+          path: '/userCoupon',
+          name: 'userCoupon',
+          component: userCoupon,
+          children:[
+            {
+              // 优惠券详情
+              path: 'details',
+              component: couponDetails
+            },{
+              // 失效优惠券
+              path: 'invalid',
+              component: invalidCoupon
+            }
+          ]
+        },
+        {
+          // 我的地址
+          path: '/userAddress',
+          name: 'userAddress',
+          component: userAddress,
+          children:[
+            {
+              path: 'add',
+              component: userAddressAdd
+            },
+            {
+              path: 'modify',
+              component: userAddressAdd
+            }
+          ]
         }
       ]
     }, {
