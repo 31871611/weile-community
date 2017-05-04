@@ -137,16 +137,35 @@
 
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
 
 export default {
   name: 'store',
   data() {
     return{
-
+      typeList:'',
+      lists:''
     }
   },
   mounted() {
+
+    // 加载购物车数据
+    this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
+      "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+    },{
+      "encryptType":0
+    }).then(function(res) {
+      console.log(res);
+      if (res.resultCode != 0) {
+        alert(res.msg);
+        return false;
+      }
+
+
+    }).catch(function(error) {
+      console.log(error)
+    })
 
   },
   methods: {
