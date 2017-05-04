@@ -74,4 +74,8 @@ for(var i = 0;i < HLXK_SHOPPING.length; i++){
 
 
 
+是否登录
+if (simplestorage.get('HLXK_STATUS')) {
+/router/index.js
+购物车+-组件
 
