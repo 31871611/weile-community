@@ -10,7 +10,7 @@
           <i></i>
         </div>
 
-        <slider :items="adLists" :width="640" :height="240" :speed="5000" :sync="true"></slider>
+        <slider :items="sliderList" :width="640" :height="240" :speed="5000" :sync="true"></slider>
 
         <div class="indexNav">
           <a href="" class="open">小区开门</a>
@@ -19,7 +19,7 @@
           <a href="" class="payment">生活缴费</a>
         </div>
 
-        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList.length > 0">
+        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
           <div class="title">
             <h2>活动专区</h2>
           </div>
@@ -42,7 +42,7 @@
         </div>
 
         <!-- 推荐分类 -->
-        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList.length > 0">
+        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
           <ul>
             <li v-for="list in categoryHomeLayoutList" :style="{'width':categoryHomeLayoutList.length == 1 ? '100%' : ''}">
               <a href="">
@@ -194,12 +194,23 @@ export default {
       categoryHomeLayoutList : null,        // 活动专区2...
       groupBuyList : null,                  // 团购商品
       recommendList : null,                 // 商品推荐
-      shoppingNum:0                         // 购物车数量
+
+      // 小区id
+      distributionCommunityId : simplestorage.get('HLXK_DISTRIBUTION').id,
+      // 购物车本地缓存数据...需要获取原有数据进行添加
+      lists : simplestorage.get('HLXK_SHOPPING') || [],
+      // 购物车数量
+      shoppingNum:0
     }
   },
   mounted() {
     // 获取初始数据
     this.init();
+
+
+    // 购物车数量
+    this.getCartGoodsNum();
+
   },
   methods: {
     // 获取初始数据
@@ -226,7 +237,7 @@ export default {
           // 商品推荐
           _this.recommendList = data.recommend.data;
           //console.log(JSON.stringify(res.data));
-          console.log(JSON.stringify(_this.recommendList));
+          //console.log(JSON.stringify(_this.recommendList));
           //console.log(_this.adLists);
 
           // 修改小区后
@@ -281,48 +292,149 @@ export default {
     toLink:function(url){
       location.href = url;
     },
+
+    /************************************************************************************************/
+    // 是否登录
+    isLogin:function(){
+      return simplestorage.get('HLXK_STATUS') ? true : false;
+    },
+    // 购物车数量
+    getCartGoodsNum:function(){
+      let _this = this;
+
+      // 是否登录.获取购物车数量
+      if(_this.isLogin()){
+        // 获取购物车数量...每次加载本组件就
+        this.$http.post('/community/getCartGoodsNum', {
+          "distributionCommunityId":_this.distributionCommunityId
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res)
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          _this.shoppingNum = res.data.cartGoodsNum;
+        }).catch(function(error) {
+          console.log(error)
+        })
+      }else{
+        //获取缓存购物车商品信息
+        _this.shoppingNum = _this.getAmount();
+      }
+
+      console.log('购物车数量：' + _this.shoppingNum)
+
+    },
+    // 获取商品总数量
+    getAmount:function(){
+      let _this = this;
+
+      var amount = 0;
+      _this.lists.forEach(function(value){
+        // 此小区商品总数量
+        if(value.distributionCommunityId == _this.distributionCommunityId) amount += value.amount;
+      });
+      return amount;
+    },
+    // 查询某商品数量
+    getIdAmount: function(list) {
+      let _this = this;
+
+      var amount = 0;
+      let i = _this.lists.findIndex(function(value, index, arr) {
+        return (value.id == list.commodityId && value.distributionCommunityId == _this.distributionCommunityId);
+      });
+      if (i !== -1) {
+        amount = _this.lists[i].amount;
+      }
+      return amount;
+    },
+    // 新增商品
+    increase: function(list) {
+      let _this = this;
+      // 添加购物车....本地缓存
+      let i = _this.lists.findIndex(function(value, index, arr) {
+        return (value.id == list.commodityId && value.distributionCommunityId == _this.distributionCommunityId);
+      });
+      if (i !== -1) {
+        // 库存+1
+        _this.lists[i].amount += 1;
+      } else {
+        let obj = {
+          "distributionCommunityId":_this.distributionCommunityId,
+          "id":list.commodityId,
+          "amount":1
+        };
+        _this.lists.push(obj);
+      }
+
+      simplestorage.set('HLXK_SHOPPING',_this.lists);
+
+    },
     // 添加购物车
     add:function(index,list){
+      let _this = this;
       /*
-       jsp只用到3个值：商品id、商品库存、小区id
-        已添加到本地的只修改库存数
-        首页点击的时候如果没有库存了提示
-        详情页进入的时候没有库存的按钮变为灰色.不添加到购物车？在加入购物车按钮加入购物车...
-        结算成功需要把购物车中信息删除
 
-        已登录是先添加到本地还是购物车
-        进入购物在一次提交？。。。
+        jsp只用到3个值：商品id、商品库存、小区id
+        详情页进入的时候没有库存的按钮变为灰色.不添加到购物车？在加入购物车按钮加入购物车...
+        结算成功需要把购物车中信息删除？
 
       */
 
-
-      // 需要获取原有数据进行添加
-      let lists = simplestorage.get('HLXK_SHOPPING') || [];
-      // 商品是否存在
-      if(lists.length > 0){
-        console.log('有')
-        for(let i = 0;i < lists.length;i++){
-          if(lists[i].id == list.commodityId){
-            // 已存在商品
-            // 添加库存 list.inventory
-            console.log('已存在商品')
-          }
-        }
-      }else{
-        console.log('没')
-        // 添加
-        let obj = {
-          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-          "id":list.commodityId,
-          "amount":1
-        }
-        lists.push(obj);
+      // 本商品库存
+      let shopCarCount = 0;
+      // 是否登录
+      if (_this.isLogin()) {
+        // 读取接口本商品库存
+        shopCarCount = list.shopCarCount;
+      } else {
+        // 获取缓存购物车商品信息
+        shopCarCount = _this.getIdAmount(list);
       }
 
-      console.log(lists);
+      if (shopCarCount >= list.inventory) {
+        alert('库存不足');
+        return false;
+      }
 
-      // 会重置
-      simplestorage.set('HLXK_SHOPPING',lists);
+      // 分组件后，数据？..._this.recommendList要怎么处理？
+      Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
+
+      // 修改购物车数量
+      if (_this.isLogin()) {
+        // 提交商品到购物车
+        this.$http.post('/community/addGoodsToCart', {
+          "distributionCommunityId":_this.distributionCommunityId,
+          "goodsId": list.commodityId,
+          "quantity": 1
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res);
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          // 修改底部购物车值
+          _this.shoppingNum = res.data.totalCount;
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      } else {
+        // 修改本地缓存中数据
+        _this.increase(list);
+        // 修改底部购物车值
+        _this.shoppingNum = _this.getAmount();
+      }
+
+      //////////////////////////////////////////////////////////////////////////////////////
+
+      console.log(_this.lists);
+
 
       //console.log(index);
       //console.log(list);
