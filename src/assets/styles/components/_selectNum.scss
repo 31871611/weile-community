@@ -29,13 +29,13 @@
     text-align: center;
     @include font-dpr(28px);
   }
-  .reduce,.add{
+  .remove,.add{
     display: block;
     width: pxTorem($infoH);
     height: pxTorem($infoH);
     @extend %icoRem;
   }
-  .reduce{
+  .remove{
     background-image: url("../images/icon_minus_p@2x.png");
     &.select{
       background-image: url("../images/icon_minus_n@2x.png");

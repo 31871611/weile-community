@@ -40,7 +40,7 @@
       <div class="content">
         <div class="classifyList">
           <ul class="">
-            <li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>
+            <!--<li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>-->
             <li v-for="(list,index) in lists" :class="{'select':currentIndex === index}" @click="selectMenu(index)">{{list.categoryName}}</li>
           </ul>
         </div>
@@ -66,11 +66,7 @@
                     马上抢
                   </div>
 
-                  <div class="selectNum" v-if="list.isFlashSale != 1 && list.inventory > 0">
-                    <div class="reduce"></div>
-                    <input type="text" value="1" />
-                    <div class="add" @click="add(index,list)"></div>
-                  </div>
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -89,21 +85,23 @@
         <!--</div>-->
         <!--<div class="next">下一步</div>-->
       <!--</div>-->
-      <app-nav :select-class="'store'"></app-nav>
+      <app-nav ref="appnav" :select-class="'store'"></app-nav>
     </footer>
   </div>
 
 </template>
 <script>
+import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
+import carCount from '../common/carCount.vue';
 
 export default {
   name: 'store',
   data() {
     return{
       lists:'',
-      currentIndex:-1          // 分类索引
+      currentIndex:0          // 分类索引
     }
   },
   mounted() {
@@ -120,6 +118,7 @@ export default {
         return false;
       }
       _this.lists = res.data;
+      //console.log(_this.lists[index]['commoditys'][index]['shopCarCount'])
       //console.log(JSON.stringify(_this.lists))
 
     }).catch(function(error) {
@@ -136,11 +135,25 @@ export default {
       this.currentIndex = index;
       // 滚动值清0
       contentList.scrollTop = 0;
+    },
+
+
+    /************************************************************************************************/
+    // 修改列表中已添加购物车值
+    modifyShopCarCount:function(list,index){
+      let _this = this;
+      // 列表.................
+      //Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
+    },
+    // 修改底部购物车值
+    shoppingNum:function(num){
+      this.$refs.appnav.shoppingNum = num;
     }
   },
   components: {
-    appNav
+    appNav,
+    carCount
   }
 }
 </script>
-<style scoped lang="scss" src="../../assets/styles/store.scss"></style>
+<style lang="scss" src="../../assets/styles/store.scss"></style>

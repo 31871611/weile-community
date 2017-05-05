@@ -2,8 +2,8 @@
 
   <div v-if="type" class="num" @click="add()"></div>
   <div v-else class="selectNum">
-    <div class="reduce"></div>
-    <input type="text" value="1" />
+    <div class="remove" @click="remove()"></div>
+    <input type="text" value="1" v-model="shopCarCount" />
     <div class="add" @click="add()"></div>
   </div>
 
@@ -44,7 +44,7 @@ export default {
     // 添加购物车
     add:function(){
       let _this = this;
-
+      let isLogin = simplestorage.get('HLXK_STATUS');
       /*
 
        jsp只用到3个值：商品id、商品库存、小区id
@@ -56,7 +56,7 @@ export default {
       // 本商品库存
       let shopCarCount = 0;
       // 是否登录
-      if (simplestorage.get('HLXK_STATUS')) {
+      if (isLogin) {
         // 读取接口本商品库存
         shopCarCount = _this.shopCarCount;
       } else {
@@ -74,7 +74,7 @@ export default {
       //Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
 
       // 修改购物车数量
-      if (simplestorage.get('HLXK_STATUS')) {
+      if (isLogin) {
         // 提交商品到购物车
         this.$http.post('/community/addGoodsToCart', {
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
@@ -101,10 +101,11 @@ export default {
         //_this.$refs.appnav.shoppingNum = cart.getAmount();
         _this.$emit('shoppingNum',cart.getAmount());
       }
-
-
-
       //
+    },
+    // 删除单件商品
+    remove:function(){
+      alert('删除')
     }
 
     /********************************************************************************************************/
@@ -114,4 +115,3 @@ export default {
   }
 }
 </script>
-
