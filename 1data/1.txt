@@ -79,3 +79,45 @@ if (simplestorage.get('HLXK_STATUS')) {
 /router/index.js
 购物车+-组件
 
+
+
+
+
+
+1、商品模块
+ 1.1 商品列表 （首页 推荐商品、团购  便利店搜索 可用此接口）
+URL  :  community/getCommodityPage
+请求参数说明
+参数名	参数说明
+type	查询类型：1：推荐 2：团购 3：普通
+keyWord	模糊匹配商品名称查询(可为空)
+categoryId	匹配商品类别id查询（可为空）
+pageIndex	当前页（如果不分页 值为空）
+pageSize	每页大小（如果不分页 值为空）
+
+请求方式
+Post
+响应参数说明
+{
+  "data": {
+    "count": 1,
+    "data": [
+      {
+        "name": "测试数据商品",
+        "commodityId": 999,	//商品id
+        "count": 1,  //销量
+        "price": 111, //单价 厘
+        "url": "1" ,// 商品列表图
+		“inventory”:”1”, //商品库存
+"isFlashSale": "1", //是否是限时抢购商品 0 不是  1 是
+        "flashSaleStatus": "",//限时抢购状态 0 未开始  1 已开始
+        "flashSalePrice": "",// 限购价格
+"isActivity": "0",// 是否是优惠活动商品 0 不是  1 是
+      }
+    ]
+  },
+  "resultCode": 0,
+  "encryptCode": "0",
+  "act": "getCommodityPage",
+  "msg": "查询完成"
+}

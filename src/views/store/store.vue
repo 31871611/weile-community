@@ -40,97 +40,55 @@
       <div class="content">
         <div class="classifyList">
           <ul class="">
-            <li>所有商品</li>
-            <li class="select">生鲜蔬菜</li>
-            <li>进口零售</li>
-            <li>蛋糕饼干</li>
-            <li v-for="list in 10">坚果炒货</li>
+            <li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>
+            <li v-for="(list,index) in lists" :class="{'select':currentIndex === index}" @click="selectMenu(index)">{{list.categoryName}}</li>
           </ul>
         </div>
 
-        <div class="contentList">
-          <ul class="">
-            <li>
-              <a href="" class="photo">
-                <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-                <i class="activity">活动</i>
-                <i class="goIng">抢购中</i>
-              </a>
+        <div class="contentList" ref="contentList">
+
+          <ul class="" v-for="(commoditys,index) in lists" v-show="currentIndex === index">
+
+            <li v-for="list in commoditys.commoditys">
+              <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
+                <img :src="list.url" :alt="list.commodityId">
+                <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
+                <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
+              </router-link>
               <div class="box">
-                <h3>标题标题标题标题标题标题</h3>
+                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                 <div class="bottom">
-                  <strong class="price">200<b>元/件</b></strong>
-                  <div class="selectNum">
+
+                  <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                  <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+
+                  <div class="go" v-if="list.isFlashSale == 1">
+                    马上抢
+                  </div>
+
+                  <div class="selectNum" v-if="list.isFlashSale != 1 && list.inventory > 0">
                     <div class="reduce"></div>
                     <input type="text" value="1" />
-                    <div class="add"></div>
+                    <div class="add" @click="add(index,list)"></div>
                   </div>
-                  <div class="go">马上抢</div>
+
                 </div>
               </div>
             </li>
 
-
-            <li>
-              <a href="" class="photo">
-                <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-                <i class="activity">活动</i>
-              </a>
-              <div class="box">
-                <h3>标题标题标题标题标题标题</h3>
-                <div class="bottom">
-                  <strong class="price">200<b>元/件</b></strong>
-                  <div class="selectNum">
-                    <div class="reduce"></div>
-                    <input type="text" value="1" />
-                    <div class="add"></div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li>
-              <a href="" class="photo">
-                <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-                <i class="goIng">抢购中</i>
-              </a>
-              <div class="box">
-                <h3>标题标题标题标题标题标题</h3>
-                <div class="bottom">
-                  <strong class="price">200<b>元/件</b></strong>
-                  <div class="go">马上抢</div>
-                </div>
-              </div>
-            </li>
-            <li v-for="list in 10">
-              <a href="" class="photo">
-                <img src="http://img.v89.com/group1/M06/07/88/rBAA11gElhiAEy6lAACUY9hK_T0535_353*353_220x220.jpg" alt="">
-                <i class="activity">活动</i>
-                <i class="goIng">抢购中</i>
-              </a>
-              <div class="box">
-                <h3>标题标题标题标题标题标题</h3>
-                <div class="bottom">
-                  <strong class="price">200<b>元/件</b></strong>
-                  <div class="selectNum">
-                    <div class="reduce"></div>
-                    <input type="text" value="1" />
-                    <div class="add"></div>
-                  </div>
-                  <div class="go">马上抢</div>
-                </div>
-              </div>
-            </li>
           </ul>
+
+
         </div>
       </div>
     </article>
     <footer>
-      <div class="footerCart">
-        <div class="total">
-          合计：<b>￥0.00</b><em>(已选0件)</em>
-        </div>
-        <div class="next">下一步</div>
-      </div>
+      <!--<div class="footerCart">-->
+        <!--<div class="total">-->
+          <!--合计：<b>￥0.00</b><em>(已选0件)</em>-->
+        <!--</div>-->
+        <!--<div class="next">下一步</div>-->
+      <!--</div>-->
       <app-nav :select-class="'store'"></app-nav>
     </footer>
   </div>
@@ -144,24 +102,25 @@ export default {
   name: 'store',
   data() {
     return{
-      typeList:'',
-      lists:''
+      lists:'',
+      currentIndex:-1          // 分类索引
     }
   },
   mounted() {
-
+    let _this = this;
     // 加载购物车数据
     this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
       "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
     },{
       "encryptType":0
     }).then(function(res) {
-      console.log(res);
+      //console.log(res);
       if (res.resultCode != 0) {
         alert(res.msg);
         return false;
       }
-
+      _this.lists = res.data;
+      //console.log(JSON.stringify(_this.lists))
 
     }).catch(function(error) {
       console.log(error)
@@ -169,7 +128,15 @@ export default {
 
   },
   methods: {
+    // 切换分类
+    selectMenu:function(index){
+      let contentList = this.$refs.contentList;
+      let ul = contentList.getElementsByTagName("ul");
 
+      this.currentIndex = index;
+      // 滚动值清0
+      contentList.scrollTop = 0;
+    }
   },
   components: {
     appNav

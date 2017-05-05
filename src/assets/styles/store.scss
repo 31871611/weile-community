@@ -127,51 +127,53 @@
 }
 
 .content{
-  margin-top: pxTorem(18px);
   @include display-flex();
   height: 100%;
 }
 
 .classifyList{
+  height: 100%;
   overflow-y:auto;
   -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar,
-  &::-webkit-scrollbar{
-    -webkit-opacity: 0;
-    opacity: 0;
-  }
-
   $h:98px;
-  $pl:28px;
+  $pl:25px;
   width: pxTorem(180px);
   margin-right: pxTorem(16px);
   ul{
-
+    margin-top: pxTorem(18px);
   }
   li{
-    padding-left:pxTorem($pl);
+    position: relative;
     height: pxTorem($h);
     line-height: pxTorem($h);
     color: #3f4548;
     @include font-dpr(28px);
     background: #f0f4f3;
+    text-align: center;
     &.select{
       background: #fff;
-      padding-left:pxTorem($pl - 8);
-      border-left:pxTorem(8px) solid $green-base;
+      &:after{
+        content: '\20';
+        width: pxTorem(8px);
+        height: 100%;
+        position: absolute;
+        left:0;
+        top:0;
+        background: $green-base;
+      }
     }
   }
 }
 
 .contentList{
+  height: 100%;
   overflow-y:auto;
   -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar,
-  &::-webkit-scrollbar{
-    -webkit-opacity: 0;
-    opacity: 0;
+  ul{
+    &:nth-child(1){
+      margin-top: pxTorem(18px);
+    }
   }
-
   width: 100%;
   @include flex(1);
   $h:126px;
@@ -199,20 +201,21 @@
         left:0;
         top:pxTorem(-3px);
         color: #fff;
-        padding-left:pxTorem(12px);
+        //padding-left:pxTorem(6px);
         @include font-dpr(24px);
         height: pxTorem(32px);
         line-height: pxTorem(32px);
         @extend %icoRem;
+        text-align: center;
       }
       // 活动
       &.activity{
-        width: pxTorem(66px - 12);
+        width: pxTorem(66px);
         background-image: url("../images/tag_store_activity@2x.png");
       }
       // 抢购中
       &.goIng{
-        width: pxTorem(87px - 12);
+        width: pxTorem(87px);
         background-image: url("../images/tag_store_panicbuying@2x.png");
       }
     }
