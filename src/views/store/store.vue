@@ -47,9 +47,9 @@
 
         <div class="contentList" ref="contentList">
 
-          <ul class="" v-for="(commoditys,index) in lists" v-show="currentIndex === index">
+          <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex === parentIndex">
 
-            <li v-for="list in commoditys.commoditys">
+            <li v-for="(list,index) in commoditys.commoditys">
               <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
                 <img :src="list.url" :alt="list.commodityId">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
@@ -66,7 +66,7 @@
                     马上抢
                   </div>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -118,7 +118,6 @@ export default {
         return false;
       }
       _this.lists = res.data;
-      //console.log(_this.lists[index]['commoditys'][index]['shopCarCount'])
       //console.log(JSON.stringify(_this.lists))
 
     }).catch(function(error) {
@@ -140,10 +139,10 @@ export default {
 
     /************************************************************************************************/
     // 修改列表中已添加购物车值
-    modifyShopCarCount:function(list,index){
+    modifyShopCarCount:function(list,index,parentIndex){
       let _this = this;
-      // 列表.................
-      //Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
+      //console.log(_this.lists[index]['commoditys'][index]['shopCarCount'])  列表.................父index、commoditys固定、下一级index、字段
+      Vue.set(_this.lists[parentIndex]['commoditys'][index],'shopCarCount',_this.lists[parentIndex]['commoditys'][index]['shopCarCount'] + 1);
     },
     // 修改底部购物车值
     shoppingNum:function(num){

@@ -2,6 +2,7 @@
 
   <div v-if="type" class="num" @click="add()"></div>
   <div v-else class="selectNum">
+    {{nowShopCarCount}}
     <div class="remove" @click="remove()"></div>
     <input type="text" value="1" v-model="shopCarCount" />
     <div class="add" @click="add()"></div>
@@ -15,11 +16,17 @@ import cart from '../../plugins/cart'
 
 export default {
   props:{
+    list:{
+      type:String
+    },
     type:{
       type:Boolean,
       default: true
     },
     index:{
+      type:Number
+    },
+    parentIndex:{
       type:Number
     },
     commodityId:{
@@ -34,7 +41,8 @@ export default {
   },
   data() {
     return{
-      is:true
+      is:true,
+      nowShopCarCount:0
     }
   },
   mounted() {
@@ -58,18 +66,18 @@ export default {
       // 是否登录
       if (isLogin) {
         // 读取接口本商品库存
-        shopCarCount = _this.shopCarCount;
+        _this.nowShopCarCount = _this.shopCarCount;
       } else {
         // 获取缓存购物车商品信息
-        shopCarCount = cart.getIdAmount(_this.commodityId);
+        _this.nowShopCarCount = cart.getIdAmount(_this.commodityId);
       }
 
-      if (shopCarCount >= _this.inventory) {
+      if (_this.nowShopCarCount >= _this.inventory) {
         alert('库存不足');
         return false;
       }
 
-      this.$emit('modifyShopCarCount','recommendList',_this.index);
+      this.$emit('modifyShopCarCount','recommendList',_this.index,_this.parentIndex);
       // 分组件后，数据？..._this.recommendList要怎么处理？console.log(_this['recommendList'][1]);
       //Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
 
