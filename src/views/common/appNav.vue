@@ -12,29 +12,57 @@
 
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
+import cart from '../../plugins/cart'
 
 export default {
-  name: 'appNav',
+  //name: 'appNav',
   props:{
     selectClass:{
       type:String
-    },
-    shoppingNum:{
-      type:Number,
-      default: 0
     }
   },
-  //props:['selectClass'],
   data() {
     return{
-
+      shoppingNum:0
     }
   },
   mounted() {
 
+      // 购物车数量
+      this.getCartGoodsNum();
+
   },
   methods: {
+    // 购物车数量
+    getCartGoodsNum:function(){
+      let _this = this;
 
+      // 是否登录.获取购物车数量
+      if(simplestorage.get('HLXK_STATUS')){
+        // 获取购物车数量...每次加载本组件就
+        this.$http.post('/community/getCartGoodsNum', {
+          "distributionCommunityId":_this.distributionCommunityId
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res)
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          _this.shoppingNum = res.data.cartGoodsNum;
+        }).catch(function(error) {
+          console.log(error)
+        })
+      }else{
+        //获取缓存购物车商品信息
+        _this.shoppingNum = cart.getAmount();
+      }
+
+      console.log('购物车数量：' + _this.shoppingNum)
+
+    }
   },
   components: {
 

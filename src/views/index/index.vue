@@ -99,9 +99,8 @@
                   <div class="go" v-if="list.isFlashSale == 1">
                     马上抢
                   </div>
-                  {{list.inventory}}
-                  <div class="num" v-if="list.isFlashSale != 1 && list.inventory > 0" @click="add(index,list)">
-                  </div>
+
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :index="index" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                 </div>
               </div>
             </li>
@@ -136,7 +135,7 @@
       </div>
     </article>
     <footer>
-      <app-nav :select-class="'home'" :shoppingNum="shoppingNum"></app-nav>
+      <app-nav ref="appnav" :select-class="'home'"></app-nav>
     </footer>
 
   </div>
@@ -171,6 +170,7 @@ import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import slider from './slider.vue';
 import appNav from '../common/appNav.vue';
+import carCount from '../common/carCount.vue';
 
 export default {
   name: 'home',
@@ -193,23 +193,13 @@ export default {
       activityHomeLayoutList : null,        // 活动专区
       categoryHomeLayoutList : null,        // 活动专区2...
       groupBuyList : null,                  // 团购商品
-      recommendList : null,                 // 商品推荐
+      recommendList : null                  // 商品推荐
 
-      // 小区id
-      distributionCommunityId : simplestorage.get('HLXK_DISTRIBUTION').id,
-      // 购物车本地缓存数据...需要获取原有数据进行添加
-      lists : simplestorage.get('HLXK_SHOPPING') || [],
-      // 购物车数量
-      shoppingNum:0
     }
   },
   mounted() {
     // 获取初始数据
     this.init();
-
-
-    // 购物车数量
-    this.getCartGoodsNum();
 
   },
   methods: {
@@ -238,7 +228,7 @@ export default {
           _this.recommendList = data.recommend.data;
           //console.log(JSON.stringify(res.data));
           //console.log(JSON.stringify(_this.recommendList));
-          //console.log(_this.adLists);
+          //console.log(_this.recommendList);
 
           // 修改小区后
           callback && callback();
@@ -294,158 +284,24 @@ export default {
     },
 
     /************************************************************************************************/
-    // 是否登录
-    isLogin:function(){
-      return simplestorage.get('HLXK_STATUS') ? true : false;
-    },
-    // 购物车数量
-    getCartGoodsNum:function(){
+    // 修改列表中已添加购物车值
+    modifyShopCarCount:function(list,index){
       let _this = this;
-
-      // 是否登录.获取购物车数量
-      if(_this.isLogin()){
-        // 获取购物车数量...每次加载本组件就
-        this.$http.post('/community/getCartGoodsNum', {
-          "distributionCommunityId":_this.distributionCommunityId
-        },{
-          "encryptType":1
-        }).then(function(res) {
-          //console.log(res)
-          if (res.resultCode != 0) {
-            alert(res.msg);
-            return false;
-          }
-          _this.shoppingNum = res.data.cartGoodsNum;
-        }).catch(function(error) {
-          console.log(error)
-        })
-      }else{
-        //获取缓存购物车商品信息
-        _this.shoppingNum = _this.getAmount();
-      }
-
-      console.log('购物车数量：' + _this.shoppingNum)
-
+      Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
     },
-    // 获取商品总数量
-    getAmount:function(){
-      let _this = this;
-
-      var amount = 0;
-      _this.lists.forEach(function(value){
-        // 此小区商品总数量
-        if(value.distributionCommunityId == _this.distributionCommunityId) amount += value.amount;
-      });
-      return amount;
-    },
-    // 查询某商品数量
-    getIdAmount: function(list) {
-      let _this = this;
-
-      var amount = 0;
-      let i = _this.lists.findIndex(function(value, index, arr) {
-        return (value.id == list.commodityId && value.distributionCommunityId == _this.distributionCommunityId);
-      });
-      if (i !== -1) {
-        amount = _this.lists[i].amount;
-      }
-      return amount;
-    },
-    // 新增商品
-    increase: function(list) {
-      let _this = this;
-      // 添加购物车....本地缓存
-      let i = _this.lists.findIndex(function(value, index, arr) {
-        return (value.id == list.commodityId && value.distributionCommunityId == _this.distributionCommunityId);
-      });
-      if (i !== -1) {
-        // 库存+1
-        _this.lists[i].amount += 1;
-      } else {
-        let obj = {
-          "distributionCommunityId":_this.distributionCommunityId,
-          "id":list.commodityId,
-          "amount":1
-        };
-        _this.lists.push(obj);
-      }
-
-      simplestorage.set('HLXK_SHOPPING',_this.lists);
-
-    },
-    // 添加购物车
-    add:function(index,list){
-      let _this = this;
-      /*
-
-        jsp只用到3个值：商品id、商品库存、小区id
-        详情页进入的时候没有库存的按钮变为灰色.不添加到购物车？在加入购物车按钮加入购物车...
-        结算成功需要把购物车中信息删除？
-
-      */
-
-      // 本商品库存
-      let shopCarCount = 0;
-      // 是否登录
-      if (_this.isLogin()) {
-        // 读取接口本商品库存
-        shopCarCount = list.shopCarCount;
-      } else {
-        // 获取缓存购物车商品信息
-        shopCarCount = _this.getIdAmount(list);
-      }
-
-      if (shopCarCount >= list.inventory) {
-        alert('库存不足');
-        return false;
-      }
-
-      // 分组件后，数据？..._this.recommendList要怎么处理？
-      Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
-
-      // 修改购物车数量
-      if (_this.isLogin()) {
-        // 提交商品到购物车
-        this.$http.post('/community/addGoodsToCart', {
-          "distributionCommunityId":_this.distributionCommunityId,
-          "goodsId": list.commodityId,
-          "quantity": 1
-        },{
-          "encryptType":1
-        }).then(function(res) {
-          //console.log(res);
-          if (res.resultCode != 0) {
-            alert(res.msg);
-            return false;
-          }
-          // 修改底部购物车值
-          _this.shoppingNum = res.data.totalCount;
-        }).catch(function(error) {
-          console.log(error)
-        })
-
-      } else {
-        // 修改本地缓存中数据
-        _this.increase(list);
-        // 修改底部购物车值
-        _this.shoppingNum = _this.getAmount();
-      }
-
-      //////////////////////////////////////////////////////////////////////////////////////
-
-      console.log(_this.lists);
-
-
-      //console.log(index);
-      //console.log(list);
+    // 修改底部购物车值
+    shoppingNum:function(num){
+      this.$refs.appnav.shoppingNum = num;
     }
+
   },
   components: {
     slider,
-    appNav
+    appNav,
+    carCount
   }
 }
 </script>
-<style scoped lang="scss" src="../../assets/styles/index.scss"></style>
+<style  lang="scss" src="../../assets/styles/index.scss"></style>
 <style scoped lang="scss" src="../../assets/styles/_selectQuarters.scss"></style>
 <style scoped lang="scss" src="../../assets/styles/_alert.scss"></style>
