@@ -25,6 +25,7 @@ html{
 article.main{
   @include flex(1);
   overflow: hidden;
+  height: 100%;
 }
 .mainScroll{
   width:100%;

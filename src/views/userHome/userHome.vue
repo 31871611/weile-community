@@ -12,64 +12,6 @@
             <span>用户名</span>
           </div>
         </div>
-        <!--<div class="address">-->
-          <!--<i class="map"></i>-->
-          <!--<div>-->
-            <!--<strong>福州 融侨锦江</strong>-->
-            <!--<span>005座003单元012房</span>-->
-          <!--</div>-->
-          <!--<i class="arrowR"></i>-->
-        <!--</div>-->
-        <!--<ul class="list">-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<div>-->
-                <!--<img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">-->
-                <!--<span>我的话题</span>-->
-              <!--</div>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<div>-->
-                <!--<img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">-->
-                <!--<span>我的活动</span>-->
-              <!--</div>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<div>-->
-                <!--<img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">-->
-                <!--<span>我的报修</span>-->
-              <!--</div>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<div>-->
-                <!--<img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">-->
-                <!--<span>我的投诉</span>-->
-              <!--</div>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<div>-->
-                <!--<img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">-->
-                <!--<span>我的硬件</span>-->
-              <!--</div>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<router-link to="userAddress">-->
-              <!--<div>-->
-                <!--<img :src="'./static/images/icon_menu_community_p@2x.png'" alt="">-->
-                <!--<span>我的收货地址</span>-->
-              <!--</div>-->
-            <!--</router-link>-->
-          <!--</li>-->
-        <!--</ul>-->
 
         <ul class="linkList">
           <li>
@@ -148,7 +90,7 @@
           </li>
         </ul>
 
-
+        <div class="placeholder"></div>
       </div>
     </article>
     <footer>
