@@ -4,7 +4,8 @@
 
 .search{
   $h:56px;
-  margin: pxTorem(16px) pxTorem(20px);
+  padding-top: pxTorem(16px);
+  margin: 0 pxTorem(20px) pxTorem(16px);
   height: pxTorem($h);
   @include display-flex();
   .box{

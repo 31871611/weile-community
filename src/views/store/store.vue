@@ -100,6 +100,8 @@ export default {
   name: 'store',
   data() {
     return{
+      distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
+      isLogin:simplestorage.get('HLXK_STATUS'),
       lists:'',
       currentIndex:0          // 分类索引
     }
@@ -108,7 +110,7 @@ export default {
     let _this = this;
     // 加载购物车数据
     this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
-      "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+      "distributionCommunityId":_this.distributionCommunityId
     },{
       "encryptType":0
     }).then(function(res) {
@@ -126,6 +128,76 @@ export default {
 
   },
   methods: {
+    // 获取购物车数量和金额
+    getCommodityCarInfo:function(){
+      if(isLogin){
+
+        // 这是什么接口?
+//        request({
+//          type: 'POST',
+//          url: '/commodity/getCommodityCarInfo',
+//          success: function (data) {
+//            if (data.code === 0) {
+//
+//              var data = data.data.list;
+//              $total.text(data.totalCount);
+//              $carNum.text(data.totalCount);
+//              var totalPrice = data.totalMoney / 1000
+//              $totalPrice.text(totalPrice.toFixed(2));
+//
+//            } else {
+//              $.toast(data.msg);
+//            }
+//          }
+//        });
+
+        let _this = this;
+
+        this.$http.post('/commodity/getCommodityCarInfo', {
+          "distributionCommunityId":_this.distributionCommunityId
+        },{
+          "encryptType":0
+        }).then(function(res) {
+          console.log(res);
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          //_this.lists = res.data;
+          //console.log(JSON.stringify(_this.lists))
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }else{
+
+        // 未登录，把商品提交，这是什么接口?
+        var cart = common.cart;
+        var jsonStr = cart.queryAllJsonStr();
+        request({
+          type: 'POST',
+          url: '/storeCart/getCartInfoByGoodsInfo',
+          data: {
+            goodsInfo: jsonStr,
+            checkGoodsInfo: jsonStr
+          },
+          showLoader: false,
+          success: function (data, textStatus, jqXHR) {
+            if (data.code === 0) {
+              var data = data.data.list;
+              $total.text(data.totalCount);
+              $carNum.text(data.totalCount);
+              var totalPrice = data.totalMoney / 1000
+              $totalPrice.text(totalPrice.toFixed(2));
+            } else {
+              $.toast(data.msg);
+            }
+          }
+        });
+
+      }
+    },
     // 切换分类
     selectMenu:function(index){
       let contentList = this.$refs.contentList;

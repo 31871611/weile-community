@@ -42,7 +42,7 @@ export default {
       if(simplestorage.get('HLXK_STATUS')){
         // 获取购物车数量...每次加载本组件就
         this.$http.post('/community/getCartGoodsNum', {
-          "distributionCommunityId":_this.distributionCommunityId
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
         },{
           "encryptType":1
         }).then(function(res) {
