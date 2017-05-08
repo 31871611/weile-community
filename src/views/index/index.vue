@@ -285,7 +285,7 @@ export default {
 
     /************************************************************************************************/
     // 修改列表中已添加购物车值
-    modifyShopCarCount:function(list,index){
+    modifyShopCarCount:function(type,list,index){
       let _this = this;
       Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
     },

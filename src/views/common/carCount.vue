@@ -1,10 +1,10 @@
 <template>
 
-  <div v-if="type" class="num" @click="add()"></div>
+  <div v-if="type" class="num" @click.stop.prevent="add()"></div>
   <div v-else class="selectNum">
-    <div class="remove" v-show="num > 0" @click="remove()"></div>
+    <div class="remove" v-show="num > 0" @click.stop.prevent="remove()"></div>
     <input type="text" v-show="num > 0" value="1" v-model="num" />
-    <div class="add" @click="add()"></div>
+    <div class="add" @click.stop.prevent="add()"></div>
   </div>
 
 </template>

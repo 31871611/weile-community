@@ -49,6 +49,11 @@ const router = new Router({
       name: 'subjectCoupon',
       component: resolve => require(['@/views/list/subjectCoupon'], resolve)
     }, {
+      // 搜索
+      path: '/search',
+      name: 'search',
+      component: resolve => require(['@/views/search/search'], resolve)
+    }, {
       // 便利店
       path: '/store',
       name: 'store',
