@@ -2,15 +2,13 @@
 
   <div v-if="type" class="num" @click="add()"></div>
   <div v-else class="selectNum">
-    {{shopCarCount}}
-    <div class="remove" v-show="shopCarCount > 0" @click="remove()"></div>
-    <input type="text" v-show="shopCarCount > 0" value="1" v-model="shopCarCount" />
+    <div class="remove" v-show="num > 0" @click="remove()"></div>
+    <input type="text" v-show="num > 0" value="1" v-model="num" />
     <div class="add" @click="add()"></div>
   </div>
 
 </template>
 <script>
-import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import cart from '../../plugins/cart'
 
@@ -32,7 +30,10 @@ export default {
     commodityId:{     // 商品id
       type:Number
     },
-    shopCarCount:{    // 已登录，每个商品已添加到购物车数
+    isHouseUser:{
+      type:String     // 是否住户专享
+    },
+    shopCarCount:{    // 接口上，每个商品已添加到购物车数
       type:Number
     },
     inventory:{       // 商品库存
@@ -41,23 +42,30 @@ export default {
   },
   data() {
     return{
-      is:true
+      num:0           // 每个商品已添加到购物车数
     }
   },
   mounted() {
-    // 未登录时读取个个商品已添加到购物车数
-    let _this = this;
-    // 未登录时传入的是0，会报错........
-    console.log(_this.shopCarCount);
-    let isLogin = simplestorage.get('HLXK_STATUS');
-    // 未登录
-    if (!isLogin) {
-      // 获取缓存购物车商品信息
-      _this.shopCarCount = cart.getIdAmount(_this.commodityId);
-    }
+
+
+    this.getShopCarCount();
 
   },
   methods: {
+    // 商品购物车数量
+    getShopCarCount:function(){
+      let _this = this;
+
+      let isLogin = simplestorage.get('HLXK_STATUS');
+      // 登录
+      if (isLogin) {
+        // 获取缓存购物车商品信息
+        _this.num = _this.shopCarCount;
+      }else{
+        // 获取缓存购物车商品信息
+        _this.num = cart.getIdAmount(_this.commodityId);
+      }
+    },
     // 添加购物车
     add:function(){
       let _this = this;
@@ -86,10 +94,6 @@ export default {
         return false;
       }
 
-      this.$emit('modifyShopCarCount','recommendList',_this.index,_this.parentIndex);
-      // 分组件后，数据？..._this.recommendList要怎么处理？console.log(_this['recommendList'][1]);
-      //Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
-
       // 修改购物车数量
       if (isLogin) {
         // 提交商品到购物车
@@ -101,38 +105,103 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode === 0) {
+
+            _this.$emit('modifyShopCarCount','add','recommendList',_this.index,_this.parentIndex);
+            // 分组件后，数据？..._this.recommendList要怎么处理？console.log(_this['recommendList'][1]);
+            //Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
+
+            // 修改底部购物车值
+            _this.$emit('shoppingNum',res.data.totalCount);
+
+          }else if(res.resultCode === 8002){
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '验证',
+                  onClick: function() {
+                    window.location.href = '/login';
+                  }
+                },
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+
+          }else if(res.resultCode === 8003){
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+
+          }else if(res.resultCode === 8004 || res.resultCode === 8005){
+            _this.$router.push({ path: 'login'})
+          }else{
             alert(res.msg);
             return false;
           }
-          // 修改底部购物车值
-          _this.$emit('shoppingNum',res.data.totalCount);
+
         }).catch(function(error) {
           console.log(error)
         })
 
       } else {
+        if(_this.isHouseUser == 1){
+          $.modal({
+            text: '此商品只有该小区住户才能购买',
+            buttons: [
+              {
+                text: '登录',
+                onClick: function() {
+                  window.location.href = '/login';
+                }
+              },
+              {
+                text: '放弃',
+                close: true
+              }
+            ]
+          });
+          return false;
+        }
+
+
         // 修改本地缓存中数据
-        cart.increase(this.commodityId);
+        cart.increase(_this.commodityId);
         // 修改底部购物车值
-        //_this.$refs.appnav.shoppingNum = cart.getAmount();
         _this.$emit('shoppingNum',cart.getAmount());
         // 判断type
         if(!_this.type){
-          _this.shopCarCount = cart.getIdAmount(_this.commodityId);
+          _this.num = cart.getIdAmount(_this.commodityId);
         }
       }
-      //
+
     },
     // 删除单件商品
     remove:function(){
+      let url;
       let _this = this;
       let isLogin = simplestorage.get('HLXK_STATUS');
 
       if(isLogin){
 
-        // 会删除本商品全部....
-        this.$http.post('/community/delCartGoods', {
+        if(_this.num <= 1){
+          url = '/community/delCartGoods';          // 等于1件的时候，删除本商品全部库存
+        }else{
+          url = '/community/addGoodsToCart';        // 1件1件减少
+        }
+
+        this.$http.post(url, {
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsId": _this.commodityId,
           "quantity": -1,
@@ -140,18 +209,42 @@ export default {
         },{
           "encryptType":1
         }).then(function(res) {
-          console.log(res);
+          //console.log(res);
           if (res.resultCode == 0) {
+
+            _this.$emit('modifyShopCarCount','del','recommendList',_this.index,_this.parentIndex);
             // 修改底部购物车值
             _this.$emit('shoppingNum',res.data.totalCount);
-          }else if(data.code === 8002){
-            // 用户未认证
-
-          }else if(data.code === 8003) {
+          }else if(res.resultCode === 8002){
             //用户未认证
-
-          }else if(data.code ===8004 || data.code ===8005){
-            window.location.href = '/login';
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '验证',
+                  onClick: function() {
+                    window.location.href = '/login';
+                  }
+                },
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+          }else if(res.resultCode === 8003) {
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+          }else if(res.resultCode === 8004 || res.resultCode === 8005){
+            _this.$router.push({ path: 'login'})
           }else{
             alert(res.msg);
             return false;
@@ -161,32 +254,23 @@ export default {
           console.log(error)
         })
       }else{
-
-        // 目前值
-        console.log(_this.shopCarCount);
-
-        alert('未登录.删除')
-
-/*
-        // 修改本地缓存中数据
-        cart.increase(this.commodityId);
+        // 减少商品数
+        cart.reduce(_this.commodityId);
         // 修改底部购物车值
-        //_this.$refs.appnav.shoppingNum = cart.getAmount();
         _this.$emit('shoppingNum',cart.getAmount());
-        // 判断type
-        if(!_this.type){
-          _this.shopCarCount = cart.getIdAmount(_this.commodityId);
-        }
-*/
+        _this.num = cart.getIdAmount(_this.commodityId);
       }
 
-      alert('删除')
     }
 
-    /********************************************************************************************************/
   },
   components: {
 
+  },
+  watch: {
+    shopCarCount: function () {
+      this.getShopCarCount();
+    }
   }
 }
 </script>

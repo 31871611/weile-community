@@ -7,13 +7,10 @@ var cart = {
   //isLogin:simplestorage.get('HLXK_STATUS'),
   // 小区id
   //distributionCommunityId : simplestorage.get('HLXK_DISTRIBUTION').id,
-  // 购物车本地缓存数据...需要获取原有数据进行添加
+  // 购物车本地缓存数据...
   lists : simplestorage.get('HLXK_SHOPPING') || [],
-
-
-  //name: '__CART__',
-  //list: JSON.parse(simplestorage.get('__CART__') || '[]'),
-
+  //name: 'HLXK_SHOPPING',
+  //lists: JSON.parse(simplestorage.get('HLXK_SHOPPING') || '[]'),
   // 新增商品
   increase: function(commodityId) {
     let _this = this;
@@ -34,15 +31,30 @@ var cart = {
       _this.lists.push(obj);
     }
 
-    simplestorage.set('HLXK_SHOPPING',_this.lists);
+    _this.update();
 
   },
-  /**
-   * 减少商品
-   * @param  {Number} id 商品id
-   * @return {Object}    商品信息,减少到0是则删除后返回{}
-   */
-  reduce: function(id) {
+  //减少商品
+  reduce: function(commodityId) {
+    let _this = this;
+    let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
+    // 本地缓存
+    let i = _this.lists.findIndex(function(value, index, arr) {
+      return (value.id == commodityId && value.distributionCommunityId == distributionCommunityId);
+    });
+    console.log(_this.lists[i].amount)
+
+    if (i !== -1) {
+      if (_this.lists[i].amount === 1) {
+        // 删除本商品
+        _this.remove(commodityId);
+      } else {
+        _this.lists[i].amount -= 1;
+        _this.update();
+      }
+    }
+
+    //simplestorage.set('HLXK_SHOPPING',_this.lists);
 
   },
   /**
@@ -72,8 +84,19 @@ var cart = {
    * @param  {Number} id 商品id
    * @return {Object}    移除的商品信息
    */
-  remove: function(id) {
+  remove: function(commodityId) {
+    let _this = this;
+    let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
+    // 本地缓存
+    let i = _this.lists.findIndex(function(value, index, arr) {
+      return (value.id == commodityId && value.distributionCommunityId == distributionCommunityId);
+    });
 
+    if (i !== -1) {
+      _this.lists.splice(i, 1)[0];
+    }
+
+    _this.update();
   },
   /**
    * 移除商品
@@ -126,7 +149,8 @@ var cart = {
 
   },
   update: function() {
-    simpleStorage.set(this.name, JSON.stringify(this.list));
+    //simpleStorage.set(this.name, JSON.stringify(this.lists));
+    simplestorage.set('HLXK_SHOPPING',this.lists);
   }
 
 };

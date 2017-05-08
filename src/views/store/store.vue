@@ -66,7 +66,7 @@
                     马上抢
                   </div>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -83,7 +83,7 @@
         <!--<div class="total">-->
           <!--合计：<b>￥0.00</b><em>(已选0件)</em>-->
         <!--</div>-->
-        <!--<div class="next">下一步</div>-->
+        <!--<div class="next" @click="toShopping">下一步</div>-->
       <!--</div>-->
       <app-nav ref="appnav" :select-class="'store'"></app-nav>
     </footer>
@@ -102,57 +102,70 @@ export default {
     return{
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       isLogin:simplestorage.get('HLXK_STATUS'),
-      lists:'',
+      lists:'',               // 便利店列表
       currentIndex:0          // 分类索引
     }
   },
   mounted() {
     let _this = this;
-    // 加载购物车数据
-    this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
-      "distributionCommunityId":_this.distributionCommunityId
+
+    this.getList();               //获取列表
+    //this.getCommodityCarInfo();   // 获取购物车数量和金额
+
+
+    // 搜索
+    this.$http.post('/community/getCommodityPage', {
+      "distributionCommunityId":_this.distributionCommunityId,
+      "pageIndex": 1,
+      "pageSize": 10,
+      "keyWord":"鱼",
+      "type":3            //查询类型：1：推荐 2：团购 3：普通
     },{
-      "encryptType":0
+      "encryptType":1
     }).then(function(res) {
-      //console.log(res);
+      console.log(res);
       if (res.resultCode != 0) {
         alert(res.msg);
         return false;
       }
-      _this.lists = res.data;
+      //_this.lists = res.data;
       //console.log(JSON.stringify(_this.lists))
 
     }).catch(function(error) {
       console.log(error)
     })
 
+
   },
   methods: {
+    // 获取列表数据
+    getList:function(){
+      let _this = this;
+      // 加载购物车数据
+      this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
+        "distributionCommunityId":_this.distributionCommunityId
+      },{
+        "encryptType":0
+      }).then(function(res) {
+        //console.log(res);
+        if (res.resultCode != 0) {
+          alert(res.msg);
+          return false;
+        }
+        _this.lists = res.data;
+        //console.log(JSON.stringify(_this.lists))
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+    },
     // 获取购物车数量和金额
     getCommodityCarInfo:function(){
-      if(isLogin){
+      let _this = this;
 
-        // 这是什么接口?
-//        request({
-//          type: 'POST',
-//          url: '/commodity/getCommodityCarInfo',
-//          success: function (data) {
-//            if (data.code === 0) {
-//
-//              var data = data.data.list;
-//              $total.text(data.totalCount);
-//              $carNum.text(data.totalCount);
-//              var totalPrice = data.totalMoney / 1000
-//              $totalPrice.text(totalPrice.toFixed(2));
-//
-//            } else {
-//              $.toast(data.msg);
-//            }
-//          }
-//        });
+      if(_this.isLogin){
 
-        let _this = this;
-
+        // 没有这个接口.......app也没有这个功能....
         this.$http.post('/commodity/getCommodityCarInfo', {
           "distributionCommunityId":_this.distributionCommunityId
         },{
@@ -211,15 +224,24 @@ export default {
 
     /************************************************************************************************/
     // 修改列表中已添加购物车值
-    modifyShopCarCount:function(list,index,parentIndex){
+    modifyShopCarCount:function(type,list,index,parentIndex){
       let _this = this;
-      //console.log(_this.lists[index]['commoditys'][index]['shopCarCount'])  列表.................父index、commoditys固定、下一级index、字段
-      Vue.set(_this.lists[parentIndex]['commoditys'][index],'shopCarCount',_this.lists[parentIndex]['commoditys'][index]['shopCarCount'] + 1);
+      if(type == 'add'){
+        //console.log(_this.lists[index]['commoditys'][index]['shopCarCount'])  列表.................父index、commoditys固定、下一级index、字段
+        Vue.set(_this.lists[parentIndex]['commoditys'][index],'shopCarCount',_this.lists[parentIndex]['commoditys'][index]['shopCarCount'] + 1);
+      }else if(type == 'del'){
+        Vue.set(_this.lists[parentIndex]['commoditys'][index],'shopCarCount',_this.lists[parentIndex]['commoditys'][index]['shopCarCount'] - 1);
+      }
     },
     // 修改底部购物车值
     shoppingNum:function(num){
       this.$refs.appnav.shoppingNum = num;
+    },
+    toShopping:function(){
+      // 下一步---去购物车
+      this.$router.push({ path: 'shopping'})
     }
+
   },
   components: {
     appNav,
