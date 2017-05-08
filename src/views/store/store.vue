@@ -3,10 +3,10 @@
   <div class="wrap">
     <header>
       <div class="search">
-        <div class="box">
+        <router-link to="search" class="box">
           <i></i>
           <input type="search" placeholder="搜索" />
-        </div>
+        </router-link>
         <span class="exit">取消</span>
       </div>
       <div class="searchList" style="display: none;">
@@ -107,34 +107,9 @@ export default {
     }
   },
   mounted() {
-    let _this = this;
 
     this.getList();               //获取列表
     //this.getCommodityCarInfo();   // 获取购物车数量和金额
-
-
-    // 搜索
-    this.$http.post('/community/getCommodityPage', {
-      "distributionCommunityId":_this.distributionCommunityId,
-      "pageIndex": 1,
-      "pageSize": 10,
-      "keyWord":"鱼",
-      "type":3            //查询类型：1：推荐 2：团购 3：普通
-    },{
-      "encryptType":1
-    }).then(function(res) {
-      console.log(res);
-      if (res.resultCode != 0) {
-        alert(res.msg);
-        return false;
-      }
-      //_this.lists = res.data;
-      //console.log(JSON.stringify(_this.lists))
-
-    }).catch(function(error) {
-      console.log(error)
-    })
-
 
   },
   methods: {
