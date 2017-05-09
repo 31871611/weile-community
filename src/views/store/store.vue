@@ -37,7 +37,7 @@
       </div>
     </header>
     <article class="main">
-      <div class="content">
+      <div class="storeContent">
         <div class="classifyList">
           <ul class="">
             <!--<li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>-->
