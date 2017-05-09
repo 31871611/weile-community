@@ -70,7 +70,7 @@
     @include display-flex();
     @include align-items();
   }
-  input[type='radio']{
+  input[type='checkbox']{
     width: pxTorem(36px);
     height: pxTorem(36px);
     display: block;

@@ -163,7 +163,7 @@ export default {
 //      searchList = $.grep(searchList, function(n, i){
 //        return n.name !== _this.keyWord;
 //      })
-      
+
       if(searchList.length > 10) searchList.pop();
       searchList.unshift({
         id: new Date().getTime(),

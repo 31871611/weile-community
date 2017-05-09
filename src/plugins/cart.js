@@ -70,6 +70,18 @@ var cart = {
    * @return {Array} 商品列表
    */
   queryAll: function(flag) {
+    // 本来就没转成str....
+
+    let _this = this;
+    let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
+
+    var ls = _this.lists;
+    if(!flag){
+      ls = _this.lists.filter(function(item) {
+        return item.distributionCommunityId == distributionCommunityId;
+      });
+    }
+    return ls;
 
   },
   /**
@@ -78,12 +90,31 @@ var cart = {
    */
   queryAllJsonStr: function(flag) {
 
+    let _this = this;
+    let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
+
+    //var cid = cookie.get('distributionCommunityId');
+    //if(isNaN(cid)) return $.toast('便利店不存在');
+
+    var cartInfo = _this.lists;
+    var jsonStr = "[";
+    for (var i = 0; i < cartInfo.length; i++) {
+      if(!flag && cartInfo[i].distributionCommunityId != distributionCommunityId) continue;
+      var goodsId = cartInfo[i].id;
+      var cid = cartInfo[i].distributionCommunityId;
+      var amount = cartInfo[i].amount;
+      if (amount != undefined) {
+        if (i != 0) {
+          jsonStr += ","
+        }
+        jsonStr += "{goodsId:" + goodsId + ",amount:" + amount + ",distributionCommunityId:" + cid + "}"
+      }
+    }
+    jsonStr += "]";
+    return jsonStr;
+
   },
-  /**
-   * 移除商品
-   * @param  {Number} id 商品id
-   * @return {Object}    移除的商品信息
-   */
+  // 移除商品
   remove: function(commodityId) {
     let _this = this;
     let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
@@ -111,7 +142,10 @@ var cart = {
    * @return {Arrray} 移除的所有商品列表
    */
   removeAll: function() {
-
+    var ls = this.lists;
+    this.lists = [];
+    this.update();
+    return ls;
   },
   // 获取商品总数量
   getAmount: function() {
