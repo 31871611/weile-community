@@ -57,6 +57,11 @@
             </router-link>
           </li>
         </ul>
+
+        <div style="background: #0cbd0b;padding: 50px;" @click="more">
+          点击加载
+        </div>
+
       </div>
 
       <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
@@ -100,8 +105,10 @@ export default {
   name: 'userOrder',
   data() {
     return{
-      lists:'',
-      status:0
+      lists:[],
+      status:0,
+      pageSize:10,
+      pageIndex:1
     }
   },
   mounted() {
@@ -117,8 +124,8 @@ export default {
       _this.$refs.modalLoading.is = true;
       this.$http.post('/community/getMyStoreOrder',{
         "status":status,    //订单状态：0全部,1.待发货,2.送货中,3.订单完成,4.商户取消订单,5.用户取消订单,6.用户退单申请,-1表示4+5
-        "pageSize":10,
-        "pageIndex":1,
+        "pageSize":_this.pageSize,
+        "pageIndex":_this.pageIndex,
         "isGroupBuyingOrder":this.$route.query.group || 0,     //0表示普通订单，1表示团购订单
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
       },{
@@ -129,13 +136,20 @@ export default {
           alert(res.msg);
           return false;
         }
-        _this.lists = res.data;
+        //_this.lists = res.data;
+        _this.lists = _this.lists.concat(res.data);
         // 隐藏加载中
         _this.$refs.modalLoading.is = false;
         //console.log(JSON.stringify(_this.lists));
       }).catch(function(error) {
         console.log(error)
       })
+    },
+    more:function(){
+
+      this.pageIndex ++;
+      this.init(0);
+
     }
   },
   components: {
