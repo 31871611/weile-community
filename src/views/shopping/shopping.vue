@@ -35,7 +35,7 @@
                   <strong class="price">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
                   <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.ifFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" v-if="list.ifFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -48,7 +48,7 @@
       </div>
     </article>
     <footer>
-      {{checkCommodityId}}
+
       <div class="footerInfo" v-if="lists.distributionStr">
         {{lists.distributionStr}}
       </div>
@@ -65,13 +65,15 @@
           <input id="delAll" type="checkbox" v-model="checkedAllModel" @click="checkAll" />
           <label for="delAll">全选</label>
           <div class="total">
-            <span>合计：<b>￥{{lists.totalAllMoney / 1000 | price}}</b></span>
+
+            <span v-if="lists.totalMoney">合计：<b>￥{{lists.totalMoney / 1000 | price}}</b></span>
+            <span v-else>合计：<b>￥0.00</b></span>
+
             <em v-if="lists.discountMoney">已优惠￥{{lists.discountMoney}}</em>
           </div>
         </div>
-        <div class="next">去结算(0)</div>
+        <div class="next" @click="toPay">去结算({{lists.goodsNum ? lists.goodsNum : '0'}})</div>
       </div>
-
 
       <app-nav ref="appnav" :select-class="'shopping'"></app-nav>
     </footer>
@@ -85,10 +87,10 @@
  "distributionStr": "",           // 差1.00元免配送费
  "ifCanOrder": 1,                 // 1,//是否可下单，1可以，0不可以
  "discountMoney": 0,              // jsp中没有？
- "totalCount": 5,                 // jsp中使用？
- "totalAllMoney": 10930,          // jsp中使用？
+ "totalCount": 5,                 // jsp中没使用？
+ "totalAllMoney": 10930,          // jsp中没使用？
  "goodsNum": 0,                   // 去结算(1)...没值...需要选中
- "totalMoney": 0                  // ...没值
+ "totalMoney": 0                  // ...没值...需要选中
 
  "cartGoodsList": [
     "discountStr": "",      // 优惠信息
@@ -142,7 +144,7 @@
     读取本地缓存，提交到缓存购物车->成功->填充到模版、根据数据加载相关信息
 
 
-  事件处理....未整理
+  app 加减库存没有重新请求
 
 
 */
@@ -160,7 +162,8 @@ export default {
       isLogin : simplestorage.get('HLXK_STATUS'),
       isDel:false,
       checkCommodityId:[],         // 商品id
-      checkedAllModel:false        // 全选、反选
+      checkedAllModel:false,       // 全选、反选
+      saveCheckNum:""              // 保存选中值，用于编辑->完成
     }
   },
   mounted() {
@@ -221,15 +224,15 @@ export default {
 
       if(_this.isLogin){
 
-        // 购物车详情
+        // 购物车详情.加载到未选中数据......
         this.$http.post('/community/getCartInfo', {
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-          //"checkGoodsInfo":"[{goodsId:100516,amount:1}]",       // 传了会返回选中的信息
-          "checkAll": 1
+          //"checkGoodsInfo":"[{goodsId:500148,amount:1}]",       // 传了会返回选中的信息...
+          //"checkAll": 1           // 传不传没多大不同...
         },{
           "encryptType":1
         }).then(function(res) {
-          console.log(res);
+          //console.log(res);
           if (res.resultCode != 0) {
             alert(res.msg);
             return false;
@@ -238,8 +241,7 @@ export default {
           _this.lists = res.data;
           // console.log(JSON.stringify(_this.lists))
           // 设置为全选
-
-          // loadCartInfo(list);
+          _this.checkAll()
 
         }).catch(function(error) {
           console.log(error)
@@ -248,7 +250,7 @@ export default {
       }else{
 
         var jsonStr = cart.queryAllJsonStr();
-        var checkJsonStr = _this.getCheckGoods();       // jsp中没登录那来的数据？
+        //var checkJsonStr = _this.getCheckGoods();       // jsp中没登录那来的数据？
 
         // 未登录.加载.本地缓存购物车信息查询
         this.$http.post('/community/getCartInfoByGoodsInfo', {
@@ -266,8 +268,8 @@ export default {
           // 加载购物车数据
           _this.lists = res.data;
           //console.log(JSON.stringify(_this.lists))
-
-          //loadCartTotalInfo(list)
+          // 设置为全选
+          _this.checkAll()
 
         }).catch(function(error) {
           console.log(error)
@@ -276,17 +278,115 @@ export default {
       }
 
     },
+    // 获取购物车选中数据
+    getCheckShopping:function(){
+      let _this = this;
+      let url;
+
+      //// 登录、未登录............................
+      if(_this.isLogin){
+
+        // 购物车详情
+        _this.$http.post('/community/getCartInfo', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "checkGoodsInfo":_this.getCheckGoods()
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res);
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          // 加载购物车数据
+          _this.lists = res.data;
+          // console.log(JSON.stringify(_this.lists))
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }else{
+
+        var jsonStr = cart.queryAllJsonStr();
+        var checkJsonStr = _this.getCheckGoods();
+
+        // 未登录.加载.本地缓存购物车信息查询
+        this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "checkGoodsInfo":checkJsonStr,       // 传了会返回选中的信息
+          "goodsInfo": jsonStr
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res);
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          // 加载购物车数据
+          _this.lists = res.data;
+          //console.log(JSON.stringify(_this.lists))
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }
+
+    },
+    // 获取全部商品json
     getCheckGoods :function(){
-      return 'getCheckGoods'
+      let _this = this;
+      let jsonStr = "[";
+
+      if(_this.isLogin){
+
+        // 只有选中状态需要
+        for(let i = 0;i < _this.checkCommodityId.length;i++){
+          _this.lists.cartGoodsList.forEach(function(item){
+            item.goodsList.forEach(function(goodsList,index){
+              if(_this.checkCommodityId[i] == goodsList.goodsId && goodsList.quantity != undefined){
+                if (i != 0) {
+                  jsonStr += ","
+                }
+                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+              }
+            })
+          });
+        }
+
+      }else{
+        let HLXK_SHOPPING = simplestorage.get('HLXK_SHOPPING');
+
+        _this.checkCommodityId.forEach(function(value,i){
+          HLXK_SHOPPING.forEach(function(goodsList){
+            if(value == goodsList.id){
+              if (i != 0) {
+                jsonStr += ","
+              }
+              jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + "}"
+            }
+          });
+
+        })
+
+      }
+
+      jsonStr += "]";
+      return jsonStr;
     },
     // 全选
     checkAll:function(){
       var _this = this;
 
+
+
       if (_this.checkedAllModel) {   //反选
         _this.checkCommodityId = [];
         // 全选值
         _this.checkedAllModel = false;
+
       }else{  //全选
         _this.checkCommodityId = [];
 
@@ -298,10 +398,38 @@ export default {
         // 全选值
         _this.checkedAllModel = true;
       }
+
+      // 重新获取没选中数据
+      _this.getCheckShopping();
     },
-    // 编辑
+    // 编辑、完成
     edit:function(){
-      this.isDel = !this.isDel;
+      let _this = this;
+      //this.isDel = !this.isDel;
+
+      if(_this.isDel){
+        // 完成
+        _this.isDel = false;
+
+        for(let i = 0;i < _this.saveCheckNum.length;i++){
+          _this.lists.cartGoodsList.forEach(function(item){
+            item.goodsList.forEach(function(goodsList,index){
+              if(_this.saveCheckNum[i] == goodsList.goodsId){
+                _this.checkCommodityId.push(goodsList.goodsId);
+              }
+            })
+          });
+        }
+      }else{
+        // 编辑
+        _this.isDel = true;
+        // 保存选中值
+        _this.saveCheckNum = _this.checkCommodityId;
+        // 清空全选
+        _this.checkCommodityId = [];
+        // 全选值
+        _this.checkedAllModel = false;
+      }
     },
     // 删除购物车商品按钮
     del:function(){
@@ -321,8 +449,6 @@ export default {
               return false;
             }
 
-            //loadTotalInfo();
-
           }).catch(function(error) {
             console.log(error)
           })
@@ -330,9 +456,49 @@ export default {
         }else{
           //删除缓存数据商品
           cart.remove(_this.checkCommodityId[i]);
-          //loadTotalInfo();
         }
       }
+    },
+    // 去结算
+    toPay:function(){
+      let _this = this;
+
+      // 选中的商品的数据
+      if(_this.checkCommodityId.length > 0){
+
+        if(_this.isLogin){
+          //验证库存
+          this.$http.post('/community/checkOrderInfo', {
+            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+            "goodsInfo":_this.getCheckGoods()
+          },{
+            "encryptType":1
+          }).then(function(res) {
+            console.log(res);
+            if (res.resultCode == 0) {
+              // 去结算页面
+              alert('去结算：' + _this.checkCommodityId)
+              // location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder=0&goodsInfo=" + jsonStr;
+
+            }else if(res.resultCode == 4105 || res.resultCode ==4201){
+              alert(res.msg);
+              return false;
+            }else{
+              alert(res.msg);
+              return false;
+            }
+          }).catch(function(error) {
+            console.log(error)
+          })
+        }else{
+          alert('未登录去结算：' + _this.checkCommodityId)
+          // location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder=0&goodsInfo=" + jsonStr;
+        }
+
+      }else{
+        alert('请选择商品')
+      }
+
     },
     /************************************************************************************************/
     // 修改列表中已添加购物车值
@@ -343,6 +509,13 @@ export default {
       }else if(type == 'del'){
         Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity - 1);
       }
+      // 重新获取没选中数据
+      _this.getCheckShopping();
+    },
+    // 未登录.修改列表中已添加购物车值
+    modifyNotLoginCarList:function(){
+      // 重新获取没选中数据
+      this.getCheckShopping();
     },
     // 修改底部购物车值
     shoppingNum:function(num){
@@ -366,6 +539,9 @@ export default {
       }else{
         this.checkedAllModel = false;
       }
+
+      // 重新获取没选中数据
+      this.getCheckShopping();
 
     }
   }

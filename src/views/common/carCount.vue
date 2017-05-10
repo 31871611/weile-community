@@ -184,6 +184,8 @@ export default {
         if(!_this.type){
           _this.num = cart.getIdAmount(_this.commodityId);
         }
+        // 给购物车页面使用
+        _this.$emit('modifyNotLoginCarList');
       }
 
     },
@@ -259,6 +261,8 @@ export default {
         // 修改底部购物车值
         _this.$emit('shoppingNum',cart.getAmount());
         _this.num = cart.getIdAmount(_this.commodityId);
+        // 给购物车页面使用
+        _this.$emit('modifyNotLoginCarList');
       }
 
     }

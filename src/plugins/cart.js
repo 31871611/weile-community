@@ -42,7 +42,6 @@ var cart = {
     let i = _this.lists.findIndex(function(value, index, arr) {
       return (value.id == commodityId && value.distributionCommunityId == distributionCommunityId);
     });
-    console.log(_this.lists[i].amount)
 
     if (i !== -1) {
       if (_this.lists[i].amount === 1) {
