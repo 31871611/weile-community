@@ -13,9 +13,51 @@
 
 */
 
+// 购物车加
+.oneNum{
+  $w:34px;
+  width: pxTorem($w);
+  height: pxTorem($w);
+  @extend %icoRem;
+  background-image: url("../../images/icon_store_add@2x.png");
+  &.select{
+    background-image: url("../../images/icon_homepage_add@2x.png");
+  }
+}
+// 购物车 加[值]减
+.selectNum{
+  $infoH:34px;
+  @include display-flex();
+  input{
+    display: block;
+    width: pxTorem(56px);
+    height: pxTorem($infoH);
+    border:0;
+    color: #3f4548;
+    text-align: center;
+    @include font-dpr(28px);
+  }
+  .remove,.add{
+    display: block;
+    width: pxTorem($infoH);
+    height: pxTorem($infoH);
+    @extend %icoRem;
+  }
+  .remove{
+    background-image: url("../../images/icon_minus_p@2x.png");
+    &.select{
+      background-image: url("../../images/icon_minus_n@2x.png");
+    }
+  }
+  .add{
+    background-image: url("../../images/icon_store_add@2x.png");
+    &.select{
+      background-image: url("../../images/icon_homepage_add@2x.png");
+    }
+  }
+}
 
-
-
+/*
 // 添加购物车-加减
 @mixin selectNum(){
   $infoH:34px;
@@ -48,6 +90,6 @@
     }
   }
 }
-
+*/
 
 

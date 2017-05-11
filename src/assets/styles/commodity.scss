@@ -209,10 +209,10 @@
     @include font-dpr(24px);
   }
   // 数量加减
-  .selectNum{
-    @import "components/selectNum";
-    @include selectNum;
-  }
+  //.selectNum{
+  //  @import "components/selectNum";
+  //  @include selectNum;
+  //}
 }
 
 

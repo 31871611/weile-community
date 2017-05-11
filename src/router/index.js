@@ -77,7 +77,6 @@ const router = new Router({
         {
           // 我的地址
           path: 'address',
-          name: 'userAddress',
           component: userAddress,
           children:[
             {

@@ -167,10 +167,13 @@
     bottom:0;
     width: 100%;
     height: pxTorem(40px);
+    @include display-flex();
+    @include align-items();
+    @include justify-content();
   }
   // 价格
   .price{
-    float: left;
+    display: block;
     @include font-dpr(36px);
     color: $orange-base;
     b{
@@ -189,12 +192,12 @@
     padding:0 pxTorem(10px);
     @include border-radius(2px);
   }
-  // 数量加减
-  .selectNum{
-    float: right;
-    @import "components/selectNum";
-    @include selectNum;
-  }
+  //// 数量加减
+  //.selectNum{
+  //  float: right;
+  //  @import "components/selectNum";
+  //  @include selectNum;
+  //}
 }
 
 

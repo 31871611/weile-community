@@ -1,4 +1,5 @@
 <template>
+<div class="view">
 
   <div class="wrap">
     <header>
@@ -66,7 +67,8 @@
                     马上抢
                   </div>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                  <!--{{list.inventory}}-->
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -89,12 +91,17 @@
     </footer>
   </div>
 
+  <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+
+</div>
+
 </template>
 <script>
 import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
 import carCount from '../common/carCount.vue';
+import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'store',
@@ -116,6 +123,8 @@ export default {
     // 获取列表数据
     getList:function(){
       let _this = this;
+      // 显示加载中
+      _this.$refs.modalLoading.is = true;
       // 加载购物车数据
       this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
         "distributionCommunityId":_this.distributionCommunityId
@@ -129,6 +138,8 @@ export default {
         }
         _this.lists = res.data;
         //console.log(JSON.stringify(_this.lists))
+        // 隐藏加载中
+        _this.$refs.modalLoading.is = false;
 
       }).catch(function(error) {
         console.log(error)
@@ -220,8 +231,9 @@ export default {
   },
   components: {
     appNav,
-    carCount
+    carCount,
+    modalToast
   }
 }
 </script>
-<style lang="scss" src="../../assets/styles/store.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/store.scss"></style>

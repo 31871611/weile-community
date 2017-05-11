@@ -138,11 +138,11 @@
       background-image: url("../images/icon_homepage_add@2x.png");
     }
   }
-  // 购物车加[值]减
-  .selectNum{
-    @import "components/selectNum";
-    @include selectNum;
-  }
+  //// 购物车加[值]减
+  //.selectNum{
+  //  @import "components/selectNum";
+  //  @include selectNum;
+  //}
 }
 
 // 搜索记录
@@ -348,11 +348,11 @@
     }
   }
 
-  // 数量加减
-  .selectNum{
-    @import "components/selectNum";
-    @include selectNum;
-  }
+  //// 数量加减
+  //.selectNum{
+  //  @import "components/selectNum";
+  //  @include selectNum;
+  //}
   // 马上抢
   .go{
     text-align: center;

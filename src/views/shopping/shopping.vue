@@ -1,9 +1,10 @@
 <template>
 
+
   <div class="wrap">
 
     <article class="main">
-      <div class="mainScroll shoppingCart">
+      <div class="mainScroll shoppingCart" v-show="isLists">
         <div class="shoppingTitle">
           <h3>锦艺便利</h3>
           <span @click="edit">{{isDel ? '完成' : '编辑'}}</span>
@@ -20,14 +21,14 @@
 
           <ul class="shoppingList">
 
-            <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity">
+            <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity" v-bind:key="index">
 
               <input type="checkbox" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" />
               <router-link :to="{path:'commodity',query: { id: list.goodsId }}" class="photo">
                 <img :src="list.imageUrl" alt="">
                 <i class="activity" v-if="list.isActivity == 1">活动</i>
                 <i class="goIng" v-if="list.ifFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
-                <span>库存不足</span>
+                <!--<span>库存不足</span>-->
               </router-link>
               <div class="box">
                 <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
@@ -35,7 +36,7 @@
                   <strong class="price">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
                   <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" v-if="list.ifFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -46,6 +47,12 @@
         </template>
 
       </div>
+
+
+      <not-data v-show="isNotData"></not-data>
+
+      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+
     </article>
     <footer>
 
@@ -78,6 +85,7 @@
       <app-nav ref="appnav" :select-class="'shopping'"></app-nav>
     </footer>
   </div>
+
 
 </template>
 <script>
@@ -153,11 +161,15 @@ import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
 import carCount from '../common/carCount.vue';
 import cart from '../../plugins/cart'
+import notData from '../common/notData.vue'
+import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'shopping',
   data() {
     return{
+      isNotData:false,          // 是否显示当前无商品提示
+      isLists:false,            // 是否显示列表
       lists:'',
       isLogin : simplestorage.get('HLXK_STATUS'),
       isDel:false,
@@ -173,8 +185,9 @@ export default {
   },
   methods: {
     init:function(){
-
       let _this = this;
+      // 显示加载中
+      _this.$refs.modalLoading.is = true;
 
       if(_this.isLogin){
 
@@ -237,11 +250,22 @@ export default {
             alert(res.msg);
             return false;
           }
-          // 加载购物车数据
-          _this.lists = res.data;
+          if(res.data.cartGoodsList.length > 0){
+            // 显示数据列表
+            _this.isLists = true;
+            // 加载购物车数据
+            _this.lists = res.data;
+            // 设置为全选
+            _this.checkAll()
+            // 修改底部的值
+            _this.$refs.appnav.shoppingNum = res.data.totalCount;
+          }else{
+            // 显示无数据
+            _this.isNotData = true;
+          }
+          // 隐藏加载中
+          _this.$refs.modalLoading.is = false;
           // console.log(JSON.stringify(_this.lists))
-          // 设置为全选
-          _this.checkAll()
 
         }).catch(function(error) {
           console.log(error)
@@ -265,11 +289,20 @@ export default {
             alert(res.msg);
             return false;
           }
-          // 加载购物车数据
-          _this.lists = res.data;
+          if(res.data.cartGoodsList.length > 0){
+            // 显示数据列表
+            _this.isLists = true;
+            // 加载购物车数据
+            _this.lists = res.data;
+            // 设置为全选
+            _this.checkAll()
+          }else{
+            // 显示无数据
+            _this.isNotData = true;
+          }
+          // 隐藏加载中
+          _this.$refs.modalLoading.is = false;
           //console.log(JSON.stringify(_this.lists))
-          // 设置为全选
-          _this.checkAll()
 
         }).catch(function(error) {
           console.log(error)
@@ -380,8 +413,6 @@ export default {
     checkAll:function(){
       var _this = this;
 
-
-
       if (_this.checkedAllModel) {   //反选
         _this.checkCommodityId = [];
         // 全选值
@@ -434,6 +465,9 @@ export default {
     // 删除购物车商品按钮
     del:function(){
       let _this = this;
+      // 显示加载中
+      _this.$refs.modalLoading.is = true;
+
       for(var i = 0;i < _this.checkCommodityId.length; i++){
         if(_this.isLogin){
           // 删除
@@ -443,12 +477,18 @@ export default {
           },{
             "encryptType":1
           }).then(function(res) {
-            //console.log(res);
+            console.log(res);
             if (res.resultCode != 0) {
               alert(res.msg);
               return false;
             }
-
+            // 加载购物车数据
+            _this.lists = res.data;
+            // 修改底部的值
+            _this.$refs.appnav.shoppingNum = res.data.totalCount;
+            // 隐藏加载中
+            _this.$refs.modalLoading.is = false;
+            _this.checkCommodityId = [];
           }).catch(function(error) {
             console.log(error)
           })
@@ -456,6 +496,35 @@ export default {
         }else{
           //删除缓存数据商品
           cart.remove(_this.checkCommodityId[i]);
+
+          var jsonStr = cart.queryAllJsonStr();
+
+          // 未登录.加载.本地缓存购物车信息查询
+          this.$http.post('/community/getCartInfoByGoodsInfo', {
+            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+            "goodsInfo": jsonStr
+          },{
+            "encryptType":1
+          }).then(function(res) {
+            //console.log(res);
+            if (res.resultCode != 0) {
+              alert(res.msg);
+              return false;
+            }
+            // 加载购物车数据
+            _this.lists = res.data;
+            // 修改底部的值
+            _this.$refs.appnav.shoppingNum = res.data.totalCount;
+            // 隐藏加载中
+            _this.$refs.modalLoading.is = false;
+            //console.log(JSON.stringify(_this.lists))
+
+            _this.checkCommodityId = [];
+
+          }).catch(function(error) {
+            console.log(error)
+          })
+
         }
       }
     },
@@ -524,7 +593,9 @@ export default {
   },
   components: {
     appNav,
-    carCount
+    carCount,
+    notData,
+    modalToast
   },
   watch: {
     // 是否全部选中
@@ -547,4 +618,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="../../assets/styles/shopping.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/shopping.scss"></style>

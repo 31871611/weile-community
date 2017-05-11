@@ -1,6 +1,6 @@
 <template>
 
-  <div v-if="type" class="num" @click.stop.prevent="add()"></div>
+  <div v-if="type" class="oneNum" @click.stop.prevent="add()"></div>
   <div v-else class="selectNum">
     <div class="remove" v-show="num > 0" @click.stop.prevent="remove()"></div>
     <input type="text" v-show="num > 0" value="1" v-model="num" readonly="readonly" />
@@ -278,3 +278,4 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss" src="../../assets/styles/components/_selectNum.scss"></style>
