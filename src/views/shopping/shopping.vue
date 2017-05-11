@@ -23,12 +23,13 @@
 
             <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity" v-bind:key="index">
 
-              <input type="checkbox" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" />
+              <input type="checkbox" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
               <router-link :to="{path:'commodity',query: { id: list.goodsId }}" class="photo">
                 <img :src="list.imageUrl" alt="">
                 <i class="activity" v-if="list.isActivity == 1">活动</i>
                 <i class="goIng" v-if="list.ifFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
-                <!--<span>库存不足</span>-->
+                <span v-if="list.quantity > list.inventory">库存不足</span>
+                <span v-if="list.status == 0">失效</span>
               </router-link>
               <div class="box">
                 <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
@@ -36,7 +37,7 @@
                   <strong class="price">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
                   <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
+                  <car-count v-if="list.status !== 0" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
 
                 </div>
               </div>
@@ -79,7 +80,8 @@
             <em v-if="lists.discountMoney">已优惠￥{{lists.discountMoney}}</em>
           </div>
         </div>
-        <div class="next" @click="toPay">去结算({{lists.goodsNum ? lists.goodsNum : '0'}})</div>
+
+        <div class="next" @click="toPay(lists.ifCanOrder,lists.distributionStr)">去结算({{lists.goodsNum ? lists.goodsNum : '0'}})</div>
       </div>
 
       <app-nav ref="appnav" :select-class="'shopping'"></app-nav>
@@ -122,7 +124,7 @@
         "userId": 3,                // 用户id...jsp中没有用到
         "quantity": 1,              // 商品数量
         "deleteFlag": false,        // 删除状态
-        "amountLimit": "",          // 购买限制数量v
+        "amountLimit": "",          // 购买限制数量v....大概应该可能还有别的用处？
         "goodsName": "新增商品",     // 商品名称v
         "monthSales": 0,            // 月销售数量...jsp中没有用到
 
@@ -369,7 +371,7 @@ export default {
 
     },
     // 获取全部商品json
-    getCheckGoods :function(){
+    getCheckGoods :function(str){
       let _this = this;
       let jsonStr = "[";
 
@@ -383,7 +385,11 @@ export default {
                 if (i != 0) {
                   jsonStr += ","
                 }
-                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+                if(str == "pay"){
+                  jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + ",price:" + goodsList.price +"}"
+                }else{
+                  jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+                }
               }
             })
           });
@@ -398,7 +404,11 @@ export default {
               if (i != 0) {
                 jsonStr += ","
               }
-              jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + "}"
+              if(str == "pay"){
+                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + ",price:" + goodsList.price +"}"
+              }else{
+                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+              }
             }
           });
 
@@ -465,15 +475,122 @@ export default {
     // 删除购物车商品按钮
     del:function(){
       let _this = this;
+
       // 显示加载中
       _this.$refs.modalLoading.is = true;
 
-      for(var i = 0;i < _this.checkCommodityId.length; i++){
+/*
+      let str = _this.checkCommodityId.toString();
+      console.log(str);
+
+      // 批量删除
+      _this.$http.post('/community/delCartGoodsArray', {
+        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+        "goodsIds": str,
+        //"checkAll":"1",   //购物车选中的商品信息
+        //"checkGoodsInfo":"[{goodsId:500152,amount:1},{goodsId:500145,amount:1},{goodsId:500148,amount:1}]"  //购物车剩下的商品信息
+      },{
+        "encryptType":1
+      }).then(function(res) {
+        console.log(res);
+        if (res.resultCode != 0) {
+          alert(res.msg);
+          return false;
+        }
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+      return false;
+ */
+
+      let delArr = [];
+
+      _this.checkCommodityId.forEach(function(value,index){
+
+        delArr[index] = new Promise(function(resolve,reject){
+
+          if(_this.isLogin){
+
+            // 删除
+            _this.$http.post('/community/delCartGoods', {
+              "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+              "goodsId": value
+            },{
+              "encryptType":1
+            }).then(function(res) {
+              //console.log(res);
+              if (res.resultCode != 0) {
+                alert(res.msg);
+                return false;
+              }
+
+              resolve(res.data);
+
+            }).catch(function(error) {
+              console.log(error)
+            })
+
+          }else {
+
+            //删除缓存数据商品
+            cart.remove(value);
+
+            var jsonStr = cart.queryAllJsonStr();
+
+            // 未登录.加载.本地缓存购物车信息查询
+            _this.$http.post('/community/getCartInfoByGoodsInfo', {
+              "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+              "goodsInfo": jsonStr
+            },{
+              "encryptType":1
+            }).then(function(res) {
+              //console.log(res);
+              if (res.resultCode != 0) {
+                reject(res.msg);
+                alert(res.msg);
+                return false;
+              }
+
+              resolve(res.data);
+
+            }).catch(function(error) {
+              console.log(error)
+            })
+
+          }
+
+        });
+
+      })
+
+      Promise.all(delArr).then(function (result) {
+        console.log(result);
+        let d = result[result.length - 1];
+        // 加载购物车数据
+        _this.lists = d;
+        // 修改底部的值
+        _this.$refs.appnav.shoppingNum = d.totalCount;
+        // 隐藏加载中
+        _this.$refs.modalLoading.is = false;
+        //console.log(JSON.stringify(_this.lists))
+
+        _this.checkCommodityId = [];
+
+      });
+
+
+
+/*
+      // 单条删除...异步造成返回数据不是最后的值.底部的总数
+      _this.checkCommodityId.forEach(function(value){
+
         if(_this.isLogin){
           // 删除
-          this.$http.post('/community/delCartGoods', {
+          _this.$http.post('/community/delCartGoods', {
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-            "goodsId": _this.checkCommodityId[i]
+            "goodsId": value
           },{
             "encryptType":1
           }).then(function(res) {
@@ -495,18 +612,18 @@ export default {
 
         }else{
           //删除缓存数据商品
-          cart.remove(_this.checkCommodityId[i]);
+          cart.remove(value);
 
           var jsonStr = cart.queryAllJsonStr();
 
           // 未登录.加载.本地缓存购物车信息查询
-          this.$http.post('/community/getCartInfoByGoodsInfo', {
+          _this.$http.post('/community/getCartInfoByGoodsInfo', {
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
             "goodsInfo": jsonStr
           },{
             "encryptType":1
           }).then(function(res) {
-            //console.log(res);
+            console.log(res);
             if (res.resultCode != 0) {
               alert(res.msg);
               return false;
@@ -526,11 +643,20 @@ export default {
           })
 
         }
-      }
+      })
+*/
+
+
     },
     // 去结算
-    toPay:function(){
+    toPay:function(is,str){
+      if(!is){
+        alert(str)
+        return false;
+      }
       let _this = this;
+
+      console.log(_this.getCheckGoods('pay'))
 
       // 选中的商品的数据
       if(_this.checkCommodityId.length > 0){
@@ -612,7 +738,7 @@ export default {
       }
 
       // 重新获取没选中数据
-      this.getCheckShopping();
+      //this.getCheckShopping();
 
     }
   }
