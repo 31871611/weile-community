@@ -113,7 +113,7 @@ var cart = {
     return jsonStr;
 
   },
-  // 移除商品
+  // 移除单个商品
   remove: function(commodityId) {
     let _this = this;
     let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
@@ -129,11 +129,29 @@ var cart = {
     _this.update();
   },
   /**
-   * 移除商品
+   * 移除一组商品
    * @param  {Number} id 商品id
    * @return {Object}    移除的商品信息
    */
   removeIds: function(ids) {
+    let _this = this;
+    let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
+
+    ids.forEach(function(v){
+
+      console.log(v)
+      let i = _this.lists.findIndex(function(value, index, arr) {
+        return (value.id == v && value.distributionCommunityId == distributionCommunityId);
+      });
+
+      if (i !== -1) {
+        _this.lists.splice(i, 1)[0];
+      } else {
+        alert('该商品不在购物车中(id:' + id + ')')
+      }
+      _this.update();
+
+    })
 
   },
   /**

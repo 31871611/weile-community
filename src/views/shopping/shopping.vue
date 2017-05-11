@@ -405,9 +405,9 @@ export default {
                 jsonStr += ","
               }
               if(str == "pay"){
-                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + ",price:" + goodsList.price +"}"
+                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + ",price:" + goodsList.price +"}"
               }else{
-                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + "}"
               }
             }
           });
@@ -418,6 +418,48 @@ export default {
 
       jsonStr += "]";
       return jsonStr;
+    },
+    // 获取没有选中的商品
+    getNotCheckGoods:function(){
+
+      let _this = this;
+      let jsonStr = "[";
+
+      if(_this.isLogin){
+
+        for(let i = 0;i < _this.checkCommodityId.length;i++){
+          _this.lists.cartGoodsList.forEach(function(item){
+            item.goodsList.forEach(function(goodsList,index){
+              if(_this.checkCommodityId[i] != goodsList.goodsId && goodsList.quantity != undefined){
+                if (i != 0) {
+                  jsonStr += ","
+                }
+                jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+              }
+            })
+          });
+        }
+
+      }else{
+        let HLXK_SHOPPING = simplestorage.get('HLXK_SHOPPING');
+
+        _this.checkCommodityId.forEach(function(value,i){
+          HLXK_SHOPPING.forEach(function(goodsList){
+            if(value != goodsList.id){
+              if (i != 0) {
+                jsonStr += ","
+              }
+              jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+            }
+          });
+
+        })
+
+      }
+
+      jsonStr += "]";
+      return jsonStr;
+
     },
     // 全选
     checkAll:function(){
@@ -479,173 +521,72 @@ export default {
       // 显示加载中
       _this.$refs.modalLoading.is = true;
 
-/*
-      let str = _this.checkCommodityId.toString();
-      console.log(str);
+      if(_this.isLogin){
 
-      // 批量删除
-      _this.$http.post('/community/delCartGoodsArray', {
-        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-        "goodsIds": str,
-        //"checkAll":"1",   //购物车选中的商品信息
-        //"checkGoodsInfo":"[{goodsId:500152,amount:1},{goodsId:500145,amount:1},{goodsId:500148,amount:1}]"  //购物车剩下的商品信息
-      },{
-        "encryptType":1
-      }).then(function(res) {
-        console.log(res);
-        if (res.resultCode != 0) {
-          alert(res.msg);
-          return false;
-        }
+        let str = _this.checkCommodityId.toString();
+        let getNotCheckGoods = _this.getNotCheckGoods();
 
-      }).catch(function(error) {
-        console.log(error)
-      })
-
-      return false;
- */
-
-      let delArr = [];
-
-      _this.checkCommodityId.forEach(function(value,index){
-
-        delArr[index] = new Promise(function(resolve,reject){
-
-          if(_this.isLogin){
-
-            // 删除
-            _this.$http.post('/community/delCartGoods', {
-              "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-              "goodsId": value
-            },{
-              "encryptType":1
-            }).then(function(res) {
-              //console.log(res);
-              if (res.resultCode != 0) {
-                alert(res.msg);
-                return false;
-              }
-
-              resolve(res.data);
-
-            }).catch(function(error) {
-              console.log(error)
-            })
-
-          }else {
-
-            //删除缓存数据商品
-            cart.remove(value);
-
-            var jsonStr = cart.queryAllJsonStr();
-
-            // 未登录.加载.本地缓存购物车信息查询
-            _this.$http.post('/community/getCartInfoByGoodsInfo', {
-              "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-              "goodsInfo": jsonStr
-            },{
-              "encryptType":1
-            }).then(function(res) {
-              //console.log(res);
-              if (res.resultCode != 0) {
-                reject(res.msg);
-                alert(res.msg);
-                return false;
-              }
-
-              resolve(res.data);
-
-            }).catch(function(error) {
-              console.log(error)
-            })
-
+        // 批量删除
+        _this.$http.post('/community/delCartGoodsArray', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "goodsIds": str,
+          //"checkAll":"1",   //购物车选中的商品信息
+          //"checkGoodsInfo":"[{goodsId:500152,amount:1},{goodsId:500145,amount:1},{goodsId:500148,amount:1}]"  //购物车剩下的商品信息
+          "checkGoodsInfo":getNotCheckGoods
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          console.log(res);
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
           }
+          // 加载购物车数据
+          _this.lists = res.data;
+          // 修改底部的值
+          _this.$refs.appnav.shoppingNum = res.data.totalCount;
+          // 隐藏加载中
+          _this.$refs.modalLoading.is = false;
+          _this.checkCommodityId = [];
 
-        });
+        }).catch(function(error) {
+          console.log(error)
+        })
 
-      })
+      }else {
 
-      Promise.all(delArr).then(function (result) {
-        console.log(result);
-        let d = result[result.length - 1];
-        // 加载购物车数据
-        _this.lists = d;
-        // 修改底部的值
-        _this.$refs.appnav.shoppingNum = d.totalCount;
-        // 隐藏加载中
-        _this.$refs.modalLoading.is = false;
-        //console.log(JSON.stringify(_this.lists))
+        //删除一组缓存数据商品
+        cart.removeIds(_this.checkCommodityId);
 
-        _this.checkCommodityId = [];
+        var jsonStr = cart.queryAllJsonStr();
 
-      });
+        // 未登录.加载.本地缓存购物车信息查询
+        _this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "goodsInfo": jsonStr
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          console.log(res);
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          // 加载购物车数据
+          _this.lists = res.data;
+          // 修改底部的值
+          _this.$refs.appnav.shoppingNum = res.data.totalCount;
+          // 隐藏加载中
+          _this.$refs.modalLoading.is = false;
+          //console.log(JSON.stringify(_this.lists))
 
+          _this.checkCommodityId = [];
 
+        }).catch(function(error) {
+          console.log(error)
+        })
 
-/*
-      // 单条删除...异步造成返回数据不是最后的值.底部的总数
-      _this.checkCommodityId.forEach(function(value){
-
-        if(_this.isLogin){
-          // 删除
-          _this.$http.post('/community/delCartGoods', {
-            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-            "goodsId": value
-          },{
-            "encryptType":1
-          }).then(function(res) {
-            console.log(res);
-            if (res.resultCode != 0) {
-              alert(res.msg);
-              return false;
-            }
-            // 加载购物车数据
-            _this.lists = res.data;
-            // 修改底部的值
-            _this.$refs.appnav.shoppingNum = res.data.totalCount;
-            // 隐藏加载中
-            _this.$refs.modalLoading.is = false;
-            _this.checkCommodityId = [];
-          }).catch(function(error) {
-            console.log(error)
-          })
-
-        }else{
-          //删除缓存数据商品
-          cart.remove(value);
-
-          var jsonStr = cart.queryAllJsonStr();
-
-          // 未登录.加载.本地缓存购物车信息查询
-          _this.$http.post('/community/getCartInfoByGoodsInfo', {
-            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-            "goodsInfo": jsonStr
-          },{
-            "encryptType":1
-          }).then(function(res) {
-            console.log(res);
-            if (res.resultCode != 0) {
-              alert(res.msg);
-              return false;
-            }
-            // 加载购物车数据
-            _this.lists = res.data;
-            // 修改底部的值
-            _this.$refs.appnav.shoppingNum = res.data.totalCount;
-            // 隐藏加载中
-            _this.$refs.modalLoading.is = false;
-            //console.log(JSON.stringify(_this.lists))
-
-            _this.checkCommodityId = [];
-
-          }).catch(function(error) {
-            console.log(error)
-          })
-
-        }
-      })
-*/
-
+      }
 
     },
     // 去结算
