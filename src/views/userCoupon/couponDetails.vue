@@ -79,7 +79,7 @@
         <template v-else>
           <!-- 去便利店 -->
           <div class="titleLink">
-            <router-link to="store">
+            <router-link to="/store">
               <h2>查看适用商品</h2>
               <i></i>
             </router-link>

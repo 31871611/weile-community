@@ -90,22 +90,7 @@
     @include font-dpr(24px);
     @include border-radius(pxTorem(4px));
   }
-  //// 购物车加
-  //.num{
-  //  $w:34px;
-  //  width: pxTorem($w);
-  //  height: pxTorem($w);
-  //  @extend %icoRem;
-  //  background-image: url("../images/icon_store_add@2x.png");
-  //  &.select{
-  //    background-image: url("../images/icon_homepage_add@2x.png");
-  //  }
-  //}
-  //// 购物车加[值]减
-  //.selectNum{
-  //  @import "selectNum";
-  //  @include selectNum;
-  //}
+
 }
 
 

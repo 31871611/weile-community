@@ -592,12 +592,10 @@ export default {
     // 去结算
     toPay:function(is,str){
       if(!is){
-        alert(str)
+        alert(str);
         return false;
       }
       let _this = this;
-
-      console.log(_this.getCheckGoods('pay'))
 
       // 选中的商品的数据
       if(_this.checkCommodityId.length > 0){
@@ -613,8 +611,7 @@ export default {
             console.log(res);
             if (res.resultCode == 0) {
               // 去结算页面
-              alert('去结算：' + _this.checkCommodityId)
-              // location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder=0&goodsInfo=" + jsonStr;
+              _this.$router.push({ path: '/payorder', query: { goodsInfo: _this.getCheckGoods('pay') }})
 
             }else if(res.resultCode == 4105 || res.resultCode ==4201){
               alert(res.msg);
@@ -628,7 +625,7 @@ export default {
           })
         }else{
           alert('未登录去结算：' + _this.checkCommodityId)
-          // location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder=0&goodsInfo=" + jsonStr;
+          // 是否需要提示还未登录
         }
 
       }else{

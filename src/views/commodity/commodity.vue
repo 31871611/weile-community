@@ -16,7 +16,7 @@
             <div class="priceNum">
               <span class="price"><b>￥</b>{{list.flashSalePrice / 1000 | price}}</span>
               <div>
-                <span class="originalCost">￥{{list.price | price}}</span>
+                <span class="originalCost">￥{{list.price / 1000 | price}}</span>
                 <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
               </div>
             </div>
@@ -65,27 +65,45 @@
                   <span class="price" v-if="list.nowTime > list.startTime && list.endTime > list.nowTime && list.flashSaleInventory > 0"><b>￥</b>{{list.flashSalePrice / 1000 | price}}</span>
                   <span class="price" v-else><b>￥</b>{{list.price / 1000 | price}}</span>
                 </template>
-
-                <span class="repertory" v-if="list.nowTime > list.startTime && list.endTime > list.nowTime && list.inventory">(库存{{list.inventory}}件)</span>
+                <!-- 抢购不显示库存 -->
+                <span class="repertory" v-if="list.isFlash === 1 && list.flashSaleInventory > 0"></span>
+                <span class="repertory" v-else>(库存{{list.inventory}}件)</span>
               </div>
-              <!-- 有原价显示原价 -->
-              <!-- 没原价 && 抢购库存 > 0 -->
+              <!--
+                正常不显示原价
+                有原价显示原价
+                没原价 && 抢购库存 > 0 显示正常价格
+                抢购未开始时不显示原价格
+
+                list.originalPrice //商品原价
+                list.flashSaleInventory //抢购库存
+              -->
+
+
               <span class="originalCost" v-if="list.originalPrice">￥{{list.originalPrice / 1000 | price}}</span>
-              <span class="originalCost" v-if="!list.originalPrice && list.flashSaleInventory > 0">￥{{list.price / 1000 | price}}</span>
+              <span class="originalCost" v-if="list.nowTime > list.startTime && list.endTime > list.nowTime && !list.originalPrice && list.flashSaleInventory > 0">￥{{list.price / 1000 | price}}</span>
             </div>
             <div class="right">
+
               <span class="limit" v-if="list.flashSalePrice != null && list.nowTime > list.startTime && list.endTime > list.nowTime && list.flashSaleInventory > 0 && list.flashLimit != 0">限购{{list.flashLimit}}件</span>
               <span class="limit" v-if="list.activityId !=0 && list.flashLimit != 0">限购{{list.flashLimit}}件</span>
               <span class="limit" v-if="list.groupBuy && list.amountLimit != 0">限购{{list.amountLimit}}件</span>
+
               <div class="selectNum">
-                <div class="reduce"></div>
-                <input type="text" value="1" />
-                <div class="add"></div>
+                <div class="remove" @click="remove()" :class="{'select':goodsNum == 1}"></div>
+                  <input type="text" value="1" v-model="goodsNum" />
+                <template v-if="list.isFlash === 1">
+                  <div class="add" @click="add()" :class="{'select':goodsNum >= list.flashSaleInventory}"></div>
+                </template>
+                <template v-else>
+                  <div class="add" @click="add()" :class="{'select':goodsNum >= list.inventory}"></div>
+                </template>
               </div>
+
             </div>
           </div>
         </div>
-        <!---->
+
 
         <ul class="commodityType">
           <li v-if="list.count">销量：{{list.count}}件</li>
@@ -153,11 +171,13 @@
       </div>
     </article>
     <footer>
+
       <!--
           团购商品，是立即购买
           没有库存的显示已售罄
-          普通商品是加入购物车
           抢购商品是，显示两个按钮
+
+          单独加入购物车...没了
       -->
 
       <!-- 有抢购活动时，结束时间 > 现在时间 && 现在时间 > 开始时间 -->
@@ -167,19 +187,12 @@
           <div class="not">已售罄</div>
         </div>
 
-        <div class="commodityFooterCart" v-if="list.flashSaleInventory <= 0 && list.inventory > 0">
-          <div class="shopping">
-            <div><b>1</b></div>
-          </div>
-          <div class="price">￥211.00</div>
-          <div class="add">加入购物车</div>
-        </div>
-
+        <!-- 抢购已开始为显示这里 -->
         <div class="commodityFooterNormal" v-if="list.flashSaleInventory > 0">
-          <div class="shopping">
+          <router-link to="/shopping" class="shopping">
             <div><b>1</b></div>
             <span>购物车</span>
-          </div>
+          </router-link>
           <div class="add">
             加入购物车
           </div>
@@ -195,16 +208,30 @@
       </div>
       <!-- 团购时.单独显示立即购买 -->
       <div class="commodityFooterBuy" v-else-if="list.groupBuy">
-        <div class="buy">立即购买</div>
+        <div class="buy" @click="groupBuy()">立即购买</div>
       </div>
-      <!-- 什么情况显示？距开抢 -->
-      <div class="commodityFooterCart" v-else>
-        <div class="shopping">
-          <div><b>1</b></div>
+      <!-- 正常商品.抢购未开始 -->
+      <div class="commodityFooterNormal" v-else>
+        <router-link to="/shopping" class="shopping">
+          <div><b v-show="shoppingNum">{{shoppingNum}}</b></div>
+          <span>购物车</span>
+        </router-link>
+        <div class="add" @click="addCar()">
+          加入购物车
         </div>
-        <div class="price">￥212.00</div>
-        <div class="add">加入购物车</div>
+        <div class="pay" @click="pay()">
+          立即购买
+        </div>
       </div>
+
+      <!-- 什么情况显示？距开抢 -->
+      <!--<div class="commodityFooterCart" v-else>-->
+        <!--<div class="shopping">-->
+          <!--<div><b>1</b></div>-->
+        <!--</div>-->
+        <!--<div class="price">￥212.00</div>-->
+        <!--<div class="add">加入购物车</div>-->
+      <!--</div>-->
 
 
     </footer>
@@ -213,7 +240,64 @@
 </div>
 </template>
 <script type="text/ecmascript-6">
+/*
+
+{
+ "price": 6000,
+ "unit": "件",
+ "commodityId": 500152,
+ "categoryId": 500059,
+ "activityId": 0,
+ "telephone": "0371-55372728",
+ "activityType": 0,
+ "images": [
+ {
+   "img": "http://img.v89.com/group1/M01/07/90/rBAA11j3Lh2ABgE5AACynZDlSAs059_640*236.jpg",
+   "video": "",
+   "info": ""
+ }
+ ],
+ "urls": [
+    "http://img.v89.com/group1/M02/07/90/rBAA11j9d96AbQ8BAAHgRB_zSNo693_640*640_640x640!.jpg"
+ ],
+ "originalPrice": null,
+ "inventory": 30,
+ "brand": "",
+ "intruduction": "",
+ "manu": null,
+ "spec": "4粒",
+ "communityType": "1",
+ "discountStr": "",
+ "amountLimit": 0,
+ "businessBeginTime": "00:30",
+ "businessEndTime": "24:00",
+ "amountAll": 0,
+ "isHouseUser": "0",
+ "priceYuan": 6,
+ "shopCarCount": 0,
+ "flashLimit": 0,
+ "flashSalePrice": 0,
+ "nowTime": 1494570900634,
+ "shopCarPrice": 0,
+ "isFlash": 0,
+ "groupBuy": false,
+ "totalShopCarCount": 0,
+ "totalShopCarPrice": 0,
+ "flashSaleInventory": 0,
+ "startTimeStr": "",
+ "flashPercent": 0,
+ "isNewUserGood": 0,
+ "isNewUser": 1,
+ "name": "土鸡蛋（新用户立减5元.1元购4粒蛋）",
+ "count": 10,
+ "endTime": 0,
+ "startTime": 0,
+ "status": 0
+}
+
+*/
 import simplestorage from 'simplestorage.js'
+import cart from '../../plugins/cart'
 
 let timer;
 
@@ -221,10 +305,13 @@ export default {
   name: 'commodity',
   data() {
     return {
+      isLogin:simplestorage.get('HLXK_STATUS'),    // 是否登录
       list:'',                   // 详情数据
       countdown:'',              // 抢购倒记时
       couponList:'',             // 优惠券列表
-      isCouponList:false         // 是否显示优惠券列表
+      isCouponList:false,         // 是否显示优惠券列表
+      goodsNum:1,                  // 数量加减，初始数
+      shoppingNum:0               // 购物车数量
     }
   },
   mounted() {
@@ -242,10 +329,13 @@ export default {
         alert(res.msg);
         return false;
       }
+      console.log(JSON.stringify(res.data));
       _this.list = res.data;
       // 计算倒记时
-      _this.computeTime(res.data.nowTime,res.data.startTime,res.data.endTime);
-      console.log(JSON.stringify(res.data));
+      _this.computeTime(_this.list.nowTime,_this.list.startTime,_this.list.endTime);
+      // 获取购物车数
+      _this.getCartGoodsNum();
+
 
     }).catch(function(error) {
       console.log(error)
@@ -340,6 +430,92 @@ export default {
         console.log(error)
       })
 
+    },
+    // 数量-减
+    remove:function(){
+      if(this.goodsNum == 1){
+        return false
+      }
+      this.goodsNum--;
+    },
+    // 数量-加
+    add:function(){
+      // "isFlash": 0,//是否抢购活动：0不是，1是
+      // "flashLimit": 0,//限购数量
+      // list.inventory 库存
+      // "isFlash": 0,//是否抢购活动：0不是，1是
+      if(this.list.isFlash == 1){
+        //alert('限购')
+        if(this.goodsNum >= this.list.amountLimit && this.list.amountLimit !=0 ){
+          return;
+        }else if(this.goodsNum >= this.list.flashSaleInventory){
+          return;
+        }
+      }else{
+        if(this.goodsNum >= this.list.inventory){
+          return false
+        }
+      }
+      this.goodsNum++;
+    },
+    // 购物车数量
+    getCartGoodsNum:function(){
+      let _this = this;
+
+      // 是否登录.获取购物车数量
+      if(_this.isLogin){
+        _this.shoppingNum = _this.list.totalShopCarCount
+      }else {
+        //获取缓存购物车商品信息
+        _this.shoppingNum = cart.getAmount();
+      }
+
+
+    },
+    // 加入购物车
+    addCar:function(){
+      alert('加入购物车')
+
+/*
+      // 是否登录.获取购物车数量
+      if(isLogin){
+        // 获取购物车数量...每次加载本组件就
+        this.$http.post('/community/getCartGoodsNum', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res)
+          if (res.resultCode != 0) {
+            alert(res.msg);
+            return false;
+          }
+          _this.shoppingNum = res.data.cartGoodsNum;
+        }).catch(function(error) {
+          console.log(error)
+        })
+      }else{
+        //获取缓存购物车商品信息
+        _this.shoppingNum = cart.getAmount();
+      }
+*/
+
+    },
+    // 立即购买
+    pay:function(){
+      let _this = this;
+      alert('立即购买')
+
+      // "flashSalePrice": 0,//抢购价格
+      let goodsInfo = "[{goodsId:" + _this.list.commodityId + ",amount:" + _this.goodsNum + ",price:" + _this.list.price +"}]"
+
+      // 去结算页面
+      _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo }})
+
+    },
+    // 团购
+    groupBuy:function(){
+      alert('团购')
     }
   }
 }

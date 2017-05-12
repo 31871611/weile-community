@@ -70,7 +70,8 @@
             <span>配送费：</span>
             <strong>￥{{lists.distributionAmount / 1000 | price}}</strong>
           </li>
-          <li @click="couponAlert" if="lists.couponList.length > 0">
+
+          <li @click="couponAlert" v-if="coupon.price">
             <template v-if="coupon.isUse">
               <span><b>不使用优惠券</b></span>
             </template>
@@ -165,6 +166,8 @@ export default {
   },
   created() {
 
+    console.log(this.$route.query.goodsInfo)
+
   },
   mounted() {
     let _this = this;
@@ -177,22 +180,25 @@ export default {
     getData() {
       let _this = this;
 
-      let goods = "[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]";
+      //let goods = "[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]";
 
       this.$http.post('/community/getPayInfo', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
-        "goodsInfo":"[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]",
-        "isFlashOrder":this.$route.query.isFlashOrder || 0        //是否抢购商品：1是，0否
+        "goodsInfo":_this.$route.query.goodsInfo,
+        "isFlashOrder":_this.$route.query.isFlashOrder || 0        //是否抢购商品：1是，0否
       },{
         "encryptType":1
       }).then(function(res){
-        //console.log(res);
+        console.log(res);
         if(res.resultCode != 0){
           alert(res.msg);
           return false;
         }
         _this.lists = res.data;
-        _this.coupon.price = res.data.couponList[0].faceValue
+        // 优惠券
+        if(_this.lists.couponList.length > 0){
+          _this.coupon.price = _this.lists.couponList[0].faceValue
+        }
         //console.log(JSON.stringify(_this.lists));
 
       }).catch(function(error) {
