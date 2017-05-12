@@ -10,26 +10,6 @@
         </router-link>
         <span class="exit">取消</span>
       </div>
-      <div class="searchList" style="display: none;">
-        <ul>
-          <li><a href="">
-            <span>111</span>
-            <i></i>
-          </a></li>
-          <li><a href="">
-            <span>111</span>
-            <i></i>
-          </a></li>
-        </ul>
-        <div class="exit">清除搜索历史</div>
-
-        <div class="notData">
-          <div class="box">
-            <i></i>
-            <span>当前没有数据哦~</span>
-          </div>
-        </div>
-      </div>
       <div class="scrollNotice">
         <i></i>
         <div>
@@ -42,15 +22,16 @@
         <div class="classifyList">
           <ul class="">
             <!--<li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>-->
-            <li v-for="(list,index) in lists" :class="{'select':currentIndex === index}" @click="selectMenu(index)">{{list.categoryName}}</li>
+            <li v-for="(list,index) in lists" :class="{'select':currentIndex == list.categoryId}" @click="selectMenu(list.categoryId)">{{list.categoryName}}</li>
           </ul>
         </div>
 
         <div class="contentList" ref="contentList">
 
-          <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex === parentIndex">
+          <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == commoditys.categoryId">
 
             <li v-for="(list,index) in commoditys.commoditys">
+
               <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
                 <img :src="list.url" :alt="list.commodityId">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
@@ -109,8 +90,8 @@ export default {
     return{
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       isLogin:simplestorage.get('HLXK_STATUS'),
-      lists:'',               // 便利店列表
-      currentIndex:0          // 分类索引
+      lists:'',                                       // 便利店列表
+      currentIndex:''                                 // 分类索引
     }
   },
   mounted() {
@@ -131,12 +112,14 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        //console.log(res);
+        console.log(res);
         if (res.resultCode != 0) {
           alert(res.msg);
           return false;
         }
         _this.lists = res.data;
+        // 设置分类id
+        _this.currentIndex = _this.$route.query.id || _this.lists[0].categoryId;
         //console.log(JSON.stringify(_this.lists))
         // 隐藏加载中
         _this.$refs.modalLoading.is = false;
@@ -206,7 +189,6 @@ export default {
       // 滚动值清0
       contentList.scrollTop = 0;
     },
-
 
     /************************************************************************************************/
     // 修改列表中已添加购物车值

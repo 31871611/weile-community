@@ -33,7 +33,7 @@
           </div>
           <ul class="goods" v-if="lists.storeGoodList">
             <li v-for="good in lists.storeGoodList">
-              <router-link :to="{path:'commodity',query:{id:good.goodId}}">
+              <router-link :to="{path:'/commodity',query:{id:good.goodId}}">
                 <img :src="good.image" alt="">
                 <p>{{good.goodName}}</p>
               </router-link>
@@ -52,7 +52,7 @@
             <ul>
               <li v-for="category in lists.storeGoodsCategoryList">
                 <!-- 去便利店分类 -->
-                <router-link :to="{path:'/',query:{id:category.goodsCategoryId}}">
+                <router-link :to="{path:'/store',query:{id:category.goodsCategoryId}}">
                   {{category.goodsCategoryName}}
                 </router-link>
               </li>
@@ -79,7 +79,7 @@
         <template v-else>
           <!-- 去便利店 -->
           <div class="titleLink">
-            <router-link to="/">
+            <router-link to="store">
               <h2>查看适用商品</h2>
               <i></i>
             </router-link>
