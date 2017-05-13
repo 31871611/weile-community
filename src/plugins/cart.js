@@ -12,21 +12,22 @@ var cart = {
   //name: 'HLXK_SHOPPING',
   //lists: JSON.parse(simplestorage.get('HLXK_SHOPPING') || '[]'),
   // 新增商品
-  increase: function(commodityId) {
+  increase: function(commodityId,n) {
     let _this = this;
     let distributionCommunityId = simplestorage.get('HLXK_DISTRIBUTION').id;
+    let num = parseInt(n) || 1;
     // 添加购物车....本地缓存
     let i = _this.lists.findIndex(function(value, index, arr) {
       return (value.id == commodityId && value.distributionCommunityId == distributionCommunityId);
     });
     if (i !== -1) {
       // 库存+1
-      _this.lists[i].amount += 1;
+      _this.lists[i].amount += num;
     } else {
       let obj = {
         "distributionCommunityId":distributionCommunityId,
         "id":commodityId,
-        "amount":1
+        "amount":num
       };
       _this.lists.push(obj);
     }

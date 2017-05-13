@@ -190,13 +190,14 @@
         <!-- 抢购已开始为显示这里 -->
         <div class="commodityFooterNormal" v-if="list.flashSaleInventory > 0">
           <router-link to="/shopping" class="shopping">
-            <div><b>1</b></div>
+            <div><b v-show="shoppingNum">{{shoppingNum}}</b></div>
             <span>购物车</span>
           </router-link>
           <div class="add">
             加入购物车
           </div>
-          <div class="pay">
+          <!-- 抢购 -->
+          <div class="pay" @click="pay()">
             立即购买
           </div>
         </div>
@@ -208,7 +209,7 @@
       </div>
       <!-- 团购时.单独显示立即购买 -->
       <div class="commodityFooterBuy" v-else-if="list.groupBuy">
-        <div class="buy" @click="groupBuy()">立即购买</div>
+        <div class="buy" @click="pay()">立即购买</div>
       </div>
       <!-- 正常商品.抢购未开始 -->
       <div class="commodityFooterNormal" v-else>
@@ -474,48 +475,252 @@ export default {
     },
     // 加入购物车
     addCar:function(){
-      alert('加入购物车')
+      //alert('加入购物车')
+      let _this = this;
 
-/*
-      // 是否登录.获取购物车数量
-      if(isLogin){
+      if(_this.isLogin){
+
         // 获取购物车数量...每次加载本组件就
-        this.$http.post('/community/getCartGoodsNum', {
-          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+        this.$http.post('/community/addGoodsToCart', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "goodsId": _this.list.commodityId,
+          "quantity": _this.goodsNum,
+          "checkAll":1
         },{
           "encryptType":1
         }).then(function(res) {
-          //console.log(res)
+          console.log(res)
+          if (res.resultCode == 0) {
+            _this.shoppingNum = res.data.totalCount
+            //$('#shopPrice').text((list.totalMoney/1000).toFixed(2));
+            //$.toast('加入购物车成功');
+            // 加入购物车动画
+
+          }else if(res.resultCode === 8002){
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '验证',
+                  onClick: function() {
+                    window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+                  }
+                },
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+          }else if(res.resultCode === 8003){
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+          }else if(res.resultCode === 8004 || res.resultCode === 8005){
+            window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+          } else {
+            alert(res.msg);
+            return false;
+          }
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+
+      }else{
+
+        var numbCount = _this.goodsNum + cart.getIdAmount(_this.list.commodityId);
+        if(_this.list.isHouseUser == 1){
+          $.modal({
+            text: '此商品只有该小区住户才能购买',
+            buttons: [
+              {
+                text: '登录',
+                onClick: function() {
+                  window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+                }
+              },
+              {
+                text: '放弃',
+                close: true
+              }
+            ]
+          });
+          $shopCarCount.removeClass('beat loading');
+          return;
+        }
+
+        //判断是否抢购商品
+        if(_this.list.isFlash === 1){
+          if(numbCount > _this.list.amountLimit && _this.list.amountLimit !=0){
+            //$.toast('超过商品的抢购数量');
+            alert('超过商品的抢购数量');
+            //$shopCarCount.removeClass('beat loading');
+            return false;
+          }else if( _this.goodsNum > _this.list.flashSaleInventory){
+            //$.toast('商品库存不足');
+            alert('商品库存不足');
+            //$shopCarCount.removeClass('beat loading');
+            return false;
+          }
+        }else{
+          // 限购
+          if(numbCount > parseInt(_this.list.flashLimit) && parseInt(_this.list.flashLimit) > 0){
+            //$.toast('超过商品的抢购数量');
+            alert('超过商品的抢购数量');
+            //$shopCarCount.removeClass('beat loading');
+            return false;
+          }
+          if(numbCount > parseInt(_this.list.inventory)){
+            //$.toast('商品库存不足');
+            alert('商品库存不足');
+            //$shopCarCount.removeClass('beat loading');
+            return false;
+          }
+        }
+        // 添加到本地缓存中
+        cart.increase(_this.list.commodityId,_this.goodsNum);
+
+        var jsonStr = cart.queryAllJsonStr();
+        // 未登录.加载.本地缓存购物车信息查询...getCartInfoByGoodsInfo
+        this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "goodsInfo": jsonStr,
+          //"checkGoodsInfo": jsonStr
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          console.log(res);
           if (res.resultCode != 0) {
             alert(res.msg);
             return false;
           }
-          _this.shoppingNum = res.data.cartGoodsNum;
+          _this.shoppingNum = res.data.totalCount
+          //console.log(JSON.stringify(_this.lists))
         }).catch(function(error) {
           console.log(error)
         })
-      }else{
-        //获取缓存购物车商品信息
-        _this.shoppingNum = cart.getAmount();
+        //$shopCarCount.removeClass('beat loading');
+        //$.toast('加入购物车成功');
+        //add2cart('.plus','#toShopCar'); // 购物车动画
       }
-*/
-
     },
-    // 立即购买
+    // 立即购买、团购
     pay:function(){
+      //alert('立即购买、团购、抢购');
       let _this = this;
-      alert('立即购买')
 
-      // "flashSalePrice": 0,//抢购价格
+      // 是否团购
+      let groupBuy = _this.list.groupBuy ? 1 : 0;
+
+      if(_this.goodsNum < 1){
+        alert('购买数量不能小于1');
+        return false;
+      }
+
+      // 抢购
+      if(_this.list.isFlash === 1){
+        if(_this.goodsNum > _this.list.amountLimit && _this.list.amountLimit !=0){
+          alert('购买数量不能超过限购数量');
+          return false;
+        }else if(_this.goodsNum > _this.list.flashSaleInventory){
+          alert('库存不足');
+          return false;
+        }
+      }
+
       let goodsInfo = "[{goodsId:" + _this.list.commodityId + ",amount:" + _this.goodsNum + ",price:" + _this.list.price +"}]"
 
-      // 去结算页面
-      _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo }})
+      if(_this.isLogin){
+        // 验证库存
+        this.$http.post('/community/checkOrderInfo', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          goodsInfo: goodsInfo
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res)
+          if (res.resultCode === 0) {
+            // 去结算
+            //window.location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder="+group+"&goodsInfo=[{goodsId:" + commodityId + ",amount:" + num + ",price:" + price + "}]";
 
-    },
-    // 团购
-    groupBuy:function(){
-      alert('团购')
+            // 去结算页面
+            _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
+          }else if(res.resultCode === 8002){
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '验证',
+                  onClick: function() {
+                    window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+                  }
+                },
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+          }else if(res.resultCode === 8003){
+            //用户未认证
+            $.modal({
+              text: '此商品只有该小区住户才能购买',
+              buttons: [
+                {
+                  text: '放弃',
+                  close: true
+                }
+              ]
+            });
+          }else if(res.resultCode ===8004 || res.resultCode ===8005){
+            window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+          } else {
+            alert(res.msg);
+            return false;
+          }
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }else{
+
+        if(_this.list.isHouseUser == 1) {
+          $.modal({
+            text: '此商品只有该小区住户才能购买',
+            buttons: [
+              {
+                text: '登录',
+                onClick: function () {
+                  window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+                }
+              },
+              {
+                text: '放弃',
+                close: true
+              }
+            ]
+          });
+          return;
+        }
+        //window.location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder="+group+"&goodsInfo=[{goodsId:" + commodityId + ",amount:" + num + ",price:" + price + "}]";
+
+        // 去结算页面
+        _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
+      }
+
+
     }
   }
 }

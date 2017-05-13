@@ -185,7 +185,8 @@ export default {
       this.$http.post('/community/getPayInfo', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "goodsInfo":_this.$route.query.goodsInfo,
-        "isFlashOrder":_this.$route.query.isFlashOrder || 0        //是否抢购商品：1是，0否
+        "isFlashOrder":_this.$route.query.isFlashOrder,                       //是否抢购商品：1是，0否
+        "isGroupBuyingOrder":_this.$route.query.isGroupBuyingOrder            //是否团购：1是，0否
       },{
         "encryptType":1
       }).then(function(res){
