@@ -73,6 +73,9 @@ const router = new Router({
       path: '/payorder',
       name: 'payorder',
       component: resolve => require(['@/views/payorder/payorder'], resolve),
+      meta:{
+        requireAuth: true
+      },
       children:[
         {
           // 我的地址
@@ -90,7 +93,10 @@ const router = new Router({
       // 支付结束
       path: '/payResult',
       name: 'payResult',
-      component: resolve => require(['@/views/payResult/payResult'], resolve)
+      component: resolve => require(['@/views/payResult/payResult'], resolve),
+      meta:{
+        requireAuth: true
+      }
     },{
       // 登录
       path: '/login',
@@ -109,19 +115,28 @@ const router = new Router({
           // 我的订单
           path: '/userOrder',
           name: 'userOrder',
-          component: userOrder
+          component: userOrder,
+          meta:{
+            requireAuth: true
+          }
         },
         {
           // 我的订单详情
           path: '/userOrderDetails',
           name: 'userOrderDetails',
           component: userOrderDetails,
+          meta:{
+            requireAuth: true
+          },
           children:[
             {
               // 申请退货
               path: '/userApplyBack',
               name: 'userApplyBack',
-              component: userApplyBack
+              component: userApplyBack,
+              meta:{
+                requireAuth: true
+              }
             }
           ]
         },
@@ -130,6 +145,9 @@ const router = new Router({
           path: '/userCoupon',
           name: 'userCoupon',
           component: userCoupon,
+          meta:{
+            requireAuth: true
+          },
           children:[
             {
               // 优惠券详情
@@ -147,6 +165,9 @@ const router = new Router({
           path: '/userAddress',
           name: 'userAddress',
           component: userAddress,
+          meta:{
+            requireAuth: true
+          },
           children:[
             {
               path: 'add',
