@@ -193,7 +193,7 @@ export default {
 
       if(_this.isLogin){
 
-        // 合并本地缓存，到服务器购物车
+        // 查询本地缓存数据
         var goodsInfo = cart.queryAll();
 
         if(goodsInfo.length > 0){
