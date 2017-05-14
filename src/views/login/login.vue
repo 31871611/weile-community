@@ -22,14 +22,19 @@
       登录
     </div>
 
-    <modal-toast ref="modalError" :txt="textError" :time="2"></modal-toast>
+    <!--<toast ref="modalError" :txt="textError" :time="2"></toast>-->
+    <toast ref="toast"></toast>
+
+    <app-nav ref="appnav" v-show="false"></app-nav>
 
   </div>
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
 import cryptoUtils from '@/utils/cryptoUtils'
-import modalToast from '../common/modalToast.vue'
+import toast from '../common/modalToast.vue'
+import cart from '../../plugins/cart'
+import appNav from '../common/appNav.vue';
 
 export default {
   name: 'login',
@@ -37,7 +42,6 @@ export default {
     return {
       telephone:'',
       password:'',
-      textError:'',
       url:''
     }
   },
@@ -53,15 +57,15 @@ export default {
     submit:function(){
       let _this = this;
       if(_this.telephone == '' || _this.telephone.length != 11 || !/^(13|14|15|17|18)\d{9}$/.test(_this.telephone)){
-        //alert('请输入正确的手机号码');
-        _this.textError = '请输入正确的手机号码';
-        _this.$refs.modalError.is = true;
+        _this.$refs.toast.toast({
+          txt:'请输入正确的手机号码'
+        });
         return false;
       }
       if(_this.password.length < 6){
-        //alert('请输入不少于6位数的密码');
-        _this.textError = '请输入不少于6位数的密码';
-        _this.$refs.modalError.is = true;
+        _this.$refs.toast.toast({
+          txt:'请输入不少于6位数的密码'
+        });
         return false;
       }
 
@@ -81,20 +85,69 @@ export default {
           simplestorage.set('HLXK_STATUS', true);
           // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证
           simplestorage.set('HLXK_AUTH',data.authorizationStatus);
-          //跳转到相关页面
-          _this.$router.push(_this.url);
+          // 查询本地缓存数据
+          let goodsInfo = cart.queryAll();
+          if(goodsInfo.length > 0){
+            // 提交购物车数据
+            _this.submitToShopping(function(){
+              // 跳转到相关页面
+              _this.$router.push(_this.url);
+            });
+          }else{
+            // 跳转到相关页面
+            _this.$router.push(_this.url);
+          }
         }else{
-          _this.textError = res.msg;
-          _this.$refs.modalError.is = true;
+          // 登录错误提示
+          _this.$refs.toast.toast({
+            txt:res.msg
+          });
           return false;
         }
       }).catch(function(error) {
         console.log(error)
       })
+    },
+    // 提交本地缓存到购物车
+    submitToShopping:function(callback){
+      let _this = this;
+      console.log('购物车');
+      //////////////////////////////////////////
+
+        // 合并本地缓存购物车跟服务器端购物车数据
+        var jsonStr = cart.queryAllJsonStr(true);
+
+        // 批量添加购物车商品
+        this.$http.post('/community/mergeCartGoods', {
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          "goodsInfo":jsonStr
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          console.log(res);
+          if (res.resultCode == 0) {
+            // 删除本地缓存
+            cart.removeAll();
+            // 修改底部的值
+            _this.$refs.appnav.shoppingNum = res.data.totalCount;
+            // 跳转
+            callback();
+          }else{
+            _this.$refs.toast.toast({
+              txt:res.msg
+            });
+            return false;
+          }
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      //////////////////////////////////////////
     }
   },
   components: {
-    modalToast
+    toast,
+    appNav
   }
 }
 
