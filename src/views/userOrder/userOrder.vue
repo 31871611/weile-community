@@ -64,7 +64,8 @@
 
       </div>
 
-      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+      <modal-toast ref="modalToast"></modal-toast>
+
     </article>
 
   </div>
@@ -121,7 +122,11 @@ export default {
       let _this = this;
       _this.status = status;
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       this.$http.post('/community/getMyStoreOrder',{
         "status":status,    //订单状态：0全部,1.待发货,2.送货中,3.订单完成,4.商户取消订单,5.用户取消订单,6.用户退单申请,-1表示4+5
         "pageSize":_this.pageSize,
@@ -133,13 +138,15 @@ export default {
       }).then(function(res) {
         //console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         //_this.lists = res.data;
         _this.lists = _this.lists.concat(res.data);
         // 隐藏加载中
-        _this.$refs.modalLoading.is = false;
+        _this.$refs.modalToast.is = false;
         //console.log(JSON.stringify(_this.lists));
       }).catch(function(error) {
         console.log(error)

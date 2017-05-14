@@ -28,7 +28,8 @@
 
       <not-data v-if="isData"></not-data>
 
-      <loading ref="loading" :txt="'加载中'" :icon="'loading'" :time="0"></loading>
+      <!--<loading ref="loading" :txt="'加载中'" :icon="'loading'" :time="0"></loading>-->
+      <modal-toast ref="modalToast" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
 
     </article>
   </div>
@@ -38,7 +39,7 @@
 import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue';
-import loading from '../common/modalToast.vue';
+import modalToast from '../common/modalToast.vue';
 
 let timer = [];
 
@@ -52,7 +53,11 @@ export default {
   },
   mounted() {
     let _this = this;
-    _this.$refs.loading.is = true;
+    _this.$refs.modalToast.toast({
+      txt:'加载中',
+      icon:'loading',
+      time:0
+    });
     // 获取数据列表
     this.$http.post('/community/getFlashSaleGoodsList', {
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
@@ -63,11 +68,13 @@ export default {
     }).then(function(res){
       console.log(res);
       if(res.resultCode != 0){
-        alert(res.msg);
+        _this.$refs.modalToast.toast({
+          txt:res.msg
+        });
         return false;
       }
       // 显示加载中
-      _this.$refs.loading.is = false;
+      _this.$refs.modalToast.is = false;
       _this.lists = res.data.flashSaleGoodsList;
       // 无数据
       if(_this.lists.length <= 0){
@@ -129,7 +136,7 @@ export default {
   },
   components: {
     notData,
-    loading
+    modalToast
   }
 }
 </script>

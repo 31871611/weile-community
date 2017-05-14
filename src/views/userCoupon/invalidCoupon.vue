@@ -40,7 +40,7 @@
 
       <not-data v-if="isNotData"></not-data>
 
-      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+      <modal-toast ref="modalToast"></modal-toast>
     </article>
 
   </div>
@@ -64,7 +64,11 @@ export default {
   mounted() {
     let _this = this;
     // 显示加载中
-    _this.$refs.modalLoading.is = true;
+    _this.$refs.modalToast.toast({
+      txt:'加载中',
+      icon:'loading',
+      time:0
+    });
     // 获取数据列表
     this.$http.post('/community/getMyStoreCouponList', {
       "communityId": simplestorage.get('HLXK_DISTRIBUTION').id,
@@ -74,14 +78,16 @@ export default {
     }).then(function(res){
       //console.log(res);
       if(res.resultCode != 0){
-        alert(res.msg);
+        _this.$refs.modalToast.toast({
+          txt:res.msg
+        });
         return false;
       }
       _this.failNum = res.data.failNum;
       _this.lists = res.data.list;
       //console.log(JSON.stringify(res.data));
       // 隐藏加载中
-      _this.$refs.modalLoading.is = false;
+      _this.$refs.modalToast.is = false;
       if(res.data.list.length > 0){
         // 显示列表数据
         _this.is = true;

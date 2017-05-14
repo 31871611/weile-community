@@ -43,10 +43,7 @@
           </ul>
         </transition>
 
-
-        <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
-
-        <modal-toast ref="modalError" :txt="textError" :time="3"></modal-toast>
+        <modal-toast ref="modalToast"></modal-toast>
 
       </div>
     </article>
@@ -120,7 +117,9 @@ export default {
         "encryptType":1
       }).then(function(res){
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.quartersLists = res.data;
@@ -153,10 +152,12 @@ export default {
       }).then(function(res){
         //console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
-        _this.$refs.modalLoading.is = false;
+        _this.$refs.modalToast.is = false;
         //_this.$router.back();
         _this.$router.replace({
           path: _this.parentPath,
@@ -186,10 +187,12 @@ export default {
       }).then(function(res){
         //console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
-        _this.$refs.modalLoading.is = false;
+        _this.$refs.modalToast.is = false;
         //_this.$router.back();
         _this.$router.replace({
           path: _this.parentPath,
@@ -206,23 +209,30 @@ export default {
       let _this = this;
       // 验证
       if(_this.name == ''){
-        _this.textError = '请输入收货人姓名';
-        _this.$refs.modalError.is = true;
+        _this.$refs.modalToast.toast({
+          txt:'请输入收货人姓名'
+        });
         return false;
       }
       if(_this.mobile == '' || _this.mobile.length != 11 || !/^(13|14|15|17|18)\d{9}$/.test(_this.mobile)){
-        _this.textError = '请输入正确的手机号码';
-        _this.$refs.modalError.is = true;
+        _this.$refs.modalToast.toast({
+          txt:'请输入正确的手机号码'
+        });
         return false;
       }
       if(_this.address == ''){
-        _this.textError = '请补充详细地址';
-        _this.$refs.modalError.is = true;
+        _this.$refs.modalToast.toast({
+          txt:'请补充详细地址'
+        });
         return false;
       }
 
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       // 提交
       if(this.path == '/userAddress/modify'){
         // 防止手动修改url值

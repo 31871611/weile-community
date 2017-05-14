@@ -52,7 +52,7 @@
 
       <not-data v-show="isNotData"></not-data>
 
-      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+      <modal-toast ref="modalToast"></modal-toast>
 
     </article>
     <footer>
@@ -189,7 +189,11 @@ export default {
     init:function(){
       let _this = this;
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
 
       if(_this.isLogin){
 
@@ -214,7 +218,9 @@ export default {
               // 显示购物车数据
               _this.initPoint();
             }else{
-              alert(res.msg);
+              _this.$refs.modalToast.toast({
+                txt:res.msg
+              });
               return false;
             }
 
@@ -249,7 +255,9 @@ export default {
         }).then(function(res) {
           //console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           if(res.data.cartGoodsList.length > 0){
@@ -266,7 +274,7 @@ export default {
             _this.isNotData = true;
           }
           // 隐藏加载中
-          _this.$refs.modalLoading.is = false;
+          _this.$refs.modalToast.is = false;
           // console.log(JSON.stringify(_this.lists))
 
         }).catch(function(error) {
@@ -288,7 +296,9 @@ export default {
         }).then(function(res) {
           //console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           if(res.data.cartGoodsList.length > 0){
@@ -303,7 +313,7 @@ export default {
             _this.isNotData = true;
           }
           // 隐藏加载中
-          _this.$refs.modalLoading.is = false;
+          _this.$refs.modalToast.is = false;
           //console.log(JSON.stringify(_this.lists))
 
         }).catch(function(error) {
@@ -330,7 +340,9 @@ export default {
         }).then(function(res) {
           //console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           // 加载购物车数据
@@ -356,7 +368,9 @@ export default {
         }).then(function(res) {
           //console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           // 加载购物车数据
@@ -519,7 +533,11 @@ export default {
       let _this = this;
 
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
 
       if(_this.isLogin){
 
@@ -538,7 +556,9 @@ export default {
         }).then(function(res) {
           console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           // 加载购物车数据
@@ -546,7 +566,7 @@ export default {
           // 修改底部的值
           _this.$refs.appnav.shoppingNum = res.data.totalCount;
           // 隐藏加载中
-          _this.$refs.modalLoading.is = false;
+          _this.$refs.modalToast.is = false;
           _this.checkCommodityId = [];
 
         }).catch(function(error) {
@@ -569,7 +589,9 @@ export default {
         }).then(function(res) {
           console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           // 加载购物车数据
@@ -577,7 +599,7 @@ export default {
           // 修改底部的值
           _this.$refs.appnav.shoppingNum = res.data.totalCount;
           // 隐藏加载中
-          _this.$refs.modalLoading.is = false;
+          _this.$refs.modalToast.is = false;
           //console.log(JSON.stringify(_this.lists))
 
           _this.checkCommodityId = [];
@@ -592,7 +614,9 @@ export default {
     // 去结算
     toPay:function(is,str){
       if(!is){
-        alert(str);
+        _this.$refs.modalToast.toast({
+          txt:str
+        });
         return false;
       }
       let _this = this;
@@ -601,7 +625,7 @@ export default {
       if(_this.checkCommodityId.length > 0){
 
         if(_this.isLogin){
-          //验证库存
+          // 验证库存
           this.$http.post('/community/checkOrderInfo', {
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
             "goodsInfo":_this.getCheckGoods()
@@ -614,22 +638,28 @@ export default {
               _this.$router.push({ path: '/payorder', query: { goodsInfo: _this.getCheckGoods('pay') }})
 
             }else if(res.resultCode == 4105 || res.resultCode ==4201){
-              alert(res.msg);
+              _this.$refs.modalToast.toast({
+                txt:res.msg
+              });
               return false;
             }else{
-              alert(res.msg);
+              _this.$refs.modalToast.toast({
+                txt:res.msg
+              });
               return false;
             }
           }).catch(function(error) {
             console.log(error)
           })
         }else{
-          alert('未登录去结算：' + _this.checkCommodityId)
-          // 是否需要提示还未登录
+          // 去结算页面
+          _this.$router.push({ path: '/payorder', query: { goodsInfo: _this.getCheckGoods('pay') }})
         }
 
       }else{
-        alert('请选择商品')
+        _this.$refs.modalToast.toast({
+          txt:'请选择商品'
+        });
       }
 
     },

@@ -168,6 +168,10 @@
         <!-- 半透明层 -->
         <div class="opacity" v-show="isCouponList" @click="couponListAlert"></div>
 
+
+        <modal-toast ref="modalToast"></modal-toast>
+        <modal-alert ref="modalAlert"></modal-alert>
+
       </div>
     </article>
     <footer>
@@ -241,64 +245,10 @@
 </div>
 </template>
 <script type="text/ecmascript-6">
-/*
-
-{
- "price": 6000,
- "unit": "件",
- "commodityId": 500152,
- "categoryId": 500059,
- "activityId": 0,
- "telephone": "0371-55372728",
- "activityType": 0,
- "images": [
- {
-   "img": "http://img.v89.com/group1/M01/07/90/rBAA11j3Lh2ABgE5AACynZDlSAs059_640*236.jpg",
-   "video": "",
-   "info": ""
- }
- ],
- "urls": [
-    "http://img.v89.com/group1/M02/07/90/rBAA11j9d96AbQ8BAAHgRB_zSNo693_640*640_640x640!.jpg"
- ],
- "originalPrice": null,
- "inventory": 30,
- "brand": "",
- "intruduction": "",
- "manu": null,
- "spec": "4粒",
- "communityType": "1",
- "discountStr": "",
- "amountLimit": 0,
- "businessBeginTime": "00:30",
- "businessEndTime": "24:00",
- "amountAll": 0,
- "isHouseUser": "0",
- "priceYuan": 6,
- "shopCarCount": 0,
- "flashLimit": 0,
- "flashSalePrice": 0,
- "nowTime": 1494570900634,
- "shopCarPrice": 0,
- "isFlash": 0,
- "groupBuy": false,
- "totalShopCarCount": 0,
- "totalShopCarPrice": 0,
- "flashSaleInventory": 0,
- "startTimeStr": "",
- "flashPercent": 0,
- "isNewUserGood": 0,
- "isNewUser": 1,
- "name": "土鸡蛋（新用户立减5元.1元购4粒蛋）",
- "count": 10,
- "endTime": 0,
- "startTime": 0,
- "status": 0
-}
-
-*/
 import simplestorage from 'simplestorage.js'
 import cart from '../../plugins/cart'
+import modalToast from '../common/modalToast.vue'
+import modalAlert from '../common/modalAlert.vue'
 
 let timer;
 
@@ -327,7 +277,9 @@ export default {
     }).then(function(res) {
       //console.log(res.data);
       if (res.resultCode != 0) {
-        alert(res.msg);
+        _this.$refs.modalToast.toast({
+          txt:res.msg
+        });
         return false;
       }
       console.log(JSON.stringify(res.data));
@@ -336,7 +288,6 @@ export default {
       _this.computeTime(_this.list.nowTime,_this.list.startTime,_this.list.endTime);
       // 获取购物车数
       _this.getCartGoodsNum();
-
 
     }).catch(function(error) {
       console.log(error)
@@ -351,7 +302,9 @@ export default {
     }).then(function(res) {
       //console.log(res.data);
       if (res.resultCode != 0) {
-        alert(res.msg);
+        _this.$refs.modalToast.toast({
+          txt:res.msg
+        });
         return false;
       }
       _this.couponList = res.data;
@@ -421,9 +374,14 @@ export default {
       }).then(function(res) {
         console.log(res);
         if (res.resultCode != 0) {
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
+        _this.$refs.modalToast.toast({
+          txt:'领取成功'
+        });
         //_this.couponList = res.data;
         //console.log(JSON.stringify(_this.couponList));
 
@@ -471,7 +429,6 @@ export default {
         _this.shoppingNum = cart.getAmount();
       }
 
-
     },
     // 加入购物车
     addCar:function(){
@@ -493,41 +450,49 @@ export default {
           if (res.resultCode == 0) {
             _this.shoppingNum = res.data.totalCount
             //$('#shopPrice').text((list.totalMoney/1000).toFixed(2));
-            //$.toast('加入购物车成功');
+            _this.$refs.modalToast.toast({
+              txt:'加入购物车成功'
+            });
             // 加入购物车动画
 
           }else if(res.resultCode === 8002){
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '验证',
-                  onClick: function() {
-                    window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+            _this.$refs.modalAlert.alert({
+              content: '此商品只有该小区住户才能购买',
+              txtOk:'验证',
+              cancelOk:'放弃',
+              onOk: function () {
+                _this.$router.push({
+                  path: '/login',
+                  query:{
+                    'url':'/commodity?id=' + _this.list.commodityId
                   }
-                },
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+                });
+              },
+              onCancel: function () {
+                return false;
+              }
+            })
           }else if(res.resultCode === 8003){
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+            _this.$refs.modalAlert.alert({
+              content: '此商品只有该小区住户才能购买',
+              txtOk:'放弃',
+              onOk: function () {
+                return false;
+              }
+            })
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+            _this.$router.push({
+              path: '/login',
+              query:{
+                'url':'/commodity?id=' + _this.list.commodityId
+              }
+            });
           } else {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
 
@@ -546,7 +511,12 @@ export default {
               {
                 text: '登录',
                 onClick: function() {
-                  window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+                  _this.$router.push({
+                    path: '/login',
+                    query:{
+                      'url':'/commodity?id=' + _this.list.commodityId
+                    }
+                  });
                 }
               },
               {
@@ -562,27 +532,31 @@ export default {
         //判断是否抢购商品
         if(_this.list.isFlash === 1){
           if(numbCount > _this.list.amountLimit && _this.list.amountLimit !=0){
-            //$.toast('超过商品的抢购数量');
-            alert('超过商品的抢购数量');
+            _this.$refs.modalToast.toast({
+              txt:'超过商品的抢购数量'
+            });
             //$shopCarCount.removeClass('beat loading');
             return false;
           }else if( _this.goodsNum > _this.list.flashSaleInventory){
-            //$.toast('商品库存不足');
-            alert('商品库存不足');
+            _this.$refs.modalToast.toast({
+              txt:'商品库存不足'
+            });
             //$shopCarCount.removeClass('beat loading');
             return false;
           }
         }else{
           // 限购
           if(numbCount > parseInt(_this.list.flashLimit) && parseInt(_this.list.flashLimit) > 0){
-            //$.toast('超过商品的抢购数量');
-            alert('超过商品的抢购数量');
+            _this.$refs.modalToast.toast({
+              txt:'超过商品的抢购数量'
+            });
             //$shopCarCount.removeClass('beat loading');
             return false;
           }
           if(numbCount > parseInt(_this.list.inventory)){
-            //$.toast('商品库存不足');
-            alert('商品库存不足');
+            _this.$refs.modalToast.toast({
+              txt:'商品库存不足'
+            });
             //$shopCarCount.removeClass('beat loading');
             return false;
           }
@@ -601,7 +575,9 @@ export default {
         }).then(function(res) {
           console.log(res);
           if (res.resultCode != 0) {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           _this.shoppingNum = res.data.totalCount
@@ -610,7 +586,9 @@ export default {
           console.log(error)
         })
         //$shopCarCount.removeClass('beat loading');
-        //$.toast('加入购物车成功');
+        _this.$refs.modalToast.toast({
+          txt:'加入购物车成功'
+        });
         //add2cart('.plus','#toShopCar'); // 购物车动画
       }
     },
@@ -623,17 +601,23 @@ export default {
       let groupBuy = _this.list.groupBuy ? 1 : 0;
 
       if(_this.goodsNum < 1){
-        alert('购买数量不能小于1');
+        _this.$refs.modalToast.toast({
+          txt:'购买数量不能小于1'
+        });
         return false;
       }
 
       // 抢购
       if(_this.list.isFlash === 1){
         if(_this.goodsNum > _this.list.amountLimit && _this.list.amountLimit !=0){
-          alert('购买数量不能超过限购数量');
+          _this.$refs.modalToast.toast({
+            txt:'购买数量不能超过限购数量'
+          });
           return false;
         }else if(_this.goodsNum > _this.list.flashSaleInventory){
-          alert('库存不足');
+          _this.$refs.modalToast.toast({
+            txt:'库存不足'
+          });
           return false;
         }
       }
@@ -650,43 +634,46 @@ export default {
         }).then(function(res) {
           //console.log(res)
           if (res.resultCode === 0) {
-            // 去结算
-            //window.location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder="+group+"&goodsInfo=[{goodsId:" + commodityId + ",amount:" + num + ",price:" + price + "}]";
-
             // 去结算页面
             _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
           }else if(res.resultCode === 8002){
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '验证',
-                  onClick: function() {
-                    window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+            _this.$refs.modalAlert.alert({
+              content: '此商品只有该小区住户才能购买',
+              txtOk:'验证',
+              cancelOk:'放弃',
+              onOk: function () {
+                _this.$router.push({
+                  path: '/login',
+                  query:{
+                    'url':'/commodity?id=' + _this.list.commodityId
                   }
-                },
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+                });
+              },
+              onCancel: function () {
+                return false;
+              }
+            })
           }else if(res.resultCode === 8003){
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+            _this.$refs.modalAlert.alert({
+              content: '此商品只有该小区住户才能购买',
+              txtOk:'放弃',
+              onOk: function () {
+                return false;
+              }
+            })
           }else if(res.resultCode ===8004 || res.resultCode ===8005){
-            window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+            _this.$router.push({
+              path: '/login',
+              query:{
+                'url':'/commodity?id=' + _this.list.commodityId
+              }
+            });
           } else {
-            alert(res.msg);
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
 
@@ -703,7 +690,12 @@ export default {
               {
                 text: '登录',
                 onClick: function () {
-                  window.location.href = '/login?beforeUrl=' + encodeURIComponent(window.location.href);
+                  _this.$router.push({
+                    path: '/login',
+                    query:{
+                      'url':'/commodity?id=' + _this.list.commodityId
+                    }
+                  });
                 }
               },
               {
@@ -714,14 +706,16 @@ export default {
           });
           return;
         }
-        //window.location.href = "../pay/toStoreOrderCheck?isGroupBuyingOrder="+group+"&goodsInfo=[{goodsId:" + commodityId + ",amount:" + num + ",price:" + price + "}]";
-
         // 去结算页面
         _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
       }
 
 
     }
+  },
+  components: {
+    modalToast,
+    modalAlert
   }
 }
 </script>

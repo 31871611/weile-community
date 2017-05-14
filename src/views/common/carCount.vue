@@ -145,7 +145,7 @@ export default {
             });
 
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            _this.$router.push({ path: 'login'})
+            _this.$router.push({ path: '/login'})
           }else{
             alert(res.msg);
             return false;
@@ -246,7 +246,7 @@ export default {
               ]
             });
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            _this.$router.push({ path: 'login'})
+            _this.$router.push({ path: '/login'})
           }else{
             alert(res.msg);
             return false;

@@ -63,11 +63,8 @@
         </ul>
       </div>
 
-      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+      <modal-toast ref="modalToast"></modal-toast>
 
-      <modal-toast ref="modalToast" :txt="'申请退单成功'" :time="2"></modal-toast>
-
-      <modal-toast ref="modalInfo" :txt="'取消原因还未选择'" :time="2"></modal-toast>
     </article>
 
     <footer>
@@ -98,11 +95,17 @@ export default {
     submit:function(){
       let _this = this;
       if(_this.txt == ""){
-        _this.$refs.modalInfo.is = true;
+        _this.$refs.modalToast.toast({
+          txt:'取消原因还未选择'
+        });
         return false;
       }
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       this.$http.post('/community/cancelStoreOrder',{
         "orderId":_this.$route.query.id,
         "cancelReason":_this.txt,   //申请退单原因
@@ -112,13 +115,17 @@ export default {
       }).then(function(res) {
         console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         // 隐藏加载中
-        _this.$refs.modalLoading.is = false;
+        _this.$refs.modalToast.is = false;
         // 提示申请退单成功
-        _this.$refs.modalToast.is = true;
+        _this.$refs.modalToast.toast({
+          txt:'申请退单成功'
+        });
         setTimeout(function(){
           _this.$router.back();
         },1000)

@@ -149,6 +149,7 @@
 
 */
 import simplestorage from 'simplestorage.js'
+import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'payOrder',
@@ -192,7 +193,9 @@ export default {
       }).then(function(res){
         console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.lists = res.data;
@@ -219,7 +222,9 @@ export default {
       }).then(function(res){
         //console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.address = res.data;
@@ -253,7 +258,7 @@ export default {
     }
   },
   components: {
-
+    modalToast
   },
   watch: {
     '$route' () {

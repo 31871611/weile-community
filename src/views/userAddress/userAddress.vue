@@ -56,7 +56,7 @@
     <router-view :list="canDeliverAddressInfos"></router-view>
   </transition>
 
-  <modal-toast ref="modalToast" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+  <modal-toast ref="modalToast"></modal-toast>
 
 </div>
 </template>
@@ -85,7 +85,11 @@ export default {
     init(){
       let _this = this;
       // 显示加载中
-      _this.$refs.modalToast.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       this.$http.post('/community/getStoreDeliveryAddress', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id
       },{
@@ -93,7 +97,9 @@ export default {
       }).then(function(res){
         //console.log(JSON.stringify(res.data));
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.canDeliverAddressInfos = res.data.canDeliverAddressInfos;
@@ -107,7 +113,7 @@ export default {
     // 只选择地址不修改
     selectAddress:function(list){
       let _this = this;
-      alert('选择地址');
+      //alert('选择地址');
       _this.$router.push({
         path: '/payorder',
         query:{

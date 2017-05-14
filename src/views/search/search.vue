@@ -49,6 +49,8 @@
         <!-- 无数据 -->
         <not-data v-show="isNotData"></not-data>
 
+        <modal-toast ref="modalToast"></modal-toast>
+
       </div>
 
     </article>
@@ -60,6 +62,7 @@ import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import carCount from '../common/carCount.vue';
 import notData from '../common/notData.vue'
+import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'search',
@@ -98,7 +101,9 @@ export default {
       }).then(function(res) {
         console.log(res);
         if (res.resultCode != 0) {
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.lists = res.data.data;
@@ -199,7 +204,8 @@ export default {
   },
   components: {
     carCount,
-    notData
+    notData,
+    modalToast
   }
 }
 </script>

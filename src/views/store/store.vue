@@ -72,7 +72,7 @@
     </footer>
   </div>
 
-  <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+  <modal-toast ref="modalToast"></modal-toast>
 
 </div>
 
@@ -105,7 +105,11 @@ export default {
     getList:function(){
       let _this = this;
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       // 加载购物车数据
       this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
         "distributionCommunityId":_this.distributionCommunityId
@@ -114,7 +118,9 @@ export default {
       }).then(function(res) {
         console.log(res);
         if (res.resultCode != 0) {
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.lists = res.data;
@@ -122,7 +128,7 @@ export default {
         _this.currentIndex = _this.$route.query.id || _this.lists[0].categoryId;
         //console.log(JSON.stringify(_this.lists))
         // 隐藏加载中
-        _this.$refs.modalLoading.is = false;
+        _this.$refs.modalToast.is = false;
 
       }).catch(function(error) {
         console.log(error)
@@ -134,7 +140,7 @@ export default {
 
       if(_this.isLogin){
 
-        // 没有这个接口.......app也没有这个功能....
+        // 没有发现这个接口.......app没有这个功能....
         this.$http.post('/commodity/getCommodityCarInfo', {
           "distributionCommunityId":_this.distributionCommunityId
         },{
@@ -207,7 +213,7 @@ export default {
     },
     toShopping:function(){
       // 下一步---去购物车
-      this.$router.push({ path: 'shopping'})
+      this.$router.push({ path: '/shopping'})
     }
 
   },

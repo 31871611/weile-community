@@ -10,8 +10,8 @@
         <p>{{content}}</p>
       </div>
       <div class="btns">
-        <button class="cancel" v-show="onCancel" @click="op('cancel')">取消</button>
-        <button class="confirm" @click="op('ok')">确定</button>
+        <button class="cancel" v-show="onCancel" @click="op('cancel')">{{cancelOk}}</button>
+        <button class="confirm" @click="op('ok')">{{txtOk}}</button>
       </div>
     </div>
     <!-- toast -->
@@ -24,6 +24,8 @@
  this.$refs.modalAlert.alert({
     title: '你确定删除吗?',
     content: '删除不可以恢复...',    //必选
+    txtOk:'这是确定',
+    cancelOk:'这是取消',
     onOk: function () {            //必选
       alert('你刚点了确定!');
     },
@@ -43,7 +45,9 @@ export default {
       onCancel: false,
       onOk: false,
       title: false,
-      content: false
+      content: false,
+      txtOk:'确定',
+      cancelOk:'取消'
     }
   },
   created() {
@@ -66,6 +70,8 @@ export default {
       this.content = setting.content || false;
       this.onOk = setting.onOk || false;
       this.onCancel = setting.onCancel || false;
+      this.txtOk = setting.txtOk || this.txtOk;
+      this.cancelOk = setting.cancelOk || this.cancelOk;
       this.is = true;
       //document.body.style.overflow = 'hidden';
     }

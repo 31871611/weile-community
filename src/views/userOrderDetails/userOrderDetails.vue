@@ -98,7 +98,7 @@
         <p class="hint" v-if="list.status == 4 || list.status == 5">若长时间未收到退款，请联系微信客服。</p>
       </div>
 
-      <modal-toast ref="modalLoading" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+      <modal-toast ref="modalToast"></modal-toast>
 
       <modal-alert ref="modalAlert"></modal-alert>
     </article>
@@ -189,7 +189,11 @@ export default {
     init:function(){
       let _this = this;
       // 显示加载中
-      _this.$refs.modalLoading.is = true;
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       this.$http.post('/community/getStoreOrderDetail',{
         "orderId":this.$route.query.id,
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
@@ -198,14 +202,15 @@ export default {
       }).then(function(res) {
         //console.log(res);
         if(res.resultCode != 0){
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
           return false;
         }
         _this.list = res.data;
         // 隐藏加载中
-        _this.$refs.modalLoading.is = false;
+        _this.$refs.modalToast.is = false;
         //console.log(JSON.stringify(_this.list));
-
       }).catch(function(error) {
         console.log(error)
       })
@@ -218,7 +223,11 @@ export default {
         content: txt,
         onOk: function () {
           // 显示加载中
-          _this.$refs.modalLoading.is = true;
+          _this.$refs.modalToast.toast({
+            txt:'加载中',
+            icon:'loading',
+            time:0
+          });
           this.$http.post('/community/cancelStoreOrder',{
             "orderId":id,
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
@@ -227,11 +236,13 @@ export default {
           }).then(function(res) {
             //console.log(res);
             if(res.resultCode != 0){
-              alert(res.msg);
+              _this.$refs.modalToast.toast({
+                txt:res.msg
+              });
               return false;
             }
             // 隐藏加载中
-            _this.$refs.modalLoading.is = false;
+            _this.$refs.modalToast.is = false;
             // 返回我的订单 || 我的团购
             if(_this.list.isGroupBuyingOrder){
               _this.$router.push({ path: 'userOrder', query: { group: 1 }})
@@ -255,7 +266,11 @@ export default {
         content: txt,
         onOk: function () {
           // 显示加载中
-          _this.$refs.modalLoading.is = true;
+          _this.$refs.modalToast.toast({
+            txt:'加载中',
+            icon:'loading',
+            time:0
+          });
           this.$http.post('/community/cancelApplication',{
             "orderId":id,
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
@@ -264,11 +279,13 @@ export default {
           }).then(function(res) {
             console.log(res);
             if(res.resultCode != 0){
-              alert(res.msg);
+              _this.$refs.modalToast.toast({
+                txt:res.msg
+              });
               return false;
             }
             // 隐藏加载中
-            _this.$refs.modalLoading.is = false;
+            _this.$refs.modalToast.is = false;
             // 返回我的订单 || 我的团购
             if(_this.list.isGroupBuyingOrder){
               _this.$router.push({ path: 'userOrder', query: { group: 1 }})

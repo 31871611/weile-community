@@ -22,8 +22,7 @@
       登录
     </div>
 
-    <!--<toast ref="modalError" :txt="textError" :time="2"></toast>-->
-    <toast ref="toast"></toast>
+    <modal-toast ref="modalToast"></modal-toast>
 
     <app-nav ref="appnav" v-show="false"></app-nav>
 
@@ -32,7 +31,7 @@
 <script>
 import simplestorage from 'simplestorage.js'
 import cryptoUtils from '@/utils/cryptoUtils'
-import toast from '../common/modalToast.vue'
+import modalToast from '../common/modalToast.vue'
 import cart from '../../plugins/cart'
 import appNav from '../common/appNav.vue';
 
@@ -57,13 +56,13 @@ export default {
     submit:function(){
       let _this = this;
       if(_this.telephone == '' || _this.telephone.length != 11 || !/^(13|14|15|17|18)\d{9}$/.test(_this.telephone)){
-        _this.$refs.toast.toast({
+        _this.$refs.modalToast.toast({
           txt:'请输入正确的手机号码'
         });
         return false;
       }
       if(_this.password.length < 6){
-        _this.$refs.toast.toast({
+        _this.$refs.modalToast.toast({
           txt:'请输入不少于6位数的密码'
         });
         return false;
@@ -99,7 +98,7 @@ export default {
           }
         }else{
           // 登录错误提示
-          _this.$refs.toast.toast({
+          _this.$refs.modalToast.toast({
             txt:res.msg
           });
           return false;
@@ -133,7 +132,7 @@ export default {
             // 跳转
             callback();
           }else{
-            _this.$refs.toast.toast({
+            _this.$refs.modalToast.toast({
               txt:res.msg
             });
             return false;
@@ -146,7 +145,7 @@ export default {
     }
   },
   components: {
-    toast,
+    modalToast,
     appNav
   }
 }
