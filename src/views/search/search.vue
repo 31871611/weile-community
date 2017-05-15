@@ -199,6 +199,8 @@ export default {
       if(this.searchRecord.length > 0){
         this.isSearchRecord = true;
       }
+      // 隐藏自己
+      this.isExit = false;
     },
     // 得到焦点显示
     searchFocus:function(){
