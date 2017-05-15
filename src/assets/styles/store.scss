@@ -203,8 +203,10 @@
     @include flex(1);
     height: pxTorem($h);
     overflow: hidden;
+    white-space: nowrap;
   }
-  p{
+  span{
+    display: inline-block;
     height: pxTorem($h);
     line-height: pxTorem($h);
     color: #fa5741;

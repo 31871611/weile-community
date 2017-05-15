@@ -13,8 +13,8 @@
       <div class="scrollNotice">
         <i></i>
         <div ref="scrollConter">
-          <p class="begin">便利店配送时间：17:00-21:00。联系电话：0371-55372728。配送小区：{{distributionCommunityName}}</p>
-          <p class="end"></p>
+          <span class="begin">便利店配送时间：17:00-21:00。联系电话：0371-55372728。配送小区：{{distributionCommunityName}}</span>
+          <span class="end"></span>
         </div>
       </div>
     </header>
@@ -101,37 +101,27 @@ export default {
     this.getList();               //获取列表
     //this.getCommodityCarInfo();   // 获取购物车数量和金额
 
-
-
     // 异步后才运行，nextTick方法更新dom
-//    this.$nextTick(function(){
-//      this._calculateHeight();
-//    });
-
-
-    //this.scrollLeft();
+    this.$nextTick(function(){
+      this.scrollLeft();
+    });
 
 
   },
   methods: {
     scrollLeft:function(){
-      let scroll_div = this.$refs.scrollConter;
-      let scroll_begin = scroll_div.querySelector('.begin');
-      let scroll_end = scroll_div.querySelector('.end');
-
-      scroll_end.innerHTML = scroll_begin.innerHTML;
-
-      console.log(scroll_end.innerHTML)
-
+      let scrollConter = this.$refs.scrollConter;
+      let begin = scrollConter.querySelector('.begin');
+      let end = scrollConter.querySelector('.end');
+      end.innerHTML = begin.innerHTML;
       function Marquee() {
-        if (scroll_end.offsetWidth - scroll_div.scrollLeft <= 0){
-          scroll_div.scrollLeft -= scroll_begin.offsetWidth;
+        //console.log(end.offsetWidth + '|' + scrollConter.scrollLeft)
+        if (end.offsetWidth - scrollConter.scrollLeft <= 0){
+          scrollConter.scrollLeft -= begin.offsetWidth;
         }else{
-          scroll_div.scrollLeft++;
-          console.log(1);
+          scrollConter.scrollLeft++;
         }
       }
-
       let MyMar = setInterval(Marquee, 50);
     },
     // 获取列表数据
