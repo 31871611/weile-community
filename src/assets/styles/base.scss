@@ -24,14 +24,15 @@ html{
 }
 article.main{
   @include flex(1);
-  overflow: hidden;
+  //overflow: hidden;
   height: 100%;
+  overflow:scroll;
+  -webkit-overflow-scrolling: touch;
+  background: $bg-base;
 }
 .mainScroll{
   //width:100%;
-  height:100%;
-  overflow:scroll;
-  -webkit-overflow-scrolling: touch;
+  //height:100%;
 }
 //.mainScroll::-webkit-scrollbar,
 //.mainScroll::-webkit-scrollbar{
