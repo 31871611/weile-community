@@ -5,7 +5,7 @@
       <div class="search">
         <form class="box" id="searchForm" @submit.prevent="submit()">
           <i></i>
-          <input type="search" id="search" @focus="searchFocus" @blur="searchBlur" placeholder="搜索" v-model="keyWord" autofocus />
+          <input type="search" id="search" @focus="searchFocus" placeholder="搜索" v-model="keyWord" autofocus />
         </form>
         <span class="exit" @click="exit" v-show="isExit">取消</span>
       </div>
@@ -72,20 +72,21 @@ export default {
   data() {
     return{
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
-      is:false,
-      isLoad:false,           // 值为真，禁用无限滚动
+      is:false,                   // 是否显示搜索列表
+      isLoad:false,               // 值为真，禁用无限滚动
       lists:'',
-      searchRecord:'',            // 搜索记录
-      isSearchRecord:false,
+      searchRecord:[],            // 搜索记录
+      isSearchRecord:false,       // 是否显示-搜索记录列表
       keyWord:'',
-      isNotData:false,
-      isExit:false,
+      isNotData:false,            // 是否显示-无数据
+      isExit:false,               // 是否显示-取消
       pageSize:5,
       pageIndex:1
     }
   },
   mounted() {
 
+    // 读取缓存中历史记录
     this.queryHistory()
 
   },
@@ -98,15 +99,24 @@ export default {
           没数据
           有历史记录
 
+          进入有历史记录就显示.可以
+          搜索，有数据显示数据，没数据显示提示无数据
+          点取消会显示历史记录
+
        */
     },
     search:function(){
       let _this = this;
-
       // 是否有输入值
       if (!_this.keyWord) return;
       // 关闭加载
       _this.isLoad = true;
+      // 显示加载中
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
       // 搜索
       this.$http.post('/community/getCommodityPage', {
         "distributionCommunityId":_this.distributionCommunityId,
@@ -125,32 +135,46 @@ export default {
           return false;
         }
         let length = res.data.data.length;
-        console.log('页数：' + _this.pageIndex);
-        console.log("长度：" + length);
-        if(length == 0 && length != _this.pageSize){
-          console.log('结束')
-        }else{
-          if(length > 0){
-            // 显示列表数据
-            _this.is = true;
-            // 隐藏没数据提示
-            _this.isNotData = false;
-            // 数据
-            _this.lists = _this.lists.concat(res.data.data);
-            // 开启加载
-            _this.isLoad = false;
-            // 下一页
-            _this.pageIndex ++;
-          }else{
-            // 隐藏列表数据
-            _this.is = false;
-            // 显示没数据提示
-            _this.isNotData = true;
-          }
-        }
-        // 隐藏搜索历史
-        _this.isSearchRecord = false;
+        /*
 
+          有数据.长度 > 0
+          无数据.分第一次无数据、加载到无数据
+          第一次_this.pageIndex，后面的就++，已不等于1
+
+        */
+        if(_this.pageIndex == 1 && length == 0){
+          // 第一次无数据
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+          // 显示无数据提示
+          _this.isNotData = true;
+          // 隐藏列表
+          _this.is = false;
+          // 隐藏历史列表
+          _this.isSearchRecord = false;
+          return false;
+        }
+        // 隐藏无数据提示
+        _this.isNotData = false;
+        // 隐藏历史列表
+        _this.isSearchRecord = false;
+        // 显示列表
+        _this.is = true;
+        // 后面的加载
+        if(length > 0){
+          // 有数据
+          // 数据
+          _this.lists = _this.lists.concat(res.data.data);
+          // 开启加载
+          _this.isLoad = false;
+          // 下一页
+          _this.pageIndex ++;
+        }
+          // 后面加载到无数据
+          //console.log('加载到无数据')
+
+        // 隐藏加载中
+        _this.$refs.modalToast.is = false;
       }).catch(function(error) {
         console.log(error)
       })
@@ -172,7 +196,7 @@ export default {
       // 隐藏列表
       this.is = false;
       // 搜索历史不为空就显示
-      if(this.searchRecord){
+      if(this.searchRecord.length > 0){
         this.isSearchRecord = true;
       }
     },
@@ -180,15 +204,15 @@ export default {
     searchFocus:function(){
       this.isExit = true;
     },
-    // 失去焦点隐藏
+    // 失去焦点隐藏.不需要了...
     searchBlur:function(){
       this.isExit = false;
     },
     // 从缓存里读取记录
     queryHistory:function(){
-      this.searchRecord = simplestorage.get('_searchList') || '';
+      this.searchRecord = simplestorage.get('_searchList') || [];
       // 搜索历史不为空就显示
-      if(this.searchRecord){
+      if(this.searchRecord.length > 0){
         this.isSearchRecord = true;
       }
     },
@@ -218,7 +242,7 @@ export default {
     // 删除历史记录
     deleteHistory:function(){
       if(simplestorage.deleteKey('_searchList')){
-        this.searchRecord = '';
+        this.searchRecord = [];
         this.isSearchRecord = false;
       }
     },
