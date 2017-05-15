@@ -10,35 +10,38 @@
         <span class="exit" @click="exit" v-show="isExit">取消</span>
       </div>
     </header>
-    <article class="main">
+    <article class="main" ref="scrollContent">
 
-      <div class="mainScroll">
+      <!--<div class="mainScroll"></div>-->
 
-        <!-- 列表 -->
-        <ul class="searchList" v-show="is">
-          <li v-for="(list,index) in lists">
-            <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId }}">
-              <img :src="list.url" alt="">
-              <div class="box">
-                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
-                <div class="bottom">
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="isLoad" infinite-scroll-distance="10">
+          <!-- 列表 -->
+          <ul class="searchList" v-show="is">
+            <li v-for="(list,index) in lists" v-bind:key="index">
+              <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId }}">
+                <img :src="list.url" alt="">
+                <div class="box">
+                  <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
+                  <div class="bottom">
 
-                  <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
-                  <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
 
-                  <div class="go" v-if="list.isFlashSale == 1">马上抢</div>
+                    <div class="go" v-if="list.isFlashSale == 1">马上抢</div>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :is-house-user="list.isHouseUser" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                    <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :is-house-user="list.isHouseUser" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                  </div>
                 </div>
-              </div>
-            </router-link>
-          </li>
-        </ul>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+
 
         <!-- 搜索记录列表 -->
         <div class="searchRecord" v-show="isSearchRecord">
           <ul>
-            <li v-for="list in searchRecord" @click="selectHistory(list.name)">
+            <li v-for="(list,index) in searchRecord" @click="selectHistory(list.name)" v-bind:key="index">
               <span>{{list.name}}</span>
               <i></i>
             </li>
@@ -51,7 +54,7 @@
 
         <modal-toast ref="modalToast"></modal-toast>
 
-      </div>
+
 
     </article>
   </div>
@@ -70,12 +73,15 @@ export default {
     return{
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       is:false,
+      isLoad:false,           // 值为真，禁用无限滚动
       lists:'',
       searchRecord:'',            // 搜索记录
       isSearchRecord:false,
       keyWord:'',
       isNotData:false,
-      isExit:false
+      isExit:false,
+      pageSize:5,
+      pageIndex:1
     }
   },
   mounted() {
@@ -84,16 +90,28 @@ export default {
 
   },
   methods: {
+    loadMore:function(){
+      this.search();
+      /*
+
+          有数据
+          没数据
+          有历史记录
+
+       */
+    },
     search:function(){
       let _this = this;
 
+      // 是否有输入值
       if (!_this.keyWord) return;
-
+      // 关闭加载
+      _this.isLoad = true;
       // 搜索
       this.$http.post('/community/getCommodityPage', {
         "distributionCommunityId":_this.distributionCommunityId,
-        "pageIndex": 1,
-        "pageSize": 10,
+        "pageIndex": _this.pageIndex,
+        "pageSize": _this.pageSize,
         "keyWord": _this.keyWord,
         "type":3            //查询类型：1：推荐 2：团购 3：普通
       },{
@@ -106,23 +124,32 @@ export default {
           });
           return false;
         }
-        _this.lists = res.data.data;
-        //console.log(JSON.stringify(_this.lists))
-
+        let length = res.data.data.length;
+        console.log('页数：' + _this.pageIndex);
+        console.log("长度：" + length);
+        if(length == 0 && length != _this.pageSize){
+          console.log('结束')
+        }else{
+          if(length > 0){
+            // 显示列表数据
+            _this.is = true;
+            // 隐藏没数据提示
+            _this.isNotData = false;
+            // 数据
+            _this.lists = _this.lists.concat(res.data.data);
+            // 开启加载
+            _this.isLoad = false;
+            // 下一页
+            _this.pageIndex ++;
+          }else{
+            // 隐藏列表数据
+            _this.is = false;
+            // 显示没数据提示
+            _this.isNotData = true;
+          }
+        }
         // 隐藏搜索历史
         _this.isSearchRecord = false;
-
-        if(_this.lists.length > 0){
-          // 显示列表数据
-          _this.is = true;
-          // 隐藏没数据提示
-          _this.isNotData = false;
-        }else{
-          // 隐藏列表数据
-          _this.is = false;
-          // 显示没数据提示
-          _this.isNotData = true;
-        }
 
       }).catch(function(error) {
         console.log(error)
@@ -130,9 +157,15 @@ export default {
 
     },
     submit:function(){
+      // 清空列表
+      this.lists = [];
+      // 清空页数
+      this.pageIndex = 1;
+      // 清除滚动值
+      this.$refs.scrollContent.scrollTop = 0;
+      // 添加到本地缓存中
       this.addHistory();
       this.search();
-
     },
     // 取消搜索
     exit:function(){
@@ -165,18 +198,22 @@ export default {
       if (!_this.keyWord) return;
       var searchList = simplestorage.get('_searchList') || [];
 
-//      searchList = $.grep(searchList, function(n, i){
-//        return n.name !== _this.keyWord;
-//      })
-
-      if(searchList.length > 10) searchList.pop();
+      // 把相同的删除
+      let i = searchList.findIndex(function(value, index, arr) {
+        return value.name == _this.keyWord;
+      });
+      if (i !== -1) {
+        searchList.splice(i, 1)[0];
+        simplestorage.set('_searchList', searchList);
+      }
+      // 超过10条
+      if(searchList.length >= 10) searchList.pop();
       searchList.unshift({
         id: new Date().getTime(),
         name: _this.keyWord
       });
       simplestorage.set('_searchList', searchList);
       //callback();
-
     },
     // 删除历史记录
     deleteHistory:function(){
@@ -209,4 +246,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="../../assets/styles/store.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/search.scss"></style>

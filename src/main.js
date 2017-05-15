@@ -4,6 +4,10 @@ import App from './App'
 import FastClick from 'fastclick'
 // require('es6-promise').polyfill();
 import fetch from './utils/fetch'
+import infiniteScroll from 'vue-infinite-scroll'
+
+// 滚动加载插件
+Vue.use(infiniteScroll)
 
 // Vue.config.productionTip = false
 Vue.prototype.$http = fetch

@@ -42,149 +42,6 @@
   }
 }
 
-// 搜索列表
-.searchList{
-  background: $bg-base;
-  $h:176px;
-  $infoH:42px;
-  ul{
-    //margin-top:pxTorem(20px);
-  }
-  li{
-    background: #fff;
-    height: pxTorem($h);
-    @include border1px(#dddddd);
-    padding:pxTorem(20px);
-    position: relative;
-    &:last-child{
-      &:after{
-        display: none;
-      }
-    }
-  }
-  .photo{
-    position: relative;
-    height: pxTorem($h);
-    @include display-flex();
-  }
-  img{
-    display: block;
-    width: pxTorem($h);
-    height: pxTorem($h);
-    vertical-align: middle;
-  }
-  .box{
-    margin-left:pxTorem(20px);
-    position: relative;
-    @include flex(1);
-    height: 100%;
-    width: 100%;
-  }
-  h3{
-    overflow: hidden;
-    height: pxTorem(60px);
-    line-height: pxTorem(60px / 2);
-    @include font-dpr(28px);
-    color: #3f4548;
-    b{
-      color: $green-base;
-      font-weight: normal;
-    }
-  }
-
-  .bottom{
-    position: absolute;
-    left:0;
-    bottom:pxTorem(4px);
-    width: 100%;
-    height: pxTorem(40px);
-    @include display-flex();
-    @include align-items(center);
-    @include justify-content();
-  }
-  // 价格
-  .price{
-    @include font-dpr(36px);
-    color: $orange-base;
-    b{
-      //color: $orange-base;
-      font-weight: normal;
-      @include font-dpr(20px);
-    }
-  }
-
-  // 马上抢
-  .go{
-    text-align: center;
-    width: pxTorem(98px);
-    height: pxTorem(42px);
-    line-height: pxTorem(42px);
-    background: $green-base;
-    color: #fff;
-    @include font-dpr(24px);
-    @include border-radius(pxTorem(4px));
-    &.select{
-      background: #bbb;
-    }
-  }
-  // 购物车加
-  .num{
-    $w:34px;
-    width: pxTorem($w);
-    height: pxTorem($w);
-    @extend %icoRem;
-    background-image: url("../images/icon_store_add@2x.png");
-    &.select{
-      background-image: url("../images/icon_homepage_add@2x.png");
-    }
-  }
-
-}
-
-// 搜索记录
-.searchRecord{
-  padding-bottom: pxTorem(50px);
-  ul{
-
-  }
-  li{
-    @include font-dpr(30px);
-    padding:0 pxTorem(20px);
-    height: pxTorem(88px);
-    line-height: pxTorem(88px);
-    @include border1px(#f4f4f4);
-    @include display-flex();
-    @include align-items();
-    span{
-      display: block;
-      @include flex(1);
-    }
-    i{
-      display: block;
-      width: pxTorem(16px);
-      height: pxTorem(30px);
-      @extend %icoRem;
-      background-image: url("../images/iconArrowR.png");
-    }
-  }
-  .exit{
-    @include font-dpr(28px);
-    color: $green-base;
-    height: pxTorem(70px);
-    line-height: pxTorem(70px);
-    text-align: center;
-    width: pxTorem(206px);
-    border:1px solid $green-base;
-    @include border-radius(pxTorem(6px));
-    margin: pxTorem(50px) auto 0;
-    &:active{
-      background: $green-base;
-      color: #fff;
-    }
-  }
-}
-
-
 .scrollNotice{
   margin-top: pxTorem(18px);
   $h:36px;
@@ -193,6 +50,7 @@
   background: #feefed;
   @include display-flex();
   i{
+    display: block;
     margin:0 pxTorem(16px) 0 pxTorem(20px);
     width: pxTorem($h);
     height: pxTorem($h);
@@ -214,9 +72,9 @@
   }
 }
 
-.storeContent{
+.main{
   @include display-flex();
-  height: 100%;
+  background: #fff;
 }
 
 .classifyList{

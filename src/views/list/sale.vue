@@ -62,7 +62,7 @@ export default {
     this.$http.post('/community/getFlashSaleGoodsList', {
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
       'pageIndex':1,
-      'pageSize':5
+      'pageSize':30
     },{
       "encryptType":1
     }).then(function(res){

@@ -359,9 +359,10 @@
     @include flex(1);
     background: #fff;
     display: block;
+    padding-top:pxTorem(18px);
     div{
       position: relative;
-      margin:pxTorem(18px) auto pxTorem(6px);
+      margin:0 auto pxTorem(6px);
       width: pxTorem(39px);
       height: pxTorem(38px);
       @extend %icoRem;
