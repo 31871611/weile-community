@@ -28,8 +28,9 @@
           <span class="fl">送达时间</span>
           <span class="fr">尽快送达</span>
         </div>
-        <div class="payOrderTextarea" contenteditable="true">
-          点击添加留言
+
+        <div class="payOrderTextarea">
+          <textarea v-model="comments" @focus="commentsFocus" @blur="commentsBlur"></textarea>
         </div>
 
         <div class="payOrderTitle">
@@ -95,7 +96,7 @@
           <div class="availableCouponAlert" v-if="coupon.isAlert">
             <h2>订单可用优惠券弹窗</h2>
             <ul>
-              <li v-for="(list,index) in lists.couponList" v-if="list.orderMoney < lists.payAmount" @click="selectCoupon(index,list.faceValue)">
+              <li v-for="(list,index) in lists.couponList" v-if="list.orderMoney < lists.payAmount" @click="selectCoupon(index,list.faceValue,list.userCardId)">
                 <label>
                   <span :class="{'select':index == coupon.index}">{{list.faceValue / 1000}}元优惠券</span>
                   <i class="radio" :class="{'select':index == coupon.index}"></i>
@@ -112,6 +113,7 @@
           </div>
         </transition>
 
+        <modalToast ref="modalToast"></modalToast>
 
       </div>
     </article>
@@ -120,7 +122,7 @@
         <div class="total">
           还需支付：<b>￥{{(lists.payAmount - coupon.price) / 1000 | price}}</b>
         </div>
-        <div class="next">立即下单</div>
+        <div class="next" @click="submit()">立即下单</div>
       </div>
     </footer>
   </div>
@@ -161,8 +163,10 @@ export default {
         isUse:false,              // 是否使用优惠券
         index:0,                  // 优惠券列表索引
         price:'',                 // 选中优惠券价格
-        isAlert:false             // 是否显示优惠券弹窗
-      }
+        isAlert:false,            // 是否显示优惠券弹窗
+        userCardId:""
+      },
+      comments:'点击添加留言'
     }
   },
   created() {
@@ -175,6 +179,7 @@ export default {
 
     _this.getData();
     _this.getDefaultAddress();
+
   },
   methods: {
     // 获取结算信息
@@ -202,6 +207,7 @@ export default {
         // 优惠券
         if(_this.lists.couponList.length > 0){
           _this.coupon.price = _this.lists.couponList[0].faceValue
+          _this.coupon.userCardId = _this.lists.couponList[0].userCardId
         }
         //console.log(JSON.stringify(_this.lists));
 
@@ -221,13 +227,13 @@ export default {
         "encryptType":1
       }).then(function(res){
         //console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
+          _this.address = res.data;
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
-        _this.address = res.data;
         //console.log(JSON.stringify(_this.address));
       }).catch(function(error) {
         console.log(error)
@@ -238,23 +244,91 @@ export default {
     modifyAddress:function(){
 
     },
+    // 留言
+    commentsFocus:function(){
+      if(this.comments == "点击添加留言"){
+        this.comments = "";
+      }
+    },
+    commentsBlur:function(){
+      if(this.comments == ""){
+        this.comments = "点击添加留言"
+      }
+    },
     // 优惠券弹窗
     couponAlert:function(){
       this.coupon.isAlert = !this.coupon.isAlert
     },
     // 选择优惠券
-    selectCoupon:function(index,faceValue){
+    selectCoupon:function(index,faceValue,userCardId){
       this.coupon.index = index;
       if(faceValue == '不使用优惠券'){
         // 不使用优惠券
         this.coupon.isUse = true;
         this.coupon.price = 0;
+        this.coupon.userCardId = "";
       }else{
         this.coupon.isUse = false;
         this.coupon.price = faceValue;
+        this.coupon.userCardId = userCardId;
       }
       // 关闭优惠券弹窗
       this.coupon.isAlert = !this.coupon.isAlert
+    },
+    // 提交
+    submit:function(){
+      let _this = this;
+/*
+      var payAmount = +$this.data('payamount');
+      if( payAmount <= 0 ) return $.toast('抱歉，无法下单');
+      if($this.attr('disabled')) return;
+      $this.attr('disabled', 'disabled');
+
+      var consignee = $('#consignee').val();			收货人
+      var address = $('#address').val();				小区+详细地址
+      var mobile = $('#mobile').val();				手机号
+      if(consignee==""||address==""||mobile==""){
+        $.toast('请选择配送地址');
+        return;
+      }
+
+*/
+
+      //console.log(_this.$route.query.goodsInfo);
+
+      let comments = this.comments == "点击添加留言" ? "" : this.comments;
+
+      this.$http.post('/community/createStoreOrder', {
+        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+        "consignee": _this.address.name,                                  // 收货人
+        "address": _this.address.communityName + _this.address.address,   // 小区+详细地址
+        "mobile": _this.address.mobile,                                   // 手机号
+        "expectedTimeType": 1,                                            // 不知道是什么，写死的，1
+        "payMethod": 2,                                                   // 不知道是什么，写死的，2
+        "isGroupBuyingOrder":_this.$route.query.isGroupBuyingOrder,       // 是否团购：1是，0否
+        "goodsInfo": _this.$route.query.goodsInfo,                        // 商品信息
+        "comments": comments,                                             // 留言
+        "isFlashOrder":_this.$route.query.isFlashOrder,                   // 是否抢购商品：1是，0否
+        "userCardPackageId": _this.coupon.userCardId
+      },{
+        "encryptType":1
+      }).then(function(res){
+        console.log(res);
+        if(res.resultCode == 0){
+          //var orderId = data.data.list.orderId;
+          //下单成功，调用支付接口
+
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+        }
+        //console.log(JSON.stringify(_this.address));
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+
     }
   },
   components: {
