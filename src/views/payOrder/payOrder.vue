@@ -10,7 +10,7 @@
 
         <ul class="defaultAddress">
           <li>
-            <router-link :to="{path:'payorder/address',query:{source:'payorder'}}">
+            <router-link :to="{path:'payorder/address',query:{source:'payorder',goodsInfo:goodsInfo}}">
               <template v-if="address">
                 <div><span class="name">{{address.name}}</span><span class="tel">{{address.mobile}}</span></div>
                 <p>{{address.communityName}} | {{address.address}}</p>
@@ -128,7 +128,7 @@
   </div>
 
   <transition name="SlideRightLeft">
-    <router-view></router-view>
+    <router-view :goodsInfo="goodsInfo"></router-view>
   </transition>
 
 </div>
@@ -157,6 +157,7 @@ export default {
   name: 'payOrder',
   data() {
     return{
+      goodsInfo:this.$route.query.goodsInfo,
       address:'',                 // 默认地址
       lists:'',                   // 结算信息
       coupon:{
@@ -190,7 +191,7 @@ export default {
 
       this.$http.post('/community/getPayInfo', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
-        "goodsInfo":_this.$route.query.goodsInfo,
+        "goodsInfo":_this.goodsInfo,
         "isFlashOrder":_this.$route.query.isFlashOrder,                       //是否抢购商品：1是，0否
         "isGroupBuyingOrder":_this.$route.query.isGroupBuyingOrder            //是否团购：1是，0否
       },{
@@ -278,6 +279,12 @@ export default {
     // 提交
     submit:function(){
       let _this = this;
+      // 显示加载中
+//      _this.$refs.modalToast.toast({
+//        txt:'加载中',
+//        icon:'loading',
+//        time:0
+//      });
 /*
       var payAmount = +$this.data('payamount');
       if( payAmount <= 0 ) return $.toast('抱歉，无法下单');
@@ -293,6 +300,13 @@ export default {
       }
 
 */
+
+      if(_this.address == ""){
+        _this.$refs.modalToast.toast({
+          txt:"请选择配送地址"
+        });
+        return false;
+      }
 
       //console.log(_this.$route.query.goodsInfo);
 
@@ -328,7 +342,8 @@ export default {
         console.log(error)
       })
 
-
+      // 隐藏加载中
+      _this.$refs.modalToast.is = false;
     }
   },
   components: {
@@ -340,6 +355,7 @@ export default {
       if(this.$route.query.address){
         this.address = JSON.parse(this.$route.query.address);
       }
+      //console.log("地址：" + this.$route.query.goodsInfo);
     }
   }
 }
