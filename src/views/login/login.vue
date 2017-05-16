@@ -71,7 +71,8 @@ export default {
       this.$http.post('/community/login',{
         "telephone":_this.telephone,
         "password":cryptoUtils.md5(_this.password),
-        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
+        "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+        //"openid":simplestorage.get('HLXK_OPENID')
       },{
         "encryptType":0
       }).then(function(res) {
