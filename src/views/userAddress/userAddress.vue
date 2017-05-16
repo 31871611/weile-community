@@ -70,6 +70,7 @@ export default {
   name: 'userAddress',
   data() {
     return{
+      parentPath:'',                              // url参数
       canDeliverAddressInfos:'',                  // 可配送地址
       noDeliverAddressInfos:'',                   // 不可配送地址
       parentUrl:'',                               // 上一级url，结算、用户中心
@@ -113,10 +114,13 @@ export default {
     // 只选择地址不修改
     selectAddress:function(list){
       let _this = this;
+      let len = _this.parentPath.indexOf("goodsInfo=") + 10;
+      let goodsInfo = _this.parentPath.substring(len)
       //alert('选择地址');
       _this.$router.push({
         path: '/payorder',
         query:{
+          'goodsInfo':goodsInfo,
           'address':JSON.stringify(list)
         }
       });
@@ -128,20 +132,21 @@ export default {
   },
   watch: {
     '$route' () {
-      if(this.$route.query.reload == '1'){
+      //if(this.$route.query.reload == '1'){
         this.init();
-      }
+      //}
     }
   },
-  //beforeRouteUpdate(to, from, next){
-    // 要修改...
-    //console.log(to);
-    // 进入下一连接=改变会运行，to.name == 'userAddress'只在返回时运行
-    //if(to.name == 'userAddress'){
-    //  this.init();
-    //}
-    //next();
-  //}
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.parentPath = from.fullPath;
+    })
+  },
+//  beforeRouteUpdate(to, from, next){
+//    console.log(to);
+//    console.log(from);
+//    next();
+//  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userAddress.scss"></style>

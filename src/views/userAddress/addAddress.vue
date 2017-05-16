@@ -66,7 +66,7 @@ export default {
   props:['list'],
   data() {
     return{
-      parentPath:'',              // 上一级url，在新增、修改成功时后退，带参数
+      //parentPath:'',              // 上一级url，在新增、修改成功时后退，带参数
       path:this.$route.path,      // 当前url，分:新增、修改
       addressId:'',               // 修改地址时使用
       name:'',                    // 必
@@ -158,13 +158,13 @@ export default {
           return false;
         }
         _this.$refs.modalToast.is = false;
-        //_this.$router.back();
-        _this.$router.replace({
-          path: _this.parentPath,
-          query:{
-            'reload':1
-          }
-        });
+        _this.$router.back();
+//        _this.$router.replace({
+//          path: _this.parentPath,
+//          query:{
+//            'reload':1
+//          }
+//        });
       }).catch(function(error) {
         console.log(error)
       })
@@ -193,13 +193,13 @@ export default {
           return false;
         }
         _this.$refs.modalToast.is = false;
-        //_this.$router.back();
-        _this.$router.replace({
-          path: _this.parentPath,
-          query:{
-            'reload':1
-          }
-        });
+        _this.$router.back();
+//        _this.$router.replace({
+//          path: _this.parentPath,
+//          query:{
+//            'reload':1
+//          }
+//        });
       }).catch(function(error) {
         console.log(error)
       })
@@ -254,11 +254,11 @@ export default {
   components: {
     modalToast
   },
-  beforeRouteEnter (to, from, next) {
-    next(vm => {
-      vm.parentPath = from.fullPath;
-    })
-  }
+//  beforeRouteEnter (to, from, next) {
+//    next(vm => {
+//      vm.parentPath = from.fullPath;
+//    })
+//  }
 }
 </script>
 <style scoped lang="scss" src="../../assets/styles/userAddAddress.scss"></style>
