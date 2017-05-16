@@ -613,16 +613,18 @@ export default {
     },
     // 去结算
     toPay:function(is,str){
-      if(!is){
-        _this.$refs.modalToast.toast({
-          txt:str
-        });
-        return false;
-      }
       let _this = this;
 
       // 选中的商品的数据
       if(_this.checkCommodityId.length > 0){
+
+        // is:是否可下单；str：描述信息
+        if(!is){
+          _this.$refs.modalToast.toast({
+            txt:str
+          });
+          return false;
+        }
 
         if(_this.isLogin){
           // 验证库存
