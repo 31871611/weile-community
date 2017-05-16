@@ -6,7 +6,7 @@ import FastClick from 'fastclick'
 import fetch from './utils/fetch'
 import infiniteScroll from 'vue-infinite-scroll'
 
-// 滚动加载插件
+// 滚动加载插件https://github.com/ElemeFE/vue-infinite-scroll
 Vue.use(infiniteScroll)
 
 // Vue.config.productionTip = false
@@ -18,7 +18,7 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-//FastClick.attach(document.body)
+FastClick.attach(document.body)
 
 new Vue({
   el: '#app',
