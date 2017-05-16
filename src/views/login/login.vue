@@ -67,6 +67,12 @@ export default {
         });
         return false;
       }
+      // 显示加载中
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
 
       this.$http.post('/community/login',{
         "telephone":_this.telephone,
@@ -104,6 +110,8 @@ export default {
           });
           return false;
         }
+        // 隐藏加载中
+        _this.$refs.modalToast.is = false;
       }).catch(function(error) {
         console.log(error)
       })
