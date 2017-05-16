@@ -53,7 +53,15 @@
   background: #fff;
   @include font-dpr(28px);
   padding:pxTorem(28px) pxTorem(20px);
-
+  textarea{
+    display: block;
+    width: 100%;
+    @include appearance(none);
+    outline: none;
+    border: 0;
+    resize: none;
+    color: #999;
+  }
 }
 
 
