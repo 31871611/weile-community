@@ -79,7 +79,7 @@
     }
     h3{
       color: #43515a;
-      margin-right: pxTorem(20px);
+      @include flex(1);
     }
     span{
       color: #43515a;
@@ -87,6 +87,7 @@
     }
     strong{
       display: block;
+      margin-left: pxTorem(20px);
     }
     img{
       $w:122px;
