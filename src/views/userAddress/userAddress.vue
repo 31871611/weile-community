@@ -68,6 +68,7 @@ import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'userAddress',
+  props:['goodsInfo'],
   data() {
     return{
       parentPath:'',                              // url参数
@@ -114,13 +115,11 @@ export default {
     // 只选择地址不修改
     selectAddress:function(list){
       let _this = this;
-      let len = _this.parentPath.indexOf("goodsInfo=") + 10;
-      let goodsInfo = _this.parentPath.substring(len)
       //alert('选择地址');
       _this.$router.push({
         path: '/payorder',
         query:{
-          'goodsInfo':goodsInfo,
+          'goodsInfo':_this.goodsInfo,
           'address':JSON.stringify(list)
         }
       });
