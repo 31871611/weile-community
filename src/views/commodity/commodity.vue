@@ -365,7 +365,8 @@ export default {
     },
     // 领取优惠券
     getCoupon:function(id,limit){
-      alert(id + '|' + limit);
+      let _this = this;
+      //alert(id + '|' + limit);
 
       this.$http.post('/community/getStoreCouponToUser', {
         "storeId": simplestorage.get('HLXK_DISTRIBUTION').id,
