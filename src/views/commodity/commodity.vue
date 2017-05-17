@@ -123,11 +123,11 @@
           <h2>图文详情</h2>
           <div class="txt" v-for="txt in list.images">
             <img :src="txt.img" alt="">
-            <div class="video" v-if="txt.video">
-              <video :src="txt.video" controls="controls">
-                您的浏览器不支持 video 标签。
-              </video>
-            </div>
+            <!--<div class="video" v-if="txt.video">-->
+              <!--<video :src="txt.video" controls="controls">-->
+                <!--您的浏览器不支持 video 标签。-->
+              <!--</video>-->
+            <!--</div>-->
             <p>{{txt.info}}</p>
           </div>
         </div>
@@ -283,7 +283,7 @@ export default {
         });
         return false;
       }
-      console.log(JSON.stringify(res.data));
+      //console.log(JSON.stringify(res.data));
       _this.list = res.data;
       // 计算倒记时
       _this.computeTime(_this.list.nowTime,_this.list.startTime,_this.list.endTime);
