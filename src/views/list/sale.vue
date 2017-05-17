@@ -7,9 +7,11 @@
           <li v-for="(list,index) in lists">
             <router-link class="photo" :to="{path:'commodity',query: { id: list.goodsId }}">
               <img :src="list.imageUrl" alt="">
-              <div class="box">
+            </router-link>
+            <div class="box">
+              <router-link :to="{path:'commodity',query: { id: list.goodsId }}">
                 <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
-                <div class="price">
+                <div class="salePrice">
                   <b>抢购价￥</b><strong>{{list.price / 1000 | price}}元</strong><span>￥{{list.originalPrice / 1000 | price}}</span>
                 </div>
                 <div class="bottom">
@@ -20,8 +22,8 @@
                   <div class="go" v-if="list.sysTime > list.startTime && list.inventory > 0">马上抢</div>
                   <div class="go select" v-if="list.inventory <= 0">抢光了</div>
                 </div>
-              </div>
-            </router-link>
+              </router-link>
+            </div>
           </li>
         </ul>
       </div>
