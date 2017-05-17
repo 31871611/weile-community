@@ -63,4 +63,4 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss" src="../../assets/styles/components/_modalToast.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/_modalToast.scss"></style>
