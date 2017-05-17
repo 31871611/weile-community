@@ -15,7 +15,7 @@
 
         <ul class="linkList">
           <li>
-            <a href="">
+            <a href="javascript:;" @click="toLink('http://www.baidu.com')">
               <i class="myrepair"></i>
               <span>我的报修</span>
               <em>有问题物业来办</em>
@@ -127,7 +127,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.userInfo);
+    //console.log(this.userInfo);
   },
   methods: {
     // 跳转到外部url
