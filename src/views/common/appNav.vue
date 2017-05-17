@@ -13,6 +13,7 @@
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
+import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
 
 export default {
@@ -26,6 +27,13 @@ export default {
     return{
       shoppingNum:0
     }
+  },
+  created: function() {
+    // 监听事件获取add商品DOM
+    let i = 0;
+    Bus.$on(':eventCartadd',function(el){
+      console.log(el);
+    })
   },
   mounted() {
 

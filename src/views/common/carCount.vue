@@ -4,12 +4,13 @@
   <div v-else class="selectNum">
     <div class="remove" v-show="num > 0" @click.stop.prevent="remove()"></div>
     <input type="text" v-show="num > 0" value="1" v-model="num" readonly="readonly" />
-    <div class="add" @click.stop.prevent="add()"></div>
+    <div class="add" @click.stop.prevent="add($event)"></div>
   </div>
 
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
+import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
 
 export default {
@@ -67,7 +68,7 @@ export default {
       }
     },
     // 添加购物车
-    add:function(){
+    add:function(event){
       let _this = this;
       let isLogin = simplestorage.get('HLXK_STATUS');
       /*
@@ -186,6 +187,8 @@ export default {
         }
         // 给购物车页面使用
         _this.$emit('modifyNotLoginCarList');
+        // 底部
+        Bus.$emit(':eventCartadd', event.target);
       }
 
     },
