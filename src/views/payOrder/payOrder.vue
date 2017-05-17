@@ -10,7 +10,7 @@
 
         <ul class="defaultAddress">
           <li>
-            <router-link :to="{path:'payorder/address',query:{source:'payorder',goodsInfo:goodsInfo}}">
+            <router-link :to="{path:'payorder/address',query:{source:'payorder',goodsInfo:goodsInfo ,isGroupBuyingOrder:isGroupBuyingOrder ,isFlashOrder:isFlashOrder}}">
               <template v-if="address">
                 <div><span class="name">{{address.name}}</span><span class="tel">{{address.mobile}}</span></div>
                 <p>{{address.communityName}} | {{address.address}}</p>
@@ -128,7 +128,7 @@
   </div>
 
   <transition name="SlideRightLeft">
-    <router-view :goodsInfo="goodsInfo"></router-view>
+    <router-view :goodsInfo="goodsInfo" :isGroupBuyingOrder="isGroupBuyingOrder" :isFlashOrder="isFlashOrder"></router-view>
   </transition>
 
 </div>
@@ -157,6 +157,8 @@ export default {
   name: 'payOrder',
   data() {
     return{
+      isGroupBuyingOrder:this.$route.query.isGroupBuyingOrder,
+      isFlashOrder:this.$route.query.isFlashOrder,
       goodsInfo:this.$route.query.goodsInfo,
       address:'',                 // 默认地址
       lists:'',                   // 结算信息
@@ -165,14 +167,14 @@ export default {
         index:0,                  // 优惠券列表索引
         price:'',                 // 选中优惠券价格
         isAlert:false,            // 是否显示优惠券弹窗
-        userCardId:""
+        userCardId:null           // 需要传null
       },
       comments:'点击添加留言'
     }
   },
   created() {
 
-    console.log(this.$route.query.goodsInfo)
+    //console.log(this.$route.query.goodsInfo)
 
   },
   mounted() {
@@ -192,12 +194,12 @@ export default {
       this.$http.post('/community/getPayInfo', {
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "goodsInfo":_this.goodsInfo,
-        "isFlashOrder":_this.$route.query.isFlashOrder,                       //是否抢购商品：1是，0否
-        "isGroupBuyingOrder":_this.$route.query.isGroupBuyingOrder            //是否团购：1是，0否
+        "isFlashOrder":_this.isFlashOrder,                       //是否抢购商品：1是，0否
+        "isGroupBuyingOrder":_this.isGroupBuyingOrder            //是否团购：1是，0否
       },{
         "encryptType":1
       }).then(function(res){
-        console.log(res);
+        //console.log(res);
         if(res.resultCode != 0){
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -267,7 +269,7 @@ export default {
         // 不使用优惠券
         this.coupon.isUse = true;
         this.coupon.price = 0;
-        this.coupon.userCardId = "";
+        this.coupon.userCardId = null;
       }else{
         this.coupon.isUse = false;
         this.coupon.price = faceValue;
@@ -298,7 +300,6 @@ export default {
         $.toast('请选择配送地址');
         return;
       }
-
 */
 
       if(_this.address == ""){
@@ -307,8 +308,6 @@ export default {
         });
         return false;
       }
-
-      //console.log(_this.$route.query.goodsInfo);
 
       let comments = this.comments == "点击添加留言" ? "" : this.comments;
 
@@ -319,25 +318,25 @@ export default {
         "mobile": _this.address.mobile,                                   // 手机号
         "expectedTimeType": 1,                                            // 不知道是什么，写死的，1
         "payMethod": 2,                                                   // 不知道是什么，写死的，2
-        "isGroupBuyingOrder":_this.$route.query.isGroupBuyingOrder,       // 是否团购：1是，0否
-        "goodsInfo": _this.$route.query.goodsInfo,                        // 商品信息
+        "isGroupBuyingOrder":_this.isGroupBuyingOrder,       // 是否团购：1是，0否
+        "goodsInfo": _this.goodsInfo,                        // 商品信息
         "comments": comments,                                             // 留言
-        "isFlashOrder":_this.$route.query.isFlashOrder,                   // 是否抢购商品：1是，0否
+        "isFlashOrder":_this.isFlashOrder,                   // 是否抢购商品：1是，0否
         "userCardPackageId": _this.coupon.userCardId
       },{
         "encryptType":1
       }).then(function(res){
         console.log(res);
         if(res.resultCode == 0){
-          //var orderId = data.data.list.orderId;
+          let orderId = res.data.orderId;
           //下单成功，调用支付接口
-
+          console.log(orderId)
+          alert('下单成功')
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
         }
-        //console.log(JSON.stringify(_this.address));
       }).catch(function(error) {
         console.log(error)
       })

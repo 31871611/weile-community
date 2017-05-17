@@ -634,10 +634,14 @@ export default {
           },{
             "encryptType":1
           }).then(function(res) {
-            console.log(res);
+            //console.log(res);
             if (res.resultCode == 0) {
               // 去结算页面
-              _this.$router.push({ path: '/payorder', query: { goodsInfo: _this.getCheckGoods('pay') }})
+              _this.$router.push({ path: '/payorder', query: {
+                "goodsInfo": _this.getCheckGoods('pay'),
+                'isGroupBuyingOrder':0,
+                'isFlashOrder':0
+              }})
 
             }else if(res.resultCode == 4105 || res.resultCode ==4201){
               _this.$refs.modalToast.toast({
@@ -655,7 +659,11 @@ export default {
           })
         }else{
           // 去结算页面
-          _this.$router.push({ path: '/payorder', query: { goodsInfo: _this.getCheckGoods('pay') }})
+          _this.$router.push({ path: '/payorder', query: {
+            "goodsInfo": _this.getCheckGoods('pay'),
+            'isGroupBuyingOrder':0,
+            'isFlashOrder':0
+          }})
         }
 
       }else{

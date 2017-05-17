@@ -68,7 +68,7 @@ import modalToast from '../common/modalToast.vue'
 
 export default {
   name: 'userAddress',
-  props:['goodsInfo'],
+  props:['goodsInfo','isGroupBuyingOrder','isFlashOrder'],
   data() {
     return{
       parentPath:'',                              // url参数
@@ -116,10 +116,13 @@ export default {
     selectAddress:function(list){
       let _this = this;
       //alert('选择地址');
+      console.log(_this.isGroupBuyingOrder + "|" + _this.isFlashOrder)
       _this.$router.push({
         path: '/payorder',
         query:{
           'goodsInfo':_this.goodsInfo,
+          'isGroupBuyingOrder':_this.isGroupBuyingOrder,
+          'isFlashOrder':_this.isFlashOrder,
           'address':JSON.stringify(list)
         }
       });
