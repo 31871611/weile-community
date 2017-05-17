@@ -73,4 +73,4 @@ export default {
   }
 }
 </script>
-
+<style scoped lang="scss" src="../../assets/styles/_appNav.scss"></style>
