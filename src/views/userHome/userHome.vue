@@ -7,9 +7,9 @@
         <div class="bg">
           <div class="center">
             <div class="face">
-              <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492062648544&di=b885e712d6151036468cf73bf2276428&imgtype=0&src=http%3A%2F%2Fwww.qqzhi.com%2Fuploadpic%2F2014-09-13%2F233023400.jpg" alt="">
+              <img :src="userInfo.headImgUrl" alt="">
             </div>
-            <span>用户名</span>
+            <span>{{userInfo.nickName}}</span>
           </div>
         </div>
 
@@ -57,6 +57,17 @@
             </router-link>
           </li>
         </ul>
+
+        <ul class="linkList">
+          <li>
+            <a href="">
+              <i class="myauth"></i>
+              <span>我的授权</span>
+              <i class="arrowR"></i>
+            </a>
+          </li>
+        </ul>
+
         <ul class="linkList">
           <li>
             <a href="">
@@ -105,16 +116,18 @@
 </div>
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
+
 export default {
   name: 'userHome',
   data() {
     return{
-
+      userInfo:simplestorage.get('HLXK_UserInfo')
     }
   },
   mounted() {
-
+    console.log(this.userInfo);
   },
   methods: {
     // 跳转到外部url

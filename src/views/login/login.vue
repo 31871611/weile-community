@@ -44,6 +44,14 @@ export default {
       url:''
     }
   },
+  created() {
+
+    // 已登录
+    if(simplestorage.get('HLXK_STATUS')){
+      this.$router.back();
+    }
+
+  },
   mounted() {
     let _this = this;
     if(this.$route.query.url){
@@ -87,6 +95,8 @@ export default {
         if(res.resultCode == 0){
           simplestorage.set('HLXK_SESSION', data.session);
           simplestorage.set('HLXK_KEY', data.key);
+          // 保存用户信息
+          simplestorage.set('HLXK_UserInfo', data.userInfo);
           // 是否登录状态
           simplestorage.set('HLXK_STATUS', true);
           // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证

@@ -50,6 +50,7 @@
       strong{
         @include font-dpr(32px);
         margin-top:pxTorem(10px);
+        margin-left:0;
       }
       span{
         @include font-dpr(30px);
