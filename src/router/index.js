@@ -202,6 +202,7 @@ router.beforeEach((to, from, next) => {
         if(typeof wxUserInfo == "object" && wxUserInfo.openid){
           // 保存openid
           simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
+          // 保存assess_token失效时间7200
         }
     }else{
       // 跳转去获取openid
