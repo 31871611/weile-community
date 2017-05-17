@@ -278,4 +278,4 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss" src="../../assets/styles/components/_selectNum.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/_selectNum.scss"></style>

@@ -1,6 +1,6 @@
 @charset "UTF-8";
-@import "../common/css3";
-@import "../common/common";
+@import "common/css3";
+@import "common/common";
 
 /*
 
@@ -19,9 +19,9 @@
   width: pxTorem($w);
   height: pxTorem($w);
   @extend %icoRem;
-  background-image: url("../../images/icon_store_add@2x.png");
+  background-image: url("../images/icon_store_add@2x.png");
   &.select{
-    background-image: url("../../images/icon_homepage_add@2x.png");
+    background-image: url("../images/icon_homepage_add@2x.png");
   }
 }
 // 购物车 加[值]减
@@ -44,15 +44,15 @@
     @extend %icoRem;
   }
   .remove{
-    background-image: url("../../images/icon_minus_p@2x.png");
+    background-image: url("../images/icon_minus_p@2x.png");
     &.select{
-      background-image: url("../../images/icon_minus_n@2x.png");
+      background-image: url("../images/icon_minus_n@2x.png");
     }
   }
   .add{
-    background-image: url("../../images/icon_store_add@2x.png");
+    background-image: url("../images/icon_store_add@2x.png");
     &.select{
-      background-image: url("../../images/icon_homepage_add@2x.png");
+      background-image: url("../images/icon_homepage_add@2x.png");
     }
   }
 }
