@@ -20,7 +20,9 @@
             <li v-for="(list,index) in lists" v-bind:key="index">
               <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId }}">
                 <img :src="list.url" alt="">
-                <div class="box">
+              </router-link>
+              <div class="box">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                   <div class="bottom">
 
@@ -31,8 +33,8 @@
 
                     <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :is-house-user="list.isHouseUser" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                   </div>
-                </div>
-              </router-link>
+                </router-link>
+              </div>
             </li>
           </ul>
         </div>
