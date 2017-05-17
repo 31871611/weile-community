@@ -22,65 +22,99 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta:{
+        pageTitle: '首页'
+      }
     }, {
       // 选择小区
       path: '/selectQuarters',
       name: 'selectQuarters',
-      component: resolve => require(['@/views/index/selectQuarters'], resolve)
+      component: resolve => require(['@/views/index/selectQuarters'], resolve),
+      meta:{
+        pageTitle: '选择小区'
+      }
     }, {
       // 社区
       path: '/community',
       name: 'community',
-      component: resolve => require(['@/views/community/community'], resolve)
+      component: resolve => require(['@/views/community/community'], resolve),
+      meta:{
+        pageTitle: '社区'
+      }
     }, {
       // 限时抢购
       path: '/sale',
       name: 'sale',
-      component: resolve => require(['@/views/list/sale'], resolve)
+      component: resolve => require(['@/views/list/sale'], resolve),
+      meta:{
+        pageTitle: '限时抢购'
+      }
     }, {
       // 专题列表
       path: '/subject',
       name: 'subject',
-      component: resolve => require(['@/views/list/subject'], resolve)
+      component: resolve => require(['@/views/list/subject'], resolve),
+      meta:{
+        pageTitle: '专题列表'
+      }
     }, {
       // 领券专题
       path: '/subjectCoupon',
       name: 'subjectCoupon',
-      component: resolve => require(['@/views/list/subjectCoupon'], resolve)
+      component: resolve => require(['@/views/list/subjectCoupon'], resolve),
+      meta:{
+        pageTitle: '领券专题'
+      }
     }, {
       // 搜索
       path: '/search',
       name: 'search',
-      component: resolve => require(['@/views/search/search'], resolve)
+      component: resolve => require(['@/views/search/search'], resolve),
+      meta:{
+        pageTitle: '搜索'
+      }
     }, {
       // 便利店
       path: '/store',
       name: 'store',
-      component: resolve => require(['@/views/store/store'], resolve)
+      component: resolve => require(['@/views/store/store'], resolve),
+      meta:{
+        pageTitle: '便利店'
+      }
     }, {
       // 购物车
       path: '/shopping',
       name: 'shopping',
-      component: resolve => require(['@/views/shopping/shopping'], resolve)
+      component: resolve => require(['@/views/shopping/shopping'], resolve),
+      meta:{
+        pageTitle: '购物车'
+      }
     },{
       // 商品详情页
       path: '/commodity',
       name: 'commodity',
-      component: resolve => require(['@/views/commodity/commodity'], resolve)
+      component: resolve => require(['@/views/commodity/commodity'], resolve),
+      meta:{
+        pageTitle: '商品详情页'
+      }
     },{
       // 结算
       path: '/payorder',
       name: 'payorder',
       component: resolve => require(['@/views/payorder/payorder'], resolve),
       meta:{
-        requireAuth: true
+        requireAuth: true,
+        pageTitle: '商品详情页'
       },
       children:[
         {
           // 我的地址
           path: 'address',
           component: userAddress,
+          meta:{
+            pageTitle: '选择地址'
+          },
           children:[
             {
               path: 'add',
@@ -101,14 +135,18 @@ const router = new Router({
       // 登录
       path: '/login',
       name: 'login',
-      component: resolve => require(['@/views/login/login'], resolve)
+      component: resolve => require(['@/views/login/login'], resolve),
+      meta:{
+        pageTitle: '登录'
+      }
     },{
       // 用户中心
       path: '/userHome',
       name: 'userHome',
       component: resolve => require(['@/views/userHome/userHome'], resolve),
       meta:{
-        requireAuth: true
+        requireAuth: true,
+        pageTitle: '用户中心'
       },
       children:[
         {
@@ -117,7 +155,8 @@ const router = new Router({
           name: 'userOrder',
           component: userOrder,
           meta:{
-            requireAuth: true
+            requireAuth: true,
+            pageTitle: '我的订单'
           }
         },
         {
@@ -126,7 +165,8 @@ const router = new Router({
           name: 'userOrderDetails',
           component: userOrderDetails,
           meta:{
-            requireAuth: true
+            requireAuth: true,
+            pageTitle: '订单详情'
           },
           children:[
             {
@@ -135,7 +175,8 @@ const router = new Router({
               name: 'userApplyBack',
               component: userApplyBack,
               meta:{
-                requireAuth: true
+                requireAuth: true,
+                pageTitle: '申请退货'
               }
             }
           ]
@@ -146,17 +187,24 @@ const router = new Router({
           name: 'userCoupon',
           component: userCoupon,
           meta:{
-            requireAuth: true
+            requireAuth: true,
+            pageTitle: '我的优惠券'
           },
           children:[
             {
               // 优惠券详情
               path: 'details',
-              component: couponDetails
+              component: couponDetails,
+              meta:{
+                pageTitle: '优惠券详情'
+              }
             },{
               // 失效优惠券
               path: 'invalid',
-              component: invalidCoupon
+              component: invalidCoupon,
+              meta:{
+                pageTitle: '失效优惠券'
+              }
             }
           ]
         },
@@ -166,16 +214,25 @@ const router = new Router({
           name: 'userAddress',
           component: userAddress,
           meta:{
-            requireAuth: true
+            requireAuth: true,
+            pageTitle: '我的地址'
           },
           children:[
             {
               path: 'add',
-              component: userAddressAdd
+              component: userAddressAdd,
+              meta:{
+                requireAuth: true,
+                pageTitle: '添加地址'
+              }
             },
             {
               path: 'modify',
-              component: userAddressAdd
+              component: userAddressAdd,
+              meta:{
+                requireAuth: true,
+                pageTitle: '修改地址'
+              }
             }
           ]
         }
@@ -187,8 +244,30 @@ const router = new Router({
   ]
 })
 
+
+// 兼容微信设置页面的title
+let setDocumentTitle = function (title) {
+  document.title = title;
+  let ua = navigator.userAgent;
+  if (/\bMicroMessenger\/([\d\.]+)/.test(ua) && /ip(hone|od|ad)/i.test(ua)) {
+    var i = document.createElement('iframe');
+    i.src = '/favicon.ico';
+    i.style.display = 'none';
+    i.onload = function () {
+      setTimeout(function () {
+        i.remove();
+      }, 9);
+    };
+    document.body.appendChild(i);
+  }
+};
+
 router.beforeEach((to, from, next) => {
   //console.log(to);
+
+  // 修改title
+  typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
+
   // 微信中 && 不存在openid
   if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
     /*

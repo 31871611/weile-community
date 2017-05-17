@@ -18,7 +18,7 @@ export default {
   },
   mounted() {
 /*
-    //document.getElementsByTagName("title")[0].innerHTML = "标题";
+    //
 
     // openid没有失效时间，一个微信对应不同的公众号有不同的openid的
 
