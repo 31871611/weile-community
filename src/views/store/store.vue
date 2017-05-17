@@ -32,32 +32,28 @@
           <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == commoditys.categoryId">
 
             <li v-for="(list,index) in commoditys.commoditys">
-
               <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
                 <img :src="list.url" :alt="list.commodityId">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
                 <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
               </router-link>
               <div class="box">
-                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
-                <div class="bottom">
-
-                  <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
-                  <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
-
-                  <div class="go" v-if="list.isFlashSale == 1">
-                    马上抢
+                <router-link :to="{path:'commodity',query: { id: list.commodityId }}">
+                  <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
+                  <div class="bottom">
+                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                    <div class="go" v-if="list.isFlashSale == 1">
+                      马上抢
+                    </div>
+                    <!--{{list.inventory}}-->
+                    <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                   </div>
-
-                  <!--{{list.inventory}}-->
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
-
-                </div>
+                </router-link>
               </div>
             </li>
 
           </ul>
-
 
         </div>
 
