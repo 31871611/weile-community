@@ -40,8 +40,3 @@
   @include userOrderList;
 }
 
-// 没有数据
-.notData{
-  @import "components/notData";
-  @include notData;
-}
