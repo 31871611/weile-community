@@ -62,6 +62,10 @@ export default {
 
       console.log('购物车数量：' + _this.shoppingNum)
 
+    },
+    // 跳转到外部url
+    toLink:function(url){
+      location.href = url;
     }
   },
   components: {

@@ -117,7 +117,10 @@ export default {
 
   },
   methods: {
-
+    // 跳转到外部url
+    toLink:function(url){
+      location.href = url;
+    }
   },
   components: {
     appNav
