@@ -43,11 +43,13 @@
                 <img :src="list.imageUrl" alt="">
               </a>
               <div class="box">
-                <h3>{{list.goodsName}}</h3>
-                <div class="bottom">
-                  <strong class="price">￥{{list.price / 1000 | price}}</strong>
+                <a href="javascript:;">
+                  <h3>{{list.goodsName}}</h3>
+                  <div class="bottom">
+                    <strong class="price">￥{{list.price / 1000 | price}}</strong>
+                  </div>
                   <span class="num">x{{list.amount}}</span>
-                </div>
+                </a>
               </div>
             </li>
           </ul>
