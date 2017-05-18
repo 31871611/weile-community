@@ -269,25 +269,25 @@ router.beforeEach((to, from, next) => {
   typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
 
   // 微信中 && 不存在openid
-  //if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
+  if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
     /*
         是否是跳转回来的，通过?userInfo={}进行识别？
         ?userInfo={}     对象 而且 要openid字段
         ?userInfo=111    普通字符
     */
     // 回来还是在微信、没有openid（还没保存）
-  //  if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
-  //      let wxUserInfo = JSON.parse(to.query.userInfo);
-  //      if(typeof wxUserInfo == "object" && wxUserInfo.openid){
-  //        // 保存openid
-  //        simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
-  //        // 保存assess_token失效时间7200
-  //      }
-  //  }else{
-  //    // 跳转去获取openid
-  //    location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
-  //  }
-  //}
+    if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
+        let wxUserInfo = JSON.parse(to.query.userInfo);
+        if(typeof wxUserInfo == "object" && wxUserInfo.openid){
+          // 保存openid
+          simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
+          // 保存assess_token失效时间7200
+        }
+    }else{
+      // 跳转去获取openid
+      location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+    }
+  }
 
   // 是否有游客session.过期时间是多少？不管游客过期了，没登录的，每次都去获取游客数据
   //if(!simplestorage.get('HLXK_SESSION')){
