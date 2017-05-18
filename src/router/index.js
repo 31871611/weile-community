@@ -315,19 +315,19 @@ router.beforeEach((to, from, next) => {
     if(simplestorage.get('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
       // 是否需要登录
       if(to.meta.requireAuth){
-        // 相关时间信息
+        // 相关时间信息.是否时间过期，重新登录？当前时间 - 登录时间 > 1个月
         if(simplestorage.get('HLXK_LOGIN_TIME')){
           // 当前时间
           let now = new Date().getTime();
           // 登录时间
           let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
-
-          console.log(now - loginTime)
+          // 一个月时间毫秒
+          let oneMonth = 60 * 60 *  24 * 30 * 1000;
+          // 过期删除登录状态
+          if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
         }
-
-        // 是否有过期时间，重新登录？当前时间 - 登录时间 > 1个月
+        // 是否登录
         if (simplestorage.get('HLXK_STATUS')) {
-
           next();
         }else {
           next({
