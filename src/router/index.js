@@ -269,40 +269,41 @@ router.beforeEach((to, from, next) => {
   typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
 
   // 微信中 && 不存在openid
-  if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
+  //if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
     /*
         是否是跳转回来的，通过?userInfo={}进行识别？
         ?userInfo={}     对象 而且 要openid字段
         ?userInfo=111    普通字符
     */
     // 回来还是在微信、没有openid（还没保存）
-    if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
-        let wxUserInfo = JSON.parse(to.query.userInfo);
-        if(typeof wxUserInfo == "object" && wxUserInfo.openid){
-          // 保存openid
-          simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
-          // 保存assess_token失效时间7200
-        }
-    }else{
-      // 跳转去获取openid
-      location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
-    }
-  }
+  //  if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
+  //      let wxUserInfo = JSON.parse(to.query.userInfo);
+  //      if(typeof wxUserInfo == "object" && wxUserInfo.openid){
+  //        // 保存openid
+  //        simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
+  //        // 保存assess_token失效时间7200
+  //      }
+  //  }else{
+  //    // 跳转去获取openid
+  //    location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+  //  }
+  //}
 
-  // 是否有游客session
-  if(!simplestorage.get('HLXK_SESSION')){
+  // 是否有游客session.过期时间是多少？不管游客过期了，没登录的，每次都去获取游客数据
+  //if(!simplestorage.get('HLXK_SESSION')){
+  if (!simplestorage.get('HLXK_STATUS')){
     // 以游客方式登录
-    fetch.post('/community/touristLogin').then(function(res) {
+    fetch.post('/community/touristLogin').then(function (res) {
       //console.log(res)
       let data = res.data || {};
-      if(res.resultCode == 0){
+      if (res.resultCode == 0) {
         simplestorage.set('HLXK_SESSION', data.session);
         simplestorage.set('HLXK_KEY', data.key);
         go();
-      }else{
+      } else {
         alert(res.msg)
       }
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.log(error)
     })
   }else{
@@ -314,7 +315,19 @@ router.beforeEach((to, from, next) => {
     if(simplestorage.get('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
       // 是否需要登录
       if(to.meta.requireAuth){
+        // 相关时间信息
+        if(simplestorage.get('HLXK_LOGIN_TIME')){
+          // 当前时间
+          let now = new Date().getTime();
+          // 登录时间
+          let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
+
+          console.log(now - loginTime)
+        }
+
+        // 是否有过期时间，重新登录？当前时间 - 登录时间 > 1个月
         if (simplestorage.get('HLXK_STATUS')) {
+
           next();
         }else {
           next({

@@ -99,6 +99,8 @@ export default {
           simplestorage.set('HLXK_UserInfo', data.userInfo);
           // 是否登录状态
           simplestorage.set('HLXK_STATUS', true);
+          // 保存登录时间
+          simplestorage.set('HLXK_LOGIN_TIME', new Date().getTime());
           // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证
           simplestorage.set('HLXK_AUTH',data.authorizationStatus);
           // 查询本地缓存数据

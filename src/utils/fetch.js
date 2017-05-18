@@ -95,6 +95,8 @@ fetch.interceptors.request.use(function(config) {
 // response interceptor
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
+  // 状态码：错误...失效 _d.encryptCode == 1000 ?
+  //console.log(_d.encryptCode)
   let key = _d.key || simplestorage.get('HLXK_KEY')
   return decryptData(response.data, key)
 }, function(error) {
