@@ -234,6 +234,7 @@ export default {
           callback && callback();
         }else{
           console.log(res.msg);
+          alert(res.resultCode);
           alert(res.msg);
         }
       }).catch(function(error) {

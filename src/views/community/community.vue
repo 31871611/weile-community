@@ -38,7 +38,8 @@ encodeURIComponent(location.href)
   methods: {
     // 跳转到外部url
     toLink:function(){
-      location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+      //location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+      location.href = "http://www.baidu.com";
     }
   },
   components: {

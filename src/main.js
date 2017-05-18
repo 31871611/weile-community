@@ -18,7 +18,11 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-FastClick.attach(document.body)
+if ('addEventListener' in document) {
+  document.addEventListener('DOMContentLoaded', function() {
+    FastClick.attach(document.body);
+  }, false);
+}
 
 new Vue({
   el: '#app',
