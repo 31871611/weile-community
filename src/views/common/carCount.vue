@@ -114,6 +114,8 @@ export default {
 
             // 修改底部购物车值
             _this.$emit('shoppingNum',res.data.totalCount);
+            // 底部购物车动画使用
+            _this.$emit('increment', event.target);
 
           }else if(res.resultCode === 8002){
             //用户未认证
@@ -187,8 +189,8 @@ export default {
         }
         // 给购物车页面使用
         _this.$emit('modifyNotLoginCarList');
-        // 底部
-        Bus.$emit(':eventCartadd', event.target);
+        // 底部购物车动画使用
+        _this.$emit('increment', event.target);
       }
 
     },

@@ -1,4 +1,17 @@
 <template>
+<div>
+
+  <div class="ball-container">
+    <div v-for="ball in balls">
+      <transition name="drop" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+        <div v-show="ball.show" class="ball">
+          <div class="inner inner-hook">
+          </div>
+        </div>
+      </transition>
+    </div>
+  </div>
+
 
   <div class="appNav">
     <router-link to="/" class="home" :class="{select : selectClass == 'home'}">首页</router-link>
@@ -10,10 +23,11 @@
     <router-link to="userHome" class="my" :class="{select : selectClass == 'userHome'}">我的</router-link>
   </div>
 
+</div>
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
-import Bus from '../../plugins/bus'
+//import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
 
 export default {
@@ -25,15 +39,13 @@ export default {
   },
   data() {
     return{
-      shoppingNum:0
+      shoppingNum:0,
+      balls: [{show: false}, {show: false}, {show: false}, {show: false}, {show: false}],
+      dropBalls: []
     }
   },
   created: function() {
-    // 监听事件获取add商品DOM
-    let i = 0;
-    Bus.$on(':eventCartadd',function(el){
-      console.log(el);
-    })
+
   },
   mounted() {
 
@@ -74,6 +86,52 @@ export default {
     // 跳转到外部url
     toLink:function(url){
       location.href = url;
+    },
+    drop(el) {
+      console.log(this.balls.length);
+      for (let i = 0; i < this.balls.length; i++) {
+        let ball = this.balls[i];
+        if (!ball.show) {
+          ball.show = true;
+          ball.el = el;
+          this.dropBalls.push(ball);
+          return;
+        }
+      }
+    },
+    beforeEnter(el) {
+      let count = this.balls.length;
+      while (count--) {
+        let ball = this.balls[count];
+        if (ball.show) {
+          let rect = ball.el.getBoundingClientRect();
+          let x = rect.left - 32;
+          let y = -(window.innerHeight - rect.top - 22);
+          el.style.display = '';
+          el.style.webkitTransform = `translate3d(0,${y}px,0)`;
+          el.style.transform = `translate3d(0,${y}px,0)`;
+          let inner = el.getElementsByClassName('inner-hook')[0];
+          inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
+          inner.style.transform = `translate3d(${x}px,0,0)`;
+        }
+      }
+    },
+    enter(el) {
+//          let rf = el.offestHeight;
+      this.$nextTick(() => {
+        el.style.webkitTransform = 'translate3d(0,0,0)';
+        el.style.transform = 'translate3d(0,0,0)';
+        let inner = el.getElementsByClassName('inner-hook')[0];
+        inner.style.webkitTransform = 'translate3d(0,0,0)';
+        inner.style.transform = 'translate3d(0,0,0)';
+      })
+    },
+    afterEnter(el) {
+      let ball = this.dropBalls.shift();
+      if (ball) {
+        ball.show = false;
+        el.style.display = 'none';
+      }
     }
   },
   components: {

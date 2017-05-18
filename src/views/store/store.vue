@@ -47,7 +47,7 @@
                       马上抢
                     </div>
                     <!--{{list.inventory}}-->
-                    <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                    <car-count ref="carcount" @increment="incrementTotal" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                   </div>
                 </router-link>
               </div>
@@ -144,7 +144,11 @@ export default {
         }
         _this.lists = res.data;
         // 设置分类id
-        _this.currentIndex = _this.$route.query.id || _this.lists[0].categoryId;
+        if(_this.lists.length > 0){
+          _this.currentIndex = _this.$route.query.id || _this.lists[0].categoryId;
+        }else{
+          _this.currentIndex = 0;
+        }
         //console.log(JSON.stringify(_this.lists))
         // 隐藏加载中
         _this.$refs.modalToast.is = false;
@@ -233,6 +237,10 @@ export default {
     toShopping:function(){
       // 下一步---去购物车
       this.$router.push({ path: '/shopping'})
+    },
+    // 购物车动画
+    incrementTotal(target) {
+      this.$refs.appnav.drop(target);
     }
 
   },

@@ -299,6 +299,8 @@ router.beforeEach((to, from, next) => {
         simplestorage.set('HLXK_SESSION', data.session);
         simplestorage.set('HLXK_KEY', data.key);
         go();
+      }else{
+        alert(res.msg)
       }
     }).catch(function(error) {
       console.log(error)
