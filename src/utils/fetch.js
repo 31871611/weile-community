@@ -86,7 +86,7 @@ fetch.interceptors.request.use(function(config) {
   *
   * */
   config.data = qs.stringify(encryptData(encryptType, _d, session, key))
-  config.url = isProduction ? config.url : '/api' + config.url
+  config.url = isProduction ? 'http://app.store.yidinghuo.net' + config.url : '/api' + config.url
   return config
 }, function(error) {
   return Promise.reject(error)
