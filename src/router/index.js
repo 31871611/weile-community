@@ -265,8 +265,37 @@ let setDocumentTitle = function (title) {
 router.beforeEach((to, from, next) => {
   //console.log(to);
 
+/*******************************************************************************************************/
+
+  /*
+    http://172.16.12.177:9999/#/?projectId=111
+    不同的公众号进入显示的小区会不同，是根据projectId来查找不同的小区？
+    需要保存、与前一次进行对比
+    console.log(to.query.projectId)
+    projectId 不能随便使用了...
+ */
+
+  let projectId = to.query.projectId;
+  if(projectId){
+    // 对比.不相等.说明是从不同的公众号进入
+    if(simplestorage.get('projectId') != projectId){
+      // 保存
+      simplestorage.set('projectId', projectId)
+      // 不相等要清空小区信息重新选择小区、清空登录状态，还有吗？
+      simplestorage.deleteKey('HLXK_DISTRIBUTION')
+      // 清空登录状态
+      simplestorage.deleteKey('HLXK_STATUS')
+      // 清空openid
+      simplestorage.deleteKey('HLXK_OPENID')
+    }
+  }
+
+/*******************************************************************************************************/
+
   // 修改title
   typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
+
+/*******************************************************************************************************/
 
   // 微信中 && 不存在openid
   if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
@@ -285,9 +314,15 @@ router.beforeEach((to, from, next) => {
         }
     }else{
       // 跳转去获取openid
-      location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+      if(process.env.NODE_ENV == "development"){
+        location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+      }else{
+        location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=" + simplestorage.get('projectId');
+      }
     }
   }
+
+/*******************************************************************************************************/
 
   // 是否有游客session.过期时间是多少？不管游客过期了，没登录的，每次都去获取游客数据
   //if(!simplestorage.get('HLXK_SESSION')){
