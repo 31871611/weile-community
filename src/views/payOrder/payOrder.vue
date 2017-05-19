@@ -194,6 +194,7 @@ export default {
       //let goods = "[{goodsId:100341,price:60000,amount:1},{goodsId:2333,price:60000,amount:1}]";
 
       this.$http.post('/community/getPayInfo', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "goodsInfo":_this.goodsInfo,
         "isFlashOrder":_this.isFlashOrder,                       //是否抢购商品：1是，0否
@@ -227,6 +228,7 @@ export default {
 
       // 默认地址
       this.$http.post('/community/getDefaultAddress', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id
       },{
         "encryptType":1
@@ -314,6 +316,7 @@ export default {
       let comments = this.comments == "点击添加留言" ? "" : this.comments;
 
       this.$http.post('/community/createStoreOrder', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "consignee": _this.address.name,                                  // 收货人
         "address": _this.address.communityName + _this.address.address,   // 小区+详细地址

@@ -113,6 +113,7 @@ export default {
       _this.isSelectQuarters = true;
       // 获取小区列表
       this.$http.post('/community/getDistributionCommunityList', {
+        "projectId":simplestorage.get('projectId')
       },{
         "encryptType":1
       }).then(function(res){
@@ -142,6 +143,7 @@ export default {
       _this.isDefault ? _this.isDefault = 1 : _this.isDefault = 0;
       // 提交数据
       this.$http.post('/community/addReceiptAddress', {
+        "projectId":simplestorage.get('projectId'),
         'name':_this.name,
         'mobile':_this.mobile,
         "distributionCommunityId": _this.distributionCommunityId,
@@ -176,6 +178,7 @@ export default {
       _this.isDefault ? _this.isDefault = 1 : _this.isDefault = 0;
       // 修改地址数据
       this.$http.post('/community/modifyReceiptAddress', {
+        "projectId":simplestorage.get('projectId'),
         'addressId':_this.addressId,
         'name':_this.name,
         'mobile':_this.mobile,

@@ -63,6 +63,7 @@ export default {
     });
     // 获取数据列表
     this.$http.post('/community/getFlashSaleGoodsList', {
+      "projectId":simplestorage.get('projectId'),
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
       'pageIndex':1,
       'pageSize':30

@@ -328,7 +328,9 @@ router.beforeEach((to, from, next) => {
   //if(!simplestorage.get('HLXK_SESSION')){
   if (!simplestorage.get('HLXK_STATUS')){
     // 以游客方式登录
-    fetch.post('/community/touristLogin').then(function (res) {
+    fetch.post('/community/touristLogin', {
+      "projectId":simplestorage.get('projectId')
+    }).then(function (res) {
       //console.log(res)
       let data = res.data || {};
       if (res.resultCode == 0) {

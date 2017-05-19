@@ -147,6 +147,7 @@ export default {
         "pageSize":_this.pageSize,
         "pageIndex":_this.pageIndex,
         "isGroupBuyingOrder":this.$route.query.group || 0,     //0表示普通订单，1表示团购订单
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
       },{
         "encryptType":1

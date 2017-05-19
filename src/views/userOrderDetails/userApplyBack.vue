@@ -107,6 +107,7 @@ export default {
         time:0
       });
       this.$http.post('/community/cancelStoreOrder',{
+        "projectId":simplestorage.get('projectId'),
         "orderId":_this.$route.query.id,
         "cancelReason":_this.txt,   //申请退单原因
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id

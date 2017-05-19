@@ -73,6 +73,7 @@ export default {
     let _this = this;
     // 获取数据列表
     this.$http.post('/community/getThematicCommodityPage', {
+      "projectId":simplestorage.get('projectId'),
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
       'thematicId':this.$route.query.id,
       'pageIndex':1,

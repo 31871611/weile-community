@@ -131,6 +131,7 @@ export default {
       });
       // 加载购物车数据
       this.$http.post('/community/getCommodityCategoryListAndCommoditys', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId":_this.distributionCommunityId
       },{
         "encryptType":0
@@ -165,6 +166,7 @@ export default {
 
         // 没有发现这个接口.......app没有这个功能....
         this.$http.post('/commodity/getCommodityCarInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":_this.distributionCommunityId
         },{
           "encryptType":0

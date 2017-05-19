@@ -151,6 +151,7 @@ export default {
     });
     // 获取数据列表
     this.$http.post('/community/getMyStoreCouponDetail', {
+      "projectId":simplestorage.get('projectId'),
       "communityId": simplestorage.get('HLXK_DISTRIBUTION').id,
       "userCardId":this.$route.query.id
     },{

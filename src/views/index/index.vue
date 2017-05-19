@@ -201,6 +201,8 @@ export default {
     // 获取初始数据
     this.init();
 
+    //this.$route.query.projectId
+
   },
   methods: {
     // 获取初始数据
@@ -210,6 +212,7 @@ export default {
       let distributionCommunityId = id || simplestorage.get('HLXK_DISTRIBUTION').id;
       // 获取首页数据
       this.$http.post('/community/homePage', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId":distributionCommunityId
       },{
         "encryptType":0
@@ -247,6 +250,7 @@ export default {
       if(is){
         // 获取小区列表
         this.$http.post('/community/getDistributionCommunityList', {
+          "projectId":simplestorage.get('projectId')
         },{
           "encryptType":1
         }).then(function(res){

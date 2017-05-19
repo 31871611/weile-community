@@ -271,6 +271,7 @@ export default {
 
     // 详情数据
     this.$http.post('/community/getCommodityDetail', {
+      "projectId":simplestorage.get('projectId'),
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
       "commodityId": this.$route.query.id
     },{
@@ -296,6 +297,7 @@ export default {
 
     // 优惠券数据
     this.$http.post('/community/getUsableStoreCoupons', {
+      "projectId":simplestorage.get('projectId'),
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
       "goodIds": this.$route.query.id
     },{
@@ -369,6 +371,7 @@ export default {
       //alert(id + '|' + limit);
 
       this.$http.post('/community/getStoreCouponToUser', {
+        "projectId":simplestorage.get('projectId'),
         "storeId": simplestorage.get('HLXK_DISTRIBUTION').id,
         "couponId": id
       },{
@@ -441,6 +444,7 @@ export default {
 
         // 获取购物车数量...每次加载本组件就
         this.$http.post('/community/addGoodsToCart', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsId": _this.list.commodityId,
           "quantity": _this.goodsNum,
@@ -569,6 +573,7 @@ export default {
         var jsonStr = cart.queryAllJsonStr();
         // 未登录.加载.本地缓存购物车信息查询...getCartInfoByGoodsInfo
         this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsInfo": jsonStr,
           //"checkGoodsInfo": jsonStr
@@ -629,6 +634,7 @@ export default {
       if(_this.isLogin){
         // 验证库存
         this.$http.post('/community/checkOrderInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           goodsInfo: goodsInfo
         },{

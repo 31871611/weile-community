@@ -85,6 +85,7 @@ export default {
       this.$http.post('/community/login',{
         "telephone":_this.telephone,
         "password":cryptoUtils.md5(_this.password),
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
         //"openid":simplestorage.get('HLXK_OPENID')
       },{
@@ -139,6 +140,7 @@ export default {
 
         // 批量添加购物车商品
         this.$http.post('/community/mergeCartGoods', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsInfo":jsonStr
         },{

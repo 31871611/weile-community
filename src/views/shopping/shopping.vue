@@ -205,6 +205,7 @@ export default {
 
           // 批量添加购物车商品
           this.$http.post('/community/mergeCartGoods', {
+            "projectId":simplestorage.get('projectId'),
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
             "goodsInfo":jsonStr
           },{
@@ -246,6 +247,7 @@ export default {
 
         // 购物车详情.加载到未选中数据......
         this.$http.post('/community/getCartInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           //"checkGoodsInfo":"[{goodsId:500148,amount:1}]",       // 传了会返回选中的信息...
           //"checkAll": 1           // 传不传没多大不同...
@@ -287,6 +289,7 @@ export default {
 
         // 未登录.加载.本地缓存购物车信息查询
         this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           //"checkGoodsInfo":"[{goodsId:100516,amount:1}]",       // 传了会返回选中的信息
           "goodsInfo": jsonStr
@@ -332,6 +335,7 @@ export default {
 
         // 购物车详情
         _this.$http.post('/community/getCartInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "checkGoodsInfo":_this.getCheckGoods()
         },{
@@ -359,6 +363,7 @@ export default {
 
         // 未登录.加载.本地缓存购物车信息查询
         this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "checkGoodsInfo":checkJsonStr,       // 传了会返回选中的信息
           "goodsInfo": jsonStr
@@ -545,6 +550,7 @@ export default {
 
         // 批量删除
         _this.$http.post('/community/delCartGoodsArray', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsIds": str,
           //"checkAll":"1",   //购物车选中的商品信息
@@ -581,6 +587,7 @@ export default {
 
         // 未登录.加载.本地缓存购物车信息查询
         _this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsInfo": jsonStr
         },{
@@ -628,6 +635,7 @@ export default {
         if(_this.isLogin){
           // 验证库存
           this.$http.post('/community/checkOrderInfo', {
+            "projectId":simplestorage.get('projectId'),
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
             "goodsInfo":_this.getCheckGoods()
           },{

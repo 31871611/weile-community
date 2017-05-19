@@ -13,6 +13,8 @@
           <li v-for="(list, index) in quartersLists" @click="selectCurrentQuarters(list)">{{list.name}}</li>
         </ul>
       </div>
+
+      <modal-toast ref="modalToast"></modal-toast>
     </article>
   </div>
 
@@ -20,6 +22,7 @@
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
+import modalToast from '../common/modalToast.vue';
 
 export default {
   name: 'selectQuarters',
@@ -38,12 +41,15 @@ export default {
     }
     // 获取小区列表
     _this.$http.post('/community/getDistributionCommunityList', {
+      "projectId":simplestorage.get('projectId')
     },{
       "encryptType":1
     }).then(function(res){
       //console.log(res);
       if(res.resultCode != 0){
-        alert(res.msg);
+        _this.$refs.modalToast.toast({
+          txt:res.msg
+        });
         return false;
       }
       _this.quartersLists = res.data;
@@ -63,7 +69,7 @@ export default {
     }
   },
   components: {
-
+    modalToast
   }
 }
 </script>

@@ -121,6 +121,7 @@ export default {
       });
       // 搜索
       this.$http.post('/community/getCommodityPage', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId":_this.distributionCommunityId,
         "pageIndex": _this.pageIndex,
         "pageSize": _this.pageSize,

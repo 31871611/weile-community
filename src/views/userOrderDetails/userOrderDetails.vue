@@ -196,6 +196,7 @@ export default {
       });
       this.$http.post('/community/getStoreOrderDetail',{
         "orderId":this.$route.query.id,
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
       },{
         "encryptType":1
@@ -230,6 +231,7 @@ export default {
           });
           this.$http.post('/community/cancelStoreOrder',{
             "orderId":id,
+            "projectId":simplestorage.get('projectId'),
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
           },{
             "encryptType":1
@@ -273,6 +275,7 @@ export default {
           });
           this.$http.post('/community/cancelApplication',{
             "orderId":id,
+            "projectId":simplestorage.get('projectId'),
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
           },{
             "encryptType":1

@@ -99,6 +99,7 @@ export default {
       if (isLogin) {
         // 提交商品到购物车
         this.$http.post('/community/addGoodsToCart', {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsId": _this.commodityId,
           "quantity": 1
@@ -209,6 +210,7 @@ export default {
         }
 
         this.$http.post(url, {
+          "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
           "goodsId": _this.commodityId,
           "quantity": -1,

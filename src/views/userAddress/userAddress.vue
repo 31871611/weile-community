@@ -93,6 +93,7 @@ export default {
         time:0
       });
       this.$http.post('/community/getStoreDeliveryAddress', {
+        "projectId":simplestorage.get('projectId'),
         "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id
       },{
         "encryptType":1
