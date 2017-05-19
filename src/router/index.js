@@ -281,7 +281,7 @@ router.beforeEach((to, from, next) => {
         if(typeof wxUserInfo == "object" && wxUserInfo.openid){
           // 保存openid
           simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
-          // 保存assess_token失效时间7200
+          // 保存assess_token失效时间7200秒.2个小时就失效？
         }
     }else{
       // 跳转去获取openid
@@ -323,7 +323,7 @@ router.beforeEach((to, from, next) => {
           let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
           // 一个月时间毫秒
           let oneMonth = 60 * 60 *  24 * 30 * 1000;
-          // 过期删除登录状态
+          // 过期.删除登录状态
           if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
         }
         // 是否登录

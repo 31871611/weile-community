@@ -96,7 +96,15 @@ fetch.interceptors.request.use(function(config) {
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
   // 状态码：错误...失效 _d.encryptCode == 1000 ?
-  //console.log(_d.encryptCode)
+  if(_d.encryptCode == 1000){
+    // 删除登录状态
+    simplestorage.set('HLXK_STATUS', false)
+    // 提示
+    alert('登录异常，请重新登录');
+    // 刷新页面.跳转去登录页面
+    location.reload()
+    return false;
+  }
   let key = _d.key || simplestorage.get('HLXK_KEY')
   return decryptData(response.data, key)
 }, function(error) {
