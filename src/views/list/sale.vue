@@ -31,7 +31,7 @@
       <not-data v-if="isData"></not-data>
 
       <!--<loading ref="loading" :txt="'加载中'" :icon="'loading'" :time="0"></loading>-->
-      <modal-toast ref="modalToast" :txt="'加载中'" :icon="'loading'" :time="0"></modal-toast>
+      <modal-toast ref="modalToast"></modal-toast>
 
     </article>
   </div>
@@ -55,6 +55,7 @@ export default {
   },
   mounted() {
     let _this = this;
+    // 显示加载中
     _this.$refs.modalToast.toast({
       txt:'加载中',
       icon:'loading',
@@ -68,14 +69,14 @@ export default {
     },{
       "encryptType":1
     }).then(function(res){
-      console.log(res);
+      //console.log(res);
       if(res.resultCode != 0){
         _this.$refs.modalToast.toast({
           txt:res.msg
         });
         return false;
       }
-      // 显示加载中
+      // 隐藏加载中
       _this.$refs.modalToast.is = false;
       _this.lists = res.data.flashSaleGoodsList;
       // 无数据
