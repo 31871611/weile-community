@@ -7,9 +7,9 @@
         <div class="bg">
           <div class="center">
             <div class="face">
-              <img :src="userInfo.headImgUrl" alt="">
+              <!--<img :src="userInfo.headImgUrl" alt="">-->
             </div>
-            <span>{{userInfo.nickName}}</span>
+            <!--<span>{{userInfo.nickName}}</span>-->
           </div>
         </div>
 

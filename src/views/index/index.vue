@@ -19,38 +19,92 @@
           <a href="" class="payment">生活缴费</a>
         </div>
 
-        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
-          <div class="title">
-            <h2>活动专区</h2>
-          </div>
+        <!-- 首页活动推荐1 -->
+        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
+          <!-- list.styleCode -->
           <ul>
-            <li v-for="list in activityHomeLayoutList">
+            <li v-for="list in categoryHomeLayoutList" :class="'style' + list.styleCode">
               <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
-                <img :src="list.imageUrl" alt="自定义url">
+                <img :src="list.imageUrl" :title="list.title" alt="自定义url">
               </a>
-              <router-link v-else-if="list.type == 3" to="/sale">
-                <img :src="list.imageUrl" alt="限时抢购">
+              <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="便利店.分类">
               </router-link>
-              <router-link v-else-if="list.type == 5" :to="{path:'subject',query: { id: list.link }}">
-                <img :src="list.imageUrl" alt="专题活动优惠券活动">
+              <router-link v-else-if="list.type == 3" to="/sale">
+                <img :src="list.imageUrl" :title="list.title" alt="限时抢购">
+              </router-link>
+              <router-link v-else-if="list.type == 4" :to="{path:'subject',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="商品优惠活动">
+              </router-link>
+              <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="商品专题">
+              </router-link>
+              <router-link v-else-if="list.type == 5 && list.thematicType == 2" :to="{path:'subjectCoupon',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
               </router-link>
               <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link }}">
-                <img :src="list.imageUrl" alt="商品详情">
+                <img :src="list.imageUrl" :title="list.title" alt="商品详情">
+              </router-link>
+              <router-link v-else-if="list.type == 7" :to="{path:'subjectCoupon',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
               </router-link>
             </li>
           </ul>
         </div>
 
-        <!-- 推荐分类 -->
-        <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
+        <!-- 首页活动推荐2 -->
+        <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
+          <div class="title">
+            <h2>活动专区</h2>
+          </div>
           <ul>
-            <li v-for="list in categoryHomeLayoutList" :style="{'width':categoryHomeLayoutList.length == 1 ? '100%' : ''}">
-              <a href="">
-                <img :src="list.imageUrl" alt="">
+            <li class="style4">
+              <a href="#/subject?id=25" class="">
+                <img src="http://img1.126.net/channel19/027392/750380_0405.jpg" title="首页推荐" alt="商品专题">
               </a>
+            </li>
+            <li class="style4">
+              <a href="#/subject?id=25" class="">
+                <img src="http://img1.126.net/channel19/027392/750380_0405.jpg" title="首页推荐" alt="商品专题">
+              </a>
+            </li>
+            <li class="style4">
+              <a href="#/subject?id=25" class="">
+                <img src="http://img1.126.net/channel19/027392/750380_0405.jpg" title="首页推荐" alt="商品专题">
+              </a>
+            </li>
+
+
+            <li v-for="list in activityHomeLayoutList" :class="'style' + list.styleCode">
+              <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
+                <img :src="list.imageUrl" :title="list.title" alt="自定义url">
+              </a>
+              <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="便利店.分类">
+              </router-link>
+              <router-link v-else-if="list.type == 3" to="/sale">
+                <img :src="list.imageUrl" :title="list.title" alt="限时抢购">
+              </router-link>
+              <router-link v-else-if="list.type == 4" :to="{path:'subject',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="商品优惠活动">
+              </router-link>
+              <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="商品专题">
+              </router-link>
+              <router-link v-else-if="list.type == 5 && list.thematicType == 2" :to="{path:'subjectCoupon',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
+              </router-link>
+              <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="商品详情">
+              </router-link>
+              <router-link v-else-if="list.type == 7" :to="{path:'subjectCoupon',query: { id: list.link }}">
+                <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
+              </router-link>
             </li>
           </ul>
         </div>
+
+
 
         <div class="groupBuy">
           <div class="title">
@@ -166,6 +220,19 @@
 
 </template>
 <script type="text/ecmascript-6">
+/*
+
+ 首页广告
+ <select name="type" class="form-control f-select-inline select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+ <option value="1">广告URL链接</option>
+ <option value="2">广告图文</option>
+ <option value="3">关联单个商品</option>
+ <option value="4">关联单个分类</option>
+ <option value="5">关联专题活动</option>
+ </select>
+
+
+*/
 import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import slider from './slider.vue';
@@ -190,8 +257,8 @@ export default {
       isSelectQuarters : false,             // 是否显示切换小区
       adLists: '',                           // 广告
       quartersLists : null,                 // 小区列表
-      activityHomeLayoutList : null,        // 活动专区
-      categoryHomeLayoutList : null,        // 活动专区2...
+      activityHomeLayoutList : null,        // 首页活动专区2...
+      categoryHomeLayoutList : null,        // 首页活动专区1...
       groupBuyList : null,                  // 团购商品
       recommendList : null                  // 商品推荐
 

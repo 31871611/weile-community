@@ -36,7 +36,7 @@
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
                   <div class="bottom">
                     <strong class="price">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
-                    <span class="limit" v-if="list.amountLimit">限购{{list.amountLimit}}件</span>
+                    <span class="limit" v-if="list.amountLimit > 0">限购{{list.amountLimit}}件</span>
                     <car-count v-if="list.status !== 0" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
                   </div>
                 </router-link>

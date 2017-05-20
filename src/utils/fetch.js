@@ -68,8 +68,8 @@ const fetch = axios.create({
     'osversion': wechatInfo[0],
     'phoneuuid': new Fingerprint().get(),
     'shequVersion': VERSION,
-    'clientphone': navigator.platform,
-  },
+    'clientphone': navigator.platform
+  }
 })
 
 // request interceptor
@@ -86,7 +86,7 @@ fetch.interceptors.request.use(function(config) {
   *
   * */
   config.data = qs.stringify(encryptData(encryptType, _d, session, key))
-  config.url = isProduction ? 'http://app.store.yidinghuo.net' + config.url : '/api' + config.url
+  config.url = isProduction ? 'http://117.27.139.221:5670' + config.url : '/api' + config.url
   return config
 }, function(error) {
   return Promise.reject(error)
@@ -96,11 +96,15 @@ fetch.interceptors.request.use(function(config) {
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
   // 状态码：错误...失效 _d.encryptCode == 1000 ?
-  if(_d.encryptCode == 1000){
-    // 删除登录状态
-    simplestorage.set('HLXK_STATUS', false)
+  if(_d.resultCode == 1000){
+    // 删除状态
+    simplestorage.deleteKey('HLXK_STATUS')
+    //simplestorage.deleteKey('projectId')
+    //simplestorage.deleteKey('HLXK_SESSION')
+    //simplestorage.deleteKey('HLXK_KEY')
+    simplestorage.deleteKey('HLXK_DISTRIBUTION')
     // 提示
-    alert('登录异常，请重新登录');
+    console.log('登录异常，请重新登录');
     // 刷新页面.跳转去登录页面
     location.reload()
     return false;

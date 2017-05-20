@@ -55,25 +55,44 @@
   }
 }
 
-
+// 浮动购物车
 .floatShopping{
   $h:144px;
   width: pxTorem($h);
   height: pxTorem($h);
   @include border-radius(100%);
-  position: absolute;
-  right:pxTorem(28px);
-  bottom:pxTorem(88px + 24px);
+  position: fixed;
+  right:0;
+  //bottom:pxTorem(88px);
+  bottom:0;
   @extend %icoRem;
   background-image: url("../images/icon_shoppingcart1@2x.png");
   b{
     position: absolute;
-    right:pxTorem(10px);
-    top:pxTorem(10px);
+    right:pxTorem(14px);
+    top:pxTorem(12px);
     color: #fff;
     background: $orange-base;
     @include font-dpr(20px);
-    padding:pxTorem(2px) pxTorem(8px);
-    @include border-radius(pxTorem(15px));
+    padding:pxTorem(6px) pxTorem(12px);
+    @include border-radius(pxTorem(20px));
+  }
+}
+
+// 小球
+.ball-container{
+  .ball {
+    position: fixed;
+    right:0;
+    bottom:pxTorem(88px + 24px);
+    z-index: 10;
+    transition: all 1s cubic-bezier(0.49, -0.29, 0.75, 0.41);
+  }
+  .inner {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $orange-base;
+    transition: all 0.4s linear;
   }
 }

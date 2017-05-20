@@ -1,6 +1,6 @@
 <template>
 
-  <div v-if="type" class="oneNum" @click.stop.prevent="add()"></div>
+  <div v-if="type" class="oneNum" @click.stop.prevent="add($event)"></div>
   <div v-else class="selectNum">
     <div class="remove" v-show="num > 0" @click.stop.prevent="remove()"></div>
     <input type="text" v-show="num > 0" value="1" v-model="num" readonly="readonly" />

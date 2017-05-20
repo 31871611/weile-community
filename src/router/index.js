@@ -196,6 +196,7 @@ const router = new Router({
               path: 'details',
               component: couponDetails,
               meta:{
+                requireAuth: true,
                 pageTitle: '优惠券详情'
               }
             },{
@@ -203,6 +204,7 @@ const router = new Router({
               path: 'invalid',
               component: invalidCoupon,
               meta:{
+                requireAuth: true,
                 pageTitle: '失效优惠券'
               }
             }
@@ -264,6 +266,10 @@ let setDocumentTitle = function (title) {
 
 router.beforeEach((to, from, next) => {
   //console.log(to);
+/*******************************************************************************************************/
+
+  // 修改title
+  typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
 
 /*******************************************************************************************************/
 
@@ -289,11 +295,6 @@ router.beforeEach((to, from, next) => {
       simplestorage.deleteKey('HLXK_OPENID')
     }
   }
-
-/*******************************************************************************************************/
-
-  // 修改title
-  typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
 
 /*******************************************************************************************************/
 
@@ -331,7 +332,7 @@ router.beforeEach((to, from, next) => {
     fetch.post('/community/touristLogin', {
       "projectId":simplestorage.get('projectId')
     }).then(function (res) {
-      //console.log(res)
+      console.log(res)
       let data = res.data || {};
       if (res.resultCode == 0) {
         simplestorage.set('HLXK_SESSION', data.session);

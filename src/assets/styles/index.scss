@@ -128,10 +128,27 @@
     li{
       position: relative;
       $color:#f4f4f4;
-      width: 50%;
-      float: left;
-      &:nth-child(odd){
-        @include border1px($color,right)
+      &.style1{
+        width: 100%;
+      }
+      &.style2{
+        width: 100%;
+      }
+      &.style3{
+        width: 50%;
+        float: left;
+      }
+      &.style4{
+        width: 50%;
+        float: left;
+      }
+      &.style5{}
+      &.style6{
+        width: 50%;
+        float: left;
+        &:nth-child(odd){
+          @include border1px($color,right)
+        }
       }
       &:before{
         content: '\20';
