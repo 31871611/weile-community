@@ -30,7 +30,6 @@
 
       <not-data v-if="isData"></not-data>
 
-      <!--<loading ref="loading" :txt="'加载中'" :icon="'loading'" :time="0"></loading>-->
       <modal-toast ref="modalToast"></modal-toast>
 
     </article>
