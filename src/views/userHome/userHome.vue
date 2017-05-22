@@ -6,10 +6,10 @@
       <div class="mainScroll userHome">
         <div class="bg">
           <div class="center">
-            <div class="face">
-              <!--<img :src="userInfo.headImgUrl" alt="">-->
+            <div class="face" v-if="userInfo.headImgUrl">
+              <img :src="userInfo.headImgUrl" alt="">
             </div>
-            <!--<span>{{userInfo.nickName}}</span>-->
+            <span v-if="userInfo.nickName">{{userInfo.nickName}}</span>
           </div>
         </div>
 
@@ -123,11 +123,13 @@ export default {
   name: 'userHome',
   data() {
     return{
-      userInfo:simplestorage.get('HLXK_UserInfo')
+      userInfo:''
     }
   },
   mounted() {
-    //console.log(this.userInfo);
+    if(simplestorage.get('HLXK_UserInfo')){
+      userInfo = simplestorage.get('HLXK_UserInfo')
+    }
   },
   methods: {
     // 跳转到外部url

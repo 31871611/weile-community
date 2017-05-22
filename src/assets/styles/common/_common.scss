@@ -62,9 +62,9 @@ $browser-default-font-size: 64px;
 
 
 // 1像素
-@mixin border1px($color:#e6e6e6,$type:bottom){
+@mixin border1px($color:#e6e6e6,$type:bottom,$label:after){
   position: relative;
-  &:after{
+  &:#{$label}{
     content: '\20';
     display: block;
     position: absolute;
@@ -75,13 +75,13 @@ $browser-default-font-size: 64px;
       top: 0;
       width: 100%;
       @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleY(0.7);
           transform: scaleY(0.7);
         }
       }
       @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleY(0.5);
           transform: scaleY(0.5);
         }
@@ -92,13 +92,13 @@ $browser-default-font-size: 64px;
       top: 0;
       height: 100%;
       @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleX(0.7);
           transform: scaleX(0.7);
         }
       }
       @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleX(0.5);
           transform: scaleX(0.5);
         }
@@ -109,13 +109,13 @@ $browser-default-font-size: 64px;
       bottom: 0;
       width: 100%;
       @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleY(0.7);
           transform: scaleY(0.7);
         }
       }
       @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleY(0.5);
           transform: scaleY(0.5);
         }
@@ -127,13 +127,13 @@ $browser-default-font-size: 64px;
       top: 0;
       height: 100%;
       @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleX(0.7);
           transform: scaleX(0.7);
         }
       }
       @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
-        &::after{
+        &::#{$label}{
           -webkit-transform: scaleX(0.5);
           transform: scaleX(0.5);
         }

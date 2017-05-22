@@ -145,7 +145,7 @@ const router = new Router({
       name: 'userHome',
       component: resolve => require(['@/views/userHome/userHome'], resolve),
       meta:{
-        requireAuth: true,
+        //requireAuth: true,
         pageTitle: '用户中心'
       },
       children:[
@@ -318,7 +318,7 @@ router.beforeEach((to, from, next) => {
       if(process.env.NODE_ENV == "development"){
         location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
       }else{
-        location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=" + simplestorage.get('projectId');
+        location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&projectId=" + simplestorage.get('projectId');
       }
     }
   }
@@ -332,7 +332,7 @@ router.beforeEach((to, from, next) => {
     fetch.post('/community/touristLogin', {
       "projectId":simplestorage.get('projectId')
     }).then(function (res) {
-      console.log(res)
+      //console.log(res)
       let data = res.data || {};
       if (res.resultCode == 0) {
         simplestorage.set('HLXK_SESSION', data.session);

@@ -23,7 +23,7 @@
     .face{
       width: pxTorem($imgW);
       height: pxTorem($imgW);
-      margin: 0 auto pxTorem(26px);
+      margin: 0 auto;
       @include border-radius(50%);
       border:pxTorem(5px) solid #fff;
     }
@@ -34,6 +34,7 @@
       vertical-align: middle;
     }
     span{
+      margin-top:pxTorem(26px);
       color: #fff;
       @include font-dpr(30px);
     }

@@ -58,23 +58,6 @@
             <h2>活动专区</h2>
           </div>
           <ul>
-            <li class="style4">
-              <a href="#/subject?id=25" class="">
-                <img src="http://img1.126.net/channel19/027392/750380_0405.jpg" title="首页推荐" alt="商品专题">
-              </a>
-            </li>
-            <li class="style4">
-              <a href="#/subject?id=25" class="">
-                <img src="http://img1.126.net/channel19/027392/750380_0405.jpg" title="首页推荐" alt="商品专题">
-              </a>
-            </li>
-            <li class="style4">
-              <a href="#/subject?id=25" class="">
-                <img src="http://img1.126.net/channel19/027392/750380_0405.jpg" title="首页推荐" alt="商品专题">
-              </a>
-            </li>
-
-
             <li v-for="list in activityHomeLayoutList" :class="'style' + list.styleCode">
               <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
                 <img :src="list.imageUrl" :title="list.title" alt="自定义url">
@@ -106,7 +89,7 @@
 
 
 
-        <div class="groupBuy">
+        <div class="groupBuy" v-if="groupBuyList">
           <div class="title">
             <h2>团购</h2>
           </div>
@@ -125,7 +108,7 @@
           </div>
         </div>
 
-        <div class="recommend">
+        <div class="recommend" v-if="recommendList">
           <div class="title">
             <h2>推荐商品</h2>
             <router-link to="store" class="more">更多<i></i></router-link>
@@ -215,6 +198,7 @@
     </div>
   </transition>
 
+  <modal-toast ref="modalToast"></modal-toast>
 
 </div>
 
@@ -224,13 +208,12 @@
 
  首页广告
  <select name="type" class="form-control f-select-inline select2-hidden-accessible" tabindex="-1" aria-hidden="true">
- <option value="1">广告URL链接</option>
- <option value="2">广告图文</option>
- <option value="3">关联单个商品</option>
- <option value="4">关联单个分类</option>
- <option value="5">关联专题活动</option>
+   <option value="1">广告URL链接</option>
+   <option value="2">广告图文</option>
+   <option value="3">关联单个商品</option>
+   <option value="4">关联单个分类</option>
+   <option value="5">关联专题活动</option>
  </select>
-
 
 */
 import Vue from 'vue'
@@ -238,6 +221,7 @@ import simplestorage from 'simplestorage.js'
 import slider from './slider.vue';
 import appNav from '../common/appNav.vue';
 import carCount from '../common/carCount.vue';
+import modalToast from '../common/modalToast.vue';
 
 export default {
   name: 'home',
@@ -257,16 +241,18 @@ export default {
       isSelectQuarters : false,             // 是否显示切换小区
       adLists: '',                           // 广告
       quartersLists : null,                 // 小区列表
+      nav:null,                             // 首页菜单
       activityHomeLayoutList : null,        // 首页活动专区2...
       categoryHomeLayoutList : null,        // 首页活动专区1...
       groupBuyList : null,                  // 团购商品
       recommendList : null                  // 商品推荐
-
     }
   },
   mounted() {
     // 获取初始数据
     this.init();
+    // 获取首页菜单
+    this.getNav();
 
     //this.$route.query.projectId
 
@@ -284,28 +270,53 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        //console.log(res)
+        console.log(res)
         let data = res.data || {};
         if (res.resultCode == 0) {
           _this.adLists = data.advInfos;
           // 活动专区...有的没有这个数据？
-          _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
+          if(data.categoryHomeLayoutList.length > 0) _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
           // 活动专区
-          _this.activityHomeLayoutList = data.activityHomeLayoutList;
+          if(data.activityHomeLayoutList.length > 0) _this.activityHomeLayoutList = data.activityHomeLayoutList;
           // 团购商品
-          _this.groupBuyList = data.groupBuy.data;
+          if(data.groupBuy.length > 0) _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
-          _this.recommendList = data.recommend.data;
-          console.log(JSON.stringify(res.data));
+          if(data.recommend.length > 0) _this.recommendList = data.recommend.data;
+          //console.log(JSON.stringify(res.data));
           //console.log(JSON.stringify(_this.recommendList));
           //console.log(_this.recommendList);
 
           // 修改小区后
           callback && callback();
         }else{
-          console.log(res.msg);
-          alert(res.resultCode);
-          alert(res.msg);
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+        }
+      }).catch(function(error) {
+        console.log(error)
+      })
+    },
+    // 获取首页菜单
+    getNav:function(id,callback){
+      let _this = this;
+      let distributionCommunityId = id || simplestorage.get('HLXK_DISTRIBUTION').id;
+
+      this.$http.post('/api/getMenu', {
+        "projectId":simplestorage.get('projectId'),
+        "menuType":1,                                 // 1、个人中心菜单 2 、便利店首页菜单
+        "communityId":distributionCommunityId         // 小区ID
+      },{
+        "encryptType":1
+      }).then(function(res){
+        console.log(res);
+        if(res.resultCode == 0){
+          //_this.nav = res.data;
+          //console.log(res.data);
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
         }
       }).catch(function(error) {
         console.log(error)
@@ -322,7 +333,9 @@ export default {
           "encryptType":1
         }).then(function(res){
           if(res.resultCode != 0){
-            alert('获取小区列表出错！');
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
             return false;
           }
           _this.quartersLists = res.data;
@@ -340,7 +353,7 @@ export default {
     // 选择小区
     selectCurrentQuarters:function(data){
       let _this = this;
-      // 获取修改后小区信息
+      // 修改后小区信息后.重新获取数据
       _this.init(data.id,function(){
         // 修改当前小区文字
         _this.textCurrentQuarters = data.name;
@@ -349,6 +362,11 @@ export default {
         // 关闭列表弹窗
         _this.isSelectQuarters = false;
       });
+      // 修改后小区信息后.重新获取菜单
+      _this.nav(data.id,function(){
+        // 关闭列表弹窗
+        _this.isSelectQuarters = false;
+      })
     },
     // 跳转到外部url
     toLink:function(url){
@@ -370,7 +388,8 @@ export default {
   components: {
     slider,
     appNav,
-    carCount
+    carCount,
+    modalToast
   }
 }
 </script>

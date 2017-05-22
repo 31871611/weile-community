@@ -121,67 +121,86 @@
 .activityHomeLayoutList{
   margin-bottom: pxTorem(20px);
   .title{
+    $color:#f4f4f4;
     background: #fff;
+    @include border1px($color,$type:bottom);
   }
   ul{
+    $color:#f4f4f4;
     @extend %clearfix;
+    position: relative;
     li{
       position: relative;
-      $color:#f4f4f4;
       &.style1{
         width: 100%;
+        height: pxTorem(240px);
       }
       &.style2{
         width: 100%;
+        height: pxTorem(120px);
+        &:nth-child(2){
+          @include border1px($color,$type:top);
+        }
       }
       &.style3{
         width: 50%;
         float: left;
+        height: pxTorem(240px);
+        &:nth-child(1){
+          @include border1px($color,$type:right);
+        }
       }
       &.style4{
         width: 50%;
         float: left;
+        height: pxTorem(120px);
+        &:nth-child(1){
+          height: pxTorem(240px);
+          @include border1px($color,$type:right);
+        }
+        &:nth-child(3){
+          border: 0;
+          @include border1px($color,$type:top);
+        }
       }
-      &.style5{}
+      &.style5{
+        width: 50%;
+        height: pxTorem(120px);
+        &:nth-child(1){
+          @include border1px($color,$type:bottom);
+        }
+        &:nth-child(3){
+          @include border1px($color,$type:left);
+          height: pxTorem(240px);
+          position: absolute;
+          right:0;
+          top:0;
+        }
+      }
       &.style6{
         width: 50%;
         float: left;
-        &:nth-child(odd){
-          @include border1px($color,right)
+        height: pxTorem(120px);
+        &:nth-child(1){
+          @include border1px($color,$type:bottom);
+          @include border1px($color,$type:right,$label:before);
         }
-      }
-      &:before{
-        content: '\20';
-        display: block;
-        position: absolute;
-        border-top: 1px solid $color;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        @media (-webkit-min-device-pixel-ratio: 1.5),(min-device-pixel-ratio: 1.5){
-          &::after{
-            -webkit-transform: scaleY(0.7);
-            transform: scaleY(0.7);
-          }
+        &:nth-child(2){
+          @include border1px($color,$type:bottom);
         }
-        @media (-webkit-min-device-pixel-ratio: 2),(min-device-pixel-ratio: 2){
-          &::after{
-            -webkit-transform: scaleY(0.5);
-            transform: scaleY(0.5);
-          }
-        }
-      }
-      &:nth-last-child(1),&:nth-last-child(2){
-        &:before{
-          display: none;
+        &:nth-child(3){
+          @include border1px($color,$type:right);
         }
       }
     }
     a{
       display: block;
+      width: 100%;
+      height: 100%;
     }
     img{
       width: 100%;
+      height: 100%;
       vertical-align: middle;
     }
   }
