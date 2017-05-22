@@ -378,7 +378,7 @@ router.beforeEach((to, from, next) => {
         }else {
           next({
             path: '/login',
-            query: {url: to.fullPath}
+            query: {url: to.fullPath,projectId:simplestorage.get('projectId')}
           })
         }
       }else{
@@ -386,7 +386,7 @@ router.beforeEach((to, from, next) => {
       }
     }else{
       // 去选择小区
-      next({ path: '/selectQuarters',query: { url: to.fullPath }});
+      next({ path: '/selectQuarters',query: { url: to.fullPath,projectId:simplestorage.get('projectId') }});
     }
   }
 
