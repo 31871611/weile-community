@@ -3,10 +3,22 @@
   <div class="vue-only-slider">
     <ul :style="{width:`${scaleW}px`,height:`${sliderHeight}px`}">
       <li v-for="(item,index) in itemsForDom" :key="index" :style="{width:scaleW+'px',transform:'translate3d('+index*scaleW+'px, 0, 0)'}">
-      	<a v-if="item.href" :href="item.href">
+
+      	<a v-if="item.type == 1" :href="item.content"><img :src="item.image" :style="{height:`${sliderHeight}px`}"></a>
+      	<a v-else-if="item.type == 2" href="javascript:;" @click="toContent(item.content)"><img :src="item.image" :style="{height:`${sliderHeight}px`}"></a>
+        <router-link v-else-if="item.type == 3" :to="{path:'commodity',query: { id: item.content }}">
           <img :src="item.image" :style="{height:`${sliderHeight}px`}">
-        </a>
-        <img :src="item.image" v-else :style="{height:`${sliderHeight}px`}">
+        </router-link>
+        <router-link v-else-if="item.type == 4" :to="{path:'store',query: { id: item.content }}">
+          <img :src="item.image" :style="{height:`${sliderHeight}px`}">
+        </router-link>
+        <router-link v-else-if="item.type == 5 && item.thematicType == 1" :to="{path:'subject',query: { id: item.content }}">
+          <img :src="item.image" :style="{height:`${sliderHeight}px`}">
+        </router-link>
+        <router-link v-else-if="item.type == 5 && item.thematicType == 2" :to="{path:'subjectCoupon',query: { id: item.content }}">
+          <img :src="item.image" :style="{height:`${sliderHeight}px`}">
+        </router-link>
+
       </li>
     </ul>
     <div class="pagination" v-if="pagination">
@@ -17,6 +29,19 @@
 
 <script>
 module.exports = {
+/*
+
+   首页广告
+   <select name="type" class="form-control f-select-inline select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+   <option value="1">广告URL链接</option>
+   <option value="2">广告图文</option>
+   <option value="3">关联单个商品</option>
+   <option value="4">关联单个分类</option>
+   <option value="5">关联专题活动</option>    thematicType == 1专题活动     thematicType == 2优惠券活动
+   </select>
+
+*/
+
 	/*
    https://github.com/guan6/vue-onlySlider-x
 		items 幻灯片数组
@@ -61,17 +86,17 @@ module.exports = {
   },
   data(){
     return {
-      scaleW:window.innerWidth,//页面宽度
-      sliedrWrap:null,//滑块容器dom对象
-      itemsDom:null,//滑动单元dom对象数组
-      itemsDomLength:undefined,//滑块数量（渲染后的）
-      current:0,//当前滑块索引
-      prev:undefined,//上滑块索引
-      next:1,//下滑块索引
-      startTime:undefined,//记录手指按下时间
-      startX:undefined,//手指按下的坐标
-      offsetX:0,//手指偏移量
-      timer:null//计数器
+      scaleW:window.innerWidth,     // 页面宽度
+      sliedrWrap:null,              // 滑块容器dom对象
+      itemsDom:null,                // 滑动单元dom对象数组
+      itemsDomLength:undefined,     // 滑块数量（渲染后的）
+      current:0,                    // 当前滑块索引
+      prev:undefined,               // 上滑块索引
+      next:1,                       // 下滑块索引
+      startTime:undefined,          // 记录手指按下时间
+      startX:undefined,             // 手指按下的坐标
+      offsetX:0,                    // 手指偏移量
+      timer:null                    // 计数器
     }
   },
   computed:{
@@ -278,6 +303,10 @@ module.exports = {
       this.sliedrWrap.addEventListener('touchstart', this.startHandler)
       this.sliedrWrap.addEventListener('touchmove', this.moveHandler)
       this.sliedrWrap.addEventListener('touchend', this.endHandler)
+    },
+    // 显示广告图文
+    toContent:function(html){
+      this.$emit('toContent', html);
     }
   }
 }

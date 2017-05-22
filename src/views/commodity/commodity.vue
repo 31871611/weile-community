@@ -119,9 +119,9 @@
           <i></i>
         </div>
 
-        <div class="commodityContent">
+        <div class="commodityContent" v-if="imagesList">
           <h2>图文详情</h2>
-          <div class="txt" v-for="txt in list.images">
+          <div class="txt" v-for="txt in imagesList">
             <img :src="txt.img" alt="">
             <!--<div class="video" v-if="txt.video">-->
               <!--<video :src="txt.video" controls="controls">-->
@@ -259,6 +259,7 @@ export default {
     return {
       isLogin:simplestorage.get('HLXK_STATUS'),    // 是否登录
       list:'',                   // 详情数据
+      imagesList:'',            //图文详情
       countdown:'',              // 抢购倒记时
       couponList:'',             // 优惠券列表
       isCouponList:false,         // 是否显示优惠券列表
@@ -286,6 +287,8 @@ export default {
       }
       //console.log(JSON.stringify(res.data));
       _this.list = res.data;
+      // 图文详情
+      if(_this.list.images.length > 0) _this.imagesList = _this.list.images;
       // 计算倒记时
       _this.computeTime(_this.list.nowTime,_this.list.startTime,_this.list.endTime);
       // 获取购物车数

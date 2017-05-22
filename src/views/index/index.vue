@@ -10,13 +10,10 @@
           <i></i>
         </div>
 
-        <slider :items="sliderList" :width="640" :height="240" :speed="5000" :sync="true"></slider>
+        <slider ref="slider" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
         <div class="indexNav">
-          <a href="" class="open">小区开门</a>
-          <a href="" class="repair">物业报修</a>
-          <a href="" class="complain">投诉建议</a>
-          <a href="" class="payment">生活缴费</a>
+          <div @click="toLink(list.menuUrl)" v-for="list in nav" :class="list.icon">{{list.menuName}}</div>
         </div>
 
         <!-- 首页活动推荐1 -->
@@ -33,7 +30,7 @@
               <router-link v-else-if="list.type == 3" to="/sale">
                 <img :src="list.imageUrl" :title="list.title" alt="限时抢购">
               </router-link>
-              <router-link v-else-if="list.type == 4" :to="{path:'subject',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 4" :to="{path:'fullDiscount',query: { id: list.link }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品优惠活动">
               </router-link>
               <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link }}">
@@ -198,24 +195,32 @@
     </div>
   </transition>
 
+
+  <!-- 广告图文弹窗 -->
+  <transition name="SlideRightLeft">
+    <div class="wrap fullPosition" v-if="isToContent">
+      <header>
+        <div class="header">
+          <!--<h2>选择小区</h2>-->
+          <div class="left">
+            <div class="back" @click="backHome()"></div>
+          </div>
+        </div>
+      </header>
+      <article class="main">
+        <div class="mainScroll" v-html="toContentHtml"></div>
+      </article>
+    </div>
+  </transition>
+
+
+
   <modal-toast ref="modalToast"></modal-toast>
 
 </div>
 
 </template>
 <script type="text/ecmascript-6">
-/*
-
- 首页广告
- <select name="type" class="form-control f-select-inline select2-hidden-accessible" tabindex="-1" aria-hidden="true">
-   <option value="1">广告URL链接</option>
-   <option value="2">广告图文</option>
-   <option value="3">关联单个商品</option>
-   <option value="4">关联单个分类</option>
-   <option value="5">关联专题活动</option>
- </select>
-
-*/
 import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import slider from './slider.vue';
@@ -227,25 +232,17 @@ export default {
   name: 'home',
   data() {
     return {
-      sliderList:[
-        {
-          image:'http://cms-bucket.nosdn.127.net/4b54654acfbb459f876b7127d448c5da20170407122527.jpeg?imageView&thumbnail=750y380&quality=45&type=webp&interlace=1&enlarge=1',
-          href:'/home/'
-        },
-        {
-          image:'http://img1.126.net/channel19/027392/750380_0405.jpg',
-          href:'/home/'
-        }
-      ],
       textCurrentQuarters : simplestorage.get('HLXK_DISTRIBUTION').name || '锦艺测试小区',   // 当前小区
       isSelectQuarters : false,             // 是否显示切换小区
-      adLists: '',                           // 广告
+      adLists: [],                          // 广告
       quartersLists : null,                 // 小区列表
       nav:null,                             // 首页菜单
       activityHomeLayoutList : null,        // 首页活动专区2...
       categoryHomeLayoutList : null,        // 首页活动专区1...
       groupBuyList : null,                  // 团购商品
-      recommendList : null                  // 商品推荐
+      recommendList : null,                 // 商品推荐
+      isToContent:false,                    // 是否显示广告图文
+      toContentHtml:''                      // 广告图文内容
     }
   },
   mounted() {
@@ -270,10 +267,11 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        console.log(res)
+        //console.log(res)
         let data = res.data || {};
         if (res.resultCode == 0) {
           _this.adLists = data.advInfos;
+          console.log(JSON.stringify(_this.adLists))
           // 活动专区...有的没有这个数据？
           if(data.categoryHomeLayoutList.length > 0) _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
           // 活动专区
@@ -309,10 +307,13 @@ export default {
       },{
         "encryptType":1
       }).then(function(res){
-        console.log(res);
+        //console.log(res);
         if(res.resultCode == 0){
-          //_this.nav = res.data;
+          _this.nav = res.data;
           //console.log(res.data);
+
+          // 修改小区后
+          callback && callback();
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -363,7 +364,7 @@ export default {
         _this.isSelectQuarters = false;
       });
       // 修改后小区信息后.重新获取菜单
-      _this.nav(data.id,function(){
+      _this.getNav(data.id,function(){
         // 关闭列表弹窗
         _this.isSelectQuarters = false;
       })
@@ -372,6 +373,14 @@ export default {
     toLink:function(url){
       location.href = url;
     },
+    toContent:function(html){
+      this.isToContent = true;
+      this.toContentHtml = html;
+    },
+    backHome:function(){
+      this.isToContent = false;
+    },
+
 
     /************************************************************************************************/
     // 修改列表中已添加购物车值

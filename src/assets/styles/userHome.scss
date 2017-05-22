@@ -100,16 +100,115 @@
       @include justify-content(center);
     }
     div{
+      $h:15px;
       text-align: center;
-    }
-    img{
-      width: 50%;
-      vertical-align: middle;
-    }
-    span{
-      margin-top:pxTorem(20px);
-      display: block;
-      color: #43515a;
+      &:before{
+        content: '\20';
+        display: block;
+        margin:0 auto;
+        @extend %icoRem;
+      }
+      // 我的话题
+      &.mytopic{
+        &:before{
+          width:pxTorem(38px);
+          height:pxTorem(38px);
+          margin-bottom: pxTorem($h);
+          background-image: url("../images/icon_mine_topic@2xwx.png");
+        }
+      }
+      // 我的活动
+      &.myactivity{
+        &:before{
+          width:pxTorem(30px);
+          height:pxTorem(36px);
+          margin-bottom: pxTorem($h + 2);
+          background-image: url("../images/icon_mine_activity@2xwx.png");
+        }
+      }
+      // 我的报修
+      &.myrepair{
+        &:before{
+          width:pxTorem(38px);
+          height:pxTorem(34px);
+          margin-bottom: pxTorem($h + 4);
+          background-image: url("../images/icon_myrepair@2xwx.png");
+        }
+      }
+      // 我的授权
+      &.myauth{
+        &:before{
+          width:pxTorem(32px);
+          height:pxTorem(38px);
+          margin-bottom: pxTorem($h);
+          background-image: url("../images/icon_myempower@2xwx.png");
+        }
+      }
+      // 我的优惠券
+      &.mycoupon{
+        &:before{
+          width:pxTorem(40px);
+          height:pxTorem(29px);
+          margin-bottom: pxTorem($h + 9);
+          background-image: url("../images/icon_mine_coupon@2xwx.png");
+        }
+      }
+      // 我的投诉
+      &.mycomplain{
+        &:before{
+          width:pxTorem(36px);
+          height:pxTorem(33px);
+          margin-bottom: pxTorem($h + 5);
+          background-image: url("../images/icon_complain@2xwx.png");
+        }
+      }
+      // 我的硬件
+      &.myhardware{
+        &:before{
+          width:pxTorem(38px);
+          height:pxTorem(25px);
+          margin-bottom: pxTorem($h + 13);
+          background-image: url("../images/icon_hardware@2xwx.png");
+        }
+      }
+
+      // 我的订单
+      &.myorder{
+        &:before{
+          width:pxTorem(27px);
+          height:pxTorem(33px);
+          margin-bottom: pxTorem($h + 5);
+          background-image: url("../images/icon_myorder@2xwx.png");
+        }
+      }
+      // 我的团购
+      &.mygroupbuy{
+        &:before{
+          width:pxTorem(31px);
+          height:pxTorem(33px);
+          margin-bottom: pxTorem($h + 5);
+          background-image: url("../images/icon_mygroupbuy@2xwx.png");
+        }
+      }
+      // 我的收货地址
+      &.myreceiptaddress{
+        &:before{
+          width:pxTorem(25px);
+          height:pxTorem(33px);
+          margin-bottom: pxTorem($h + 5);
+          background-image: url("../images/icon_myreceiptaddress@2xwx.png");
+        }
+      }
+
+
+      // 缴费记录
+      &.paymentrecord{
+        background-image: url("../images/icon_paymentrecord@2x.png");
+      }
+      // 我的住址
+      &.myaddress{
+        background-image: url("../images/icon_myaddress@2x.png");
+      }
     }
   }
 

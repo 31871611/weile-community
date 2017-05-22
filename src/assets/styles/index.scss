@@ -38,7 +38,7 @@
   height: pxTorem($h);
   background: #fff;
   @include display-flex();
-  a{
+  div{
     width: 100%;
     display: block;
     @include flex(1);

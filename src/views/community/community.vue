@@ -32,7 +32,7 @@ encodeURIComponent(location.href)
 
 */
 
-
+    //console.log(this.$route.params.projectId)
 
   },
   methods: {

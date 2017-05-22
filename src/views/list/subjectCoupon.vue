@@ -67,11 +67,13 @@ export default {
       "encryptType":1
     }).then(function(res){
       console.log(res);
-      if(res.resultCode != 0){
-        alert(res.msg);
-        return false;
+      if(res.resultCode == 0){
+        _this.lists = res.data;
+      }else{
+        _this.$refs.modalToast.toast({
+          txt:res.msg
+        });
       }
-      _this.lists = res.data;
       //console.log(JSON.stringify(_this.lists));
 
     }).catch(function(error) {

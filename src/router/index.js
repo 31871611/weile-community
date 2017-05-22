@@ -3,7 +3,7 @@ import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import Router from 'vue-router'
 import fetch from '../utils/fetch'
-import Home from '@/views/index/index'
+import Home from '@/views/index/index'                                        // 首页
 import userOrder from '@/views/userOrder/userOrder'                           // 我的订单
 import userOrderDetails from '@/views/userOrderDetails/userOrderDetails'     // 我的订单详情
 import userApplyBack from '@/views/userOrderDetails/userApplyBack'          // 申请退货
@@ -65,6 +65,14 @@ const router = new Router({
       component: resolve => require(['@/views/list/subjectCoupon'], resolve),
       meta:{
         pageTitle: '领券专题'
+      }
+    }, {
+      // 满减优惠
+      path: '/fullDiscount',
+      name: 'fullDiscount',
+      component: resolve => require(['@/views/list/fullDiscount'], resolve),
+      meta:{
+        pageTitle: '满减优惠'
       }
     }, {
       // 搜索
@@ -145,7 +153,7 @@ const router = new Router({
       name: 'userHome',
       component: resolve => require(['@/views/userHome/userHome'], resolve),
       meta:{
-        //requireAuth: true,
+        requireAuth: true,
         pageTitle: '用户中心'
       },
       children:[
