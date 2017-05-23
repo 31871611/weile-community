@@ -338,9 +338,34 @@ export default {
         console.log(res);
         if(res.resultCode == 0){
           let orderId = res.data.orderId;
+          let url = location.protocol + '//' + location.host + '/#/success?projectId=1';
           //下单成功，调用支付接口
           console.log(orderId)
+          console.log(url)
           alert('下单成功')
+
+          // 支付
+          _this.$http.post('/community/collectionPay', {
+            "projectId":simplestorage.get('projectId'),
+            "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+            "orderId":orderId,
+            "callbackUrl":url
+          },{
+            "encryptType":1
+          }).then(function(res){
+            //console.log(res);
+            if(res.resultCode == 0){
+              alert(JSON.stringify(res.data));
+            }else{
+              _this.$refs.modalToast.toast({
+                txt:res.msg
+              });
+            }
+
+          }).catch(function(error) {
+            console.log(error)
+          })
+
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
