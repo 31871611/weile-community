@@ -4,6 +4,7 @@
   <div v-else class="selectNum">
     <div class="remove" v-show="num > 0" @click.stop.prevent="remove()"></div>
     <input type="text" v-show="num > 0" value="1" v-model="num" readonly="readonly" />
+    <!--<input type="text" value="100" />-->
     <div class="add" @click.stop.prevent="add($event)"></div>
   </div>
 
@@ -265,10 +266,7 @@ export default {
               ]
             });
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            _this.$router.push({
-              path: '/login',
-              projectId:simplestorage.get('projectId')
-            })
+            _this.$router.push({ path: '/login'})
           }else{
             alert(res.msg);
             return false;
