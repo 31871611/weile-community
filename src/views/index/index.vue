@@ -24,25 +24,25 @@
               <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
                 <img :src="list.imageUrl" :title="list.title" alt="自定义url">
               </a>
-              <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="便利店.分类">
               </router-link>
-              <router-link v-else-if="list.type == 3" to="/sale">
+              <router-link v-else-if="list.type == 3" :to="{path:'/sale',query:{projectId:projectId}}">
                 <img :src="list.imageUrl" :title="list.title" alt="限时抢购">
               </router-link>
-              <router-link v-else-if="list.type == 4" :to="{path:'fullDiscount',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 4" :to="{path:'fullDiscount',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品优惠活动">
               </router-link>
-              <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品专题">
               </router-link>
-              <router-link v-else-if="list.type == 5 && list.thematicType == 2" :to="{path:'subjectCoupon',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 5 && list.thematicType == 2" :to="{path:'subjectCoupon',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
               </router-link>
-              <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品详情">
               </router-link>
-              <router-link v-else-if="list.type == 7" :to="{path:'subjectCoupon',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 7" :to="{path:'subjectCoupon',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
               </router-link>
             </li>
@@ -59,25 +59,25 @@
               <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
                 <img :src="list.imageUrl" :title="list.title" alt="自定义url">
               </a>
-              <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="便利店.分类">
               </router-link>
-              <router-link v-else-if="list.type == 3" to="/sale">
+              <router-link v-else-if="list.type == 3" :to="{path:'/sale',query:{projectId:projectId}}">
                 <img :src="list.imageUrl" :title="list.title" alt="限时抢购">
               </router-link>
-              <router-link v-else-if="list.type == 4" :to="{path:'subject',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 4" :to="{path:'fullDiscount',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品优惠活动">
               </router-link>
-              <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 5 && list.thematicType == 1" :to="{path:'subject',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品专题">
               </router-link>
-              <router-link v-else-if="list.type == 5 && list.thematicType == 2" :to="{path:'subjectCoupon',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 5 && list.thematicType == 2" :to="{path:'subjectCoupon',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
               </router-link>
-              <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 6" :to="{path:'commodity',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="商品详情">
               </router-link>
-              <router-link v-else-if="list.type == 7" :to="{path:'subjectCoupon',query: { id: list.link }}">
+              <router-link v-else-if="list.type == 7" :to="{path:'subjectCoupon',query: { id: list.link,projectId:projectId }}">
                 <img :src="list.imageUrl" :title="list.title" alt="优惠券专题">
               </router-link>
             </li>
@@ -93,7 +93,7 @@
           <div class="scroll">
             <ul>
               <li v-for="list in groupBuyList">
-                <router-link :to="{path:'commodity',query: { id: list.commodityId }}">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                   <img :src="list.url" alt="">
                   <h3>{{list.name}}</h3>
                   <div class="price">
@@ -115,7 +115,7 @@
               <div class="content">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
                 <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
-                <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
                 </router-link>
                 <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
@@ -232,6 +232,7 @@ export default {
   name: 'home',
   data() {
     return {
+      projectId:simplestorage.get('projectId'),
       textCurrentQuarters : simplestorage.get('HLXK_DISTRIBUTION').name || '锦艺测试小区',   // 当前小区
       isSelectQuarters : false,             // 是否显示切换小区
       adLists: [],                          // 广告

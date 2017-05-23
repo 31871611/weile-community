@@ -6,16 +6,16 @@
 
       	<a v-if="item.type == 1" :href="item.content"><img :src="item.image" :style="{height:`${sliderHeight}px`}"></a>
       	<a v-else-if="item.type == 2" href="javascript:;" @click="toContent(item.content)"><img :src="item.image" :style="{height:`${sliderHeight}px`}"></a>
-        <router-link v-else-if="item.type == 3" :to="{path:'commodity',query: { id: item.content }}">
+        <router-link v-else-if="item.type == 3" :to="{path:'commodity',query: { id: item.content,projectId:projectId }}">
           <img :src="item.image" :style="{height:`${sliderHeight}px`}">
         </router-link>
-        <router-link v-else-if="item.type == 4" :to="{path:'store',query: { id: item.content }}">
+        <router-link v-else-if="item.type == 4" :to="{path:'store',query: { id: item.content,projectId:projectId }}">
           <img :src="item.image" :style="{height:`${sliderHeight}px`}">
         </router-link>
-        <router-link v-else-if="item.type == 5 && item.thematicType == 1" :to="{path:'subject',query: { id: item.content }}">
+        <router-link v-else-if="item.type == 5 && item.thematicType == 1" :to="{path:'subject',query: { id: item.content,projectId:projectId }}">
           <img :src="item.image" :style="{height:`${sliderHeight}px`}">
         </router-link>
-        <router-link v-else-if="item.type == 5 && item.thematicType == 2" :to="{path:'subjectCoupon',query: { id: item.content }}">
+        <router-link v-else-if="item.type == 5 && item.thematicType == 2" :to="{path:'subjectCoupon',query: { id: item.content,projectId:projectId }}">
           <img :src="item.image" :style="{height:`${sliderHeight}px`}">
         </router-link>
 
@@ -28,7 +28,9 @@
 </template>
 
 <script>
-module.exports = {
+import simplestorage from 'simplestorage.js'
+
+export default {
 /*
 
    首页广告
@@ -86,6 +88,7 @@ module.exports = {
   },
   data(){
     return {
+      projectId:simplestorage.get('projectId'),
       scaleW:window.innerWidth,     // 页面宽度
       sliedrWrap:null,              // 滑块容器dom对象
       itemsDom:null,                // 滑动单元dom对象数组

@@ -10,7 +10,7 @@
 
         <ul class="defaultAddress">
           <li>
-            <router-link :to="{path:'payorder/address',query:{source:'payorder',goodsInfo:goodsInfo ,isGroupBuyingOrder:isGroupBuyingOrder ,isFlashOrder:isFlashOrder}}">
+            <router-link :to="{path:'payorder/address',query:{source:'payorder',goodsInfo:goodsInfo ,isGroupBuyingOrder:isGroupBuyingOrder ,isFlashOrder:isFlashOrder,projectId:projectId}}">
               <template v-if="address">
                 <div><span class="name">{{address.name}}</span><span class="tel">{{address.mobile}}</span></div>
                 <p>{{address.communityName}} | {{address.address}}</p>
@@ -74,7 +74,7 @@
             <strong>￥{{lists.distributionAmount / 1000 | price}}</strong>
           </li>
 
-          <li @click="couponAlert" v-if="coupon.price">
+          <li @click="couponAlert" v-if="coupon.is">
             <template v-if="coupon.isUse">
               <span><b>不使用优惠券</b></span>
             </template>
@@ -86,7 +86,8 @@
           </li>
           <li>
             <span class="prompt">共计{{lists.goodsNum}}件商品</span>
-            <strong>合计：<b>￥{{(lists.totalAmount - coupon.price) / 1000 | price}}</b></strong>
+            <!--<strong>合计：<b>￥{{(lists.totalAmount - coupon.price + lists.distributionAmount) / 1000 | price}}</b></strong>-->
+            <strong>合计：<b>￥{{(lists.payAmount - coupon.price) / 1000 | price}}</b></strong>
           </li>
         </ul>
 
@@ -159,12 +160,14 @@ export default {
   name: 'payOrder',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       isGroupBuyingOrder:this.$route.query.isGroupBuyingOrder,
       isFlashOrder:this.$route.query.isFlashOrder,
       goodsInfo:this.$route.query.goodsInfo,
       address:'',                 // 默认地址
       lists:'',                   // 结算信息
       coupon:{
+        is:false,                 // 无优惠券不显示
         isUse:false,              // 是否使用优惠券
         index:0,                  // 优惠券列表索引
         price:'',                 // 选中优惠券价格
@@ -212,6 +215,7 @@ export default {
         _this.lists = res.data;
         // 优惠券
         if(_this.lists.couponList.length > 0){
+          _this.coupon.is = true;
           _this.coupon.price = _this.lists.couponList[0].faceValue
           _this.coupon.userCardId = _this.lists.couponList[0].userCardId
         }

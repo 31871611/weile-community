@@ -32,13 +32,13 @@
           <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == commoditys.categoryId">
 
             <li v-for="(list,index) in commoditys.commoditys">
-              <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
+              <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
                 <img :src="list.url" :alt="list.commodityId">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
                 <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
               </router-link>
               <div class="box">
-                <router-link :to="{path:'commodity',query: { id: list.commodityId }}">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                   <div class="bottom">
                     <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
@@ -85,6 +85,7 @@ export default {
   name: 'store',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       distributionCommunityName:simplestorage.get('HLXK_DISTRIBUTION').name,
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       isLogin:simplestorage.get('HLXK_STATUS'),

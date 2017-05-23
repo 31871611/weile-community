@@ -126,7 +126,10 @@ export default {
                 {
                   text: '验证',
                   onClick: function() {
-                    window.location.href = '/login';
+                    _this.$router.push({
+                      path: '/login',
+                      projectId:simplestorage.get('projectId')
+                    })
                   }
                 },
                 {
@@ -149,7 +152,10 @@ export default {
             });
 
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            _this.$router.push({ path: '/login'})
+            _this.$router.push({
+              path: '/login',
+              projectId:simplestorage.get('projectId')
+            })
           }else{
             alert(res.msg);
             return false;
@@ -167,7 +173,10 @@ export default {
               {
                 text: '登录',
                 onClick: function() {
-                  window.location.href = '/login';
+                  _this.$router.push({
+                    path: '/login',
+                    projectId:simplestorage.get('projectId')
+                  })
                 }
               },
               {
@@ -232,7 +241,10 @@ export default {
                 {
                   text: '验证',
                   onClick: function() {
-                    window.location.href = '/login';
+                    _this.$router.push({
+                      path: '/login',
+                      projectId:simplestorage.get('projectId')
+                    })
                   }
                 },
                 {
@@ -253,7 +265,10 @@ export default {
               ]
             });
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            _this.$router.push({ path: '/login'})
+            _this.$router.push({
+              path: '/login',
+              projectId:simplestorage.get('projectId')
+            })
           }else{
             alert(res.msg);
             return false;

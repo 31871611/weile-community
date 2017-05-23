@@ -17,7 +17,7 @@
               <p>{{list.communityName}} | {{list.address}}</p>
               <i class="auth" v-if="list.isAuthenAddress"></i>
             </a>
-            <router-link v-else :to="{path:'/userAddress/modify',query: { index: index,communityId: list.communityId,addressId:list.addressId }}">
+            <router-link v-else :to="{path:'/userAddress/modify',query: { index: index,communityId: list.communityId,addressId:list.addressId,projectId:projectId }}">
               <div><span class="name">{{list.name}}</span><span class="tel">{{list.mobile}}</span></div>
               <p>{{list.communityName}} | {{list.address}}</p>
               <i class="auth" v-if="list.isAuthenAddress"></i>
@@ -71,6 +71,7 @@ export default {
   props:['goodsInfo','isGroupBuyingOrder','isFlashOrder'],
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       parentPath:'',                              // url参数
       canDeliverAddressInfos:'',                  // 可配送地址
       noDeliverAddressInfos:'',                   // 不可配送地址
@@ -117,14 +118,15 @@ export default {
     selectAddress:function(list){
       let _this = this;
       //alert('选择地址');
-      console.log(_this.isGroupBuyingOrder + "|" + _this.isFlashOrder)
+      //console.log(_this.isGroupBuyingOrder + "|" + _this.isFlashOrder)
       _this.$router.push({
         path: '/payorder',
         query:{
           'goodsInfo':_this.goodsInfo,
           'isGroupBuyingOrder':_this.isGroupBuyingOrder,
           'isFlashOrder':_this.isFlashOrder,
-          'address':JSON.stringify(list)
+          'address':JSON.stringify(list),
+          'projectId':simplestorage.get('projectId')
         }
       });
     }

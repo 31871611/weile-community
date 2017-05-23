@@ -33,7 +33,7 @@
           </div>
           <ul class="goods" v-if="lists.storeGoodList">
             <li v-for="good in lists.storeGoodList">
-              <router-link :to="{path:'/commodity',query:{id:good.goodId}}">
+              <router-link :to="{path:'/commodity',query:{id:good.goodId,projectId:projectId}}">
                 <img :src="good.image" alt="">
                 <p>{{good.goodName}}</p>
               </router-link>
@@ -52,7 +52,7 @@
             <ul>
               <li v-for="category in lists.storeGoodsCategoryList">
                 <!-- 去便利店分类 -->
-                <router-link :to="{path:'/store',query:{id:category.goodsCategoryId}}">
+                <router-link :to="{path:'/store',query:{id:category.goodsCategoryId,projectId:projectId}}">
                   {{category.goodsCategoryName}}
                 </router-link>
               </li>
@@ -66,7 +66,7 @@
         <template v-else-if="lists.couponType == 3">
           <!-- 不知道连接去哪.3.指定商品专题活动 -->
           <div class="titleLink" v-if="lists.activityId">
-            <router-link :to="{path:'/',query:{id:lists.activityId}}">
+            <router-link :to="{path:'/',query:{id:lists.activityId,projectId:projectId}}">
               <h2>查看适用商品</h2>
               <i></i>
             </router-link>
@@ -79,7 +79,7 @@
         <template v-else>
           <!-- 去便利店 -->
           <div class="titleLink">
-            <router-link to="/store">
+            <router-link :to="{path:'/store',query:{projectId:projectId}}">
               <h2>查看适用商品</h2>
               <i></i>
             </router-link>
@@ -138,6 +138,7 @@ export default {
   name: 'couponDetails',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       lists:''
     }
   },

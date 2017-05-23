@@ -18,7 +18,7 @@
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="isLoad" infinite-scroll-distance="10">
           <ul class="userOrderList">
             <li v-for="list in lists">
-              <router-link :to="{path:'userOrderDetails',query:{id:list.orderId}}">
+              <router-link :to="{path:'userOrderDetails',query:{id:list.orderId,projectId:projectId}}">
                 <div class="top">
                   <span class="time">订单时间：{{list.createTimeStr}}</span>
                   <span class="state" v-if="list.payStatus == 0 && list.status == 1">等待付款</span>
@@ -107,6 +107,7 @@ export default {
   name: 'userOrder',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       is:false,
       isNotData:false,
       isLoad:false,           // 值为真，禁用无限滚动

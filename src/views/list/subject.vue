@@ -15,7 +15,7 @@
               <div class="content">
                 <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
                 <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
-                <router-link :to="{path:'commodity',query: { id: list.commodityId }}" class="photo">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
                 </router-link>
                 <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
@@ -81,6 +81,7 @@ export default {
   name: 'subject',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       lists:[],
       floatShoppingNum:0,
       balls: [{show: false}, {show: false}, {show: false}, {show: false}, {show: false}],

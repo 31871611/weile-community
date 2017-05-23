@@ -18,11 +18,11 @@
           <!-- 列表 -->
           <ul class="searchList" v-show="is">
             <li v-for="(list,index) in lists" v-bind:key="index">
-              <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId }}">
+              <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                 <img :src="list.url" alt="">
               </router-link>
               <div class="box">
-                <router-link :to="{path:'commodity',query: { id: list.commodityId }}">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                   <div class="bottom">
 
@@ -73,6 +73,7 @@ export default {
   name: 'search',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       is:false,                   // 是否显示搜索列表
       isLoad:false,               // 值为真，禁用无限滚动

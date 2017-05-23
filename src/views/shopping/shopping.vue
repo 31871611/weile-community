@@ -24,7 +24,7 @@
             <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity" v-bind:key="index">
 
               <input type="checkbox" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
-              <router-link :to="{path:'commodity',query: { id: list.goodsId }}" class="photo">
+              <router-link :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}" class="photo">
                 <img :src="list.imageUrl" alt="">
                 <i class="activity" v-if="list.isActivity == 1">活动</i>
                 <i class="goIng" v-if="list.ifFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
@@ -32,7 +32,7 @@
                 <span class="hint" v-if="list.status == 0">失效</span>
               </router-link>
               <div class="box">
-                <router-link :to="{path:'commodity',query: { id: list.goodsId }}">
+                <router-link :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
                   <div class="bottom">
                     <strong class="price">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
@@ -169,6 +169,7 @@ export default {
   name: 'shopping',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       isNotData:false,          // 是否显示当前无商品提示
       isLists:false,            // 是否显示列表
       lists:'',

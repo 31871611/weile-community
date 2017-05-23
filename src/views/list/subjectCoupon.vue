@@ -10,7 +10,7 @@
         <ul class="subjectCouponList">
 
           <li v-for="(list,index) in lists.data">
-            <router-link :to="{path:'userCoupon/details',query:{id:list.couponId}}">
+            <router-link :to="{path:'userCoupon/details',query:{id:list.couponId,projectId:projectId}}">
               <div class="left">
                 <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
                 <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
@@ -50,6 +50,7 @@ export default {
   name: 'subjectCoupon',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       lists:[]
     }
   },

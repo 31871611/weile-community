@@ -9,7 +9,7 @@
 
         <ul class="userCouponList">
           <li v-for="list in lists" :class="{'disabled':!list.commutityType}">
-            <router-link :to="{path:'userCoupon/details',query:{id:list.userCardId}}">
+            <router-link :to="{path:'userCoupon/details',query:{id:list.userCardId,projectId:projectId}}">
               <div class="left">
                 <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
                 <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
@@ -82,6 +82,7 @@ export default {
   name: 'userCoupon',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       is:false,
       isNotData:false,
       failNum:'',            // 即将过期数量

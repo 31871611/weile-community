@@ -5,11 +5,11 @@
       <div class="mainScroll sale" v-if="!isData">
         <ul class="saleList">
           <li v-for="(list,index) in lists">
-            <router-link class="photo" :to="{path:'commodity',query: { id: list.goodsId }}">
+            <router-link class="photo" :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}">
               <img :src="list.imageUrl" alt="">
             </router-link>
             <div class="box">
-              <router-link :to="{path:'commodity',query: { id: list.goodsId }}">
+              <router-link :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}">
                 <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
                 <div class="salePrice">
                   <b>抢购价￥</b><strong>{{list.price / 1000 | price}}元</strong><span>￥{{list.originalPrice / 1000 | price}}</span>
@@ -48,6 +48,7 @@ export default {
   name: 'sale',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       lists:'',
       isData:false
     }
