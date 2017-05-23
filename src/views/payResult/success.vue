@@ -3,21 +3,17 @@
     <i class="success"></i>
     <span class="txt">支付成功</span>
     <router-link class="buy" :to="{path:'/',query:{projectId:projectId}}">继续购买</router-link>
-    <router-link class="orderDetails" :to="{path:'/',query:{id:1,projectId:projectId}}">订单详情</router-link>
-
-    <i class="error"></i>
-    <span class="txt">支付失败</span>
-    <router-link class="buy" :to="{path:'/',query:{projectId:projectId}}">继续支付</router-link>
-    <router-link class="orderDetails" :to="{path:'/store',query:{id:1,projectId:projectId}}">返回便利店</router-link>
+    <router-link class="orderDetails" :to="{path:'/userOrderDetails',query:{id:1,projectId:projectId}}">订单详情</router-link>
   </div>
 </template>
 <script>
+import simplestorage from 'simplestorage.js'
 
 export default {
-  name: 'payResult',
+  name: 'success',
   data() {
     return{
-
+      projectId:simplestorage.get('projectId')
     }
   },
   mounted() {

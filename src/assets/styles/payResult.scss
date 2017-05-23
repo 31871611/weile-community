@@ -28,6 +28,7 @@
     text-align: center;
   }
   .buy{
+    display: block;
     margin: pxTorem(130px) auto 0;
     width: pxTorem(376px);
     height: pxTorem(76px);
@@ -39,6 +40,7 @@
     @include border-radius(pxTorem(60px));
   }
   .orderDetails{
+    display: block;
     margin: pxTorem(32px) auto 0;
     width: pxTorem(376px - 4);
     height: pxTorem(76px - 4);
