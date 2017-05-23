@@ -73,6 +73,7 @@
 
 </template>
 <script>
+import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import carCount from '../common/carCount.vue';
 import cart from '../../plugins/cart'
@@ -149,7 +150,11 @@ export default {
     // 修改列表中已添加购物车值
     modifyShopCarCount:function(type,list,index){
       let _this = this;
-      Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
+      if(type == 'add'){
+        Vue.set(_this.lists.data[index],'shopCarCount',_this.lists.data[index]['shopCarCount'] + 1);
+      }else if(type == 'del'){
+        Vue.set(_this.lists.data[index],'shopCarCount',_this.lists.data[index]['shopCarCount'] - 1);
+      }
     },
     // 修改底部购物车值
     shoppingNum:function(num){
@@ -157,6 +162,7 @@ export default {
     },
     // 购物车动画
     incrementTotal(target) {
+      //this.drop(target);
       console.log(target);
       //this.drop(target);
     },
