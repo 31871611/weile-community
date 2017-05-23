@@ -5,22 +5,20 @@
       <div class="mainScroll sale" v-if="!isData">
         <ul class="saleList">
           <li v-for="(list,index) in lists">
-            <router-link class="photo" :to="{path:'commodity',query: { id: list.goodsId }}">
-              <img :src="list.imageUrl" alt="">
+            <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
+              <img :src="list.url" alt="">
+              <i class="activity" v-if="list.isActivity == 1">活动</i>
+              <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
             </router-link>
             <div class="box">
-              <router-link :to="{path:'commodity',query: { id: list.goodsId }}">
-                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
-                <div class="salePrice">
-                  <b>抢购价￥</b><strong>{{list.price / 1000 | price}}元</strong><span>￥{{list.originalPrice / 1000 | price}}</span>
+              <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
+                <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
+                <div class="price">
+                  {{list.price / 1000 | price}}<b>元/{{list.unit}}</b>
                 </div>
                 <div class="bottom">
-                  <div class="time" data-startTime="list.startTime" >
-                    距结束：<div>{{list.time}}</div>
-                  </div>
-                  <!-- 当时时间 > 开始时间.抢购未开始 -->
-                  <div class="go" v-if="list.sysTime > list.startTime && list.inventory > 0">马上抢</div>
-                  <div class="go select" v-if="list.inventory <= 0">抢光了</div>
+                  <template>已售{{list.count}}</template>
+                  <car-count :type="false" ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :index="index" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                 </div>
               </router-link>
             </div>
@@ -37,19 +35,38 @@
 
 </template>
 <script>
+/*
+
+{
+  "userId": null,
+  "isActivity": "1",
+  "isFlashSale": "",
+  "flashSalePrice": "",
+  "price": 10,
+  "unit": "件",
+  "communityType": "1",
+  "inventory": 1000,
+  "flashSaleStatus": "",
+  "priceYuan": 0.01,
+  "shopCarCount": 0,
+  "count": 0
+}
+
+*/
 import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue';
 import modalToast from '../common/modalToast.vue';
-
-let timer = [];
+import carCount from '../common/carCount.vue';
 
 export default {
   name: 'sale',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       lists:'',
-      isData:false
+      isData:false,
+      floatShoppingNum:0
     }
   },
   mounted() {
@@ -61,15 +78,17 @@ export default {
       time:0
     });
     // 获取数据列表
-    this.$http.post('/community/getFlashSaleGoodsList', {
+    this.$http.post('/community/getActivityCommodityPage', {
       "projectId":simplestorage.get('projectId'),
       "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+      'activityId':this.$route.query.id,
+      "type":3,
       'pageIndex':1,
       'pageSize':30
     },{
       "encryptType":1
     }).then(function(res){
-      //console.log(res);
+      console.log(res);
       if(res.resultCode != 0){
         _this.$refs.modalToast.toast({
           txt:res.msg
@@ -78,68 +97,37 @@ export default {
       }
       // 隐藏加载中
       _this.$refs.modalToast.is = false;
-      _this.lists = res.data.flashSaleGoodsList;
-      // 无数据
+      _this.lists = res.data.data;
+      console.log(JSON.stringify(_this.lists));
+//      // 无数据
       if(_this.lists.length <= 0){
         _this.isData = true;
-        return false;
       }
-      for(var i = 0;i < _this.lists.length;i++){
-        _this.timer(i,_this.lists[i]);
-      }
+
     }).catch(function(error) {
       console.log(error)
     })
   },
-  beforeDestroy:function(){
-    // 清除倒记时定时器
-    for(let i = 0;i < timer.length;i++){
-      clearInterval(timer[i]);
-    }
-
-  },
   methods: {
-    timer:function(index,data){
+    /************************************************************************************************/
+    // 修改列表中已添加购物车值
+    modifyShopCarCount:function(type,list,index){
       let _this = this;
-
-      timer[index] = setInterval(function(){
-        // 现在时间大于活动结束时间
-        if(data.startTime > data.endTime){
-          return false;
-        }
-        // 剩余时间.结束时间-现在时间
-        let surplus = data.endTime - data.sysTime;
-        // 系统时间加一秒
-        data.sysTime = data.sysTime + 1000;
-        // 剩余时间小于等于0
-        if(surplus <= 0){
-          clearTimeout(timer[index]);
-          //_this.lists.splice(index,1);
-          document.querySelector('.saleList').getElementsByTagName('li')[index].style.display = 'none';
-          console.log('活动已结束！');
-          return false;
-        }
-        //console.log('剩余：'+surplus);
-
-        let ds = 60*60*24*1000,
-            d = parseInt(surplus/ds),
-            h = parseInt((surplus-d*ds)/(60*60*1000)),
-            m = parseInt((surplus - d*ds - h*3600*1000)/(60*1000)),
-            s = parseInt((surplus-d*ds-h*3600*1000-m*60*1000)/1000);
-        //console.log(d + '天' + h + '小时' + m + '分' + s + '秒');
-        if(h < 10) h = '0' + h;
-        if(m < 10) m = '0' + m;
-        if(s < 10) s = '0' + s;
-
-        Vue.set(_this.lists[index],'time',d+'天'+h+':'+m+':'+s);
-
-      },1000);
-
+      if(type == 'add'){
+        Vue.set(_this.lists[index],'shopCarCount',_this.lists[index]['shopCarCount'] + 1);
+      }else if(type == 'del'){
+        Vue.set(_this.lists[index],'shopCarCount',_this.lists[index]['shopCarCount'] - 1);
+      }
+    },
+    // 修改底部购物车值
+    shoppingNum:function(num){
+      this.floatShoppingNum = num;
     }
   },
   components: {
     notData,
-    modalToast
+    modalToast,
+    carCount
   }
 }
 </script>

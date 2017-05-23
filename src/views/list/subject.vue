@@ -13,7 +13,7 @@
           <ul>
             <li v-for="(list,index) in lists.data">
               <div class="content">
-                <i class="activity" v-if="list.isActivity == 1">活动{{list.isActivity}}</i>
+                <i class="activity" v-if="list.isActivity == 1">活动</i>
                 <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
                 <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
                   <img :src="list.url" :alt="list.commodityId">
