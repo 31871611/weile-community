@@ -290,11 +290,12 @@ export default {
     submit:function(){
       let _this = this;
       // 显示加载中
-//      _this.$refs.modalToast.toast({
-//        txt:'加载中',
-//        icon:'loading',
-//        time:0
-//      });
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
+
 /*
       var payAmount = +$this.data('payamount');
       if( payAmount <= 0 ) return $.toast('抱歉，无法下单');
@@ -316,6 +317,7 @@ export default {
         });
         return false;
       }
+
 
       let comments = this.comments == "点击添加留言" ? "" : this.comments;
 
@@ -340,9 +342,9 @@ export default {
           let orderId = res.data.orderId;
           let url = location.protocol + '//' + location.host + '/#/success?projectId=1';
           //下单成功，调用支付接口
-          console.log(orderId)
-          console.log(url)
-          alert('下单成功')
+          //console.log(orderId)
+          //console.log(url)
+          //alert('下单成功')
 
           // 支付
           _this.$http.post('/community/collectionPay', {
@@ -351,11 +353,15 @@ export default {
             "orderId":orderId,
             "callbackUrl":url
           },{
-            "encryptType":1
+            "encryptType":0
           }).then(function(res){
             //console.log(res);
             if(res.resultCode == 0){
-              alert(JSON.stringify(res.data));
+              //alert(JSON.stringify(res.data));
+              // 跳转去支付
+              location.href = res.data.payUrl;
+              // 隐藏加载中
+              _this.$refs.modalToast.is = false;
             }else{
               _this.$refs.modalToast.toast({
                 txt:res.msg
