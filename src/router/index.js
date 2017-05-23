@@ -132,12 +132,13 @@ const router = new Router({
         }
       ]
     },{
-      // 支付结束
-      path: '/payResult',
-      name: 'payResult',
-      component: resolve => require(['@/views/payResult/payResult'], resolve),
+      // 支付结果
+      path: '/success',
+      name: 'success',
+      component: resolve => require(['@/views/payResult/success'], resolve),
       meta:{
-        requireAuth: true
+        requireAuth: true,
+        pageTitle: '支付成功'
       }
     },{
       // 登录
@@ -165,27 +166,29 @@ const router = new Router({
           meta:{
             requireAuth: true,
             pageTitle: '我的订单'
-          }
-        },
-        {
-          // 我的订单详情
-          path: '/userOrderDetails',
-          name: 'userOrderDetails',
-          component: userOrderDetails,
-          meta:{
-            requireAuth: true,
-            pageTitle: '订单详情'
           },
           children:[
             {
-              // 申请退货
-              path: '/userApplyBack',
-              name: 'userApplyBack',
-              component: userApplyBack,
+              // 我的订单详情
+              path: '/userOrderDetails',
+              name: 'userOrderDetails',
+              component: userOrderDetails,
               meta:{
                 requireAuth: true,
-                pageTitle: '申请退货'
-              }
+                pageTitle: '订单详情'
+              },
+              children:[
+                {
+                  // 申请退货
+                  path: '/userApplyBack',
+                  name: 'userApplyBack',
+                  component: userApplyBack,
+                  meta:{
+                    requireAuth: true,
+                    pageTitle: '申请退货'
+                  }
+                }
+              ]
             }
           ]
         },
@@ -303,6 +306,7 @@ router.beforeEach((to, from, next) => {
       simplestorage.deleteKey('HLXK_OPENID')
     }
   }
+  // 不存在返回.后退？
 
 /*******************************************************************************************************/
 
