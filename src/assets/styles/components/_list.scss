@@ -90,7 +90,10 @@
     @include font-dpr(24px);
     @include border-radius(pxTorem(4px));
   }
-
+  .selectNum{
+    right:pxTorem(10px);
+    bottom:pxTorem(20px);
+  }
 }
 
 
@@ -166,6 +169,7 @@
   }
   // 左边图片
   .photo{
+    display: block;
     position: relative;
     width: pxTorem($h);
     height: pxTorem($h);
