@@ -32,7 +32,7 @@ export default {
       is:false,
       icon: '',
       txt: '提示文字',
-      time: 3
+      time: 1
     }
   },
   methods:{
@@ -47,7 +47,7 @@ export default {
         return false;
       }
       if(setting.time == undefined){
-        // undefined ，就是没传，3秒关
+        // undefined ，就是没传，1秒关
         time = this.time;
       }else{
         // 有传按，传的时间关闭

@@ -3,7 +3,7 @@
     <i class="success"></i>
     <span class="txt">支付成功</span>
     <router-link class="buy" :to="{path:'/',query:{projectId:projectId}}">继续购买</router-link>
-    <router-link class="orderDetails" :to="{path:'/userOrderDetails',query:{id:1,projectId:projectId}}">订单详情</router-link>
+    <!--<router-link class="orderDetails" :to="{path:'/userOrderDetails',query:{id:1,projectId:projectId}}">订单详情</router-link>-->
   </div>
 </template>
 <script>

@@ -202,6 +202,11 @@ export default {
   components: {
     modalToast,
     notData
+  },
+  watch: {
+    '$route' (to, from) {
+
+    }
   }
 }
 </script>

@@ -306,7 +306,43 @@ export default {
     },
     // 立即支付
     toPay:function(){
-      alert('支付');
+      let _this = this;
+
+      // 显示加载中
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
+
+      let url = location.protocol + '//' + location.host + '/#/success?projectId=1';
+
+      // 支付
+      _this.$http.post('/community/collectionPay', {
+        "projectId":simplestorage.get('projectId'),
+        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+        "orderId":_this.$route.query.id,
+        "callbackUrl":url
+      },{
+        "encryptType":0
+      }).then(function(res){
+        //console.log(res);
+        if(res.resultCode == 0){
+          //alert(JSON.stringify(res.data));
+          // 跳转去支付
+          location.href = res.data.payUrl;
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+        }
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+
     }
   },
   components: {

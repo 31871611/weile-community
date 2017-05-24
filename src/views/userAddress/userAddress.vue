@@ -136,7 +136,7 @@ export default {
     modalToast
   },
   watch: {
-    '$route' () {
+    '$route' (to, from) {
       //if(this.$route.query.reload == '1'){
         this.init();
       //}
