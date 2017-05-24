@@ -317,30 +317,69 @@ router.beforeEach((to, from, next) => {
         ?userInfo={}     对象 而且 要openid字段
         ?userInfo=111    普通字符
     */
+
     // 回来还是在微信、没有openid（还没保存）
     if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
         let wxUserInfo = JSON.parse(to.query.userInfo);
+        //console.log(JSON.stringify(to.query.userInfo));
         if(typeof wxUserInfo == "object" && wxUserInfo.openid){
           // 保存openid
           simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
           // 保存assess_token失效时间7200秒.2个小时就失效？
+
+          // 保存用户信息
+          simplestorage.set('HLXK_UserInfo', wxUserInfo);
+          // 保存sessionId
+          simplestorage.set('HLXK_SessionId', to.query.sessionId);
+
+          // 保存微信授权信息
+          fetch.post('/community/authorize', {
+            "projectId":simplestorage.get('projectId'),
+            "openid":wxUserInfo.openid,
+            "nickname":wxUserInfo.nickname,
+            "sex":wxUserInfo.sex,
+            "country":wxUserInfo.country,
+            "province":wxUserInfo.province,
+            "city":wxUserInfo.city,
+            "headimgurl":wxUserInfo.headimgurl,    //头像
+            "unionid":wxUserInfo.unionid
+          }).then(function (res) {
+            console.log(res)
+            if (res.resultCode == 0) {
+
+            } else {
+
+            }
+          }).catch(function (error) {
+            console.log(error)
+          })
+
+
         }
     }else{
       // 跳转去获取openid
       if(process.env.NODE_ENV == "development"){
-        location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&appId=wx7953a1343c2f2082";
+        location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
       }else{
-        location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_base&projectId=" + simplestorage.get('projectId');
+        location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
       }
     }
   }
 
 /*******************************************************************************************************/
 
+
+
+
   // 是否有游客session.过期时间是多少？不管游客过期了，没登录的，每次都去获取游客数据
-  //if(!simplestorage.get('HLXK_SESSION')){
-  if (!simplestorage.get('HLXK_STATUS')){
-    // 以游客方式登录
+  if (simplestorage.get('HLXK_STATUS')){
+    go();
+  }else{
+    guestLogin();
+  }
+
+  // 以游客方式登录
+  function guestLogin(){
     fetch.post('/community/touristLogin', {
       "projectId":simplestorage.get('projectId')
     }).then(function (res) {
@@ -349,6 +388,7 @@ router.beforeEach((to, from, next) => {
       if (res.resultCode == 0) {
         simplestorage.set('HLXK_SESSION', data.session);
         simplestorage.set('HLXK_KEY', data.key);
+        // 去选择小区或登录
         go();
       } else {
         alert(res.msg)
@@ -356,10 +396,9 @@ router.beforeEach((to, from, next) => {
     }).catch(function (error) {
       console.log(error)
     })
-  }else{
-    go();
   }
 
+  // 选择小区页或登录页
   function go(){
     // 是否有小区信息
     if(simplestorage.get('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
