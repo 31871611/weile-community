@@ -13,7 +13,7 @@
         <slider ref="slider" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
         <div class="indexNav">
-          <div @click="toLink(list.menuUrl)" v-for="list in nav" :class="list.icon">{{list.menuName}}</div>
+          <a :href="list.menuUrl" v-for="list in nav" :class="list.icon">{{list.menuName}}</a>
         </div>
 
         <!-- 首页活动推荐1 -->
@@ -21,7 +21,7 @@
           <!-- list.styleCode -->
           <ul>
             <li v-for="list in categoryHomeLayoutList" :class="'style' + list.styleCode">
-              <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
+              <a :href="list.link" v-if="list.type == 1">
                 <img :src="list.imageUrl" :title="list.title" alt="自定义url">
               </a>
               <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link,projectId:projectId }}">
@@ -56,7 +56,7 @@
           </div>
           <ul>
             <li v-for="list in activityHomeLayoutList" :class="'style' + list.styleCode">
-              <a href="javascript:;" v-if="list.type == 1" @click="toLink(list.link)">
+              <a :href="list.link" v-if="list.type == 1">
                 <img :src="list.imageUrl" :title="list.title" alt="自定义url">
               </a>
               <router-link v-else-if="list.type == 2" :to="{path:'store',query: { id: list.link,projectId:projectId }}">
