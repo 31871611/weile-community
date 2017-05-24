@@ -82,7 +82,7 @@ export default {
         _this.shoppingNum = cart.getAmount();
       }
 
-      console.log('购物车数量：' + _this.shoppingNum)
+      //console.log('购物车数量：' + _this.shoppingNum)
 
     },
     // 跳转到外部url
@@ -90,7 +90,6 @@ export default {
       location.href = url;
     },
     drop(el) {
-      console.log(this.balls.length);
       for (let i = 0; i < this.balls.length; i++) {
         let ball = this.balls[i];
         if (!ball.show) {
