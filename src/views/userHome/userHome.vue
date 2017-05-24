@@ -166,7 +166,7 @@ export default {
 
       this.$http.post('/api/getMenu', {
         "projectId":simplestorage.get('projectId'),
-        "menuType":2,                                                   // 1、个人中心菜单 2 、便利店首页菜单
+        "menuType":1,                                                   // 1、个人中心菜单 2 、便利店首页菜单
         "communityId":simplestorage.get('HLXK_DISTRIBUTION').id         // 小区ID
       },{
         "encryptType":1
@@ -195,4 +195,4 @@ export default {
   }
 }
 </script>
-<style scoped lang="scss" src="../../assets/styles/userHome.scss"></style>
+<style lang="scss" src="../../assets/styles/userHome.scss"></style>

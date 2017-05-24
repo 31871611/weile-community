@@ -303,7 +303,7 @@ export default {
 
       this.$http.post('/api/getMenu', {
         "projectId":simplestorage.get('projectId'),
-        "menuType":1,                                 // 1、个人中心菜单 2 、便利店首页菜单
+        "menuType":2,                                 // 1、个人中心菜单 2 、便利店首页菜单
         "communityId":distributionCommunityId         // 小区ID
       },{
         "encryptType":1
