@@ -32,15 +32,23 @@
       margin-right: pxTorem(28px);
       display: block;
       @extend %icoRem;
+      // 手机图标
       &.tel{
         width: pxTorem(26px);
         height: pxTorem(34px);
         background-image: url("../images/icon_login_phone@2x.png");
       }
+      // 密码图标
       &.password{
         width: pxTorem(30px);
         height: pxTorem(34px);
         background-image: url("../images/icon_login_password@2x.png");
+      }
+      // 验证码图标
+      &.code{
+        width: pxTorem(31px);
+        height: pxTorem(25px);
+        background-image: url("../images/icon_login_code@2x.png");
       }
     }
     input{
@@ -64,6 +72,10 @@
         border: 1px solid #00bb9c;
         color:#00bb9c;
         @include border-radius(pxTorem(40px));
+        &.select{
+          border-color: #ccc;
+          color:#ccc;
+        }
       }
     }
   }
