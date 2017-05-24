@@ -89,6 +89,7 @@
       width: pxTorem($w);
       height: pxTorem($w);
       position: relative;
+      background-color:transparent;
       @extend %icoRem;
       background-image: url("../images/icon_select_n@2x.png");
       &:checked{

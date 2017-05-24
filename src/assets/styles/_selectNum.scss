@@ -58,7 +58,7 @@
     width: pxTorem($infoH + $add);
     height: pxTorem($infoH + $add);
     @include display-flex();
-    @include justify-content(center);
+    //@include justify-content(center);
     @include align-items();
     &:after{
       content: '\20';
@@ -70,6 +70,7 @@
   }
   .remove{
     &:after{
+      margin-left:auto;
       background-image: url("../images/icon_minus_p@2x.png");
     }
     &.select{

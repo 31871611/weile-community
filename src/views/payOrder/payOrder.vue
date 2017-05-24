@@ -341,12 +341,8 @@ export default {
         if(res.resultCode == 0){
           let orderId = res.data.orderId;
           let url = location.protocol + '//' + location.host + '/#/success?projectId=1';
-          //下单成功，调用支付接口
-          //console.log(orderId)
-          //console.log(url)
-          alert('下单成功')
 
-          // 支付
+          // 下单成功，调用支付接口
           _this.$http.post('/community/collectionPay', {
             "projectId":simplestorage.get('projectId'),
             "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
@@ -357,7 +353,7 @@ export default {
           }).then(function(res){
             //console.log(res);
             if(res.resultCode == 0){
-              alert(JSON.stringify(res.data));
+              //alert(JSON.stringify(res.data));
               // 跳转去支付
               location.href = res.data.payUrl;
               // 隐藏加载中

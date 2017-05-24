@@ -159,7 +159,7 @@ export default {
       },{
         "encryptType":1
       }).then(function(res) {
-        console.log(res);
+        //console.log(res);
         if(res.resultCode != 0){
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -205,7 +205,9 @@ export default {
   },
   watch: {
     '$route' (to, from) {
-
+      if(from.name == 'userOrderDetails'){
+        this.init(this.status,1);
+      }
     }
   }
 }
