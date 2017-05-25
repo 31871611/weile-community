@@ -14,7 +14,7 @@ let HLXK_KEY = simplestorage.get('HLXK_KEY') || ''
 let wechatInfo = navigator.userAgent.match(/(MicroMessenger\/[\d\.]+)/i) || ['other']
 
 // 加密
-function encryptData(encryptType, data, session, key) {
+function encryptData(encryptType, data, session, key, sessionid) {
   let result = {}
   let _d = {
     encryptType: encryptType,
@@ -23,11 +23,13 @@ function encryptData(encryptType, data, session, key) {
   switch (+_d.encryptType) {
     case 0:
       _d.session = session
+      _d.sessionid = sessionid
       _d.data = JSON.stringify(_d.data)
       result.request = JSON.stringify(_d)
       break
     case 1:
       _d.session = session
+      _d.sessionid = sessionid
       _d.data = cryptoUtils.aesEncrypt(JSON.stringify(_d.data), key)
       result.request = JSON.stringify(_d)
       break
@@ -77,15 +79,17 @@ fetch.interceptors.request.use(function(config) {
   let _d = config.data || {}
   let key = _d.key || simplestorage.get('HLXK_KEY')
   let session = _d.session || simplestorage.get('HLXK_SESSION')
+  let sessionid = _d.sessionid || simplestorage.get('HLXK_SessionId')
   let encryptType = config.encryptType || 0
   /*
   * encryptType : 0 明文, 1 AES加密
   * _d :
-  * session ：
+  * session ：游客或已登录
+  * sessionid :
   * key :
   *
   * */
-  config.data = qs.stringify(encryptData(encryptType, _d, session, key))
+  config.data = qs.stringify(encryptData(encryptType, _d, session, key, sessionid))
   config.url = isProduction ? 'http://117.27.139.221:5670' + config.url : '/api' + config.url
   return config
 }, function(error) {
