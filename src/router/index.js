@@ -442,7 +442,7 @@ router.beforeEach((to, from, next) => {
         //  // 过期.删除登录状态
         //  if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
         //}
-        
+
         // userid == -1 ，去我的登录页面
         if (simplestorage.get('HLXK_UserId') == -1) {
           next({
