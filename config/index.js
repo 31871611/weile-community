@@ -30,8 +30,8 @@ module.exports = {
     proxyTable: {
         '/api': {
           //target: 'http://117.27.139.221:5120',                 //最早
-          target: 'http://app.store.yidinghuo.net',         // 117.27.139.221:5670   app.store.yidinghuo.net
-          //target: 'http://172.16.15.12:8080',
+          //target: 'http://app.store.yidinghuo.net',         // 117.27.139.221:5670   app.store.yidinghuo.net
+          target: 'http://172.16.15.12:8080',
           changeOrigin: true,
           pathRewrite: {
             '^/api': ''

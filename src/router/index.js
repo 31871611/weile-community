@@ -26,7 +26,8 @@ const router = new Router({
       meta:{
         pageTitle: '首页'
       }
-    }, {
+    },
+    {
       // 选择小区
       path: '/selectQuarters',
       name: 'selectQuarters',
@@ -34,7 +35,8 @@ const router = new Router({
       meta:{
         pageTitle: '选择小区'
       }
-    }, {
+    },
+    {
       // 社区
       path: '/community',
       name: 'community',
@@ -42,7 +44,8 @@ const router = new Router({
       meta:{
         pageTitle: '社区'
       }
-    }, {
+    },
+    {
       // 限时抢购
       path: '/sale',
       name: 'sale',
@@ -50,7 +53,8 @@ const router = new Router({
       meta:{
         pageTitle: '限时抢购'
       }
-    }, {
+    },
+    {
       // 专题列表
       path: '/subject',
       name: 'subject',
@@ -58,7 +62,8 @@ const router = new Router({
       meta:{
         pageTitle: '专题列表'
       }
-    }, {
+    },
+    {
       // 领券专题
       path: '/subjectCoupon',
       name: 'subjectCoupon',
@@ -66,7 +71,8 @@ const router = new Router({
       meta:{
         pageTitle: '领券专题'
       }
-    }, {
+    },
+    {
       // 满减优惠
       path: '/fullDiscount',
       name: 'fullDiscount',
@@ -74,7 +80,8 @@ const router = new Router({
       meta:{
         pageTitle: '满减优惠'
       }
-    }, {
+    },
+    {
       // 搜索
       path: '/search',
       name: 'search',
@@ -82,7 +89,8 @@ const router = new Router({
       meta:{
         pageTitle: '搜索'
       }
-    }, {
+    },
+    {
       // 便利店
       path: '/store',
       name: 'store',
@@ -90,7 +98,8 @@ const router = new Router({
       meta:{
         pageTitle: '便利店'
       }
-    }, {
+    },
+    {
       // 购物车
       path: '/shopping',
       name: 'shopping',
@@ -98,7 +107,8 @@ const router = new Router({
       meta:{
         pageTitle: '购物车'
       }
-    },{
+    },
+    {
       // 商品详情页
       path: '/commodity',
       name: 'commodity',
@@ -106,7 +116,8 @@ const router = new Router({
       meta:{
         pageTitle: '商品详情页'
       }
-    },{
+    },
+    {
       // 结算
       path: '/payorder',
       name: 'payorder',
@@ -131,7 +142,8 @@ const router = new Router({
           ]
         }
       ]
-    },{
+    },
+    {
       // 支付结果
       path: '/success',
       name: 'success',
@@ -140,7 +152,8 @@ const router = new Router({
         requireAuth: true,
         pageTitle: '支付成功'
       }
-    },{
+    },
+    {
       // 登录
       path: '/login',
       name: 'login',
@@ -148,7 +161,8 @@ const router = new Router({
       meta:{
         pageTitle: '登录'
       }
-    },{
+    },
+    {
       // 用户中心
       path: '/userHome',
       name: 'userHome',
@@ -250,7 +264,17 @@ const router = new Router({
           ]
         }
       ]
-    }, {
+    },
+    {
+      // 错误
+      path: '/error',
+      //name: 'success',
+      component: resolve => require(['@/views/error/error'], resolve),
+      meta:{
+        pageTitle: '错误'
+      }
+    },
+    {
       path: '*',
       component: Home
     }
@@ -301,7 +325,7 @@ router.beforeEach((to, from, next) => {
       // 不相等要清空小区信息重新选择小区、清空登录状态，还有吗？
       simplestorage.deleteKey('HLXK_DISTRIBUTION')
       // 清空登录状态
-      simplestorage.deleteKey('HLXK_STATUS')
+      //simplestorage.deleteKey('HLXK_STATUS')
       // 清空openid
       simplestorage.deleteKey('HLXK_OPENID')
     }
@@ -371,8 +395,9 @@ router.beforeEach((to, from, next) => {
 
 
 
-  // 是否有游客session.过期时间是多少？不管游客过期了，没登录的，每次都去获取游客数据
-  if (simplestorage.get('HLXK_STATUS')){
+  // 没有游客或登录SESSION，就去游客登录
+  // 有游客或登录SESSION && userid == -1(去我的登录页面)
+  if (simplestorage.get('HLXK_UserId') == -1 && simplestorage.get('HLXK_SESSION')){
     go();
   }else{
     guestLogin();
@@ -388,6 +413,8 @@ router.beforeEach((to, from, next) => {
       if (res.resultCode == 0) {
         simplestorage.set('HLXK_SESSION', data.session);
         simplestorage.set('HLXK_KEY', data.key);
+        // 判断用户是否登录
+        simplestorage.set('HLXK_UserId', data.userInfo.userId);
         // 去选择小区或登录
         go();
       } else {
@@ -405,31 +432,41 @@ router.beforeEach((to, from, next) => {
       // 是否需要登录
       if(to.meta.requireAuth){
         // 相关时间信息.是否时间过期，重新登录？当前时间 - 登录时间 > 1个月
-        if(simplestorage.get('HLXK_LOGIN_TIME')){
-          // 当前时间
-          let now = new Date().getTime();
-          // 登录时间
-          let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
-          // 一个月时间毫秒
-          let oneMonth = 60 * 60 *  24 * 30 * 1000;
-          // 过期.删除登录状态
-          if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
-        }
-        // 是否登录
-        if (simplestorage.get('HLXK_STATUS')) {
-          next();
-        }else {
+        //if(simplestorage.get('HLXK_LOGIN_TIME')){
+        //  // 当前时间
+        //  let now = new Date().getTime();
+        //  // 登录时间
+        //  let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
+        //  // 一个月时间毫秒
+        //  let oneMonth = 60 * 60 *  24 * 30 * 1000;
+        //  // 过期.删除登录状态
+        //  if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
+        //}
+        
+        // userid == -1 ，去我的登录页面
+        if (simplestorage.get('HLXK_UserId') == -1) {
           next({
             path: '/login',
-            query: {url: to.fullPath,projectId:simplestorage.get('projectId')}
+            query: {
+              url: to.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
           })
+        }else {
+          next();
         }
       }else{
         next()
       }
     }else{
       // 去选择小区
-      next({ path: '/selectQuarters',query: { url: to.fullPath,projectId:simplestorage.get('projectId') }});
+      next({
+        path: '/selectQuarters',
+        query: {
+          url: to.fullPath,
+          projectId:simplestorage.get('projectId')
+        }
+      });
     }
   }
 

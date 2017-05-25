@@ -170,7 +170,10 @@ export default {
           // 保存用户信息
           //simplestorage.set('HLXK_UserInfo', data.userInfo);
           // 是否登录状态
-          simplestorage.set('HLXK_STATUS', true);
+          //simplestorage.set('HLXK_STATUS', true);
+          // 判断用户是否登录
+          simplestorage.set('HLXK_UserId', data.userInfo.userId);
+          console.log('登录：' + simplestorage.get('HLXK_UserId'))
           // 保存登录时间
           simplestorage.set('HLXK_LOGIN_TIME', new Date().getTime());
           // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证
