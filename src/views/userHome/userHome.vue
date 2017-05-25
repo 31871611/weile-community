@@ -151,8 +151,8 @@ export default {
 
     // 头像、用户名
     if(simplestorage.get('HLXK_UserInfo')){
-      if(simplestorage.get('HLXK_UserInfo').nickName) this.name = simplestorage.get('HLXK_UserInfo').nickName;
-      if(simplestorage.get('HLXK_UserInfo').headImgUrl) this.face = simplestorage.get('HLXK_UserInfo').headImgUrl;
+      if(simplestorage.get('HLXK_UserInfo').nickname) this.name = simplestorage.get('HLXK_UserInfo').nickname;
+      if(simplestorage.get('HLXK_UserInfo').headimgurl) this.face = simplestorage.get('HLXK_UserInfo').headimgurl;
     }
 
     // 获取菜单

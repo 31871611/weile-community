@@ -34,6 +34,7 @@
       vertical-align: middle;
     }
     span{
+      display: block;
       margin-top:pxTorem(26px);
       color: #fff;
       @include font-dpr(30px);
