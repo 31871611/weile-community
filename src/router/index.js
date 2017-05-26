@@ -394,13 +394,13 @@ router.beforeEach((to, from, next) => {
 
 
 
-
-  // 没有游客或登录SESSION，就去游客登录
-  // 有游客或登录SESSION && userid == -1(去我的登录页面)
+  // -1是未登录去游客与登录，
+  // 没SESSION，就先去游客获取
+  // 已有游客或登录SESSION && userid == -1(去我的登录页面)
   if (simplestorage.get('HLXK_UserId') == -1 && simplestorage.get('HLXK_SESSION')){
-    go();
-  }else{
     guestLogin();
+  }else{
+    next();
   }
 
   // 以游客方式登录

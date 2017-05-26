@@ -15,8 +15,8 @@
 
   <div class="appNav">
     <router-link :to="{path:'/',query:{projectId:projectId}}" class="home" :class="{select : selectClass == 'home'}">首页</router-link>
+    <router-link :to="{path:'store',query:{projectId:projectId}}" class="convenient" :class="{select : selectClass == 'store'}">好货</router-link>
     <router-link :to="{path:'community',query:{projectId:projectId}}" class="community" :class="{select : selectClass == 'community'}">社区</router-link>
-    <router-link :to="{path:'store',query:{projectId:projectId}}" class="convenient" :class="{select : selectClass == 'store'}">便利店</router-link>
     <router-link :to="{path:'shopping',query:{projectId:projectId}}" class="shopping" :class="{select : selectClass == 'shopping'}">
       购物车<b v-if="shoppingNum > 0">{{shoppingNum}}</b>
     </router-link>
@@ -60,7 +60,7 @@ export default {
       let _this = this;
 
       // 是否登录.获取购物车数量
-      if(simplestorage.get('HLXK_STATUS')){
+      if(simplestorage.get('HLXK_UserId') != -1){
         // 获取购物车数量...每次加载本组件就
         this.$http.post('/community/getCartGoodsNum', {
           "projectId":simplestorage.get('projectId'),

@@ -4,21 +4,35 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll index">
-
-        <div class="currentQuarters" @click="goSelectQuarters(true)">
-          <span>{{textCurrentQuarters}}</span>
-          <i></i>
-        </div>
-
+        <!-- 轮播 -->
         <slider ref="slider" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
+        <!-- 选择小区 -->
+        <div class="quartersShow">
+          <div class="txt" @click="goSelectQuarters(true)">{{textCurrentQuarters}} ></div>
+          <div class="map"><i></i></div>
+        </div>
+
+        <!-- 菜单 -->
         <div class="indexNav">
           <a :href="list.menuUrl" v-for="list in nav" :class="list.icon">{{list.menuName}}</a>
         </div>
 
+        <!-- 通知 -->
+        <div class="notice">
+          <i></i>
+          <div ref="scrollConter">
+            <span class="begin">微信公众平台开发是指为微信公众号进行业务开发，为移动应用、PC端网站、公众号第三方平台（为各行各业公众号运</span>
+            <span class="end"></span>
+          </div>
+          <a href="">更多</a>
+        </div>
+
         <!-- 首页活动推荐1 -->
         <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
-          <!-- list.styleCode -->
+          <div class="title">
+            <span class="line"></span><h2>分类推荐</h2><span class="line"></span>
+          </div>
           <ul>
             <li v-for="list in categoryHomeLayoutList" :class="'style' + list.styleCode">
               <a :href="list.link" v-if="list.type == 1">
@@ -52,7 +66,7 @@
         <!-- 首页活动推荐2 -->
         <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
           <div class="title">
-            <h2>活动专区</h2>
+            <span class="line"></span><h2>活动专区</h2><span class="line"></span>
           </div>
           <ul>
             <li v-for="list in activityHomeLayoutList" :class="'style' + list.styleCode">
@@ -84,11 +98,31 @@
           </ul>
         </div>
 
-
+        <!-- 精选 -->
+        <div class="selectedList" v-if="selectedList">
+          <div class="title">
+            <span class="line"></span>
+            <h2>精选</h2>
+            <span class="line"></span>
+            <a href="" class="more">更多<i></i></a>
+          </div>
+          <ul>
+            <li v-for="(list,index) in selectedList">
+              <router-link :to="{path:'commodity',query: { id: list.link,projectId:projectId }}">
+                <img src="http://img.v89.com/group1/M05/07/91/rBAA11kj9-qAI2kzAAAU4DQx98E442_320*120.jpg" alt="">
+                <p>文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字</p>
+                <div class="bottom">
+                  <strong class="price">￥<b>69.00</b>/份</strong>
+                  <div>加减</div>
+                </div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
 
         <div class="groupBuy" v-if="groupBuyList">
           <div class="title">
-            <h2>团购</h2>
+            <span class="line"></span><h2>团购</h2><span class="line"></span>
           </div>
           <div class="scroll">
             <ul>
@@ -107,7 +141,7 @@
 
         <div class="recommend" v-if="recommendList">
           <div class="title">
-            <h2>推荐商品</h2>
+            <span class="line"></span><h2>推荐商品</h2><span class="line"></span>
             <router-link to="store" class="more">更多<i></i></router-link>
           </div>
           <ul>
@@ -238,8 +272,10 @@ export default {
       adLists: [],                          // 广告
       quartersLists : null,                 // 小区列表
       nav:null,                             // 首页菜单
+      notice:'',                            // 公告消息
       activityHomeLayoutList : null,        // 首页活动专区2...
       categoryHomeLayoutList : null,        // 首页活动专区1...
+      selectedList:null,                    // 精选
       groupBuyList : null,                  // 团购商品
       recommendList : null,                 // 商品推荐
       isToContent:false,                    // 是否显示广告图文
@@ -251,8 +287,10 @@ export default {
     this.init();
     // 获取首页菜单
     this.getNav();
-
-    //this.$route.query.projectId
+    // 滚动公告
+    this.$nextTick(function(){
+      this.scrollLeft();
+    });
 
   },
   methods: {
@@ -268,22 +306,24 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        //console.log(res)
+        console.log(res)
         let data = res.data || {};
+        console.log(JSON.stringify(res.data));
         if (res.resultCode == 0) {
+          // 轮播广告
           _this.adLists = data.advInfos;
-          console.log(JSON.stringify(_this.adLists))
+          // 公告消息
+          _this.notice = 1;
+          // 精选列表
+          //if(data.storeSelectionDtoList.length > 0) _this.selectedList = data.storeSelectionDtoList;
           // 活动专区...有的没有这个数据？
           if(data.categoryHomeLayoutList.length > 0) _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
           // 活动专区
           if(data.activityHomeLayoutList.length > 0) _this.activityHomeLayoutList = data.activityHomeLayoutList;
           // 团购商品
-          if(data.groupBuy.length > 0) _this.groupBuyList = data.groupBuy.data;
+          if(data.groupBuy.data.length > 0) _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
-          if(data.recommend.length > 0) _this.recommendList = data.recommend.data;
-          //console.log(JSON.stringify(res.data));
-          //console.log(JSON.stringify(_this.recommendList));
-          //console.log(_this.recommendList);
+          if(data.recommend.data.length > 0) _this.recommendList = data.recommend.data;
 
           // 修改小区后
           callback && callback();
@@ -323,6 +363,22 @@ export default {
       }).catch(function(error) {
         console.log(error)
       })
+    },
+    // 滚动公告
+    scrollLeft:function(){
+      let scrollConter = this.$refs.scrollConter;
+      let begin = scrollConter.querySelector('.begin');
+      let end = scrollConter.querySelector('.end');
+      end.innerHTML = begin.innerHTML;
+      function Marquee() {
+        //console.log(end.offsetWidth + '|' + scrollConter.scrollLeft)
+        if (end.offsetWidth - scrollConter.scrollLeft <= 0){
+          scrollConter.scrollLeft -= begin.offsetWidth;
+        }else{
+          scrollConter.scrollLeft++;
+        }
+      }
+      let MyMar = setInterval(Marquee, 50);
     },
     // 是否显示小区列表
     goSelectQuarters:function(is){

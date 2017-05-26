@@ -173,7 +173,7 @@ export default {
       isNotData:false,          // 是否显示当前无商品提示
       isLists:false,            // 是否显示列表
       lists:'',
-      isLogin : simplestorage.get('HLXK_STATUS'),
+      isLogin : simplestorage.get('HLXK_UserId') != -1,
       isDel:false,
       checkCommodityId:[],         // 商品id
       checkedAllModel:false,       // 全选、反选
@@ -644,6 +644,7 @@ export default {
           }).then(function(res) {
             //console.log(res);
             if (res.resultCode == 0) {
+              console.log(_this.getCheckGoods('pay'));
               // 去结算页面
               _this.$router.push({ path: '/payorder', query: {
                 "goodsInfo": _this.getCheckGoods('pay'),

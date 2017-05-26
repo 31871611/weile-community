@@ -58,7 +58,7 @@ export default {
     getShopCarCount:function(){
       let _this = this;
 
-      let isLogin = simplestorage.get('HLXK_STATUS');
+      let isLogin = simplestorage.get('HLXK_UserId') != -1;
       // 登录
       if (isLogin) {
         // 获取缓存购物车商品信息
@@ -71,7 +71,7 @@ export default {
     // 添加购物车
     add:function(event){
       let _this = this;
-      let isLogin = simplestorage.get('HLXK_STATUS');
+      let isLogin = simplestorage.get('HLXK_UserId') != -1;
       /*
 
        jsp只用到3个值：商品id、商品库存、小区id
@@ -209,7 +209,7 @@ export default {
     remove:function(){
       let url;
       let _this = this;
-      let isLogin = simplestorage.get('HLXK_STATUS');
+      let isLogin = simplestorage.get('HLXK_UserId') != -1;
 
       if(isLogin){
 

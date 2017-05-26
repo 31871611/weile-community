@@ -88,6 +88,7 @@
   $h:98px;
   $pl:25px;
   width: 28%;
+  background: #f0f4f3;
   //margin-right: pxTorem(16px);
   ul{
     margin-top: pxTorem(18px);
@@ -98,7 +99,6 @@
     line-height: pxTorem($h);
     color: #3f4548;
     @include font-dpr(28px);
-    background: #f0f4f3;
     text-align: center;
     &.select{
       background: #fff;

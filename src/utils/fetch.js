@@ -102,6 +102,7 @@ fetch.interceptors.request.use(function(config) {
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
   // 状态码：错误...失效 _d.encryptCode == 1000 ?
+  // 重新请求游客接口...
   if(_d.resultCode == 1000){
     // 删除状态
     simplestorage.deleteKey('HLXK_SESSION')

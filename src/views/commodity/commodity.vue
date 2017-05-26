@@ -257,7 +257,7 @@ export default {
   name: 'commodity',
   data() {
     return {
-      isLogin:simplestorage.get('HLXK_STATUS'),    // 是否登录
+      isLogin:simplestorage.get('HLXK_UserId') != -1,    // 是否登录
       list:'',                   // 详情数据
       imagesList:'',            //图文详情
       countdown:'',              // 抢购倒记时

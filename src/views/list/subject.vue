@@ -123,7 +123,7 @@ export default {
       let _this = this;
 
       // 是否登录.获取购物车数量
-      if(simplestorage.get('HLXK_STATUS')){
+      if(simplestorage.get('HLXK_UserId') != -1){
         // 获取购物车数量...每次加载本组件就
         this.$http.post('/community/getCartGoodsNum', {
           "projectId":simplestorage.get('projectId'),

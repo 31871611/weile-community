@@ -32,8 +32,47 @@
   }
 }
 
+// 选择小区
+.quartersShow{
+  background: #fff;
+  position: relative;
+  text-align: center;
+  padding-top: pxTorem(32px);
+  .txt{
+    padding:0 pxTorem(28px);
+    display: inline-block;
+    text-align: center;
+    background: #feeeec;
+    height: pxTorem(40px);
+    line-height: pxTorem(40px);
+    @include border-radius(pxTorem(16px));
+    @include font-dpr(22px);
+    color: #3f4548;
+  }
+  .map{
+    position: absolute;
+    left:50%;
+    top:pxTorem(-34px);
+    width: pxTorem(68px);
+    margin-left:pxTorem(-34px);
+    height: pxTorem(68px);
+    background: #fff;
+    @include border-radius(pxTorem(36px));
+    @include display-flex();
+    @include align-items(center);
+    @include justify-content(center);
+    i{
+      display: block;
+      width: pxTorem(26px);
+      height: pxTorem(32px);
+      @extend %icoRem;
+      background-image: url("../images/icon_index_map.png");
+    }
+  }
+}
+
+// 菜单
 .indexNav{
-  margin-bottom: pxTorem(20px);
   $h:184px;
   height: pxTorem($h);
   background: #fff;
@@ -82,21 +121,89 @@
   }
 }
 
+// 通知
+.notice{
+  $h:80px;
+  height: pxTorem($h);
+  background: #fff;
+  @include border1px($color:#e6e6e6,$type:top);
+  @include display-flex();
+  @include align-items(center);
+  @include justify-content(center);
+  i{
+    margin-left:pxTorem(20px);
+    margin-right:pxTorem(20px);
+    display: block;
+    width: pxTorem(26px);
+    height: pxTorem(31px);
+    @extend %icoRem;
+    background-image: url("../images/icon_index_notice.png");
+  }
+  div{
+    @include flex(1);
+    height: pxTorem($h);
+    color: #394043;
+    overflow: hidden;
+    white-space: nowrap;
+    span{
+      display: inline-block;
+      height: pxTorem($h);
+      line-height: pxTorem($h);
+    }
+  }
+  a{
+    margin-left:pxTorem(20px);
+    display: block;
+    color: #9c9fa1;
+    height: pxTorem(22px);
+    width: pxTorem(88px);
+    text-align: center;
+    @include border1px($color:#e6e6e6,$type:left);
+  }
+}
+
 .title{
   height: pxTorem(72px);
   padding:0 pxTorem(20px);
+  margin-top:pxTorem(20px);
   @include display-flex();
   @include align-items(center);
-  @include justify-content();
+  @include justify-content(center);
+  position: relative;
   h2{
+    @include display-flex();
+    @include align-items(center);
+    @include justify-content(center);
     height: pxTorem(28px);
     line-height: pxTorem(28px);
     color: #394043;
     @include font-dpr(30px);
-    border-left:pxTorem(6px) solid $green-base;
-    padding-left:pxTorem(16px);
+    margin:0 pxTorem(8px);
+    &:after,&:before{
+      content: '\20';
+      width: pxTorem(6px);
+      height: pxTorem(6px);
+      background: $green-base;
+      display: block;
+      @include rotate(45deg);
+    }
+    &:before{
+      margin-right: pxTorem(15px);
+    }
+    &:after{
+      margin-left: pxTorem(15px);
+    }
+  }
+  .line{
+    width: pxTorem(48px);
+    height: 1px;
+    background: $green-base;
+    display: block;
   }
   .more{
+    position: absolute;
+    right:pxTorem(20px);
+    top:pxTorem(22px);
     height: pxTorem(28px);
     line-height: pxTorem(28px);
     display: block;
@@ -120,11 +227,6 @@
 // 活动专区
 .activityHomeLayoutList{
   margin-bottom: pxTorem(20px);
-  .title{
-    $color:#f4f4f4;
-    background: #fff;
-    @include border1px($color,$type:bottom);
-  }
   ul{
     $color:#f4f4f4;
     @extend %clearfix;
@@ -214,14 +316,57 @@
   }
 }
 
+
+// 精选列表
+.selectedList{
+  ul{}
+  li{
+    margin-bottom: pxTorem(20px);
+    a{
+      display: block;
+      background: #ffffff;
+      padding:pxTorem(20px);
+    }
+    img{
+      vertical-align: middle;
+      width: 100%;
+    }
+    p{
+      margin-top:pxTorem(16px);
+      @include font-dpr(24px);
+      line-height: pxTorem(36px);
+      color: #3f4548;
+    }
+    .bottom{
+      margin-top: pxTorem(10px);
+      height: pxTorem(40px);
+      @include display-flex();
+      @include align-items(center);
+      @include justify-content();
+    }
+    .price{
+      color: #fa5741;
+      display: block;
+      @include font-dpr(20px);
+      b{
+        font-weight: normal;
+        @include font-dpr(30px);
+      }
+    }
+  }
+}
+
+
 // 团购商品
 .groupBuy{
   margin-bottom: pxTorem(20px);
-  background: #fff;
   height: pxTorem(370px);
   .scroll{
+    background: #fff;
     overflow: auto;
-    margin-left:pxTorem(20px);
+    padding-left:pxTorem(20px);
+    padding-top:pxTorem(20px);
+    padding-bottom:pxTorem(20px);
     $w:192px;
     &::-webkit-scrollbar,
     &::-webkit-scrollbar{
@@ -229,7 +374,7 @@
       opacity: 0;
     }
     ul{
-      width: 999rem
+      padding-right:pxTorem(20px);
     }
     li{
       width: pxTorem($w);
