@@ -183,13 +183,21 @@
         height: pxTorem(120px);
         &:nth-child(1){
           @include border1px($color,$type:bottom);
-          @include border1px($color,$type:right,$label:before);
         }
         &:nth-child(2){
-          @include border1px($color,$type:bottom);
+          @include border1px($color,$type:left);
+          &:after{
+            left:-1px;
+          }
         }
         &:nth-child(3){
           @include border1px($color,$type:right);
+        }
+        &:nth-child(4){
+          @include border1px($color,$type:top);
+          &:after{
+            top:-1px;
+          }
         }
       }
     }

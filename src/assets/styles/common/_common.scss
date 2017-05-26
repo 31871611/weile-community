@@ -61,7 +61,7 @@ $browser-default-font-size: 64px;
 }
 
 
-// 1像素
+// 1像素.before在手机上无法显示
 @mixin border1px($color:#e6e6e6,$type:bottom,$label:after){
   position: relative;
   &:#{$label}{
