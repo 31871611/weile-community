@@ -50,10 +50,6 @@ export default {
   },
   created() {
 
-    // 已登录
-    if(simplestorage.get('HLXK_STATUS')){
-      this.$router.back();
-    }
 
   },
   mounted() {
@@ -171,11 +167,11 @@ export default {
           //simplestorage.set('HLXK_UserInfo', data.userInfo);
           // 是否登录状态
           //simplestorage.set('HLXK_STATUS', true);
-          // 判断用户是否登录
+          // 用于判断用户是否登录
           simplestorage.set('HLXK_UserId', data.userInfo.userId);
-          console.log('登录：' + simplestorage.get('HLXK_UserId'))
+          //console.log('登录：' + simplestorage.get('HLXK_UserId'))
           // 保存登录时间
-          simplestorage.set('HLXK_LOGIN_TIME', new Date().getTime());
+          //simplestorage.set('HLXK_LOGIN_TIME', new Date().getTime());
           // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证
           simplestorage.set('HLXK_AUTH',data.authorizationStatus);
           // 查询本地缓存数据
@@ -206,7 +202,6 @@ export default {
     // 提交本地缓存到购物车
     submitToShopping:function(callback){
       let _this = this;
-      console.log('购物车');
       //////////////////////////////////////////
 
         // 合并本地缓存购物车跟服务器端购物车数据
