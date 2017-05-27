@@ -334,6 +334,7 @@ export default {
     -webkit-touch-callout: none;//禁止长按链接和图片出现菜单
   }
   .pagination{
+    text-align: right;
     /*z-index: 2;*/
     line-height: 1;
     position: absolute;
@@ -341,16 +342,17 @@ export default {
     left:0;
     bottom:8px;
     i{
+      font-size:0;
       display: inline-block;
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       overflow: hidden;
       border-radius: 100%;
-      background:#00bb9c;
-      margin:0 3px;
+      background-color: rgba(255,255,255,.5);
+      margin:0 8px 0 0;
       text-indent: -9999px;
       &.on{
-        background-color: rgba(255,255,255,.5);
+         background:#00bb9c;
       }
     }
   }

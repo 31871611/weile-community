@@ -155,10 +155,17 @@
     margin-left:pxTorem(20px);
     display: block;
     color: #9c9fa1;
-    height: pxTorem(22px);
+
+    height: pxTorem($h);
+    line-height: pxTorem($h);
     width: pxTorem(88px);
     text-align: center;
     @include border1px($color:#e6e6e6,$type:left);
+    &:after{
+      top:50%;
+      height: pxTorem(22px);
+      margin-top:pxTorem(-11px);
+    }
   }
 }
 
@@ -352,6 +359,24 @@
         font-weight: normal;
         @include font-dpr(30px);
       }
+    }
+  }
+  // 没有精选服务
+  .not{
+    padding-top:pxTorem(60px);
+    padding-bottom:pxTorem(60px);
+    i{
+      display: block;
+      width: pxTorem(156px);
+      height: pxTorem(156px);
+      @extend %icoRem;
+      background-image: url("../images/icon_index_notselected.png");
+      margin:0 auto;
+    }
+    p{
+      text-align: center;
+      color: #9c9fa1;
+      margin-top:pxTorem(20px);
     }
   }
 }

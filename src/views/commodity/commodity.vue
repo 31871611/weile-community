@@ -257,6 +257,7 @@ export default {
   name: 'commodity',
   data() {
     return {
+      projectId:simplestorage.get('projectId'),
       isLogin:simplestorage.get('HLXK_UserId') != -1,    // 是否登录
       list:'',                   // 详情数据
       imagesList:'',            //图文详情
@@ -371,31 +372,53 @@ export default {
     // 领取优惠券
     getCoupon:function(id,limit){
       let _this = this;
-      //alert(id + '|' + limit);
 
-      this.$http.post('/community/getStoreCouponToUser', {
-        "projectId":simplestorage.get('projectId'),
-        "storeId": simplestorage.get('HLXK_DISTRIBUTION').id,
-        "couponId": id
-      },{
-        "encryptType":1
-      }).then(function(res) {
-        //console.log(res);
-        if (res.resultCode != 0) {
+      if(_this.isLogin){
+
+        this.$http.post('/community/getStoreCouponToUser', {
+          "projectId":simplestorage.get('projectId'),
+          "storeId": simplestorage.get('HLXK_DISTRIBUTION').id,
+          "couponId": id
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          //console.log(res);
+          if (res.resultCode != 0) {
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
+            return false;
+          }
           _this.$refs.modalToast.toast({
-            txt:res.msg
+            txt:'领取成功'
           });
-          return false;
-        }
-        _this.$refs.modalToast.toast({
-          txt:'领取成功'
-        });
-        //_this.couponList = res.data;
-        //console.log(JSON.stringify(_this.couponList));
+          //_this.couponList = res.data;
+          //console.log(JSON.stringify(_this.couponList));
 
-      }).catch(function(error) {
-        console.log(error)
-      })
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }else{
+
+        _this.$refs.modalAlert.alert({
+          content: '您还未登录，无法领取优惠券',
+          txtOk:'登录',
+          cancelOk:'放弃',
+          onOk: function () {
+            _this.$router.push({
+              path: '/login',
+              query:{
+                'url':'/commodity?id=' + _this.list.commodityId,
+                'projectId':projectId
+              }
+            });
+          },
+          onCancel: function () {
+            return false;
+          }
+        })
+      }
 
     },
     // 数量-减
@@ -474,7 +497,8 @@ export default {
                 _this.$router.push({
                   path: '/login',
                   query:{
-                    'url':'/commodity?id=' + _this.list.commodityId
+                    'url':'/commodity?id=' + _this.list.commodityId,
+                    'projectId':projectId
                   }
                 });
               },
@@ -495,7 +519,8 @@ export default {
             _this.$router.push({
               path: '/login',
               query:{
-                'url':'/commodity?id=' + _this.list.commodityId
+                'url':'/commodity?id=' + _this.list.commodityId,
+                'projectId':projectId
               }
             });
           } else {
@@ -514,27 +539,25 @@ export default {
 
         var numbCount = _this.goodsNum + cart.getIdAmount(_this.list.commodityId);
         if(_this.list.isHouseUser == 1){
-          $.modal({
-            text: '此商品只有该小区住户才能购买',
-            buttons: [
-              {
-                text: '登录',
-                onClick: function() {
-                  _this.$router.push({
-                    path: '/login',
-                    query:{
-                      'url':'/commodity?id=' + _this.list.commodityId
-                    }
-                  });
+
+          _this.$refs.modalAlert.alert({
+            content: '此商品只有该小区住户才能购买',
+            txtOk:'登录',
+            cancelOk:'放弃',
+            onOk: function () {
+              _this.$router.push({
+                path: '/login',
+                query:{
+                  'url':'/commodity?id=' + _this.list.commodityId,
+                  'projectId':projectId
                 }
-              },
-              {
-                text: '放弃',
-                close: true
-              }
-            ]
-          });
-          $shopCarCount.removeClass('beat loading');
+              });
+            },
+            onCancel: function () {
+              return false;
+            }
+          })
+          //$shopCarCount.removeClass('beat loading');
           return;
         }
 
@@ -657,7 +680,8 @@ export default {
                 _this.$router.push({
                   path: '/login',
                   query:{
-                    'url':'/commodity?id=' + _this.list.commodityId
+                    'url':'/commodity?id=' + _this.list.commodityId,
+                    'projectId':projectId
                   }
                 });
               },
@@ -678,7 +702,8 @@ export default {
             _this.$router.push({
               path: '/login',
               query:{
-                'url':'/commodity?id=' + _this.list.commodityId
+                'url':'/commodity?id=' + _this.list.commodityId,
+                'projectId':projectId
               }
             });
           } else {
@@ -695,26 +720,24 @@ export default {
       }else{
 
         if(_this.list.isHouseUser == 1) {
-          $.modal({
-            text: '此商品只有该小区住户才能购买',
-            buttons: [
-              {
-                text: '登录',
-                onClick: function () {
-                  _this.$router.push({
-                    path: '/login',
-                    query:{
-                      'url':'/commodity?id=' + _this.list.commodityId
-                    }
-                  });
+
+          _this.$refs.modalAlert.alert({
+            content: '此商品只有该小区住户才能购买',
+            txtOk:'登录',
+            cancelOk:'放弃',
+            onOk: function () {
+              _this.$router.push({
+                path: '/login',
+                query:{
+                  'url':'/commodity?id=' + _this.list.commodityId,
+                  'projectId':projectId
                 }
-              },
-              {
-                text: '放弃',
-                close: true
-              }
-            ]
-          });
+              });
+            },
+            onCancel: function () {
+              return false;
+            }
+          })
           return;
         }
         // 去结算页面

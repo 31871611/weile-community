@@ -13,10 +13,6 @@
       <input type="text" placeholder="请输入验证码" v-model="code" />
       <span class="getCode" @click="getCode()" :class="{'select':isCode}">{{codeTxt}}</span>
     </div>
-    <!--<div class="itemInfo">-->
-      <!--<i class="password"></i>-->
-      <!--<input type="password" placeholder="请输入验证码" v-model="password" />-->
-    <!--</div>-->
 
     <div class="loginBtn" @click="submit">
       登录

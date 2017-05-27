@@ -25,7 +25,9 @@
             <span class="begin">微信公众平台开发是指为微信公众号进行业务开发，为移动应用、PC端网站、公众号第三方平台（为各行各业公众号运</span>
             <span class="end"></span>
           </div>
-          <a href="">更多</a>
+          <router-link :to="{path:'/noticeList',query: { projectId:projectId }}">
+            更多
+          </router-link>
         </div>
 
         <!-- 首页活动推荐1 -->
@@ -98,6 +100,26 @@
           </ul>
         </div>
 
+        <div class="groupBuy" v-if="groupBuyList">
+          <div class="title">
+            <span class="line"></span><h2>团购</h2><span class="line"></span>
+          </div>
+          <div class="scroll">
+            <ul>
+              <li v-for="list in groupBuyList">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
+                  <img :src="list.url" alt="">
+                  <h3>{{list.name}}</h3>
+                  <div class="price">
+                    <b>￥</b><strong>{{list.price / 1000 | price}}</strong>
+                  </div>
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
         <!-- 精选 -->
         <div class="selectedList" v-if="selectedList">
           <div class="title">
@@ -119,23 +141,10 @@
             </li>
           </ul>
         </div>
-
-        <div class="groupBuy" v-if="groupBuyList">
-          <div class="title">
-            <span class="line"></span><h2>团购</h2><span class="line"></span>
-          </div>
-          <div class="scroll">
-            <ul>
-              <li v-for="list in groupBuyList">
-                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
-                  <img :src="list.url" alt="">
-                  <h3>{{list.name}}</h3>
-                  <div class="price">
-                    <b>￥</b><strong>{{list.price / 1000 | price}}</strong>
-                  </div>
-                </router-link>
-              </li>
-            </ul>
+        <div class="selectedList" v-else>
+          <div class="not">
+            <i></i>
+            <p>当前小区暂无好货上架</p>
           </div>
         </div>
 
@@ -250,6 +259,10 @@
 
 
   <modal-toast ref="modalToast"></modal-toast>
+
+  <transition name="SlideRightLeft">
+    <router-view></router-view>
+  </transition>
 
 </div>
 

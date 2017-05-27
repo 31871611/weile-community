@@ -1,0 +1,75 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+// 公告消息列表
+.noticeList{
+  padding-top:pxTorem(16px);
+  padding-bottom:pxTorem(50px);
+  li{
+    background: #fff;
+    @include border1px($color:#e6e6e6);
+    &:last-child{
+      &:after{
+        display: none;
+      }
+    }
+    a{
+      display: block;
+      padding:pxTorem(20px) 0 pxTorem(20px);
+    }
+    h2{
+      @include font-dpr(28px);
+      color: #3f4548;
+      margin-left:pxTorem(20px);
+      margin-bottom: pxTorem(10px);
+    }
+    .bottom{
+      @include display-flex();
+      @include justify-content();
+    }
+    span{
+      color: #9c9fa1;
+      &.time{
+        margin-left:pxTorem(49px);
+      }
+      &.num{
+        margin-right:pxTorem(20px);
+      }
+    }
+  }
+}
+
+// 公告消息内容
+.noticeDetails{
+  padding:pxTorem(20px);
+  h1{
+    @include font-dpr(28px);
+    color: #3f4548;
+    margin-bottom: 8px;
+    &:before{
+      content: '\20';
+      display: inline-block;
+      width: pxTorem(14px);
+      height: pxTorem(14px);
+      background: $green-base;
+      @include border-radius(50%);
+      margin-right: pxTorem(8px);
+    }
+  }
+  .subTitle{
+    span{
+      color: #9c9fa1;
+      &.time{
+        margin-right:pxTorem(25px);
+      }
+    }
+  }
+  .content{
+    padding-top:pxTorem(15px);
+    p{
+      color: #69747b;
+      line-height: 2;
+    }
+  }
+}

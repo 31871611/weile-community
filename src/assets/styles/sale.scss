@@ -17,5 +17,9 @@
 
 
 
-
+// 加入购物车
+.footerCart{
+  @import "components/footerCart";
+  @include footerCart;
+}
 

@@ -4,6 +4,8 @@ import simplestorage from 'simplestorage.js'
 import Router from 'vue-router'
 import fetch from '../utils/fetch'
 import Home from '@/views/index/index'                                        // 首页
+import noticeList from '@/views/notice/list'                                 // 公告消息列表
+import noticeDetails from '@/views/notice/details'                                 // 公告消息详情
 import userOrder from '@/views/userOrder/userOrder'                           // 我的订单
 import userOrderDetails from '@/views/userOrderDetails/userOrderDetails'     // 我的订单详情
 import userApplyBack from '@/views/userOrderDetails/userApplyBack'          // 申请退货
@@ -25,7 +27,27 @@ const router = new Router({
       component: Home,
       meta:{
         pageTitle: '首页'
-      }
+      },
+      children:[
+        {
+          // 公告消息
+          path: 'noticeList',
+          component: noticeList,
+          meta:{
+            pageTitle: '小区公告'
+          },
+          children:[
+            {
+              // 公告详情
+              path: 'noticeDetails',
+              component: noticeDetails,
+              meta:{
+                pageTitle: '公告详情'
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       // 选择小区

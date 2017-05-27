@@ -31,6 +31,16 @@
       <modal-toast ref="modalToast"></modal-toast>
 
     </article>
+
+    <footer>
+      <div class="footerCart">
+        <div class="total">
+          合计：<b>￥0.00</b><em>(已选{{floatShoppingNum}}件)</em>
+        </div>
+        <div class="next">下一步</div>
+      </div>
+    </footer>
+
   </div>
 
 </template>
@@ -70,45 +80,80 @@ export default {
     }
   },
   mounted() {
+
+    this.init();
+
+    /*
+    // 没有这个接口
     let _this = this;
-    // 显示加载中
-    _this.$refs.modalToast.toast({
-      txt:'加载中',
-      icon:'loading',
-      time:0
-    });
-    // 获取数据列表
-    this.$http.post('/community/getActivityCommodityPage', {
+    this.$http.post('/commodity/getCommodityCarInfo', {
       "projectId":simplestorage.get('projectId'),
-      "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
-      'activityId':this.$route.query.id,
-      "type":3,
-      'pageIndex':1,
-      'pageSize':30
+      "distributionCommunityId":_this.distributionCommunityId
     },{
-      "encryptType":1
-    }).then(function(res){
+      "encryptType":0
+    }).then(function(res) {
       console.log(res);
-      if(res.resultCode != 0){
-        _this.$refs.modalToast.toast({
-          txt:res.msg
-        });
+      if (res.resultCode != 0) {
+        alert(res.msg);
         return false;
       }
-      // 隐藏加载中
-      _this.$refs.modalToast.is = false;
-      _this.lists = res.data.data;
-      console.log(JSON.stringify(_this.lists));
-//      // 无数据
-      if(_this.lists.length <= 0){
-        _this.isData = true;
-      }
+      //_this.lists = res.data;
+      //console.log(JSON.stringify(_this.lists))
 
     }).catch(function(error) {
       console.log(error)
     })
+    */
+
+
+
+
+
+
+
   },
   methods: {
+    init:function(){
+
+      let _this = this;
+      // 显示加载中
+      _this.$refs.modalToast.toast({
+        txt:'加载中',
+        icon:'loading',
+        time:0
+      });
+      // 获取数据列表
+      this.$http.post('/community/getActivityCommodityPage', {
+        "projectId":simplestorage.get('projectId'),
+        "distributionCommunityId": simplestorage.get('HLXK_DISTRIBUTION').id,
+        'activityId':this.$route.query.id,
+        "type":3,
+        'pageIndex':1,
+        'pageSize':30
+      },{
+        "encryptType":1
+      }).then(function(res){
+        console.log(res);
+        if(res.resultCode != 0){
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+          return false;
+        }
+        // 隐藏加载中
+        _this.$refs.modalToast.is = false;
+        _this.lists = res.data.data;
+        console.log(JSON.stringify(_this.lists));
+        // 无数据
+        if(_this.lists.length <= 0){
+          _this.isData = true;
+        }
+
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+    },
     /************************************************************************************************/
     // 修改列表中已添加购物车值
     modifyShopCarCount:function(type,list,index){

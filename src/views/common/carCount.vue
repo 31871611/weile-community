@@ -121,36 +121,36 @@ export default {
 
           }else if(res.resultCode === 8002){
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '验证',
-                  onClick: function() {
-                    _this.$router.push({
-                      path: '/login',
-                      projectId:simplestorage.get('projectId')
-                    })
-                  }
-                },
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+//            $.modal({
+//              text: '此商品只有该小区住户才能购买',
+//              buttons: [
+//                {
+//                  text: '验证',
+//                  onClick: function() {
+//                    _this.$router.push({
+//                      path: '/login',
+//                      projectId:simplestorage.get('projectId')
+//                    })
+//                  }
+//                },
+//                {
+//                  text: '放弃',
+//                  close: true
+//                }
+//              ]
+//            });
 
           }else if(res.resultCode === 8003){
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+//            $.modal({
+//              text: '此商品只有该小区住户才能购买',
+//              buttons: [
+//                {
+//                  text: '放弃',
+//                  close: true
+//                }
+//              ]
+//            });
 
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
             _this.$router.push({
@@ -168,24 +168,24 @@ export default {
 
       } else {
         if(_this.isHouseUser == 1){
-          $.modal({
-            text: '此商品只有该小区住户才能购买',
-            buttons: [
-              {
-                text: '登录',
-                onClick: function() {
-                  _this.$router.push({
-                    path: '/login',
-                    projectId:simplestorage.get('projectId')
-                  })
-                }
-              },
-              {
-                text: '放弃',
-                close: true
-              }
-            ]
-          });
+//          $.modal({
+//            text: '此商品只有该小区住户才能购买',
+//            buttons: [
+//              {
+//                text: '登录',
+//                onClick: function() {
+//                  _this.$router.push({
+//                    path: '/login',
+//                    projectId:simplestorage.get('projectId')
+//                  })
+//                }
+//              },
+//              {
+//                text: '放弃',
+//                close: true
+//              }
+//            ]
+//          });
           return false;
         }
 
