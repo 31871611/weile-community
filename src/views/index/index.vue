@@ -21,13 +21,11 @@
         <!-- 通知 -->
         <div class="notice">
           <i></i>
-          <div ref="scrollConter">
-            <span class="begin">微信公众平台开发是指为微信公众号进行业务开发，为移动应用、PC端网站、公众号第三方平台（为各行各业公众号运</span>
+          <a :href="announcement.announcementDetailUrl" class="scrollConter" ref="scrollConter">
+            <span class="begin">{{announcement.title}}</span>
             <span class="end"></span>
-          </div>
-          <router-link :to="{path:'/noticeList',query: { projectId:projectId }}">
-            更多
-          </router-link>
+          </a>
+          <a class="url" :href="announcement.announcementListUrl">更多</a>
         </div>
 
         <!-- 首页活动推荐1 -->
@@ -100,6 +98,7 @@
           </ul>
         </div>
 
+        <!-- 团购 -->
         <div class="groupBuy" v-if="groupBuyList">
           <div class="title">
             <span class="line"></span><h2>团购</h2><span class="line"></span>
@@ -119,28 +118,46 @@
           </div>
         </div>
 
-
         <!-- 精选 -->
-        <div class="selectedList" v-if="selectedList">
-          <div class="title">
-            <span class="line"></span>
-            <h2>精选</h2>
-            <span class="line"></span>
-            <a href="" class="more">更多<i></i></a>
-          </div>
-          <ul>
-            <li v-for="(list,index) in selectedList">
-              <router-link :to="{path:'commodity',query: { id: list.link,projectId:projectId }}">
-                <img src="http://img.v89.com/group1/M05/07/91/rBAA11kj9-qAI2kzAAAU4DQx98E442_320*120.jpg" alt="">
-                <p>文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字</p>
-                <div class="bottom">
-                  <strong class="price">￥<b>69.00</b>/份</strong>
-                  <div>加减</div>
+        <template v-if="selectedList">
+          <div class="selectedList" v-for="(lists,parentIndex) in selectedList">
+            <div class="title">
+              <template v-if="lists.showName == 1">
+                <span class="line"></span>
+                <h2>{{lists.title}}</h2>
+                <span class="line"></span>
+              </template>
+              <!--
+                  "moreType": 1, //1.便利店首页 2.商品分类 3限时抢购  4商品优惠  5商品专题 6优惠券专题
+                  "moreTypeId": 1,//1和moretypeid对应  1为空 2商品分类id 3为空 4商品优惠id 5，6专题活动id
+              -->
+              <template v-if="lists.showMore == 1">
+                <router-link v-if="lists.moreType == 1" :to="{path:'store',query:{projectId:projectId}}" class="more">更多<i></i></router-link>
+                <router-link v-else-if="lists.moreType == 2" :to="{path:'store',query:{id: lists.moreTypeId,projectId:projectId}}" class="more">更多<i></i></router-link>
+                <router-link v-else-if="lists.moreType == 3" :to="{path:'sale',query:{projectId:projectId}}" class="more">更多<i></i></router-link>
+                <router-link v-else-if="lists.moreType == 4" :to="{path:'fullDiscount',query:{id: lists.moreTypeId,projectId:projectId}}" class="more">更多<i></i></router-link>
+                <router-link v-else-if="lists.moreType == 5" :to="{path:'subject',query:{id: lists.moreTypeId,projectId:projectId}}" class="more">更多<i></i></router-link>
+                <router-link v-else-if="lists.moreType == 6" :to="{path:'subjectCoupon',query:{id: lists.moreTypeId,projectId:projectId}}" class="more">更多<i></i></router-link>
+              </template>
+
+            </div>
+            <ul>
+              <li v-for="(list,index) in lists.appStorePositionImageDtoList" :class="'style' + list.positionType">
+                <div class="box">
+                  <router-link :to="{path:'commodity',query: { id: list.typeId,projectId:projectId }}">
+                    <img :src="list.url" alt="">
+                    <p>{{list.goodsName}}</p>
+                    <div class="bottom">
+                      <strong class="price">￥<b>{{list.price / 1000}}</b></strong>
+                      <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.commodityPageInfoDto.isFlashSale != 1 && list.commodityPageInfoDto.inventory > 0" :index="index" :parent-index="parentIndex" :list="'selectedList'" :commodity-id="list.commodityPageInfoDto.commodityId" :shop-car-count="list.commodityPageInfoDto.shopCarCount" :inventory="list.commodityPageInfoDto.inventory"></car-count>
+                    </div>
+                  </router-link>
                 </div>
-              </router-link>
-            </li>
-          </ul>
-        </div>
+              </li>
+            </ul>
+          </div>
+
+        </template>
         <div class="selectedList" v-else>
           <div class="not">
             <i></i>
@@ -148,6 +165,7 @@
           </div>
         </div>
 
+        <!-- 推荐列表 -->
         <div class="recommend" v-if="recommendList">
           <div class="title">
             <span class="line"></span><h2>推荐商品</h2><span class="line"></span>
@@ -177,7 +195,7 @@
                     马上抢
                   </div>
 
-                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :index="index" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                  <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :index="index" :list="'recommendList'" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                 </div>
               </div>
             </li>
@@ -186,21 +204,24 @@
         </div>
 
         <!-- 领取优惠券弹窗 -->
-        <div class="indexSetCouponAlert" style="display: none">
+        <div class="opacity" v-if="coupon"></div>
+        <div class="indexSetCouponAlert" v-if="coupon">
           <div class="box">
             <div class="bg"></div>
             <div class="list">
               <ul>
-                <li v-for="v in 5">
-                  <div class="left">
-                    <strong class="Price"><b>￥</b>100</strong>
-                  </div>
-                  <div class="right">
-                    <!--可用券-->
-                    <i class="steVoucher"></i>
-                    <span class="txt">订单满100元</span>
-                    <span class="txt">(不含运费)可用</span>
-                  </div>
+                <li v-for="(list,index) in coupon.dataList">
+                  <a href="javascript:;">
+                    <div class="left">
+                      <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
+                    </div>
+                    <div class="right">
+                      <!--可用券-->
+                      <i class="steVoucher"></i>
+                      <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
+                      <span class="txt">(不含运费)可用</span>
+                    </div>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -285,14 +306,15 @@ export default {
       adLists: [],                          // 广告
       quartersLists : null,                 // 小区列表
       nav:null,                             // 首页菜单
-      notice:'',                            // 公告消息
+      announcement:'',                            // 公告消息
       activityHomeLayoutList : null,        // 首页活动专区2...
       categoryHomeLayoutList : null,        // 首页活动专区1...
       selectedList:null,                    // 精选
       groupBuyList : null,                  // 团购商品
       recommendList : null,                 // 商品推荐
       isToContent:false,                    // 是否显示广告图文
-      toContentHtml:''                      // 广告图文内容
+      toContentHtml:'',                     // 广告图文内容
+      coupon:null
     }
   },
   mounted() {
@@ -300,10 +322,8 @@ export default {
     this.init();
     // 获取首页菜单
     this.getNav();
-    // 滚动公告
-    this.$nextTick(function(){
-      this.scrollLeft();
-    });
+    // 获取优惠券
+    this.getCoupon();
 
   },
   methods: {
@@ -315,20 +335,21 @@ export default {
       // 获取首页数据
       this.$http.post('/community/homePage', {
         "projectId":simplestorage.get('projectId'),
-        "distributionCommunityId":distributionCommunityId
+        "distributionCommunityId":distributionCommunityId,
+        "deliveryChannel":2             // 轮播广告: 2微信
       },{
         "encryptType":0
       }).then(function(res) {
-        console.log(res)
+        //console.log(res)
         let data = res.data || {};
-        console.log(JSON.stringify(res.data));
+        //console.log(JSON.stringify(res.data));
         if (res.resultCode == 0) {
           // 轮播广告
           _this.adLists = data.advInfos;
           // 公告消息
-          _this.notice = 1;
+          _this.announcement = data.announcement;
           // 精选列表
-          //if(data.storeSelectionDtoList.length > 0) _this.selectedList = data.storeSelectionDtoList;
+          if(data.storeSelectionDtoList.length > 0) _this.selectedList = data.storeSelectionDtoList;
           // 活动专区...有的没有这个数据？
           if(data.categoryHomeLayoutList.length > 0) _this.categoryHomeLayoutList = data.categoryHomeLayoutList;
           // 活动专区
@@ -337,6 +358,13 @@ export default {
           if(data.groupBuy.data.length > 0) _this.groupBuyList = data.groupBuy.data;
           // 商品推荐
           if(data.recommend.data.length > 0) _this.recommendList = data.recommend.data;
+
+          // 滚动公告
+          _this.$nextTick(function(){
+            _this.scrollLeft();
+          });
+
+          console.log(_this.selectedList);
 
           // 修改小区后
           callback && callback();
@@ -377,21 +405,46 @@ export default {
         console.log(error)
       })
     },
+    // 获取优惠券
+    getCoupon:function(id){
+      let _this = this;
+      let distributionCommunityId = id || simplestorage.get('HLXK_DISTRIBUTION').id;
+
+      this.$http.post('/community/listLatelyLatelyCardCouonPush', {
+        "projectId":simplestorage.get('projectId'),
+        "communityId":distributionCommunityId         // 小区ID
+      },{
+        "encryptType":1
+      }).then(function(res){
+        //console.log(res);
+        if(res.resultCode == 0){
+          if(res.data.dataList.length > 0) _this.coupon = res.data;
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+        }
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+    },
     // 滚动公告
     scrollLeft:function(){
       let scrollConter = this.$refs.scrollConter;
       let begin = scrollConter.querySelector('.begin');
       let end = scrollConter.querySelector('.end');
-      end.innerHTML = begin.innerHTML;
-      function Marquee() {
-        //console.log(end.offsetWidth + '|' + scrollConter.scrollLeft)
-        if (end.offsetWidth - scrollConter.scrollLeft <= 0){
-          scrollConter.scrollLeft -= begin.offsetWidth;
-        }else{
-          scrollConter.scrollLeft++;
+      if(begin.clientWidth > scrollConter.clientWidth){
+        end.innerHTML = begin.innerHTML;
+        function Marquee() {
+          if (end.offsetWidth - scrollConter.scrollLeft <= 0){
+            scrollConter.scrollLeft -= begin.offsetWidth;
+          }else{
+            scrollConter.scrollLeft++;
+          }
         }
+        let MyMar = setInterval(Marquee, 50);
       }
-      let MyMar = setInterval(Marquee, 50);
     },
     // 是否显示小区列表
     goSelectQuarters:function(is){
@@ -439,24 +492,27 @@ export default {
         _this.isSelectQuarters = false;
       })
     },
-    // 跳转到外部url
-    toLink:function(url){
-      location.href = url;
-    },
+    // 广告自定义html
     toContent:function(html){
       this.isToContent = true;
       this.toContentHtml = html;
     },
+    // 选择小区返回
     backHome:function(){
       this.isToContent = false;
     },
-
-
     /************************************************************************************************/
     // 修改列表中已添加购物车值
-    modifyShopCarCount:function(type,list,index){
+    modifyShopCarCount:function(type,list,index,parentIndex){
       let _this = this;
-      Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
+
+      // 精选
+      if(list == 'selectedList'){
+        Vue.set(_this[list][parentIndex]['appStorePositionImageDtoList'][index]['commodityPageInfoDto'],'shopCarCount',_this[list][parentIndex]['appStorePositionImageDtoList'][index]['commodityPageInfoDto']['shopCarCount'] + 1);
+      }else{
+        Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
+      }
+      //Vue.set(_this['selectedList'][index],'shopCarCount',_this['selectedList'][index]['shopCarCount'] + 1);
     },
     // 修改底部购物车值
     shoppingNum:function(num){

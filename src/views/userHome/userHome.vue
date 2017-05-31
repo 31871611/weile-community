@@ -14,9 +14,7 @@
         </div>
 
         <ul class="list">
-
           <li v-for="list in lists"><a :href="list.menuUrl"><div :class="list.icon">{{list.menuName}}</div></a></li>
-
           <!--<li><a href=""><div class="mytopic">我的话题</div></a></li>-->
           <!--<li><a href=""><div class="myactivity">我的活动</div></a></li>-->
           <!--<li><a href=""><div class="myrepair">我的报修</div></a></li>-->
@@ -31,95 +29,6 @@
           <li><router-link :to="{path:'userAddress',query:{projectId,projectId}}"><div class="myreceiptaddress">收货地址</div></router-link></li>
         </ul>
 
-        <!--<ul class="linkList">-->
-          <!--<li>-->
-            <!--<a href="javascript:;" @click="toLink('http://www.baidu.com')">-->
-              <!--<i class="myrepair"></i>-->
-              <!--<span>我的报修</span>-->
-              <!--<em>有问题物业来办</em>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<i class="paymentrecord"></i>-->
-              <!--<span>缴费记录</span>-->
-              <!--<em>生活缴费，轻松缴纳</em>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-        <!--<ul class="linkList">-->
-          <!--<li>-->
-            <!--<router-link to="userOrder">-->
-              <!--<i class="myorder"></i>-->
-              <!--<span>我的订单</span>-->
-              <!--<em>社区购物，免费赠送</em>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</router-link>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<router-link :to="{path:'/userOrder',query:{group:1}}">-->
-              <!--<i class="mygroupbuy"></i>-->
-              <!--<span>我的团购</span>-->
-              <!--<em>来团购，更优惠</em>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</router-link>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<router-link to="userCoupon">-->
-              <!--<i class="mycoupon"></i>-->
-              <!--<span>我的优惠券</span>-->
-              <!--<em>优惠生活，天天购物</em>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</router-link>-->
-          <!--</li>-->
-        <!--</ul>-->
-
-        <!--<ul class="linkList">-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<i class="myauth"></i>-->
-              <!--<span>我的授权</span>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-
-        <!--<ul class="linkList">-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<i class="mytopic"></i>-->
-              <!--<span>我的话题</span>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<i class="myactivity"></i>-->
-              <!--<span>我的活动</span>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-        <!--</ul>-->
-        <!--<ul class="linkList">-->
-          <!--<li>-->
-            <!--<a href="">-->
-              <!--<i class="myaddress"></i>-->
-              <!--<span>我的住址</span>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</a>-->
-          <!--</li>-->
-          <!--<li>-->
-            <!--<router-link to="userAddress">-->
-              <!--<i class="myreceiptaddress"></i>-->
-              <!--<span>我的收货地址</span>-->
-              <!--<i class="arrowR"></i>-->
-            <!--</router-link>-->
-          <!--</li>-->
-        <!--</ul>-->
-
-        <!--<div class="placeholder"></div>-->
       </div>
     </article>
     <footer>

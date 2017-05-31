@@ -9,7 +9,7 @@
 
         <ul class="userCouponList">
           <li v-for="list in lists" :class="{'disabled':!list.commutityType}">
-            <router-link :to="{path:'userCoupon/details',query:{id:list.userCardId,projectId:projectId}}">
+            <a href="javascript:;">
               <div class="left">
                 <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
                 <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
@@ -28,7 +28,7 @@
                 <!--箭头-->
                 <i class="arrowR"></i>
               </div>
-            </router-link>
+            </a>
             <div class="not">
               当前小区不可用
               点击切换

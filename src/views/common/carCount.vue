@@ -110,7 +110,7 @@ export default {
           //console.log(res);
           if (res.resultCode === 0) {
 
-            _this.$emit('modifyShopCarCount','add','recommendList',_this.index,_this.parentIndex);
+            _this.$emit('modifyShopCarCount','add',_this.list,_this.index,_this.parentIndex);
             // 分组件后，数据？..._this.recommendList要怎么处理？console.log(_this['recommendList'][1]);
             //Vue.set(_this.recommendList[index],'shopCarCount',list.shopCarCount + 1);
 

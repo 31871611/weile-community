@@ -154,12 +154,17 @@ const router = new Router({
           path: 'address',
           component: userAddress,
           meta:{
+            requireAuth: true,
             pageTitle: '选择地址'
           },
           children:[
             {
               path: 'add',
-              component: userAddressAdd
+              component: userAddressAdd,
+              meta:{
+                requireAuth: true,
+                pageTitle: '添加地址'
+              }
             }
           ]
         }
@@ -328,6 +333,23 @@ router.beforeEach((to, from, next) => {
   // 修改title
   typeof to.meta.pageTitle !== undefined && setDocumentTitle(to.meta.pageTitle)
 
+
+  /*
+
+   第1次、
+   要有?projectId=111
+   去微信授权
+   回来
+   提交微信用户信息
+   游客或登录
+
+
+   第2次
+   要有?projectId=111
+   是否已微信授权.已授权 HLXK_OPENID
+   游客或登录
+
+  */
 /*******************************************************************************************************/
 
   /*
@@ -340,30 +362,34 @@ router.beforeEach((to, from, next) => {
 
   let projectId = to.query.projectId;
   if(projectId){
-    // 对比.不相等.说明是从不同的公众号进入
+    // 对比.不相等.说明是从不同的公众号进入.清空
     if(simplestorage.get('projectId') != projectId){
-      // 保存
+      // 保存公众号关联id
       simplestorage.set('projectId', projectId)
-      // 不相等要清空小区信息重新选择小区、清空登录状态，还有吗？
+      // 清空小区id
       simplestorage.deleteKey('HLXK_DISTRIBUTION')
-      // 清空登录状态
-      //simplestorage.deleteKey('HLXK_STATUS')
       // 清空openid
       simplestorage.deleteKey('HLXK_OPENID')
+      // 清空sessionId
+      simplestorage.deleteKey('HLXK_SessionId')
+      // 清空SESSION
+      simplestorage.deleteKey('HLXK_SESSION')
+      // 清空KEY
+      simplestorage.deleteKey('HLXK_KEY')
+      // 清空用户登录状态
+      simplestorage.deleteKey('HLXK_UserId')
     }
   }
-  // 不存在返回.后退？
 
 /*******************************************************************************************************/
 
-  // 微信中 && 不存在openid
-  if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID')){
+  // 微信中 && 不存在openid && 不存在HLXK_SessionId
+  if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID') && !simplestorage.get('HLXK_SessionId')){
     /*
         是否是跳转回来的，通过?userInfo={}进行识别？
         ?userInfo={}     对象 而且 要openid字段
         ?userInfo=111    普通字符
     */
-
     // 回来还是在微信、没有openid（还没保存）
     if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
         let wxUserInfo = JSON.parse(to.query.userInfo);
@@ -390,17 +416,16 @@ router.beforeEach((to, from, next) => {
             "headimgurl":wxUserInfo.headimgurl,    //头像
             "unionid":wxUserInfo.unionid
           }).then(function (res) {
-            console.log(res)
+            //console.log(res)
             if (res.resultCode == 0) {
-
+              // 游客或登录
+              isLogin();
             } else {
-
+              // 提交失败
             }
           }).catch(function (error) {
             console.log(error)
           })
-
-
         }
     }else{
       // 跳转去获取openid
@@ -410,23 +435,40 @@ router.beforeEach((to, from, next) => {
         location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
       }
     }
+  }else{
+    // 游客或登录
+    isLogin();
   }
 
 /*******************************************************************************************************/
 
+  // 是否登录.游客或登录
+  function isLogin(){
+    /*
 
+     未登录 没有session  -> 去获取游客
+     未登录 有游客session -> 去登录
+     已登录 有登录session
 
-  // -1是未登录去游客与登录，
-  // 没SESSION，就先去游客获取
-  // 已有游客或登录SESSION && userid == -1(去我的登录页面)
-  if (simplestorage.get('HLXK_UserId') == -1 && simplestorage.get('HLXK_SESSION')){
-    guestLogin();
-  }else{
-    next();
+   */
+    if(simplestorage.get('HLXK_SESSION')){
+      // 有游客session
+      if(simplestorage.get('HLXK_UserId') == -1){
+        // HLXK_UserId == -1，未登录
+        go()
+      }else{
+        next()
+      }
+    }else{
+      // 没有session
+      guestLogin()
+    }
   }
+
 
   // 以游客方式登录
   function guestLogin(){
+    //alert('游客')
     fetch.post('/community/touristLogin', {
       "projectId":simplestorage.get('projectId')
     }).then(function (res) {
@@ -447,36 +489,20 @@ router.beforeEach((to, from, next) => {
     })
   }
 
+
   // 选择小区页或登录页
   function go(){
     // 是否有小区信息
     if(simplestorage.get('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
-      // 是否需要登录
-      if(to.meta.requireAuth){
-        // 相关时间信息.是否时间过期，重新登录？当前时间 - 登录时间 > 1个月
-        //if(simplestorage.get('HLXK_LOGIN_TIME')){
-        //  // 当前时间
-        //  let now = new Date().getTime();
-        //  // 登录时间
-        //  let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
-        //  // 一个月时间毫秒
-        //  let oneMonth = 60 * 60 *  24 * 30 * 1000;
-        //  // 过期.删除登录状态
-        //  if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
-        //}
-
-        // userid == -1 ，去我的登录页面
-        if (simplestorage.get('HLXK_UserId') == -1) {
-          next({
-            path: '/login',
-            query: {
-              url: to.fullPath,
-              projectId:simplestorage.get('projectId')
-            }
-          })
-        }else {
-          next();
-        }
+      // 是否需要登录 && userid == -1 ，去我的登录页面
+      if(to.meta.requireAuth && simplestorage.get('HLXK_UserId') == -1){
+        next({
+          path: '/login',
+          query: {
+            url: to.fullPath,
+            projectId:simplestorage.get('projectId')
+          }
+        })
       }else{
         next()
       }
@@ -495,3 +521,22 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router;
+
+
+/*
+
+ // 相关时间信息.是否时间过期，重新登录？当前时间 - 登录时间 > 1个月
+ //if(simplestorage.get('HLXK_LOGIN_TIME')){
+ //  // 当前时间
+ //  let now = new Date().getTime();
+ //  // 登录时间
+ //  let loginTime = simplestorage.get('HLXK_LOGIN_TIME');
+ //  // 一个月时间毫秒
+ //  let oneMonth = 60 * 60 *  24 * 30 * 1000;
+ //  // 过期.删除登录状态
+ //  if((now - loginTime) > oneMonth) simplestorage.set('HLXK_STATUS', false)
+ //}
+
+
+
+*/

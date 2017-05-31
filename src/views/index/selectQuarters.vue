@@ -46,14 +46,14 @@ export default {
       "encryptType":1
     }).then(function(res){
       //console.log(res);
-      if(res.resultCode != 0){
+      //console.log(res.data);
+      if(res.resultCode == 0){
+        _this.quartersLists = res.data;
+      }else{
         _this.$refs.modalToast.toast({
           txt:res.msg
         });
-        return false;
       }
-      _this.quartersLists = res.data;
-      //console.log(res.data);
     }).catch(function(error) {
       console.log(error)
     })

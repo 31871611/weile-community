@@ -139,23 +139,24 @@
     @extend %icoRem;
     background-image: url("../images/icon_index_notice.png");
   }
-  div{
+  .scrollConter{
+    display: block;
     @include flex(1);
     height: pxTorem($h);
-    color: #394043;
     overflow: hidden;
     white-space: nowrap;
     span{
       display: inline-block;
       height: pxTorem($h);
       line-height: pxTorem($h);
+      vertical-align: top;
+      color: #394043;
     }
   }
-  a{
+  .url{
     margin-left:pxTorem(20px);
     display: block;
     color: #9c9fa1;
-
     height: pxTorem($h);
     line-height: pxTorem($h);
     width: pxTorem(88px);
@@ -326,13 +327,50 @@
 
 // 精选列表
 .selectedList{
-  ul{}
+  ul{
+    @extend %clearfix;
+  }
   li{
+    float:left;
     margin-bottom: pxTorem(20px);
+    &.style1{
+      a{
+        padding:pxTorem(20px);
+      }
+      img{
+        height: pxTorem(240px);
+      }
+    }
+    &.style2{
+      width: 50%;
+      //&:nth-child(even){
+      //  .box{
+      //    margin-left:pxTorem(20px);
+      //  }
+      //}
+      .box{
+        margin-right: pxTorem(20px);
+        a{
+          padding-bottom: pxTorem(10px);
+        }
+        img{
+          height: pxTorem(290px);
+        }
+        p{
+          margin-left:pxTorem(20px);
+          margin-right:pxTorem(20px);
+        }
+        .bottom{
+          margin-left:pxTorem(20px);
+        }
+      }
+    }
+    .box{
+
+    }
     a{
-      display: block;
       background: #ffffff;
-      padding:pxTorem(20px);
+      display: block;
     }
     img{
       vertical-align: middle;
@@ -480,6 +518,9 @@
     margin: 0 auto;
     li{
       background-image: url("../images/icon_coupon_small@2x.png");
+      height: pxTorem(128px);
+    }
+    a{
       height: pxTorem(128px);
     }
     span{

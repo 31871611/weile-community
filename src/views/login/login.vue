@@ -46,7 +46,6 @@ export default {
   },
   created() {
 
-
   },
   mounted() {
     let _this = this;
@@ -64,7 +63,6 @@ export default {
       let t = null;
 
       if(_this.isCode){
-        //console.log('不可点');
         return false;
       }
 
@@ -131,12 +129,6 @@ export default {
         });
         return false;
       }
-//      if(_this.password.length < 6){
-//        _this.$refs.modalToast.toast({
-//          txt:'请输入不少于6位数的密码'
-//        });
-//        return false;
-//      }
       // 显示加载中
       _this.$refs.modalToast.toast({
         txt:'加载中',
@@ -159,13 +151,8 @@ export default {
         if(res.resultCode == 0){
           simplestorage.set('HLXK_SESSION', data.session);
           simplestorage.set('HLXK_KEY', data.key);
-          // 保存用户信息
-          //simplestorage.set('HLXK_UserInfo', data.userInfo);
-          // 是否登录状态
-          //simplestorage.set('HLXK_STATUS', true);
           // 用于判断用户是否登录
           simplestorage.set('HLXK_UserId', data.userInfo.userId);
-          //console.log('登录：' + simplestorage.get('HLXK_UserId'))
           // 保存登录时间
           //simplestorage.set('HLXK_LOGIN_TIME', new Date().getTime());
           // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证
