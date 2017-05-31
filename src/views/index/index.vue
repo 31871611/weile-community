@@ -204,8 +204,8 @@
         </div>
 
         <!-- 领取优惠券弹窗 -->
-        <div class="opacity" v-if="coupon"></div>
-        <div class="indexSetCouponAlert" v-if="coupon">
+        <div class="opacity" v-if="isCoupon"></div>
+        <div class="indexSetCouponAlert" v-if="isCoupon">
           <div class="box">
             <div class="bg"></div>
             <div class="list">
@@ -226,7 +226,7 @@
               </ul>
             </div>
             <p class="hint">优惠券已放入您的帐户，请在[我的]页面查看</p>
-            <i class="exit"></i>
+            <i class="exit" @click="exitCoupon()"></i>
           </div>
         </div>
 
@@ -314,7 +314,8 @@ export default {
       recommendList : null,                 // 商品推荐
       isToContent:false,                    // 是否显示广告图文
       toContentHtml:'',                     // 广告图文内容
-      coupon:null
+      coupon:null,                          // 优惠券数据
+      isCoupon:false                        // 优惠券弹窗
     }
   },
   mounted() {
@@ -364,7 +365,7 @@ export default {
             _this.scrollLeft();
           });
 
-          console.log(_this.selectedList);
+          //console.log(_this.selectedList);
 
           // 修改小区后
           callback && callback();
@@ -418,7 +419,11 @@ export default {
       }).then(function(res){
         //console.log(res);
         if(res.resultCode == 0){
-          if(res.data.dataList.length > 0) _this.coupon = res.data;
+          if(res.data.dataList.length > 0){
+            _this.coupon = res.data;
+            // 显示弹窗
+            _this.isCoupon = true;
+          }
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -500,6 +505,9 @@ export default {
     // 选择小区返回
     backHome:function(){
       this.isToContent = false;
+    },
+    exitCoupon:function(){
+      this.isCoupon = false;
     },
     /************************************************************************************************/
     // 修改列表中已添加购物车值
