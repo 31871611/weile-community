@@ -1,30 +1,40 @@
 export var opModal = {
   toast:function(opt,callback){
-    alert(opt.time);
+
     var opt = {
       icon: opt.icon || false,             // icon：成功success、错误error、警告warning、通知info、加载中loading
       txt: opt.txt || '提示',
-      time: (opt.time === 0 || opt.time) || 2                 // time：传false一直显示
+      time: opt.time || 2,                 // time：传999一直显示
+      del: opt.del || false
     };
+
+    // 删除
+    if(opt.del){
+      let div = document.querySelector('.modalToast');
+      div.parentNode.removeChild(div);
+      return false;
+    }
 
     // 创建
     var div = document.createElement("div");
     var html = '';
-    html += '<div class="opacity"></div>';
-    html += '<div class="modalToast">';
+    //html += '<div class="opacity"></div>';
+    html += '<div class="box">';
     if(opt.icon){
       html += '<i class="'+ opt.icon +'"></i>';
     }
     html += '<span>'+ opt.txt +'</span>';
-    html += '</div>';
+    html += '<div>';
 
+    div.className = 'modalToast';
     div.innerHTML = html;
     document.body.appendChild(div);
-    alert(opt.time);
-    if(opt.time){
+
+    if(opt.time == 999){
       return false;
     }
-    // 删除.3秒
+
+    // 删除
     setTimeout(function(){
       div.parentNode.removeChild(div);
       callback && callback();
@@ -46,7 +56,6 @@ export var opModal = {
     var div = document.createElement("div");
     var opacity = document.createElement("div");
     var html = '';
-    //html += '<div class="opacity"></div>';
     html += '<div class="alertBox">';
     if(opt.title ){
       html += '<div class="alertTitle">';
@@ -97,6 +106,10 @@ opModal.alert({
   ok:"这是确认",
   onOk:function(){
     alert('点了确定')
+  },
+  cancel:"这是消失",
+  onCancel:function(){
+
   }
 })
 */

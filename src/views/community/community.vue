@@ -3,6 +3,7 @@
   <div>
     社区
     <div @click="toLink()">跳转</div>
+    <div @click="del()">删除</div>
   </div>
 
 </template>
@@ -23,7 +24,17 @@ export default {
     // openid没有失效时间，一个微信对应不同的公众号有不同的openid的
 
 */
-
+//    opModal.toast({
+//      txt:'提示',
+//      time:999
+//    })
+//
+//
+//    setTimeout(function(){
+//      opModal.toast({
+//        del:true
+//      })
+//    },3000)
 
   },
   methods: {
@@ -45,6 +56,9 @@ export default {
         }
       })
       return false;
+
+    },
+    del:function(){
 
     }
   },
