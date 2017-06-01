@@ -15,6 +15,7 @@
     "es6-promise": "^4.1.0",
     "fastclick": "^1.0.6",
     "fingerprintjs": "^0.5.3",
+    "jquery": "^3.2.1",
     "lodash": "^4.17.4",
     "qs": "^6.4.0",
     "simplestorage.js": "^0.2.1",
@@ -67,6 +68,9 @@
     "npm": ">= 3.0.0"
   },
   "browserslist": [
-    "last 10 Chrome versions", "last 5 Firefox versions", "Safari >= 6", "ie > 8"
+    "last 10 Chrome versions",
+    "last 5 Firefox versions",
+    "Safari >= 6",
+    "ie > 8"
   ]
 }

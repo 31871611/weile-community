@@ -1,15 +1,34 @@
+<style scoped>
+
+  .boll{position:absolute;border-radius:50px;width:50px;height:50px;background:red;}
+  #target{position:absolute;left:100px;top:300px;width: 50px;height: 50px;background: #f00;}
+
+</style>
 <template>
 
-  <div>
-    社区
-    <div @click="toLink()">跳转</div>
-    <div @click="del()">删除</div>
+  <div class="wrap">
+    <article class="main">
+
+      社区
+      <div @click="toLink()">跳转</div>
+      <div @click="del()">删除</div>
+      <div @click="add()">add</div>
+
+
+      <div id="boll" class="boll"></div>
+    </article>
+    <footer>
+      <!-- 父级不能position:relative; -->
+      <div id="target">footer</div>
+    </footer>
   </div>
 
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
 import {opModal} from '../../plugins/common'
+import $ from 'jquery'
+import {Parabola} from '../../plugins/parabola'
 
 export default {
   name: 'community',
@@ -36,6 +55,8 @@ export default {
 //      })
 //    },3000)
 
+//    console.log(new Parabola())
+
   },
   methods: {
     // 跳转到外部url
@@ -59,6 +80,20 @@ export default {
 
     },
     del:function(){
+
+    },
+    add:function(){
+
+      var bool = new Parabola({
+        el: "#boll"
+      });
+
+      bool.setOptions({
+        targetEl: $("#target"),
+        curvature: 0.002,
+        duration: 1000
+      });
+      bool.start();
 
     }
   },
