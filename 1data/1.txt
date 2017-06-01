@@ -19,22 +19,18 @@ assess_token失效时间7200
 路由调整？。。。
 
 vuex
-我的订单列表返回.重新获取数据后的.滚动记录
 
-
-新进入，选择小区列表要2次
 首页优惠券状态码？
 
+sessionid不会过期
 
 
 ///////////////////////////////////////////////////////
 
-
-
-// 首页列表
-"isHouseUser": "",//是否住户专享：1是，0否
 详情页立即购买-需要小区认证才能购买
 
 "communityType": "1",//参与小区类型：1全部小区，2指定小区
 
+///////////////////////////////////////////////////////
 
+{"projectId":"1","HLXK_OPENID":"oguZ0t5CPc76PXM_ggdlzm7koS-0","HLXK_UserInfo":{"subscribe":1,"openid":"oguZ0t5CPc76PXM_ggdlzm7koS-0","nickname":"灰","sex":1,"language":"zh_CN","city":"福州","province":"福建","country":"中国","headimgurl":"http://wx.qlogo.cn/mmopen/ajNVdqHZLLB753BZsfxvv3WicaEibwZjnCllLibTpXeU8lREaKDPswvia9W7BHAlROvtRx4Nse35bbvX0xy0HeylmA/0","subscribe_time":1494833835,"unionid":"oxPGgwgHJRJ9r2H8VDeMXP4eFJDk","remark":"","groupid":0,"tagid_list":[]},"HLXK_SessionId":"1-oguZ0t5CPc76PXM_ggdlzm7koS-0","HLXK_SESSION":"eyJ0b2tlbiI6IjNhOTRmOTZkMmQ2NDQxNDZhZjNlMzkyMzFiZGU2ZWQ1Iiwic2Vzc2lvbktleSI6ImQ3NjU5ZGZiYTM5MzRkYmM4ZTc1ZGYyZGVlYTRiZDE4In0=","HLXK_KEY":"fd0a017517c74f0d","HLXK_UserId":-1,"HLXK_DISTRIBUTION":{"communityId":2,"isShow":null,"ifCheck":null,"authorizationStatus":0,"name":"海润滨江B区","id":2}}

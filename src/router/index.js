@@ -349,6 +349,8 @@ router.beforeEach((to, from, next) => {
    是否已微信授权.已授权 HLXK_OPENID
    游客或登录
 
+   出现第3次（跳到选择小区）会带一堆参数
+
   */
 /*******************************************************************************************************/
 
@@ -362,7 +364,7 @@ router.beforeEach((to, from, next) => {
 
   let projectId = to.query.projectId;
   if(projectId){
-    // 对比.不相等.说明是从不同的公众号进入.清空
+    // projectId不相等.说明是从不同的公众号进入.清空
     if(simplestorage.get('projectId') != projectId){
       // 保存公众号关联id
       simplestorage.set('projectId', projectId)
@@ -383,8 +385,15 @@ router.beforeEach((to, from, next) => {
 
 /*******************************************************************************************************/
 
-  // 微信中 && 不存在openid && 不存在HLXK_SessionId
-  if(/MicroMessenger/i.test(navigator.userAgent) && !simplestorage.get('HLXK_OPENID') && !simplestorage.get('HLXK_SessionId')){
+  /*
+
+    什么情况下OPENID、SessionId、SESSION，存在
+    只有保存了才会
+
+  */
+
+  // 不存在openid && 不存在SessionId && 不存在SESSION
+  if(!simplestorage.get('HLXK_OPENID') && !simplestorage.get('HLXK_SessionId') && !simplestorage.get('HLXK_SESSION')){
     /*
         是否是跳转回来的，通过?userInfo={}进行识别？
         ?userInfo={}     对象 而且 要openid字段
@@ -404,28 +413,12 @@ router.beforeEach((to, from, next) => {
           // 保存sessionId
           simplestorage.set('HLXK_SessionId', to.query.sessionId);
 
-          // 保存微信授权信息
-          fetch.post('/community/authorize', {
-            "projectId":simplestorage.get('projectId'),
-            "openid":wxUserInfo.openid,
-            "nickname":wxUserInfo.nickname,
-            "sex":wxUserInfo.sex,
-            "country":wxUserInfo.country,
-            "province":wxUserInfo.province,
-            "city":wxUserInfo.city,
-            "headimgurl":wxUserInfo.headimgurl,    //头像
-            "unionid":wxUserInfo.unionid
-          }).then(function (res) {
-            //console.log(res)
-            if (res.resultCode == 0) {
-              // 游客或登录
-              isLogin();
-            } else {
-              // 提交失败
-            }
-          }).catch(function (error) {
-            console.log(error)
-          })
+          // 保存微信用户信息...这个时候还有没Session值
+          //saveWxUserInfo()
+
+          // 去游客或登录
+          isLogin();
+
         }
     }else{
       // 跳转去获取openid
@@ -436,9 +429,36 @@ router.beforeEach((to, from, next) => {
       }
     }
   }else{
-    // 游客或登录
     isLogin();
   }
+
+
+  // 保存微信用户信息
+  function saveWxUserInfo(){
+
+    fetch.post('/community/authorize', {
+      "projectId":simplestorage.get('projectId'),
+      "openid":wxUserInfo.openid,
+      "nickname":wxUserInfo.nickname,
+      "sex":wxUserInfo.sex,
+      "country":wxUserInfo.country,
+      "province":wxUserInfo.province,
+      "city":wxUserInfo.city,
+      "headimgurl":wxUserInfo.headimgurl,    //头像
+      "unionid":wxUserInfo.unionid
+    }).then(function (res) {
+      //console.log(res)
+      if (res.resultCode == 0) {
+
+      } else {
+        // 提交失败
+      }
+    }).catch(function (error) {
+      console.log(error)
+    })
+
+  }
+
 
 /*******************************************************************************************************/
 

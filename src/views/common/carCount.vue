@@ -4,7 +4,6 @@
   <div v-else class="selectNum">
     <div class="remove" v-show="num > 0" @click.stop.prevent="remove()"></div>
     <input type="text" v-show="num > 0" value="1" v-model="num" readonly="readonly" />
-    <!--<input type="text" value="100" />-->
     <div class="add" @click.stop.prevent="add($event)"></div>
   </div>
 
@@ -13,6 +12,7 @@
 import simplestorage from 'simplestorage.js'
 import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
+import {opModal} from '../../plugins/common'
 
 export default {
   props:{
@@ -96,6 +96,16 @@ export default {
         return false;
       }
 
+      // 购物车页面
+      if(_this.list == 'shopping'){
+        // 显示加载中...
+        var div = document.createElement("div");
+        var html = '<div class="box"><i class="loading"></i><span>加载中</span></div>';
+        div.className = 'modalToast';
+        div.innerHTML = html;
+        document.body.appendChild(div);
+      }
+
       // 修改购物车数量
       if (isLogin) {
         // 提交商品到购物车
@@ -120,38 +130,30 @@ export default {
             _this.$emit('increment', event.target);
 
           }else if(res.resultCode === 8002){
-            //用户未认证
-//            $.modal({
-//              text: '此商品只有该小区住户才能购买',
-//              buttons: [
-//                {
-//                  text: '验证',
-//                  onClick: function() {
-//                    _this.$router.push({
-//                      path: '/login',
-//                      projectId:simplestorage.get('projectId')
-//                    })
-//                  }
-//                },
-//                {
-//                  text: '放弃',
-//                  close: true
-//                }
-//              ]
-//            });
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"验证",
+              onOk:function(){
+                _this.$router.push({
+                  path: '/login',
+                  projectId:simplestorage.get('projectId')
+                })
+              },
+              cancel:'放弃',
+              onCancel:function(){
 
+              }
+            })
+            return false;
           }else if(res.resultCode === 8003){
-            //用户未认证
-//            $.modal({
-//              text: '此商品只有该小区住户才能购买',
-//              buttons: [
-//                {
-//                  text: '放弃',
-//                  close: true
-//                }
-//              ]
-//            });
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"放弃",
+              onOk:function(){
 
+              }
+            })
+            return false;
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
             _this.$router.push({
               path: '/login',
@@ -162,33 +164,34 @@ export default {
             return false;
           }
 
+          // 购物车页面
+          if(_this.list == 'shopping'){
+            // 移除加载中
+            div.parentNode.removeChild(div);
+          }
+
         }).catch(function(error) {
           console.log(error)
         })
 
       } else {
         if(_this.isHouseUser == 1){
-//          $.modal({
-//            text: '此商品只有该小区住户才能购买',
-//            buttons: [
-//              {
-//                text: '登录',
-//                onClick: function() {
-//                  _this.$router.push({
-//                    path: '/login',
-//                    projectId:simplestorage.get('projectId')
-//                  })
-//                }
-//              },
-//              {
-//                text: '放弃',
-//                close: true
-//              }
-//            ]
-//          });
+          opModal.alert({
+            content:"此商品只有该小区住户才能购买",
+            ok:"验证",
+            onOk:function(){
+              _this.$router.push({
+                path: '/login',
+                projectId:simplestorage.get('projectId')
+              })
+            },
+            cancel:'放弃',
+            onCancel:function(){
+
+            }
+          })
           return false;
         }
-
 
         // 修改本地缓存中数据
         cart.increase(_this.commodityId);
@@ -202,6 +205,13 @@ export default {
         _this.$emit('modifyNotLoginCarList');
         // 底部购物车动画使用
         _this.$emit('increment', event.target);
+
+        // 购物车页面
+        if(_this.list == 'shopping'){
+          // 移除加载中
+          div.parentNode.removeChild(div);
+        }
+
       }
 
     },
@@ -210,6 +220,16 @@ export default {
       let url;
       let _this = this;
       let isLogin = simplestorage.get('HLXK_UserId') != -1;
+
+      // 购物车页面
+      if(_this.list == 'shopping'){
+        // 显示加载中...
+        var div = document.createElement("div");
+        var html = '<div class="box"><i class="loading"></i><span>加载中</span></div>';
+        div.className = 'modalToast';
+        div.innerHTML = html;
+        document.body.appendChild(div);
+      }
 
       if(isLogin){
 
@@ -235,41 +255,41 @@ export default {
             // 修改底部购物车值
             _this.$emit('shoppingNum',res.data.totalCount);
           }else if(res.resultCode === 8002){
-            //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '验证',
-                  onClick: function() {
-                    _this.$router.push({
-                      path: '/login',
-                      projectId:simplestorage.get('projectId')
-                    })
-                  }
-                },
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"验证",
+              onOk:function(){
+                _this.$router.push({
+                  path: '/login',
+                  projectId:simplestorage.get('projectId')
+                })
+              },
+              cancel:'放弃',
+              onCancel:function(){
+
+              }
+            })
+            return false;
           }else if(res.resultCode === 8003) {
             //用户未认证
-            $.modal({
-              text: '此商品只有该小区住户才能购买',
-              buttons: [
-                {
-                  text: '放弃',
-                  close: true
-                }
-              ]
-            });
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"放弃",
+              onOk:function(){
+              }
+            })
+            return false;
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
             _this.$router.push({ path: '/login'})
           }else{
             alert(res.msg);
             return false;
+          }
+
+          // 购物车页面
+          if(_this.list == 'shopping'){
+            // 移除加载中
+            div.parentNode.removeChild(div);
           }
 
         }).catch(function(error) {
@@ -283,6 +303,13 @@ export default {
         _this.num = cart.getIdAmount(_this.commodityId);
         // 给购物车页面使用
         _this.$emit('modifyNotLoginCarList');
+
+        // 购物车页面
+        if(_this.list == 'shopping'){
+          // 移除加载中
+          div.parentNode.removeChild(div);
+        }
+
       }
 
     }

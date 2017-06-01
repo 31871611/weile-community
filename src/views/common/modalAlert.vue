@@ -2,14 +2,14 @@
 
   <div class="modalAlert" v-if="is">
     <!-- alert -->
-    <div class="alert">
-      <div class="title" v-show="title">
+    <div class="alertBox">
+      <div class="alertTitle" v-show="title">
         <h2>{{title}}</h2>
       </div>
-      <div class="content">
+      <div class="alertContent">
         <p>{{content}}</p>
       </div>
-      <div class="btns">
+      <div class="alertBtns">
         <button class="cancel" v-show="onCancel" @click="op('cancel')">{{cancelOk}}</button>
         <button class="confirm" @click="op('ok')">{{txtOk}}</button>
       </div>

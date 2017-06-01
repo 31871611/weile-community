@@ -105,13 +105,20 @@ fetch.interceptors.response.use(function(response) {
   // 重新请求游客接口...
   if(_d.resultCode == 1000){
     // 删除状态
-    simplestorage.deleteKey('HLXK_SESSION')
-    //simplestorage.deleteKey('projectId')
-    //simplestorage.deleteKey('HLXK_SESSION')
-    //simplestorage.deleteKey('HLXK_KEY')
+    // 清空小区id
     simplestorage.deleteKey('HLXK_DISTRIBUTION')
+    // 清空openid
+    simplestorage.deleteKey('HLXK_OPENID')
+    // 清空sessionId
+    simplestorage.deleteKey('HLXK_SessionId')
+    // 清空SESSION
+    simplestorage.deleteKey('HLXK_SESSION')
+    // 清空KEY
+    simplestorage.deleteKey('HLXK_KEY')
+    // 清空用户登录状态
+    simplestorage.deleteKey('HLXK_UserId')
     // 提示
-    console.log('登录异常，请重新登录');
+    alert('状态异常' + location.href);
     // 刷新页面.跳转去登录页面
     location.reload()
     return false;

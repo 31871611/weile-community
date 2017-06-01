@@ -36,6 +36,7 @@ export default {
   name: 'login',
   data() {
     return {
+      wxUserInfo:'',
       telephone:'',
       password:'',
       code:'',
@@ -54,8 +55,39 @@ export default {
     }else{
       _this.url = '/';
     }
+
+    // 保存微信用户信息
+    _this.saveWxUserInfo();
+
   },
   methods: {
+    // 保存微信用户信息
+    saveWxUserInfo:function(){
+      let _this = this;
+      let wxUserInfo = simplestorage.get('HLXK_UserInfo');
+
+      _this.$http.post('/community/authorize', {
+        "projectId":simplestorage.get('projectId'),
+        "openid":wxUserInfo.openid,
+        "nickname":wxUserInfo.nickname,
+        "sex":wxUserInfo.sex,
+        "country":wxUserInfo.country,
+        "province":wxUserInfo.province,
+        "city":wxUserInfo.city,
+        "headimgurl":wxUserInfo.headimgurl,    //头像
+        "unionid":wxUserInfo.unionid
+      }).then(function (res) {
+        //console.log(res)
+        if (res.resultCode == 0) {
+
+        } else {
+          // 提交失败
+        }
+      }).catch(function (error) {
+        console.log(error)
+      })
+
+    },
     // 获取验证码
     getCode:function(){
       let _this = this;

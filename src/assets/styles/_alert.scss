@@ -16,13 +16,13 @@
   background: rgba(0,0,0,.3);
   z-index:100;
 
-  .alert{
+  .alertBox{
     z-index:29;
     background:#fff;
     width:85%;
     @include border-radius(pxTorem(4px));
   }
-  .title{
+  .alertTitle{
     padding-top: pxTorem(30px);
     h2{
       text-align: center;
@@ -30,7 +30,7 @@
       color:#333;
     }
   }
-  .content{
+  .alertContent{
     $h:72px;
     padding: pxTorem(20px) pxTorem(40px) pxTorem(20px);
     border-bottom: 1px solid #ddd;
@@ -42,7 +42,7 @@
       //line-height: pxTorem($h);
     }
   }
-  .btns{
+  .alertBtns{
     $h:70px;
     @include display-flex();
     button{
@@ -87,46 +87,46 @@
 */
 
 // actionSheet上拉
-.modalActionSheet{
-  $h:78px;
-  $fontSize:32px;
-  z-index:100;
-  position: fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  right:0;
-  .box{
-    position: absolute;
-    left:0;
-    bottom: 0;
-    width:100%;
-    z-index:101;
-    text-align: center;
-    background: #e0e0e0;
-  }
-  h2{
-    background:#fff;
-    @include font-dpr($fontSize);
-    height:pxTorem($h);
-    line-height:pxTorem($h);
-  }
-  ul{
-    margin-bottom: pxTorem(10px);
-    li{
-      background:#fff;
-      color: #333;
-      height:pxTorem($h);
-      line-height:pxTorem($h);
-      @include font-dpr($fontSize);
-      border-bottom: 1px solid #e0e0e0;
-    }
-  }
-  .btn{
-    color: #333;
-    height:pxTorem($h);
-    line-height:pxTorem($h);
-    @include font-dpr($fontSize);
-    background-color: #fff;
-  }
-}
+//.modalActionSheet{
+//  $h:78px;
+//  $fontSize:32px;
+//  z-index:100;
+//  position: fixed;
+//  left:0;
+//  top:0;
+//  bottom:0;
+//  right:0;
+//  .box{
+//    position: absolute;
+//    left:0;
+//    bottom: 0;
+//    width:100%;
+//    z-index:101;
+//    text-align: center;
+//    background: #e0e0e0;
+//  }
+//  h2{
+//    background:#fff;
+//    @include font-dpr($fontSize);
+//    height:pxTorem($h);
+//    line-height:pxTorem($h);
+//  }
+//  ul{
+//    margin-bottom: pxTorem(10px);
+//    li{
+//      background:#fff;
+//      color: #333;
+//      height:pxTorem($h);
+//      line-height:pxTorem($h);
+//      @include font-dpr($fontSize);
+//      border-bottom: 1px solid #e0e0e0;
+//    }
+//  }
+//  .btn{
+//    color: #333;
+//    height:pxTorem($h);
+//    line-height:pxTorem($h);
+//    @include font-dpr($fontSize);
+//    background-color: #fff;
+//  }
+//}

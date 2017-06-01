@@ -329,11 +329,13 @@
 .selectedList{
   ul{
     @extend %clearfix;
+    padding-left:pxTorem(20px);
   }
   li{
     float:left;
     margin-bottom: pxTorem(20px);
     &.style1{
+      margin-left: pxTorem(-20px);
       a{
         padding:pxTorem(20px);
       }
@@ -343,11 +345,6 @@
     }
     &.style2{
       width: 50%;
-      //&:nth-child(even){
-      //  .box{
-      //    margin-left:pxTorem(20px);
-      //  }
-      //}
       .box{
         margin-right: pxTorem(20px);
         a{
@@ -422,14 +419,15 @@
 
 // 团购商品
 .groupBuy{
-  margin-bottom: pxTorem(20px);
-  height: pxTorem(370px);
+  //margin-bottom: pxTorem(20px);
+  //height: pxTorem(370px);
   .scroll{
     background: #fff;
     overflow: auto;
     padding-left:pxTorem(20px);
     padding-top:pxTorem(20px);
-    padding-bottom:pxTorem(20px);
+    //padding-bottom:pxTorem(20px);
+    height: pxTorem(300px);
     $w:192px;
     &::-webkit-scrollbar,
     &::-webkit-scrollbar{

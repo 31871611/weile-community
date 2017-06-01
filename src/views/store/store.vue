@@ -41,8 +41,8 @@
                 <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                   <div class="bottom">
-                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
-                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
                     <div class="go" v-if="list.isFlashSale == 1">
                       马上抢
                     </div>
@@ -67,8 +67,8 @@
                 <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
                   <div class="bottom">
-                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000 | price}}<b>元/{{list.unit}}</b></strong>
-                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000 | price}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
                     <div class="go" v-if="list.isFlashSale == 1">
                       马上抢
                     </div>

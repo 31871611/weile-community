@@ -143,7 +143,7 @@
             </div>
             <ul>
               <li v-for="(list,index) in lists.appStorePositionImageDtoList" :class="'style' + list.positionType">
-                <div class="box">
+                <div class="box" :class="{'ml':list.positionType == 2 && list.positionType % 1}">
                   <router-link :to="{path:'commodity',query: { id: list.typeId,projectId:projectId }}">
                     <img :src="list.url" alt="">
                     <p>{{list.goodsName}}</p>
@@ -365,7 +365,7 @@ export default {
             _this.scrollLeft();
           });
 
-          //console.log(_this.selectedList);
+          //console.log(JSON.stringify(_this.selectedList));
 
           // 修改小区后
           callback && callback();

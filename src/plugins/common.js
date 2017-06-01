@@ -1,8 +1,4 @@
-
-
-
-
-var opModal = {
+export var opModal = {
   toast:function(opt,callback){
     alert(opt.time);
     var opt = {
@@ -38,7 +34,7 @@ var opModal = {
   alert:function(opt){
 
     var opt = {
-      title: opt.title || "标题",
+      title: opt.title || false,
       content: opt.content || "内容",
       ok: opt.ok || "确认",
       onOk: opt.onOk || false,
@@ -48,17 +44,19 @@ var opModal = {
 
     // 创建
     var div = document.createElement("div");
+    var opacity = document.createElement("div");
     var html = '';
-    html += '<div class="opacity"></div>';
-    html += '<div class="modalAlert">';
-    html += '<div class="alert">';
-    html += '<div class="title">';
-    html += '<h2>' + opt.title + '</h2>';
-    html += '</div>';
-    html += '<div class="content">';
+    //html += '<div class="opacity"></div>';
+    html += '<div class="alertBox">';
+    if(opt.title ){
+      html += '<div class="alertTitle">';
+      html += '<h2>' + opt.title + '</h2>';
+      html += '</div>';
+    }
+    html += '<div class="alertContent">';
     html += '<p>' + opt.content + '</p>';
     html += '</div>';
-    html += '<div class="btns">';
+    html += '<div class="alertBtns">';
     if(opt.onCancel){
       html += '<button class="cancel">' + opt.cancel + '</button>';
     }
@@ -66,8 +64,11 @@ var opModal = {
     html += '</div>';
     html += '</div>';
     html += '</div>';
-    html += '</div>';
+    div.className = 'modalAlert';
+    opacity.className = 'opacity';
+    opacity.innerHTML = '<div class="opacity"></div>';
     div.innerHTML = html;
+    //document.body.appendChild(opacity);
     document.body.appendChild(div);
 
     // 事件

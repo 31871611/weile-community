@@ -39,6 +39,14 @@ export default {
     }else{
       _this.url = '/';
     }
+
+    // 显示加载中
+    _this.$refs.modalToast.toast({
+      txt:'加载中',
+      icon:'loading',
+      time:0
+    });
+
     // 获取小区列表
     _this.$http.post('/community/getDistributionCommunityList', {
       "projectId":simplestorage.get('projectId')
@@ -49,6 +57,9 @@ export default {
       //console.log(res.data);
       if(res.resultCode == 0){
         _this.quartersLists = res.data;
+
+        // 隐藏加载中
+        _this.$refs.modalToast.is = false;
       }else{
         _this.$refs.modalToast.toast({
           txt:res.msg

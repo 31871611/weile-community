@@ -1,6 +1,6 @@
 <template>
   <div class="error">
-    错误了
+    请在微信中打开
   </div>
 </template>
 <script>
