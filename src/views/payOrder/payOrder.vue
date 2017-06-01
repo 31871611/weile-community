@@ -15,6 +15,7 @@
                 <div><span class="name">{{address.name}}</span><span class="tel">{{address.mobile}}</span></div>
                 <p>{{address.communityName}} | {{address.address}}</p>
                 <i class="auth" v-if="address.isAuthenAddress"></i>
+                <i class="arrowR"></i>
               </template>
               <template v-else>
                 请选择收货地址
@@ -26,11 +27,12 @@
 
         <div class="payOrderTime">
           <span class="fl">送达时间</span>
-          <span class="fr">尽快送达</span>
+          <!--<span class="fr">尽快送达</span>-->
         </div>
 
         <div class="payOrderTextarea">
-          <textarea v-model="comments" @focus="commentsFocus" @blur="commentsBlur"></textarea>
+          <!-- @focus="commentsFocus" @blur="commentsBlur" -->
+          <textarea v-model="comments"></textarea>
         </div>
 
         <div class="payOrderTitle">
@@ -174,7 +176,8 @@ export default {
         isAlert:false,            // 是否显示优惠券弹窗
         userCardId:null           // 需要传null
       },
-      comments:'点击添加留言'
+      //comments:'点击添加留言'
+      comments:'每日22点前下单，将在次日配送，每日22点后下单，则在隔日配送'
     }
   },
   created() {

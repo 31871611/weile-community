@@ -24,21 +24,6 @@ export default {
 
 */
 
-//    opModal.alert({
-//      content:"此商品只有该小区住户才能购买",
-//      ok:"验证",
-//      onOk:function(){
-//        _this.$router.push({
-//          path: '/login',
-//          projectId:simplestorage.get('projectId')
-//        })
-//      },
-//      cancel:'放弃',
-//      onCancel:function(){
-//
-//      }
-//    })
-
 
   },
   methods: {

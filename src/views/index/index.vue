@@ -31,7 +31,7 @@
         <!-- 首页活动推荐1 -->
         <div class="activityHomeLayoutList" v-if="categoryHomeLayoutList">
           <div class="title">
-            <span class="line"></span><h2>分类推荐</h2><span class="line"></span>
+            <span class="line"></span><h2>{{categoryHomeLayoutList[0].title}}</h2><span class="line"></span>
           </div>
           <ul>
             <li v-for="list in categoryHomeLayoutList" :class="'style' + list.styleCode">
@@ -66,7 +66,7 @@
         <!-- 首页活动推荐2 -->
         <div class="activityHomeLayoutList" v-if="activityHomeLayoutList">
           <div class="title">
-            <span class="line"></span><h2>活动专区</h2><span class="line"></span>
+            <span class="line"></span><h2>{{activityHomeLayoutList[0].title}}</h2><span class="line"></span>
           </div>
           <ul>
             <li v-for="list in activityHomeLayoutList" :class="'style' + list.styleCode">
@@ -343,7 +343,7 @@ export default {
       }).then(function(res) {
         //console.log(res)
         let data = res.data || {};
-        //console.log(JSON.stringify(res.data));
+        console.log(JSON.stringify(res.data));
         if (res.resultCode == 0) {
           // 轮播广告
           _this.adLists = data.advInfos;

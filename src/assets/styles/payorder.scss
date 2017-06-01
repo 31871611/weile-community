@@ -52,7 +52,7 @@
   $h:88px;
   background: #fff;
   @include font-dpr(28px);
-  padding:pxTorem(28px) pxTorem(20px);
+  padding:pxTorem(20px) pxTorem(20px);
   textarea{
     display: block;
     width: 100%;
@@ -60,7 +60,8 @@
     outline: none;
     border: 0;
     resize: none;
-    color: #999;
+    color: #333;
+    line-height: 1.5;
   }
 }
 
