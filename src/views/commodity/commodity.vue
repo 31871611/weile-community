@@ -170,7 +170,6 @@
 
 
         <modal-toast ref="modalToast"></modal-toast>
-        <modal-alert ref="modalAlert"></modal-alert>
 
       </div>
     </article>
@@ -249,7 +248,7 @@
 import simplestorage from 'simplestorage.js'
 import cart from '../../plugins/cart'
 import modalToast from '../common/modalToast.vue'
-import modalAlert from '../common/modalAlert.vue'
+import {opModal} from '../../plugins/common'
 
 let timer;
 
@@ -401,11 +400,10 @@ export default {
 
       }else{
 
-        _this.$refs.modalAlert.alert({
-          content: '您还未登录，无法领取优惠券',
-          txtOk:'登录',
-          cancelOk:'放弃',
-          onOk: function () {
+        opModal.alert({
+          content:"您还未登录，无法领取优惠券",
+          ok:"登录",
+          onOk:function(){
             _this.$router.push({
               path: '/login',
               query:{
@@ -414,12 +412,14 @@ export default {
               }
             });
           },
-          onCancel: function () {
-            return false;
+          cancel:'放弃',
+          onCancel:function(){
+
           }
         })
-      }
+        return false;
 
+      }
     },
     // 数量-减
     remove:function(){
@@ -489,11 +489,10 @@ export default {
 
           }else if(res.resultCode === 8002){
             //用户未认证
-            _this.$refs.modalAlert.alert({
-              content: '此商品只有该小区住户才能购买',
-              txtOk:'验证',
-              cancelOk:'放弃',
-              onOk: function () {
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"验证",
+              onOk:function(){
                 _this.$router.push({
                   path: '/login',
                   query:{
@@ -502,19 +501,23 @@ export default {
                   }
                 });
               },
-              onCancel: function () {
-                return false;
+              cancel:'放弃',
+              onCancel:function(){
+
               }
             })
+            return false;
+
           }else if(res.resultCode === 8003){
             //用户未认证
-            _this.$refs.modalAlert.alert({
-              content: '此商品只有该小区住户才能购买',
-              txtOk:'放弃',
-              onOk: function () {
-                return false;
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"放弃",
+              onOk:function(){
               }
             })
+            return false;
+
           }else if(res.resultCode === 8004 || res.resultCode === 8005){
             _this.$router.push({
               path: '/login',
@@ -539,12 +542,10 @@ export default {
 
         var numbCount = _this.goodsNum + cart.getIdAmount(_this.list.commodityId);
         if(_this.list.isHouseUser == 1){
-
-          _this.$refs.modalAlert.alert({
-            content: '此商品只有该小区住户才能购买',
-            txtOk:'登录',
-            cancelOk:'放弃',
-            onOk: function () {
+          opModal.alert({
+            content:"此商品只有该小区住户才能购买",
+            ok:"登录",
+            onOk:function(){
               _this.$router.push({
                 path: '/login',
                 query:{
@@ -553,12 +554,12 @@ export default {
                 }
               });
             },
-            onCancel: function () {
-              return false;
+            cancel:'放弃',
+            onCancel:function(){
+
             }
           })
-          //$shopCarCount.removeClass('beat loading');
-          return;
+          return false;
         }
 
         //判断是否抢购商品
@@ -672,11 +673,10 @@ export default {
             _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
           }else if(res.resultCode === 8002){
             //用户未认证
-            _this.$refs.modalAlert.alert({
-              content: '此商品只有该小区住户才能购买',
-              txtOk:'验证',
-              cancelOk:'放弃',
-              onOk: function () {
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"验证",
+              onOk:function(){
                 _this.$router.push({
                   path: '/login',
                   query:{
@@ -685,19 +685,23 @@ export default {
                   }
                 });
               },
-              onCancel: function () {
-                return false;
+              cancel:'放弃',
+              onCancel:function(){
+
               }
             })
+            return false;
+
           }else if(res.resultCode === 8003){
             //用户未认证
-            _this.$refs.modalAlert.alert({
-              content: '此商品只有该小区住户才能购买',
-              txtOk:'放弃',
-              onOk: function () {
-                return false;
+            opModal.alert({
+              content:"此商品只有该小区住户才能购买",
+              ok:"放弃",
+              onOk:function(){
               }
             })
+            return false;
+
           }else if(res.resultCode ===8004 || res.resultCode ===8005){
             _this.$router.push({
               path: '/login',
@@ -720,12 +724,10 @@ export default {
       }else{
 
         if(_this.list.isHouseUser == 1) {
-
-          _this.$refs.modalAlert.alert({
-            content: '此商品只有该小区住户才能购买',
-            txtOk:'登录',
-            cancelOk:'放弃',
-            onOk: function () {
+          opModal.alert({
+            content:"此商品只有该小区住户才能购买",
+            ok:"登录",
+            onOk:function(){
               _this.$router.push({
                 path: '/login',
                 query:{
@@ -734,11 +736,12 @@ export default {
                 }
               });
             },
-            onCancel: function () {
-              return false;
+            cancel:'放弃',
+            onCancel:function(){
+
             }
           })
-          return;
+          return false;
         }
         // 去结算页面
         _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
@@ -748,8 +751,7 @@ export default {
     }
   },
   components: {
-    modalToast,
-    modalAlert
+    modalToast
   }
 }
 </script>

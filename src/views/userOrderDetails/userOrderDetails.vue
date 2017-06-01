@@ -100,7 +100,6 @@
 
       <modal-toast ref="modalToast"></modal-toast>
 
-      <modal-alert ref="modalAlert"></modal-alert>
     </article>
 
     <footer>
@@ -164,7 +163,7 @@
 */
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
-import modalAlert from '../common/modalAlert.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'userOrderDetails',
@@ -220,16 +219,17 @@ export default {
     cancelOrder:function(id,txt){
       let _this = this;
       // 提示是否取消
-      this.$refs.modalAlert.alert({
-        content: txt,
-        onOk: function () {
+      opModal.alert({
+        content:txt,
+        ok:"确定",
+        onOk:function(){
           // 显示加载中
           _this.$refs.modalToast.toast({
             txt:'加载中',
             icon:'loading',
             time:0
           });
-          this.$http.post('/community/cancelStoreOrder',{
+          _this.$http.post('/community/cancelStoreOrder',{
             "orderId":id,
             "projectId":simplestorage.get('projectId'),
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
@@ -254,26 +254,31 @@ export default {
           }).catch(function(error) {
             console.log(error)
           })
+
         },
-        onCancel: function () {
-          return false;
+        cancel:'取消',
+        onCancel:function(){
+
         }
       })
+      return false;
     },
     // 取消退单
     cancelReturn:function(id,txt){
       let _this = this;
       // 提示是否取消
-      this.$refs.modalAlert.alert({
-        content: txt,
-        onOk: function () {
+      opModal.alert({
+        content:txt,
+        ok:"确定",
+        onOk:function(){
+
           // 显示加载中
           _this.$refs.modalToast.toast({
             txt:'加载中',
             icon:'loading',
             time:0
           });
-          this.$http.post('/community/cancelApplication',{
+          _this.$http.post('/community/cancelApplication',{
             "orderId":id,
             "projectId":simplestorage.get('projectId'),
             "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id
@@ -298,11 +303,14 @@ export default {
           }).catch(function(error) {
             console.log(error)
           })
+
         },
-        onCancel: function () {
-          return false;
+        cancel:'取消',
+        onCancel:function(){
+
         }
       })
+      return false;
     },
     // 立即支付
     toPay:function(){
@@ -346,8 +354,7 @@ export default {
     }
   },
   components: {
-    modalToast,
-    modalAlert
+    modalToast
   }
 }
 </script>
