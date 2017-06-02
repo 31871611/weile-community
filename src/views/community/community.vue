@@ -11,15 +11,15 @@
 
       社区
       <div @click="toLink()">跳转</div>
-      <div @click="del()">删除</div>
-      <div @click="add()">add</div>
-
-
-      <div id="boll" class="boll"></div>
+      <!--<div @click="del()">删除</div>-->
+      <!--<div @click="add()">add</div>-->
+<!---->
+<!---->
+      <!--<div id="boll" class="boll"></div>-->
     </article>
     <footer>
       <!-- 父级不能position:relative; -->
-      <div id="target">footer</div>
+      <!--<div id="target">footer</div>-->
     </footer>
   </div>
 

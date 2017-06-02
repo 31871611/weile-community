@@ -2,7 +2,7 @@
 <div class="view">
 
   <div class="wrap">
-    <header>
+    <header v-if="!isStore">
       <div class="search">
         <router-link to="search" class="box">
           <i></i>
@@ -19,69 +19,79 @@
       </div>
     </header>
     <article class="main scrollHide">
-      <!--<div class="storeContent"></div>-->
-        <div class="classifyList">
-          <ul class="">
-            <li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>
-            <li v-for="(list,index) in lists" :class="{'select':currentIndex == list.categoryId}" @click="selectMenu(list.categoryId)">{{list.categoryName}}</li>
-          </ul>
+
+        <div class="isStore" v-if="isStore">
+          <div class="not">
+            <i></i>
+            <p>当前小区暂无好货上架</p>
+          </div>
         </div>
+        <template v-else>
 
-        <div class="contentList" ref="contentList">
+          <div class="classifyList">
+            <ul class="">
+              <li :class="{'select':currentIndex === -1}" @click="selectMenu(-1)">所用商品</li>
+              <li v-for="(list,index) in lists" :class="{'select':currentIndex == list.categoryId}" @click="selectMenu(list.categoryId)">{{list.categoryName}}</li>
+            </ul>
+          </div>
 
-          <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == commoditys.categoryId">
+          <div class="contentList" ref="contentList">
 
-            <li v-for="(list,index) in commoditys.commoditys">
-              <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
-                <img :src="list.url" :alt="list.commodityId">
-                <i class="activity" v-if="list.isActivity == 1">活动</i>
-                <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
-              </router-link>
-              <div class="box">
-                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
-                  <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
-                  <div class="bottom">
-                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
-                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
-                    <div class="go" v-if="list.isFlashSale == 1">
-                      马上抢
-                    </div>
-                    <!--{{list.inventory}}-->
-                    <car-count ref="carcount" @increment="incrementTotal" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
-                  </div>
+            <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == commoditys.categoryId">
+
+              <li v-for="(list,index) in commoditys.commoditys">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
+                  <img :src="list.url" :alt="list.commodityId">
+                  <i class="activity" v-if="list.isActivity == 1">活动</i>
+                  <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
                 </router-link>
-              </div>
-            </li>
-
-          </ul>
-
-          <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == -1">
-
-            <li v-for="(list,index) in commoditys.commoditys">
-              <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
-                <img :src="list.url" :alt="list.commodityId">
-                <i class="activity" v-if="list.isActivity == 1">活动</i>
-                <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
-              </router-link>
-              <div class="box">
-                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
-                  <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
-                  <div class="bottom">
-                    <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
-                    <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
-                    <div class="go" v-if="list.isFlashSale == 1">
-                      马上抢
+                <div class="box">
+                  <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
+                    <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
+                    <div class="bottom">
+                      <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
+                      <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
+                      <div class="go" v-if="list.isFlashSale == 1">
+                        马上抢
+                      </div>
+                      <!--{{list.inventory}}-->
+                      <car-count ref="carcount" @increment="incrementTotal" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                     </div>
-                    <!--{{list.inventory}}-->
-                    <car-count ref="carcount" @increment="incrementTotal" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
-                  </div>
+                  </router-link>
+                </div>
+              </li>
+
+            </ul>
+
+            <ul class="" v-for="(commoditys,parentIndex) in lists" v-show="currentIndex == -1">
+
+              <li v-for="(list,index) in commoditys.commoditys">
+                <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}" class="photo">
+                  <img :src="list.url" :alt="list.commodityId">
+                  <i class="activity" v-if="list.isActivity == 1">活动</i>
+                  <i class="goIng" v-if="list.isFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
                 </router-link>
-              </div>
-            </li>
+                <div class="box">
+                  <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
+                    <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.name}}</h3>
+                    <div class="bottom">
+                      <strong class="price" v-if="list.isFlashSale == '' || list.flashSaleStatus == 0">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
+                      <strong class="price" v-if="list.isFlashSale == 1">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
+                      <div class="go" v-if="list.isFlashSale == 1">
+                        马上抢
+                      </div>
+                      <!--{{list.inventory}}-->
+                      <car-count ref="carcount" @increment="incrementTotal" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1" :type="false" :index="index" :parent-index="parentIndex" :commodity-id="list.commodityId" :is-house-user="list.isHouseUser" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                    </div>
+                  </router-link>
+                </div>
+              </li>
 
-          </ul>
+            </ul>
 
-        </div>
+          </div>
+
+        </template>
 
     </article>
     <footer>
@@ -116,7 +126,8 @@ export default {
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       isLogin:simplestorage.get('HLXK_UserId') != -1,
       lists:'',                                       // 便利店列表
-      currentIndex:''                                 // 分类索引
+      currentIndex:'',                                // 分类索引
+      isStore:false                                   // 无便利店，显示图标
     }
   },
   mounted() {
@@ -163,21 +174,30 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        //console.log(res);
-        if (res.resultCode != 0) {
+        console.log(res);
+        if(res.resultCode == 0){
+
+          _this.lists = res.data;
+          // 设置分类id
+          if(_this.lists.length > 0){
+            _this.currentIndex = _this.$route.query.id || -1;
+          }else{
+            _this.currentIndex = -1;
+          }
+          //console.log(JSON.stringify(_this.lists))
+
+        }else if(res.resultCode == 7001){
+
+          _this.isStore = true;
+
+        }else{
+
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
+
         }
-        _this.lists = res.data;
-        // 设置分类id
-        if(_this.lists.length > 0){
-          _this.currentIndex = _this.$route.query.id || -1;
-        }else{
-          _this.currentIndex = -1;
-        }
-        //console.log(JSON.stringify(_this.lists))
+
         // 隐藏加载中
         _this.$refs.modalToast.is = false;
 

@@ -7,6 +7,13 @@
   background: $bg-base;
 }
 
+// 默认广告图
+.defaultAd{
+  img{
+    vertical-align: middle;
+    width: 100%;
+  }
+}
 
 // 当前小区
 .currentQuarters{

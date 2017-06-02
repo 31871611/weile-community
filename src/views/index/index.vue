@@ -4,8 +4,11 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll index">
+        <div class="defaultAd" v-if="isStore">
+          <img :src="defaultAd" alt="">
+        </div>
         <!-- 轮播 -->
-        <slider ref="slider" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
+        <slider v-if="!isStore" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
         <!-- 选择小区 -->
         <div class="quartersShow">
@@ -156,9 +159,9 @@
               </li>
             </ul>
           </div>
-
         </template>
-        <div class="selectedList" v-else>
+
+        <div class="selectedList" v-if="isStore">
           <div class="not">
             <i></i>
             <p>当前小区暂无好货上架</p>
@@ -304,9 +307,10 @@ export default {
       textCurrentQuarters : simplestorage.get('HLXK_DISTRIBUTION').name || '锦艺测试小区',   // 当前小区
       isSelectQuarters : false,             // 是否显示切换小区
       adLists: [],                          // 广告
+      defaultAd:'./static/images/defaultAd.png',    // 默认广告图
       quartersLists : null,                 // 小区列表
       nav:null,                             // 首页菜单
-      announcement:'',                            // 公告消息
+      announcement:'',                      // 公告消息
       activityHomeLayoutList : null,        // 首页活动专区2...
       categoryHomeLayoutList : null,        // 首页活动专区1...
       selectedList:null,                    // 精选
@@ -315,7 +319,8 @@ export default {
       isToContent:false,                    // 是否显示广告图文
       toContentHtml:'',                     // 广告图文内容
       coupon:null,                          // 优惠券数据
-      isCoupon:false                        // 优惠券弹窗
+      isCoupon:false,                       // 优惠券弹窗
+      isStore:false                         // 无便利店，显示图标
     }
   },
   mounted() {
@@ -341,12 +346,14 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        //console.log(res)
+        console.log(res)
         let data = res.data || {};
-        console.log(JSON.stringify(res.data));
+        //console.log(JSON.stringify(res.data));
         if (res.resultCode == 0) {
+          // 显示无便利提示图标
+          _this.isStore = false;
           // 轮播广告
-          _this.adLists = data.advInfos;
+          if(data.advInfos.length > 0) _this.adLists = data.advInfos;
           // 公告消息
           _this.announcement = data.announcement;
           // 精选列表
@@ -367,13 +374,31 @@ export default {
 
           //console.log(JSON.stringify(_this.selectedList));
 
-          // 修改小区后
-          callback && callback();
+        }else if(res.resultCode == 7001){
+          // 显示无便利提示图标
+          _this.isStore = true;
+          /* 清空... */
+          // 公告消息
+          _this.announcement = false;
+          // 精选列表
+          _this.selectedList = false;
+          // 活动专区...有的没有这个数据？
+          _this.categoryHomeLayoutList = false;
+          // 活动专区
+          _this.activityHomeLayoutList = false;
+          // 团购商品
+          _this.groupBuyList = false;
+          // 商品推荐
+          _this.recommendList = false;
+
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
         }
+
+        // 修改小区后
+        callback && callback();
       }).catch(function(error) {
         console.log(error)
       })
@@ -520,7 +545,6 @@ export default {
       }else{
         Vue.set(_this[list][index],'shopCarCount',_this[list][index]['shopCarCount'] + 1);
       }
-      //Vue.set(_this['selectedList'][index],'shopCarCount',_this['selectedList'][index]['shopCarCount'] + 1);
     },
     // 修改底部购物车值
     shoppingNum:function(num){

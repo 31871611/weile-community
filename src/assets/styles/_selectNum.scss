@@ -41,9 +41,8 @@
   $infoH:34px;
   $add:20px;
   @include display-flex();
-  position: absolute;
+  position: relative;
   right:pxTorem(-10px);
-  bottom:pxTorem(-7px);
   input{
     display: block;
     width: pxTorem(48px);

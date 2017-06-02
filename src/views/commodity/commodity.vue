@@ -408,7 +408,7 @@ export default {
               path: '/login',
               query:{
                 'url':'/commodity?id=' + _this.list.commodityId,
-                'projectId':projectId
+                'projectId':_this.projectId
               }
             });
           },
@@ -497,7 +497,7 @@ export default {
                   path: '/login',
                   query:{
                     'url':'/commodity?id=' + _this.list.commodityId,
-                    'projectId':projectId
+                    'projectId':_this.projectId
                   }
                 });
               },
@@ -523,7 +523,7 @@ export default {
               path: '/login',
               query:{
                 'url':'/commodity?id=' + _this.list.commodityId,
-                'projectId':projectId
+                'projectId':_this.projectId
               }
             });
           } else {
@@ -550,7 +550,7 @@ export default {
                 path: '/login',
                 query:{
                   'url':'/commodity?id=' + _this.list.commodityId,
-                  'projectId':projectId
+                  'projectId':_this.projectId
                 }
               });
             },
@@ -681,7 +681,7 @@ export default {
                   path: '/login',
                   query:{
                     'url':'/commodity?id=' + _this.list.commodityId,
-                    'projectId':projectId
+                    'projectId':_this.projectId
                   }
                 });
               },
@@ -707,7 +707,7 @@ export default {
               path: '/login',
               query:{
                 'url':'/commodity?id=' + _this.list.commodityId,
-                'projectId':projectId
+                'projectId':_this.projectId
               }
             });
           } else {
@@ -732,7 +732,7 @@ export default {
                 path: '/login',
                 query:{
                   'url':'/commodity?id=' + _this.list.commodityId,
-                  'projectId':projectId
+                  'projectId':_this.projectId
                 }
               });
             },
@@ -744,7 +744,14 @@ export default {
           return false;
         }
         // 去结算页面
-        _this.$router.push({ path: '/payorder', query: { goodsInfo: goodsInfo, isGroupBuyingOrder:groupBuy ,isFlashOrder:_this.list.isFlash}})
+        _this.$router.push({
+          path: '/payorder',
+          query: {
+            goodsInfo: goodsInfo,
+            isGroupBuyingOrder:groupBuy ,
+            isFlashOrder:_this.list.isFlash
+          }
+        })
       }
 
 

@@ -2,6 +2,32 @@
 @import "common/css3";
 @import "common/common";
 
+// 没有便利店
+.isStore{
+  height: 100%;
+  width: 100%;
+  @include display-flex();
+  @include align-items(center);
+  @include justify-content(center);
+  .not{
+    padding-top:pxTorem(60px);
+    padding-bottom:pxTorem(60px);
+    i{
+      display: block;
+      width: pxTorem(156px);
+      height: pxTorem(156px);
+      @extend %icoRem;
+      background-image: url("../images/icon_index_notselected.png");
+      margin:0 auto;
+    }
+    p{
+      text-align: center;
+      color: #9c9fa1;
+      margin-top:pxTorem(20px);
+    }
+  }
+}
+
 .search{
   $h:56px;
   padding: pxTorem(16px) pxTorem(20px);
