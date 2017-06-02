@@ -394,7 +394,8 @@ router.beforeEach((to, from, next) => {
     }else{
       // 跳转去获取openid
       if(process.env.NODE_ENV == "development"){
-        location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
+        //location.href = "http://zzh.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
+        location.href = "http://office209.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
       }else{
         location.href = "http://auth.yidinghuo.net/api/pub/wechatAuth?redirect_uri="+ encodeURIComponent(location.href) +"&scope=snsapi_userinfo&projectId=" + simplestorage.get('projectId') + '&createSession=y';
       }

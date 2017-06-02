@@ -89,7 +89,6 @@
           </li>
           <li>
             <span>备注：</span>
-            {{list.comments}}
             <span v-if="list.comments">{{list.comments}}</span>
             <span v-else>无</span>
           </li>
@@ -169,6 +168,7 @@ export default {
   name: 'userOrderDetails',
   data() {
     return{
+      projectId:simplestorage.get('projectId'),
       list:''
     }
   },
@@ -323,7 +323,7 @@ export default {
         time:0
       });
 
-      let url = location.protocol + '//' + location.host + '/#/success?projectId=1';
+      let url = location.protocol + '//' + location.host + '/#/success?projectId='+ _this.projectId +'&id=' + _this.$route.query.id;
 
       // 支付
       _this.$http.post('/community/collectionPay', {

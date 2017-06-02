@@ -13,6 +13,8 @@ import simplestorage from 'simplestorage.js'
 import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
 import {opModal} from '../../plugins/common'
+import $ from 'jquery'
+import {Parabola} from '../../plugins/parabola'
 
 export default {
   props:{

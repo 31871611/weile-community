@@ -32,7 +32,7 @@
 
         <div class="payOrderTextarea">
           <!-- @focus="commentsFocus" @blur="commentsBlur" -->
-          <textarea v-model="comments"></textarea>
+          <textarea v-model="comments" readonly="readonly"></textarea>
         </div>
 
         <div class="payOrderTitle">
@@ -343,7 +343,7 @@ export default {
         console.log(res);
         if(res.resultCode == 0){
           let orderId = res.data.orderId;
-          let url = location.protocol + '//' + location.host + '/#/success?projectId=1';
+          let url = location.protocol + '//' + location.host + '/#/success?projectId='+ _this.projectId +'&id=' + orderId;
 
           // 下单成功，调用支付接口
           _this.$http.post('/community/collectionPay', {

@@ -2,6 +2,7 @@ import { VERSION } from './config'
 import Promise from 'es6-promise'
 Promise.polyfill()
 import axios from 'axios'
+import router from '../router'
 import qs from 'qs'
 import Fingerprint from 'fingerprintjs'
 import simplestorage from 'simplestorage.js'
@@ -120,7 +121,10 @@ fetch.interceptors.response.use(function(response) {
     // 提示
     alert('状态异常' + location.href);
     // 刷新页面.跳转去登录页面
-    location.reload()
+    //router.replace({
+    //  path: 'userHome',
+    //  query: {redirect: router.currentRoute.fullPath}
+    //})
     return false;
   }
   let key = _d.key || simplestorage.get('HLXK_KEY')
