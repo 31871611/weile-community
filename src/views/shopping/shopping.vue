@@ -27,13 +27,9 @@
           <ul class="shoppingList">
 
             <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity" v-bind:key="index">
-              <div class="shoppingSelect">
-                <span @click="checkOne()"></span>
-              </div>
 
-              <label :for="'id' + list.goodsId">
-                <input @click="checkOne()" type="checkbox" :id="'id' + list.goodsId" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
-              </label>
+              <input type="checkbox" :id="'id' + list.goodsId" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
+              <label :for="'id' + list.goodsId"></label>
 
               <router-link :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}" class="photo">
                 <img :src="list.imageUrl" alt="">
@@ -73,15 +69,15 @@
 
       <div class="footerCart" v-if="isDel">
         <div class="box">
-          <input id="checkAll" type="checkbox" v-model="checkedAllModel" @click="checkAll()" />
-          <label for="checkAll">全选</label>
+          <input id="delAll" type="checkbox" v-model="checkedAllModel" />
+          <label for="" @click="checkAll()">全选</label>
         </div>
         <div class="next del" @click="del">删除</div>
       </div>
       <div class="footerCart" v-else>
         <div class="box">
-          <input id="delAll" type="checkbox" v-model="checkedAllModel" @click="checkAll()" />
-          <label for="delAll">全选</label>
+          <input id="checkAll" type="checkbox" v-model="checkedAllModel" />
+          <label for="" @click="checkAll()">全选</label>
           <div class="total">
 
             <span v-if="lists.totalMoney">合计：<b>￥{{lists.totalMoney / 1000 | price}}</b></span>
@@ -492,20 +488,20 @@ export default {
       return jsonStr;
 
     },
-    // 选择单个
-    checkOne:function(){
-      alert(1);
-    },
     // 全选
     checkAll:function(){
       var _this = this;
 
+      alert(_this.checkedAllModel)
       if (_this.checkedAllModel) {   //反选
+
         _this.checkCommodityId = [];
         // 全选值
         _this.checkedAllModel = false;
+        alert('反选')
 
       }else{  //全选
+
         _this.checkCommodityId = [];
 
         _this.lists.cartGoodsList.forEach(function(item){
@@ -515,6 +511,8 @@ export default {
         });
         // 全选值
         _this.checkedAllModel = true;
+        alert(_this.checkedAllModel)
+        alert('全选')
       }
 
       // 重新获取没选中数据

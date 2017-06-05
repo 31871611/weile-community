@@ -20,6 +20,19 @@
     <footer>
       <!-- 父级不能position:relative; -->
       <!--<div id="target">footer</div>-->
+
+
+      <ul>
+        <li v-for="(list,index) in 10">
+          <label :for="'a' + index">
+            1111111111
+          </label>
+          <input type="checkbox" :id="'a' + index" :value="'a' + index" v-model="sel" />
+        </li>
+      </ul>
+
+
+
     </footer>
   </div>
 
@@ -34,7 +47,7 @@ export default {
   name: 'community',
   data() {
     return{
-
+      sel:[]
     }
   },
   mounted() {

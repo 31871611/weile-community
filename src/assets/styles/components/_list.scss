@@ -141,52 +141,53 @@
     @include align-items();
   }
   // 购物车选择按钮
-  label{
+  input[type='checkbox']{
+    width: pxTorem(36px);
+    height: pxTorem(36px);
     display: block;
-    width: pxTorem(36px);
-    margin:0 pxTorem(20px) 0 0 ;
-    input[type='checkbox']{
+    position: relative;
+    //清除默认input格式
+    border:0;
+    @include appearance(none);
+    outline:none;
+    background:none;
+    &:after{
+      position: absolute;
+      left:0;
+      top:0;
       width: pxTorem(36px);
       height: pxTorem(36px);
-      display: block;
-      position: relative;
-      //清除默认input格式
-      border:0;
-      @include appearance(none);
-      outline:none;
-      background:none;
-      &:after{
-        position: absolute;
-        left:0;
-        top:0;
-        width: pxTorem(36px);
-        height: pxTorem(36px);
-        content: '\20';
-        @extend %icoRem;
-        background-image: url("../images/icon_shoppingtrolley_circle_n@2x.png");
-      }
-      &:checked{
-        &:after{
-          background-image: url("../images/icon_shoppingtrolley_selet_p@2x.png");
-        }
-      }
-    }
-  }
-  // 购物车选择
-  .shoppingSelect{
-    width: pxTorem(36px);
-    margin:0 pxTorem(20px) 0 0 ;
-    span{
-      width: pxTorem(36px);
-      height: pxTorem(36px);
-      display: block;
+      content: '\20';
       @extend %icoRem;
       background-image: url("../images/icon_shoppingtrolley_circle_n@2x.png");
-      &.select{
+    }
+    &:checked{
+      &:after{
         background-image: url("../images/icon_shoppingtrolley_selet_p@2x.png");
       }
     }
   }
+  label{
+    @include opacity(0);
+    display: block;
+    width: pxTorem(36px);
+    margin:0 pxTorem(20px) 0 0 ;
+  }
+  // 购物车选择
+  //.shoppingSelect{
+  //  width: pxTorem(36px);
+  //  margin:0 pxTorem(20px) 0 0 ;
+  //  span{
+  //    width: pxTorem(36px);
+  //    height: pxTorem(36px);
+  //    display: block;
+  //    @extend %icoRem;
+  //    background-image: url("../images/icon_shoppingtrolley_circle_n@2x.png");
+  //    &.select{
+  //      background-image: url("../images/icon_shoppingtrolley_selet_p@2x.png");
+  //    }
+  //  }
+  //}
 
   // 左边图片
   .photo{
