@@ -30,6 +30,11 @@ sessionid不会过期
 
 ///////////////////////////////////////////////////////
 
+/www/dev/tomcat_community_store/web
+community?projectId=1
+http://wx.store.yidinghuo.net/#/?projectId=1
+http://172.16.12.177:9999/#/?projectId=1
+
 详情页立即购买-需要小区认证才能购买
 
 "communityType": "1",//参与小区类型：1全部小区，2指定小区
