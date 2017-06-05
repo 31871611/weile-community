@@ -24,6 +24,13 @@ if ('addEventListener' in document) {
   }, false);
 }
 
+// 小区认证
+if(process.env.NODE_ENV == "development"){
+  window.propertyAuth = 'http://172.16.8.209:17012'
+}else{
+  window.propertyAuth = 'http://www.baidu.com'
+}
+
 new Vue({
   el: '#app',
   router,

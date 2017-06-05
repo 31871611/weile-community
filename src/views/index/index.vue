@@ -4,11 +4,11 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll index">
-        <div class="defaultAd" v-if="isStore">
+        <div class="defaultAd" v-if="adLists.length == 0">
           <img :src="defaultAd" alt="">
         </div>
         <!-- 轮播 -->
-        <slider v-if="!isStore" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
+        <slider v-else @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
         <!-- 选择小区 -->
         <div class="quartersShow">
@@ -560,6 +560,6 @@ export default {
   }
 }
 </script>
-<style  lang="scss" src="../../assets/styles/index.scss"></style>
+<style scoped lang="scss" src="../../assets/styles/index.scss"></style>
 <style scoped lang="scss" src="../../assets/styles/_selectQuarters.scss"></style>
 <style scoped lang="scss" src="../../assets/styles/_alert.scss"></style>

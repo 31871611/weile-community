@@ -268,9 +268,9 @@
   @include font-dpr(30px);
   color:#ff5823;
   overflow: hidden;
-  height: pxTorem(87px);
-  line-height: pxTorem(87px);
-  padding:0 pxTorem(20px);
+  //height: pxTorem(87px);
+  line-height: pxTorem(50px);
+  padding:pxTorem(16px) pxTorem(20px) pxTorem(10px);
   @include border1px(#e6e6e6);
 }
 

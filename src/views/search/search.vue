@@ -59,6 +59,15 @@
 
 
     </article>
+    <footer>
+      <div class="footerCart">
+        <div class="total">
+          合计：<b>￥0.00</b><em>(已选11件)</em>
+        </div>
+
+        <div class="next">下一步</div>
+      </div>
+    </footer>
   </div>
 
 </template>

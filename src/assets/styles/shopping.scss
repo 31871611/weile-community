@@ -3,8 +3,20 @@
 @import "common/common";
 
 
-
-
+// 登录提示
+.loginInfo{
+  padding:pxTorem(10px) pxTorem(20px);
+  a{
+    color: #999;
+  }
+  span{
+    display: inline-block;
+    padding:pxTorem(5px) pxTorem(8px);
+    border:1px solid #999;
+    @include border-radius(pxTorem(6px));
+    margin-right: pxTorem(5px);
+  }
+}
 
 // 购物车
 .shoppingCart{

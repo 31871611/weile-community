@@ -94,7 +94,9 @@ export default {
       }
 
       if (shopCarCount >= _this.inventory) {
-        alert('库存不足');
+        opModal.toast({
+          txt:'库存不足'
+        })
         return false;
       }
 

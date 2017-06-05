@@ -32,9 +32,8 @@
   }
   .alertContent{
     $h:72px;
-    padding: pxTorem(20px) pxTorem(40px) pxTorem(20px);
+    padding: pxTorem(40px);
     border-bottom: 1px solid #ddd;
-    min-height: pxTorem($h);
     p{
       color:#999;
       @include font-dpr(32px);

@@ -57,6 +57,8 @@ export default {
 
 //    console.log(new Parabola())
 
+    console.log(propertyAuth)
+
   },
   methods: {
     // 跳转到外部url

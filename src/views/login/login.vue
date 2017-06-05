@@ -47,6 +47,11 @@ export default {
   },
   created() {
 
+    // 已登录返回
+    if(simplestorage.get('HLXK_UserId') != -1){
+      this.$router.back();
+    }
+
   },
   mounted() {
     let _this = this;

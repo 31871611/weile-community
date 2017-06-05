@@ -16,6 +16,7 @@
   <div class="appNav">
     <router-link :to="{path:'/',query:{projectId:projectId}}" class="home" :class="{select : selectClass == 'home'}">首页</router-link>
     <router-link :to="{path:'store',query:{projectId:projectId}}" class="convenient" :class="{select : selectClass == 'store'}">好货</router-link>
+    <!--<a href="javascript:;" class="community" @click="toLink()">社区</a>-->
     <router-link :to="{path:'community',query:{projectId:projectId}}" class="community" :class="{select : selectClass == 'community'}">社区</router-link>
     <router-link :to="{path:'shopping',query:{projectId:projectId}}" class="shopping" :class="{select : selectClass == 'shopping'}">
       购物车<b v-if="shoppingNum > 0">{{shoppingNum}}</b>
@@ -86,8 +87,9 @@ export default {
 
     },
     // 跳转到外部url
-    toLink:function(url){
-      location.href = url;
+    toLink:function(){
+
+      //location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
     },
     drop(el) {
       for (let i = 0; i < this.balls.length; i++) {

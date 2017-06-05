@@ -196,7 +196,7 @@
             <div><b v-show="shoppingNum">{{shoppingNum}}</b></div>
             <span>购物车</span>
           </router-link>
-          <div class="add">
+          <div class="add" @click="addCar()">
             加入购物车
           </div>
           <!-- 抢购 -->
@@ -493,13 +493,7 @@ export default {
               content:"此商品只有该小区住户才能购买",
               ok:"验证",
               onOk:function(){
-                _this.$router.push({
-                  path: '/login',
-                  query:{
-                    'url':'/commodity?id=' + _this.list.commodityId,
-                    'projectId':_this.projectId
-                  }
-                });
+                location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
               },
               cancel:'放弃',
               onCancel:function(){
@@ -677,13 +671,7 @@ export default {
               content:"此商品只有该小区住户才能购买",
               ok:"验证",
               onOk:function(){
-                _this.$router.push({
-                  path: '/login',
-                  query:{
-                    'url':'/commodity?id=' + _this.list.commodityId,
-                    'projectId':_this.projectId
-                  }
-                });
+                location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
               },
               cancel:'放弃',
               onCancel:function(){

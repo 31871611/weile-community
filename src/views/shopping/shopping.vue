@@ -4,6 +4,11 @@
   <div class="wrap">
 
     <article class="main">
+
+      <div class="loginInfo" v-if="!isLogin">
+        <router-link :to="{path:'login',query:{projectId:projectId}}"><span>登录</span>登录后同步当前和原购物车中的商品</router-link>
+      </div>
+
       <div class="mainScroll shoppingCart" v-show="isLists">
         <div class="shoppingTitle">
           <h3>锦艺便利</h3>
@@ -12,22 +17,28 @@
 
         <template v-for="(cartGoodsList,parentIndex) in lists.cartGoodsList">
 
-          <div class="explain" v-if="lists.cartGoodsList.activityId">
-            <span v-if="lists.cartGoodsList.activityIcon == 1">满减</span>
-            <span v-else-if="lists.cartGoodsList.activityIcon == 2">满折</span>
-            <span v-else-if="lists.cartGoodsList.activityIcon == 3">满赠</span>
-            <p>{{lists.cartGoodsList.discountStr}}</p>
+          <div class="explain" v-if="cartGoodsList.activityId">
+            <span v-if="cartGoodsList.activityIcon == 1">满减</span>
+            <span v-else-if="cartGoodsList.activityIcon == 2">满折</span>
+            <span v-else-if="cartGoodsList.activityIcon == 3">满赠</span>
+            <p>{{cartGoodsList.discountStr}}</p>
           </div>
 
           <ul class="shoppingList">
 
             <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity" v-bind:key="index">
+              <div class="shoppingSelect">
+                <span @click="checkOne()"></span>
+              </div>
 
-              <input type="checkbox" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
+              <label :for="'id' + list.goodsId">
+                <input @click="checkOne()" type="checkbox" :id="'id' + list.goodsId" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
+              </label>
+
               <router-link :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}" class="photo">
                 <img :src="list.imageUrl" alt="">
                 <i class="activity" v-if="list.isActivity == 1">活动</i>
-                <i class="goIng" v-if="list.ifFlashSale == 1 && list.flashSaleStatus == 1">抢购中</i>
+                <i class="goIng" v-if="list.ifFlashSale != 0">抢购中</i>
                 <span class="hint" v-if="list.quantity > list.inventory">库存不足</span>
                 <span class="hint" v-if="list.status == 0">失效</span>
               </router-link>
@@ -62,21 +73,21 @@
 
       <div class="footerCart" v-if="isDel">
         <div class="box">
-          <input id="checkAll" type="checkbox" v-model="checkedAllModel" @click="checkAll" />
+          <input id="checkAll" type="checkbox" v-model="checkedAllModel" @click="checkAll()" />
           <label for="checkAll">全选</label>
         </div>
         <div class="next del" @click="del">删除</div>
       </div>
       <div class="footerCart" v-else>
         <div class="box">
-          <input id="delAll" type="checkbox" v-model="checkedAllModel" @click="checkAll" />
+          <input id="delAll" type="checkbox" v-model="checkedAllModel" @click="checkAll()" />
           <label for="delAll">全选</label>
           <div class="total">
 
             <span v-if="lists.totalMoney">合计：<b>￥{{lists.totalMoney / 1000 | price}}</b></span>
             <span v-else>合计：<b>￥0.00</b></span>
 
-            <em v-if="lists.discountMoney">已优惠￥{{lists.discountMoney}}</em>
+            <em v-if="lists.discountMoney">已优惠￥{{lists.discountMoney / 1000}}</em>
           </div>
         </div>
 
@@ -164,6 +175,7 @@ import carCount from '../common/carCount.vue';
 import cart from '../../plugins/cart'
 import notData from '../common/notData.vue'
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'shopping',
@@ -480,6 +492,10 @@ export default {
       return jsonStr;
 
     },
+    // 选择单个
+    checkOne:function(){
+      alert(1);
+    },
     // 全选
     checkAll:function(){
       var _this = this;
@@ -537,85 +553,99 @@ export default {
     del:function(){
       let _this = this;
 
-      // 显示加载中
-      _this.$refs.modalToast.toast({
-        txt:'加载中',
-        icon:'loading',
-        time:0
-      });
+      opModal.alert({
+        content:"确认删除选中的商品吗？",
+        ok:"确定",
+        onOk:function(){
 
-      if(_this.isLogin){
+          // 显示加载中
+          _this.$refs.modalToast.toast({
+            txt:'加载中',
+            icon:'loading',
+            time:0
+          });
 
-        let str = _this.checkCommodityId.toString();
-        let getNotCheckGoods = _this.getNotCheckGoods();
+          if(_this.isLogin){
 
-        // 批量删除
-        _this.$http.post('/community/delCartGoodsArray', {
-          "projectId":simplestorage.get('projectId'),
-          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-          "goodsIds": str,
-          //"checkAll":"1",   //购物车选中的商品信息
-          //"checkGoodsInfo":"[{goodsId:500152,amount:1},{goodsId:500145,amount:1},{goodsId:500148,amount:1}]"  //购物车剩下的商品信息
-          "checkGoodsInfo":getNotCheckGoods
-        },{
-          "encryptType":1
-        }).then(function(res) {
-          console.log(res);
-          if (res.resultCode != 0) {
-            _this.$refs.modalToast.toast({
-              txt:res.msg
-            });
-            return false;
+            let str = _this.checkCommodityId.toString();
+            let getNotCheckGoods = _this.getNotCheckGoods();
+
+            // 批量删除
+            _this.$http.post('/community/delCartGoodsArray', {
+              "projectId":simplestorage.get('projectId'),
+              "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+              "goodsIds": str,
+              //"checkAll":"1",   //购物车选中的商品信息
+              //"checkGoodsInfo":"[{goodsId:500152,amount:1},{goodsId:500145,amount:1},{goodsId:500148,amount:1}]"  //购物车剩下的商品信息
+              "checkGoodsInfo":getNotCheckGoods
+            },{
+              "encryptType":1
+            }).then(function(res) {
+              console.log(res);
+              if (res.resultCode != 0) {
+                _this.$refs.modalToast.toast({
+                  txt:res.msg
+                });
+                return false;
+              }
+              // 加载购物车数据
+              _this.lists = res.data;
+              // 修改底部的值
+              _this.$refs.appnav.shoppingNum = res.data.totalCount;
+              // 隐藏加载中
+              _this.$refs.modalToast.is = false;
+              _this.checkCommodityId = [];
+
+            }).catch(function(error) {
+              console.log(error)
+            })
+
+          }else {
+
+            //删除一组缓存数据商品
+            cart.removeIds(_this.checkCommodityId);
+
+            var jsonStr = cart.queryAllJsonStr();
+
+            // 未登录.加载.本地缓存购物车信息查询
+            _this.$http.post('/community/getCartInfoByGoodsInfo', {
+              "projectId":simplestorage.get('projectId'),
+              "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+              "goodsInfo": jsonStr
+            },{
+              "encryptType":1
+            }).then(function(res) {
+              console.log(res);
+              if (res.resultCode != 0) {
+                _this.$refs.modalToast.toast({
+                  txt:res.msg
+                });
+                return false;
+              }
+              // 加载购物车数据
+              _this.lists = res.data;
+              // 修改底部的值
+              _this.$refs.appnav.shoppingNum = res.data.totalCount;
+              // 隐藏加载中
+              _this.$refs.modalToast.is = false;
+              //console.log(JSON.stringify(_this.lists))
+
+              _this.checkCommodityId = [];
+
+            }).catch(function(error) {
+              console.log(error)
+            })
+
           }
-          // 加载购物车数据
-          _this.lists = res.data;
-          // 修改底部的值
-          _this.$refs.appnav.shoppingNum = res.data.totalCount;
-          // 隐藏加载中
-          _this.$refs.modalToast.is = false;
-          _this.checkCommodityId = [];
 
-        }).catch(function(error) {
-          console.log(error)
-        })
 
-      }else {
+        },
+        cancel:'取消',
+        onCancel:function(){
 
-        //删除一组缓存数据商品
-        cart.removeIds(_this.checkCommodityId);
+        }
+      })
 
-        var jsonStr = cart.queryAllJsonStr();
-
-        // 未登录.加载.本地缓存购物车信息查询
-        _this.$http.post('/community/getCartInfoByGoodsInfo', {
-          "projectId":simplestorage.get('projectId'),
-          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-          "goodsInfo": jsonStr
-        },{
-          "encryptType":1
-        }).then(function(res) {
-          console.log(res);
-          if (res.resultCode != 0) {
-            _this.$refs.modalToast.toast({
-              txt:res.msg
-            });
-            return false;
-          }
-          // 加载购物车数据
-          _this.lists = res.data;
-          // 修改底部的值
-          _this.$refs.appnav.shoppingNum = res.data.totalCount;
-          // 隐藏加载中
-          _this.$refs.modalToast.is = false;
-          //console.log(JSON.stringify(_this.lists))
-
-          _this.checkCommodityId = [];
-
-        }).catch(function(error) {
-          console.log(error)
-        })
-
-      }
 
     },
     // 去结算
@@ -712,22 +742,22 @@ export default {
   },
   watch: {
     // 是否全部选中
-    checkCommodityId:function(){
-      let len = 0;
-      for(let i = 0;i < this.lists.cartGoodsList.length; i++){
-        len +=this.lists.cartGoodsList[i].goodsList.length;
-      }
-
-      if(this.checkCommodityId.length == len){
-        this.checkedAllModel = true;
-      }else{
-        this.checkedAllModel = false;
-      }
-
-      // 重新获取没选中数据
-      //this.getCheckShopping();
-
-    }
+//    checkCommodityId:function(){
+//      let len = 0;
+//      for(let i = 0;i < this.lists.cartGoodsList.length; i++){
+//        len +=this.lists.cartGoodsList[i].goodsList.length;
+//      }
+//
+//      if(this.checkCommodityId.length == len){
+//        this.checkedAllModel = true;
+//      }else{
+//        this.checkedAllModel = false;
+//      }
+//
+//      // 重新获取没选中数据
+//      //this.getCheckShopping();
+//
+//    }
   }
 }
 </script>
