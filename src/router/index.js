@@ -190,6 +190,12 @@ const router = new Router({
       }
     },
     {
+      // 游客登录
+      path: '/guest',
+      name: 'guest',
+      component: resolve => require(['@/views/login/guest'], resolve)
+    },
+    {
       // 用户中心
       path: '/userHome',
       name: 'userHome',
@@ -361,6 +367,8 @@ router.beforeEach((to, from, next) => {
       simplestorage.deleteKey('HLXK_KEY')
       // 清空用户登录状态
       simplestorage.deleteKey('HLXK_UserId')
+      // 清空购物车用户选中状态
+      simplestorage.deleteKey('checkCommodityId')
     }
   }
 

@@ -64,8 +64,9 @@
         <div class="total">
           合计：<b>￥0.00</b><em>(已选11件)</em>
         </div>
-
-        <div class="next">下一步</div>
+        <router-link class="next" :to="{path:'shopping',query:{projectId:projectId}}">
+          下一步
+        </router-link>
       </div>
     </footer>
   </div>
@@ -77,6 +78,7 @@ import simplestorage from 'simplestorage.js'
 import carCount from '../common/carCount.vue';
 import notData from '../common/notData.vue'
 import modalToast from '../common/modalToast.vue'
+import cart from '../../plugins/cart'
 
 export default {
   name: 'search',
@@ -100,6 +102,9 @@ export default {
 
     // 读取缓存中历史记录
     this.queryHistory()
+
+    // 获取购物车选中数据
+    this.getCheckShopping();
 
   },
   methods: {
@@ -265,6 +270,118 @@ export default {
     selectHistory:function(name){
       this.keyWord = name;
       this.submit();
+    },
+    /************************************************************************************************/
+    // 获取购物车选中数据
+    getCheckShopping:function(){
+      let _this = this;
+      let url;
+
+      //// 登录、未登录............................
+      if(_this.isLogin){
+
+        // 购物车详情
+        _this.$http.post('/community/getCartInfo', {
+          "projectId":simplestorage.get('projectId'),
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          //"checkGoodsInfo":_this.getCheckGoods()
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          console.log(res);
+          if (res.resultCode != 0) {
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
+            return false;
+          }
+          // 加载购物车数据
+          _this.lists = res.data;
+          // console.log(JSON.stringify(_this.lists))
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }else{
+
+        var jsonStr = cart.queryAllJsonStr();
+
+        // 未登录.加载.本地缓存购物车信息查询
+        this.$http.post('/community/getCartInfoByGoodsInfo', {
+          "projectId":simplestorage.get('projectId'),
+          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+          //"checkGoodsInfo":_this.getCheckGoods(),       // 传了会返回选中的信息
+          "goodsInfo": jsonStr
+        },{
+          "encryptType":1
+        }).then(function(res) {
+          console.log(res);
+          if (res.resultCode != 0) {
+            _this.$refs.modalToast.toast({
+              txt:res.msg
+            });
+            return false;
+          }
+          // 加载购物车数据
+          _this.lists = res.data;
+          //console.log(JSON.stringify(_this.lists))
+
+        }).catch(function(error) {
+          console.log(error)
+        })
+
+      }
+
+    },
+    // 获取全部商品json
+    getCheckGoods :function(str){
+      let _this = this;
+      let jsonStr = "[";
+
+      if(_this.isLogin){
+
+        // 只有选中状态需要
+        for(let i = 0;i < _this.checkCommodityId.length;i++){
+          _this.lists.cartGoodsList.forEach(function(item){
+            item.goodsList.forEach(function(goodsList,index){
+              if(_this.checkCommodityId[i] == goodsList.goodsId && goodsList.quantity != undefined){
+                if (i != 0) {
+                  jsonStr += ","
+                }
+                if(str == "pay"){
+                  jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + ",price:" + goodsList.price +"}"
+                }else{
+                  jsonStr += "{goodsId:" + goodsList.goodsId + ",amount:" + goodsList.quantity + "}"
+                }
+              }
+            })
+          });
+        }
+
+      }else{
+        let HLXK_SHOPPING = simplestorage.get('HLXK_SHOPPING');
+
+        _this.checkCommodityId.forEach(function(value,i){
+          HLXK_SHOPPING.forEach(function(goodsList){
+            if(value == goodsList.id){
+              if (i != 0) {
+                jsonStr += ","
+              }
+              if(str == "pay"){
+                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + ",price:" + goodsList.price +"}"
+              }else{
+                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + "}"
+              }
+            }
+          });
+
+        })
+
+      }
+
+      jsonStr += "]";
+      return jsonStr;
     },
     /************************************************************************************************/
     // 修改列表中已添加购物车值

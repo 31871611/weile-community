@@ -133,15 +133,15 @@ export default {
             // 底部购物车动画使用
             _this.$emit('increment', event.target);
 
+            // 把这件商品设置在购物车为选中.是否有值
+            _this.saveCheckCommodityId()
+
           }else if(res.resultCode === 8002){
             opModal.alert({
               content:"此商品只有该小区住户才能购买",
               ok:"验证",
               onOk:function(){
-                _this.$router.push({
-                  path: '/login',
-                  projectId:simplestorage.get('projectId')
-                })
+                location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
               },
               cancel:'放弃',
               onCancel:function(){
@@ -184,10 +184,7 @@ export default {
             content:"此商品只有该小区住户才能购买",
             ok:"验证",
             onOk:function(){
-              _this.$router.push({
-                path: '/login',
-                projectId:simplestorage.get('projectId')
-              })
+              location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
             },
             cancel:'放弃',
             onCancel:function(){
@@ -201,6 +198,10 @@ export default {
         cart.increase(_this.commodityId);
         // 修改底部购物车值
         _this.$emit('shoppingNum',cart.getAmount());
+
+        // 把这件商品设置在购物车为选中
+        _this.saveCheckCommodityId()
+
         // 判断type
         if(!_this.type){
           _this.num = cart.getIdAmount(_this.commodityId);
@@ -263,10 +264,7 @@ export default {
               content:"此商品只有该小区住户才能购买",
               ok:"验证",
               onOk:function(){
-                _this.$router.push({
-                  path: '/login',
-                  projectId:simplestorage.get('projectId')
-                })
+                location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
               },
               cancel:'放弃',
               onCancel:function(){
@@ -300,13 +298,45 @@ export default {
           console.log(error)
         })
       }else{
-        // 减少商品数
-        cart.reduce(_this.commodityId);
-        // 修改底部购物车值
-        _this.$emit('shoppingNum',cart.getAmount());
-        _this.num = cart.getIdAmount(_this.commodityId);
-        // 给购物车页面使用
-        _this.$emit('modifyNotLoginCarList');
+
+        // 购物车页面只剩下1件时
+        if(_this.shopCarCount == 1 && _this.list == 'shopping'){
+
+          opModal.alert({
+            content:"是否删除该商品?",
+            ok:"确定",
+            onOk:function(){
+              // 删除用户选中记录
+              let _this = this;
+              let checkCommodityId = simplestorage.get('checkCommodityId');
+              alert(checkCommodityId)
+
+              // 减少商品数
+              cart.reduce(_this.commodityId);
+              // 修改底部购物车值
+              _this.$emit('shoppingNum',cart.getAmount());
+              _this.num = cart.getIdAmount(_this.commodityId);
+              // 给购物车页面使用
+              _this.$emit('modifyNotLoginCarList');
+
+            },
+            cancel:'取消',
+            onCancel:function(){
+
+            }
+          })
+
+        }else{
+
+          // 减少商品数
+          cart.reduce(_this.commodityId);
+          // 修改底部购物车值
+          _this.$emit('shoppingNum',cart.getAmount());
+          _this.num = cart.getIdAmount(_this.commodityId);
+          // 给购物车页面使用
+          _this.$emit('modifyNotLoginCarList');
+
+        }
 
         // 购物车页面
         if(_this.list == 'shopping'){
@@ -315,9 +345,20 @@ export default {
         }
 
       }
+    },
+    saveCheckCommodityId:function(){
+      let _this = this;
+
+      // 把这件商品设置在购物车为选中.是否有值
+      let checkCommodityId = simplestorage.get('checkCommodityId');
+      if(checkCommodityId){
+        // 有值添加
+        simplestorage.set('checkCommodityId', checkCommodityId + ',' + _this.commodityId);
+      }else{
+        simplestorage.set('checkCommodityId', _this.commodityId);
+      }
 
     }
-
   },
   components: {
 

@@ -152,7 +152,7 @@
                     <p>{{list.goodsName}}</p>
                     <div class="bottom">
                       <strong class="price">￥<b>{{list.price / 1000}}</b></strong>
-                      <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.commodityPageInfoDto.isFlashSale != 1 && list.commodityPageInfoDto.inventory > 0" :index="index" :parent-index="parentIndex" :list="'selectedList'" :commodity-id="list.commodityPageInfoDto.commodityId" :shop-car-count="list.commodityPageInfoDto.shopCarCount" :inventory="list.commodityPageInfoDto.inventory"></car-count>
+                      <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.showBuy == 1" :index="index" :parent-index="parentIndex" :list="'selectedList'" :commodity-id="list.commodityPageInfoDto.commodityId" :shop-car-count="list.commodityPageInfoDto.shopCarCount" :inventory="list.commodityPageInfoDto.inventory"></car-count>
                     </div>
                   </router-link>
                 </div>
@@ -346,7 +346,7 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        console.log(res)
+        //console.log(res)
         let data = res.data || {};
         //console.log(JSON.stringify(res.data));
         if (res.resultCode == 0) {

@@ -68,19 +68,19 @@
       </div>
 
       <div class="footerCart" v-if="isDel">
-        <div class="box">
+        <div class="box" @click="checkAll()">
           <input id="delAll" type="checkbox" v-model="checkedAllModel" />
-          <label for="" @click="checkAll()">全选</label>
+          <label for="">全选</label>
         </div>
         <div class="next del" @click="del">删除</div>
       </div>
       <div class="footerCart" v-else>
-        <div class="box">
-          <input id="checkAll" type="checkbox" v-model="checkedAllModel" />
-          <label for="" @click="checkAll()">全选</label>
+        <div class="box" @click="checkAll()">
+          <input id="checkAll1" type="checkbox" v-model="checkedAllModel" />
+          <label for="">全选</label>
           <div class="total">
 
-            <span v-if="lists.totalMoney">合计：<b>￥{{lists.totalMoney / 1000 | price}}</b></span>
+            <span v-if="lists.totalMoney">合计:<b>￥{{lists.totalMoney / 1000 | price}}</b></span>
             <span v-else>合计：<b>￥0.00</b></span>
 
             <em v-if="lists.discountMoney">已优惠￥{{lists.discountMoney / 1000}}</em>
@@ -275,8 +275,8 @@ export default {
             _this.isLists = true;
             // 加载购物车数据
             _this.lists = res.data;
-            // 设置为全选
-            _this.checkAll()
+            // 设置为上一次选中状态
+            _this.loadCheck()
             // 修改底部的值
             _this.$refs.appnav.shoppingNum = res.data.totalCount;
           }else{
@@ -317,8 +317,8 @@ export default {
             _this.isLists = true;
             // 加载购物车数据
             _this.lists = res.data;
-            // 设置为全选
-            _this.checkAll()
+            // 设置为上一次选中状态
+            _this.loadCheck()
           }else{
             // 显示无数据
             _this.isNotData = true;
@@ -368,13 +368,12 @@ export default {
       }else{
 
         var jsonStr = cart.queryAllJsonStr();
-        var checkJsonStr = _this.getCheckGoods();
 
         // 未登录.加载.本地缓存购物车信息查询
         this.$http.post('/community/getCartInfoByGoodsInfo', {
           "projectId":simplestorage.get('projectId'),
           "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-          "checkGoodsInfo":checkJsonStr,       // 传了会返回选中的信息
+          "checkGoodsInfo":_this.getCheckGoods(),       // 传了会返回选中的信息
           "goodsInfo": jsonStr
         },{
           "encryptType":1
@@ -488,22 +487,46 @@ export default {
       return jsonStr;
 
     },
+    // 进入加载上次选中情况
+    loadCheck:function(){
+      let _this = this;
+      let checkCommodityId = simplestorage.get('checkCommodityId');
+
+      // 怎么知道是一次？
+      // 第一次checkCommodityId还没这个字段？undefined.有问题....
+      // 非第一次，用户不选择商品、去结算删除，后checkCommodityId == ''
+      if(checkCommodityId == undefined){
+        // 全选
+        _this.checkAll();
+      }else{
+        // 用户选择的商品
+        if(checkCommodityId != ''){
+          // 得到用户选中的值
+          let arr = checkCommodityId.split(",");
+          // 清空选中的值
+          _this.checkCommodityId = [];
+          // 添加全选值
+          arr.forEach(function(item){
+            _this.checkCommodityId.push(item);
+          });
+        }
+      }
+
+    },
     // 全选
     checkAll:function(){
       var _this = this;
 
-      alert(_this.checkedAllModel)
       if (_this.checkedAllModel) {   //反选
-
+        // 清空选中的值
         _this.checkCommodityId = [];
         // 全选值
         _this.checkedAllModel = false;
-        alert('反选')
 
       }else{  //全选
-
+        // 清空选中的值
         _this.checkCommodityId = [];
-
+        // 添加全选值
         _this.lists.cartGoodsList.forEach(function(item){
           item.goodsList.forEach(function(goodsList){
             _this.checkCommodityId.push(goodsList.goodsId);
@@ -511,8 +534,6 @@ export default {
         });
         // 全选值
         _this.checkedAllModel = true;
-        alert(_this.checkedAllModel)
-        alert('全选')
       }
 
       // 重新获取没选中数据
@@ -714,13 +735,47 @@ export default {
     // 修改列表中已添加购物车值
     modifyShopCarCount:function(type,list,index,parentIndex){
       let _this = this;
+      let cartGoodsList = _this.lists.cartGoodsList[parentIndex].goodsList[index];
+
       if(type == 'add'){
         Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity + 1);
       }else if(type == 'del'){
+
+        if(cartGoodsList.quantity == 1){
+          opModal.alert({
+            content:"是否删除该商品?",
+            ok:"确定",
+            onOk:function(){
+              // 删除用户选中记录
+              let checkArr = simplestorage.get('checkCommodityId').split(",");
+              checkArr.forEach(function(value,index){
+                // 本商品id
+                if(value == cartGoodsList.goodsId){
+                  // 移除
+                  checkArr.splice(index, 1);
+                  // 保存
+                  simplestorage.set('checkCommodityId', checkArr.toString());
+                  // 减1
+                  Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity - 1);
+                  // 重新获取没选中数据
+                  _this.getCheckShopping();
+                }
+              })
+
+            },
+            cancel:'取消',
+            onCancel:function(){
+
+            }
+          })
+          return false
+        }
         Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity - 1);
       }
+
       // 重新获取没选中数据
       _this.getCheckShopping();
+
     },
     // 未登录.修改列表中已添加购物车值
     modifyNotLoginCarList:function(){
@@ -740,22 +795,28 @@ export default {
   },
   watch: {
     // 是否全部选中
-//    checkCommodityId:function(){
-//      let len = 0;
-//      for(let i = 0;i < this.lists.cartGoodsList.length; i++){
-//        len +=this.lists.cartGoodsList[i].goodsList.length;
-//      }
-//
-//      if(this.checkCommodityId.length == len){
-//        this.checkedAllModel = true;
-//      }else{
-//        this.checkedAllModel = false;
-//      }
-//
-//      // 重新获取没选中数据
-//      //this.getCheckShopping();
-//
-//    }
+    checkCommodityId:function(){
+
+      // 保存选中值
+      simplestorage.set('checkCommodityId', this.checkCommodityId.toString());
+
+      // 商品数
+      let len = 0;
+      for(let i = 0;i < this.lists.cartGoodsList.length; i++){
+        len +=this.lists.cartGoodsList[i].goodsList.length;
+      }
+
+      // 是否全选或没全选
+      if(this.checkCommodityId.length == len){
+        this.checkedAllModel = true;
+      }else{
+        this.checkedAllModel = false;
+      }
+
+      // 重新获取没选中数据
+      this.getCheckShopping();
+
+    }
   }
 }
 </script>

@@ -345,6 +345,13 @@ export default {
           let orderId = res.data.orderId;
           let url = location.protocol + '//' + location.host + '/#/success?projectId='+ _this.projectId +'&id=' + orderId;
 
+          // 删除购物车中用户选中.如果有
+          // id、数量
+//          let checkCommodityId = simplestorage.get('checkCommodityId');
+//          console.log(_this.goodsInfo);
+//          return false;
+
+
           // 下单成功，调用支付接口
           _this.$http.post('/community/collectionPay', {
             "projectId":simplestorage.get('projectId'),

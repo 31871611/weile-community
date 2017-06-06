@@ -106,25 +106,27 @@ fetch.interceptors.response.use(function(response) {
   // 重新请求游客接口...
   if(_d.resultCode == 1000){
     // 删除状态
-    // 清空小区id
-    simplestorage.deleteKey('HLXK_DISTRIBUTION')
-    // 清空openid
-    simplestorage.deleteKey('HLXK_OPENID')
-    // 清空sessionId
-    simplestorage.deleteKey('HLXK_SessionId')
+    // 清空小区id.清空会重新选择小区
+    //simplestorage.deleteKey('HLXK_DISTRIBUTION')
+    // 清空openid.唯一的不会过期
+    //simplestorage.deleteKey('HLXK_OPENID')
+    // 清空sessionId.不会过期
+    //simplestorage.deleteKey('HLXK_SessionId')
+
     // 清空SESSION
     simplestorage.deleteKey('HLXK_SESSION')
     // 清空KEY
     simplestorage.deleteKey('HLXK_KEY')
-    // 清空用户登录状态
+    // 清空用户登录状态.与SESSION关联在一起的
     simplestorage.deleteKey('HLXK_UserId')
+
     // 提示
     alert('状态异常' + location.href);
-    // 刷新页面.跳转去登录页面
-    //router.replace({
-    //  path: 'userHome',
-    //  query: {redirect: router.currentRoute.fullPath}
-    //})
+    // 跳转去游客登录页面获取后在跳回
+    router.replace({
+      path: 'guest',
+      query: {redirect: router.currentRoute.fullPath}
+    })
     return false;
   }
   let key = _d.key || simplestorage.get('HLXK_KEY')
