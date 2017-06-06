@@ -346,18 +346,26 @@ export default {
 
       }
     },
+    // 保存为购物车选中值
     saveCheckCommodityId:function(){
       let _this = this;
+      let id = _this.commodityId.toString();
 
       // 把这件商品设置在购物车为选中.是否有值
-      let checkCommodityId = simplestorage.get('checkCommodityId');
+      let checkCommodityId = simplestorage.get('checkCommodityId').toString();
       if(checkCommodityId){
-        // 有值添加
-        simplestorage.set('checkCommodityId', checkCommodityId + ',' + _this.commodityId);
+        if(checkCommodityId.indexOf(id) == -1){
+          // 有值添加
+          simplestorage.set('checkCommodityId', checkCommodityId + ',' + id);
+        }
       }else{
-        simplestorage.set('checkCommodityId', _this.commodityId);
+        simplestorage.set('checkCommodityId', id);
       }
 
+    },
+    // 也要删除...
+    delCheckCommodityId:function(){
+      
     }
   },
   components: {

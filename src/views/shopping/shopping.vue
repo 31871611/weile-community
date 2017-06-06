@@ -62,7 +62,7 @@
 
     </article>
     <footer>
-
+{{checkCommodityId}}
       <div class="footerInfo" v-if="lists.distributionStr">
         {{lists.distributionStr}}
       </div>
@@ -755,6 +755,16 @@ export default {
                   checkArr.splice(index, 1);
                   // 保存
                   simplestorage.set('checkCommodityId', checkArr.toString());
+                  console.log(1)
+                }
+              })
+              console.log(2)
+              // 手动删除购物车商品checkCommodityId值
+              _this.checkCommodityId.forEach(function(value,index){
+                if(value == cartGoodsList.goodsId){
+                  //alert(1);
+                  // 移除
+                  _this.checkCommodityId.splice(index, 1);
                   // 减1
                   Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity - 1);
                   // 重新获取没选中数据
@@ -769,11 +779,12 @@ export default {
             }
           })
           return false
+        }else{
+          Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity - 1);
         }
-        Vue.set(_this.lists.cartGoodsList[parentIndex].goodsList[index],'quantity',_this.lists.cartGoodsList[parentIndex].goodsList[index].quantity - 1);
       }
 
-      // 重新获取没选中数据
+      // 重新获取选中数据
       _this.getCheckShopping();
 
     },
