@@ -24,7 +24,7 @@ vuex
 
 sessionid不会过期
 错误码：7001 无便利店.好货页面
-错误码：1000
+错误码：1000 session过期
 验证跳转到用户认证,url连接是多少？
 
 
@@ -43,3 +43,15 @@ http://172.16.12.177:9999/#/?projectId=1
 
 simpleStorage
 {"projectId":"1","HLXK_OPENID":"oguZ0t5CPc76PXM_ggdlzm7koS-0","HLXK_UserInfo":{"subscribe":1,"openid":"oguZ0t5CPc76PXM_ggdlzm7koS-0","nickname":"灰","sex":1,"language":"zh_CN","city":"福州","province":"福建","country":"中国","headimgurl":"http://wx.qlogo.cn/mmopen/ajNVdqHZLLB753BZsfxvv3WicaEibwZjnCllLibTpXeU8lREaKDPswvia9W7BHAlROvtRx4Nse35bbvX0xy0HeylmA/0","subscribe_time":1494833835,"unionid":"oxPGgwgHJRJ9r2H8VDeMXP4eFJDk","remark":"","groupid":0,"tagid_list":[]},"HLXK_SessionId":"1-oguZ0t5CPc76PXM_ggdlzm7koS-0","HLXK_SESSION":"eyJ0b2tlbiI6IjNhOTRmOTZkMmQ2NDQxNDZhZjNlMzkyMzFiZGU2ZWQ1Iiwic2Vzc2lvbktleSI6ImQ3NjU5ZGZiYTM5MzRkYmM4ZTc1ZGYyZGVlYTRiZDE4In0=","HLXK_KEY":"fd0a017517c74f0d","HLXK_UserId":-1,"HLXK_DISTRIBUTION":{"communityId":2,"isShow":null,"ifCheck":null,"authorizationStatus":0,"name":"海润滨江B区","id":2}}
+
+
+      /*
+
+          第一次进入是全选.要知道那次是第一次
+          商品加入购物车是选中状态.将这个id添加，结算删除
+          记录当前选中状态，在页面切换后重新进入购物车时需要选中
+
+      */
+
+删除选中id
+购物车页面(添加、减少组件未登录)删除商品、结算下单
