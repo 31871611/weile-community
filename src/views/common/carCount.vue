@@ -134,7 +134,9 @@ export default {
             _this.$emit('increment', event.target);
 
             // 把这件商品设置在购物车为选中.是否有值
-            _this.saveCheckCommodityId()
+            if(_this.list != 'shopping') {
+              _this.saveCheckCommodityId()
+            }
 
           }else if(res.resultCode === 8002){
             opModal.alert({
@@ -200,7 +202,9 @@ export default {
         _this.$emit('shoppingNum',cart.getAmount());
 
         // 把这件商品设置在购物车为选中
-        _this.saveCheckCommodityId()
+        if(_this.list != 'shopping') {
+          _this.saveCheckCommodityId()
+        }
 
         // 判断type
         if(!_this.type){
@@ -244,72 +248,101 @@ export default {
           url = '/community/addGoodsToCart';        // 1件1件减少
         }
 
-        this.$http.post(url, {
-          "projectId":simplestorage.get('projectId'),
-          "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
-          "goodsId": _this.commodityId,
-          "quantity": -1,
-          "checkAll":1
-        },{
-          "encryptType":1
-        }).then(function(res) {
-          //console.log(res);
-          if (res.resultCode == 0) {
 
-            _this.$emit('modifyShopCarCount','del','recommendList',_this.index,_this.parentIndex);
-            // 修改底部购物车值
-            _this.$emit('shoppingNum',res.data.totalCount);
-          }else if(res.resultCode === 8002){
-            opModal.alert({
-              content:"此商品只有该小区住户才能购买",
-              ok:"验证",
-              onOk:function(){
-                location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
-              },
-              cancel:'放弃',
-              onCancel:function(){
-
-              }
-            })
-            return false;
-          }else if(res.resultCode === 8003) {
-            //用户未认证
-            opModal.alert({
-              content:"此商品只有该小区住户才能购买",
-              ok:"放弃",
-              onOk:function(){
-              }
-            })
-            return false;
-          }else if(res.resultCode === 8004 || res.resultCode === 8005){
-            _this.$router.push({ path: '/login'})
-          }else{
-            alert(res.msg);
-            return false;
-          }
-
-          // 购物车页面
-          if(_this.list == 'shopping'){
-            // 移除加载中
-            div.parentNode.removeChild(div);
-          }
-
-        }).catch(function(error) {
-          console.log(error)
-        })
-      }else{
-
-        // 购物车页面只剩下1件时
-        if(_this.shopCarCount == 1 && _this.list == 'shopping'){
+        if(_this.num == 1 && _this.list == 'shopping'){
 
           opModal.alert({
             content:"是否删除该商品?",
             ok:"确定",
             onOk:function(){
-              // 删除用户选中记录
-              let _this = this;
-              let checkCommodityId = simplestorage.get('checkCommodityId');
-              alert(checkCommodityId)
+              del();
+            },
+            cancel:'取消',
+            onCancel:function(){
+              // 移除加载中
+              div.parentNode.removeChild(div);
+              return false
+            }
+          })
+
+        }else{
+          del();
+        }
+
+
+        function del(){
+
+          _this.$http.post(url, {
+            "projectId":simplestorage.get('projectId'),
+            "distributionCommunityId":simplestorage.get('HLXK_DISTRIBUTION').id,
+            "goodsId": _this.commodityId,
+            "quantity": -1,
+            "checkAll":1
+          },{
+            "encryptType":1
+          }).then(function(res) {
+            //console.log(res);
+            if (res.resultCode == 0) {
+
+              // 购物车页面
+              if(_this.list == 'shopping'){
+                // 移除加载中
+                div.parentNode.removeChild(div);
+              }
+
+              // 删除选中id
+              if(_this.num == 1 && _this.list != 'shopping'){
+                  _this.delCheckCommodityId();
+              }
+
+              _this.$emit('modifyShopCarCount','del','recommendList',_this.index,_this.parentIndex,_this.commodityId,_this.num);
+              // 修改底部购物车值
+              _this.$emit('shoppingNum',res.data.totalCount);
+            }else if(res.resultCode === 8002){
+              opModal.alert({
+                content:"此商品只有该小区住户才能购买",
+                ok:"验证",
+                onOk:function(){
+                  location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
+                },
+                cancel:'放弃',
+                onCancel:function(){
+
+                }
+              })
+              return false;
+            }else if(res.resultCode === 8003) {
+              //用户未认证
+              opModal.alert({
+                content:"此商品只有该小区住户才能购买",
+                ok:"放弃",
+                onOk:function(){
+                }
+              })
+              return false;
+            }else if(res.resultCode === 8004 || res.resultCode === 8005){
+              _this.$router.push({ path: '/login'})
+            }else{
+              alert(res.msg);
+              return false;
+            }
+
+          }).catch(function(error) {
+            console.log(error)
+          })
+
+        }
+
+
+      }else{
+
+        // 购物车页面只剩下1件时
+        if(_this.num == 1 && _this.list == 'shopping'){
+
+          opModal.alert({
+            content:"是否删除该商品?",
+            ok:"确定",
+            onOk:function(){
 
               // 减少商品数
               cart.reduce(_this.commodityId);
@@ -327,6 +360,11 @@ export default {
           })
 
         }else{
+
+          if(_this.num == 1 && _this.list != 'shopping'){
+            // 删除选中id
+            _this.delCheckCommodityId();
+          }
 
           // 减少商品数
           cart.reduce(_this.commodityId);
@@ -346,12 +384,16 @@ export default {
 
       }
     },
-    // 保存为购物车选中值
+    // 保存购物车选中值
     saveCheckCommodityId:function(){
       let _this = this;
       let id = _this.commodityId.toString();
 
       // 把这件商品设置在购物车为选中.是否有值
+      if(!simplestorage.get('checkCommodityId')){
+        simplestorage.set('checkCommodityId', id);
+        return false;
+      }
       let checkCommodityId = simplestorage.get('checkCommodityId').toString();
       if(checkCommodityId){
         if(checkCommodityId.indexOf(id) == -1){
@@ -363,9 +405,19 @@ export default {
       }
 
     },
-    // 也要删除...
+    // 删除购物车选中值
     delCheckCommodityId:function(){
-      
+      let _this = this;
+      let checkCommodityId = simplestorage.get('checkCommodityId').split(",");
+      checkCommodityId.forEach(function(value,index){
+        if(value == _this.commodityId){
+          // 移除
+          checkCommodityId.splice(index, 1);
+          // 保存
+          simplestorage.set('checkCommodityId', checkCommodityId.toString());
+        }
+      })
+
     }
   },
   components: {

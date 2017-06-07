@@ -140,6 +140,11 @@
     @include display-flex();
     @include align-items();
   }
+  .shoppingCheck{
+    display: block;
+    width: pxTorem(36px);
+    margin:0 pxTorem(20px) 0 0 ;
+  }
   // 购物车选择按钮
   input[type='checkbox']{
     width: pxTorem(36px);
@@ -171,9 +176,7 @@
     @include opacity(0);
     display: block;
     width: pxTorem(36px);
-    margin:0 pxTorem(20px) 0 0 ;
   }
-
   // 左边图片
   .photo{
     display: block;

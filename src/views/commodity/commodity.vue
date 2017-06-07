@@ -54,7 +54,7 @@
 
         <!-- 价格、原价、库存，的显示微信与ios不同 -->
         <div class="commodityTitle">
-          <h1><b v-if="list.isHouseUser==1">[住户专享]</b>{{list.name}}<i v-if="list.activityId != 0 && list.activityType == 1">活动</i></h1>
+          <h1><b v-if="list.isHouseUser==1">[住户专享]</b>{{list.name}}<i v-if="list.activityId != 0 && list.activityType == 1"></i></h1>
           <div class="info">
             <div class="left">
               <div class="priceNum">
@@ -85,9 +85,11 @@
             </div>
             <div class="right">
 
+
               <span class="limit" v-if="list.flashSalePrice != null && list.nowTime > list.startTime && list.endTime > list.nowTime && list.flashSaleInventory > 0 && list.flashLimit != 0">限购{{list.flashLimit}}件</span>
-              <span class="limit" v-if="list.activityId !=0 && list.flashLimit != 0">限购{{list.flashLimit}}件</span>
-              <span class="limit" v-if="list.groupBuy && list.amountLimit != 0">限购{{list.amountLimit}}件</span>
+              <!--<span class="limit" v-if="list.flashSalePrice != null && list.nowTime > list.startTime && list.endTime > list.nowTime && list.flashSaleInventory > 0 && list.flashLimit != 0">限购{{list.flashLimit}}件1</span>-->
+              <!--<span class="limit" v-if="list.activityId != 0 && list.flashLimit != 0">限购{{list.flashLimit}}件2</span>-->
+              <span class="limit" v-if="list.groupBuy && list.amountLimit != 0">限购{{list.amountLimit}}件3</span>
 
               <div class="selectNum">
                 <div class="remove" @click="remove()" :class="{'select':goodsNum == 1}"></div>
@@ -461,10 +463,29 @@ export default {
       }
 
     },
+    // 保存购物车选中值
+    saveCheckCommodityId:function(){
+      let _this = this;
+      let id = _this.$route.query.id;
+
+      // 把这件商品设置在购物车为选中.是否有值
+      if(!simplestorage.get('checkCommodityId')){
+        simplestorage.set('checkCommodityId', id);
+        return false;
+      }
+      let checkCommodityId = simplestorage.get('checkCommodityId');
+      if(checkCommodityId.indexOf(id) == -1){
+        // 有值添加
+        simplestorage.set('checkCommodityId', checkCommodityId + ',' + id);
+      }
+
+    },
     // 加入购物车
     addCar:function(){
-      //alert('加入购物车')
       let _this = this;
+
+      // 保存购物车选中值
+      _this.saveCheckCommodityId();
 
       if(_this.isLogin){
 

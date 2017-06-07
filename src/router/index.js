@@ -146,7 +146,7 @@ const router = new Router({
       component: resolve => require(['@/views/payorder/payorder'], resolve),
       meta:{
         requireAuth: true,
-        pageTitle: '商品详情页'
+        pageTitle: '订单确认'
       },
       children:[
         {

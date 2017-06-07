@@ -69,7 +69,7 @@
           <li v-for="list in lists.activityList">
             <span>{{list.activityName}}</span>
             <span>{{list.discountStr}}</span>
-            <strong>￥{{list.discountMoney}}</strong>
+            <strong>￥{{list.discountMoney / 1000 | price}}</strong>
           </li>
           <li v-if="lists.distributionAmount">
             <span>配送费：</span>
