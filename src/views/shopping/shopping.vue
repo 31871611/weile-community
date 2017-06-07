@@ -518,6 +518,14 @@ export default {
             _this.checkCommodityId.push(item);
           });
 
+//          this.lists.cartGoodsList.forEach(function(goods){
+//            goods.goodsList.forEach(function(list){
+//              if(list.status == 1){
+//                console.log(1)
+//              }
+//            })
+//          })
+
         }
       }
 
