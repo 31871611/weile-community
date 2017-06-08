@@ -12,7 +12,7 @@
       社区
       <div @click="toLink()">跳转</div>
       <!--<div @click="del()">删除</div>-->
-      <!--<div @click="add()">add</div>-->
+      <div @click="add()">add</div>
 <!---->
 <!---->
       <!--<div id="boll" class="boll"></div>-->
@@ -20,18 +20,6 @@
     <footer>
       <!-- 父级不能position:relative; -->
       <!--<div id="target">footer</div>-->
-
-
-      <ul>
-        <li v-for="(list,index) in 10">
-          <label :for="'a' + index">
-            1111111111
-          </label>
-          <input type="checkbox" :id="'a' + index" :value="'a' + index" v-model="sel" />
-        </li>
-      </ul>
-
-
 
     </footer>
   </div>
@@ -41,7 +29,7 @@
 import simplestorage from 'simplestorage.js'
 import {opModal} from '../../plugins/common'
 import $ from 'jquery'
-import {Parabola} from '../../plugins/parabola'
+import flyer from '../../plugins/jquery.fly.min'
 
 export default {
   name: 'community',
@@ -70,7 +58,6 @@ export default {
 
 //    console.log(new Parabola())
 
-    console.log(propertyAuth)
 
   },
   methods: {
@@ -99,16 +86,23 @@ export default {
     },
     add:function(){
 
-      var bool = new Parabola({
-        el: "#boll"
+      var flyer = $('<img class="u-flyer" src="http://scimg.jb51.net/allimg/150614/14-1506141Z0470-L.jpg">');			// 飞入效果
+      flyer.fly({
+        start: {
+          left: 0,			//开始位置（必填）#fly元素会被设置成position: fixed
+          top: 0			//开始位置（必填）
+        },
+        end: {
+          left: 300,		//结束位置（必填）
+          top: 300,			//结束位置（必填）
+          width: 0,					//结束时宽度
+          height: 0					//结束时高度
+        },
+        onEnd: function(){				//结束回调
+          alert(1);
+          this.destory();		//移除dom
+        }
       });
-
-      bool.setOptions({
-        targetEl: $("#target"),
-        curvature: 0.002,
-        duration: 1000
-      });
-      bool.start();
 
     }
   },

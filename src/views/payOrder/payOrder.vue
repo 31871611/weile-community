@@ -346,11 +346,15 @@ export default {
           let url = location.protocol + '//' + location.host + '/#/success?projectId='+ _this.projectId +'&id=' + orderId;
 
           // 删除购物车中用户选中.如果有
-          // id、数量
-//          let checkCommodityId = simplestorage.get('checkCommodityId');
-//          console.log(_this.goodsInfo);
-//          return false;
-
+          let checkCommodityId = simplestorage.get('checkCommodityId').split(",");
+          checkCommodityId.forEach(function(value,index){
+            if(_this.goodsInfo.indexOf(value) != -1){
+              // 移除
+              checkCommodityId.splice(index, 1);
+              // 保存
+              simplestorage.set('checkCommodityId', checkCommodityId.toString());
+            }
+          })
 
           // 下单成功，调用支付接口
           _this.$http.post('/community/collectionPay', {

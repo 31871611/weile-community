@@ -521,7 +521,12 @@ export default {
 //          this.lists.cartGoodsList.forEach(function(goods){
 //            goods.goodsList.forEach(function(list){
 //              if(list.status == 1){
-//                console.log(1)
+//                arr.forEach(function(item){
+//                  // 不存在添加...没有出现
+//                  if(checkCommodityId.indexOf(item) == -1){
+//                    _this.checkCommodityId.push(item);
+//                  }
+//                });
 //              }
 //            })
 //          })
