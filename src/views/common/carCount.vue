@@ -14,7 +14,7 @@ import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
 import {opModal} from '../../plugins/common'
 import $ from 'jquery'
-import {Parabola} from '../../plugins/parabola'
+import flyer from '../../plugins/jquery.fly.min'
 
 export default {
   props:{
@@ -131,7 +131,8 @@ export default {
             // 修改底部购物车值
             _this.$emit('shoppingNum',res.data.totalCount);
             // 底部购物车动画使用
-            _this.$emit('increment', event.target);
+            //_this.$emit('increment', event);
+            _this.addAnimate(event);
 
             // 把这件商品设置在购物车为选中.是否有值
             if(_this.list != 'shopping') {
@@ -213,7 +214,8 @@ export default {
         // 给购物车页面使用
         _this.$emit('modifyNotLoginCarList');
         // 底部购物车动画使用
-        _this.$emit('increment', event.target);
+        //_this.$emit('increment', event);
+        _this.addAnimate(event);
 
         // 购物车页面
         if(_this.list == 'shopping'){
@@ -383,6 +385,28 @@ export default {
         }
 
       }
+    },
+    // 加入购物车动画
+    addAnimate:function(target){
+
+      var offset = $("#end").offset();
+      let flyer = $('<div style="width: 8px;height: 8px;background: #00bb9c;border-radius: 50%;"></div>');			// 飞入效果
+      flyer.fly({
+        start: {
+          left: target.pageX,			//开始位置（必填）#fly元素会被设置成position: fixed
+          top: target.pageY			  //开始位置（必填）
+        },
+        end: {
+          left: offset.left + 10,		//结束位置（必填）
+          top: offset.top + 10,			//结束位置（必填）
+          width: 0,					    //结束时宽度
+          height: 0					    //结束时高度
+        },
+        onEnd: function(){				//结束回调
+          this.destory();		      //移除dom
+        }
+      });
+
     },
     // 保存购物车选中值
     saveCheckCommodityId:function(){

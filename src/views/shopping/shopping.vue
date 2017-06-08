@@ -63,7 +63,7 @@
 
     </article>
     <footer>
-{{checkCommodityId}}
+
       <div class="footerInfo" v-if="lists.distributionStr">
         {{lists.distributionStr}}
       </div>

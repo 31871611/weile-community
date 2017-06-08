@@ -1,17 +1,4 @@
 <template>
-<div>
-
-  <div class="ball-container">
-    <div v-for="ball in balls">
-      <transition name="drop" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-        <div v-show="ball.show" class="ball">
-          <div class="inner inner-hook">
-          </div>
-        </div>
-      </transition>
-    </div>
-  </div>
-
 
   <div class="appNav">
     <router-link :to="{path:'/',query:{projectId:projectId}}" class="home" :class="{select : selectClass == 'home'}">首页</router-link>
@@ -19,12 +6,11 @@
     <!--<a href="javascript:;" class="community" @click="toLink()">社区</a>-->
     <router-link :to="{path:'community',query:{projectId:projectId}}" class="community" :class="{select : selectClass == 'community'}">社区</router-link>
     <router-link :to="{path:'shopping',query:{projectId:projectId}}" class="shopping" :class="{select : selectClass == 'shopping'}">
-      购物车<b v-if="shoppingNum > 0">{{shoppingNum}}</b>
+      购物车<b v-if="shoppingNum > 0" id="end">{{shoppingNum}}</b>
     </router-link>
     <router-link :to="{path:'userHome',query:{projectId:projectId}}" class="my" :class="{select : selectClass == 'userHome'}">我的</router-link>
   </div>
 
-</div>
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
@@ -41,9 +27,7 @@ export default {
   data() {
     return{
       projectId:simplestorage.get('projectId'),
-      shoppingNum:0,
-      balls: [{show: false}, {show: false}, {show: false}, {show: false}, {show: false}],
-      dropBalls: []
+      shoppingNum:0
     }
   },
   created: function() {
@@ -90,52 +74,8 @@ export default {
     toLink:function(){
 
       //location.href = propertyAuth + '/api/pub/estate/auth?communityId='+ simplestorage.get('HLXK_DISTRIBUTION').id +'&redirect_uri=' + encodeURIComponent(location.href);
-    },
-    drop(el) {
-      for (let i = 0; i < this.balls.length; i++) {
-        let ball = this.balls[i];
-        if (!ball.show) {
-          ball.show = true;
-          ball.el = el;
-          this.dropBalls.push(ball);
-          return;
-        }
-      }
-    },
-    beforeEnter(el) {
-      let count = this.balls.length;
-      while (count--) {
-        let ball = this.balls[count];
-        if (ball.show) {
-          let rect = ball.el.getBoundingClientRect();
-          let x = rect.left - 32;
-          let y = -(window.innerHeight - rect.top - 22);
-          el.style.display = '';
-          el.style.webkitTransform = `translate3d(0,${y}px,0)`;
-          el.style.transform = `translate3d(0,${y}px,0)`;
-          let inner = el.getElementsByClassName('inner-hook')[0];
-          inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
-          inner.style.transform = `translate3d(${x}px,0,0)`;
-        }
-      }
-    },
-    enter(el) {
-//          let rf = el.offestHeight;
-      this.$nextTick(() => {
-        el.style.webkitTransform = 'translate3d(0,0,0)';
-        el.style.transform = 'translate3d(0,0,0)';
-        let inner = el.getElementsByClassName('inner-hook')[0];
-        inner.style.webkitTransform = 'translate3d(0,0,0)';
-        inner.style.transform = 'translate3d(0,0,0)';
-      })
-    },
-    afterEnter(el) {
-      let ball = this.dropBalls.shift();
-      if (ball) {
-        ball.show = false;
-        el.style.display = 'none';
-      }
     }
+
   },
   components: {
 
