@@ -174,7 +174,7 @@ export default {
       },{
         "encryptType":0
       }).then(function(res) {
-        console.log(res);
+        //console.log(res);
         if(res.resultCode == 0){
 
           _this.lists = res.data;

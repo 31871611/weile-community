@@ -1,0 +1,51 @@
+@charset "UTF-8";
+@import "common/css3";
+@import "common/common";
+
+/*
+
+      <div class="footerCart">
+        <div class="total">
+          合计：<b>￥0.00</b><em>(已选0件)</em>
+        </div>
+        <div class="next">下一步</div>
+      </div>
+
+
+*/
+
+// 底部加入购物车
+.footerAddCart{
+  $h:98px;
+  height: pxTorem($h);
+  @include display-flex();
+  .total{
+    padding-left:pxTorem(20px);
+    @include font-dpr(32px);
+    @include flex(1);
+    @include border1px(#ccc,top);
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    b{
+      display: inline-block;
+      color: $orange-base;
+      font-weight: normal;
+      padding:0 pxTorem(5px) 0 0;
+    }
+    em{
+      font-style: normal;
+      color: #9c9fa1;
+    }
+  }
+  .next{
+    width: pxTorem(196px);
+    background: $green-base;
+    text-align: center;
+    height: pxTorem($h);
+    line-height: pxTorem($h);
+    color: #fff;
+    @include font-dpr(28px);
+  }
+}
+
+
