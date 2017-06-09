@@ -6,7 +6,7 @@
     <article class="main">
 
       <div class="loginInfo" v-if="!isLogin">
-        <router-link :to="{path:'login',query:{projectId:projectId}}"><span>登录</span>登录后同步当前和原购物车中的商品</router-link>
+        <router-link :to="{path:'login',query:{projectId:projectId,url:'shopping'}}"><span>登录</span>登录后同步当前和原购物车中的商品</router-link>
       </div>
 
       <div class="mainScroll shoppingCart" v-show="isLists">
@@ -44,7 +44,8 @@
                 <router-link :to="{path:'commodity',query: { id: list.goodsId,projectId:projectId }}">
                   <h3><b v-if="list.isHouseUser == 1">[住户专享]</b>{{list.goodsName}}</h3>
                   <div class="bottom">
-                    <strong class="price">{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-if="list.ifFlashSale > 0">{{list.flashSalePrice / 1000}}<b>元/{{list.unit}}</b></strong>
+                    <strong class="price" v-else>{{list.price / 1000}}<b>元/{{list.unit}}</b></strong>
                     <span class="limit" v-if="list.amountLimit > 0">限购{{list.amountLimit}}件</span>
                     <car-count v-if="list.status !== 0" @modifyShopCarCount="modifyShopCarCount" @modifyNotLoginCarList="modifyNotLoginCarList" @shoppingNum="shoppingNum" :type="false" :index="index" :parent-index="parentIndex" :list="'shopping'" :commodity-id="list.goodsId" :is-house-user="list.isHouseUser.toString()" :shop-car-count="list.quantity" :inventory="list.inventory"></car-count>
                   </div>
@@ -512,24 +513,24 @@ export default {
           // 清空选中的值
           _this.checkCommodityId = [];
 
-          ////////////////////////////////////////////////// 状态 ////////////////
           // 添加全选值
           arr.forEach(function(item){
             _this.checkCommodityId.push(item);
           });
 
-//          this.lists.cartGoodsList.forEach(function(goods){
-//            goods.goodsList.forEach(function(list){
-//              if(list.status == 1){
-//                arr.forEach(function(item){
-//                  // 不存在添加...没有出现
-//                  if(checkCommodityId.indexOf(item) == -1){
-//                    _this.checkCommodityId.push(item);
-//                  }
-//                });
-//              }
-//            })
-//          })
+          ////////////////////////////////////////////////// 失效状态 ////////////////
+          this.lists.cartGoodsList.forEach(function(goods){
+            goods.goodsList.forEach(function(list){
+              if(list.status == 0){
+                arr.forEach(function(item,index){
+                  // 移除失效id
+                  if(list.goodsId == item){
+                    _this.checkCommodityId.splice(index, 1);
+                  }
+                });
+              }
+            })
+          })
 
         }
       }

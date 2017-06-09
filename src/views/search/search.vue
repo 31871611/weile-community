@@ -31,7 +31,7 @@
 
                     <div class="go" v-if="list.isFlashSale == 1">马上抢</div>
 
-                    <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :is-house-user="list.isHouseUser" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
+                    <car-count ref="carcount" @modifyShopCarCount="modifyShopCarCount" @shoppingNum="shoppingNum" v-if="list.isFlashSale != 1 && list.inventory > 0" :type="false" :index="index" :is-house-user="list.isHouseUser" :commodity-id="list.commodityId" :shop-car-count="list.shopCarCount" :inventory="list.inventory"></car-count>
                   </div>
                 </router-link>
               </div>
@@ -268,6 +268,12 @@ export default {
       this.submit();
     },
     /************************************************************************************************/
+    // 未登录修改底部购物车值
+    shoppingNum:function(num){
+      if(simplestorage.get('HLXK_UserId') == -1){
+        this.$refs.footerCart.selectNum = num;
+      }
+    },
     // 修改列表中已添加购物车值
     modifyShopCarCount:function(type,list,index){
       let _this = this;
@@ -279,7 +285,6 @@ export default {
       // 加载购物车信息...未登录没在这
       _this.$refs.footerCart.init()
     }
-
   },
   components: {
     carCount,

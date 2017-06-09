@@ -139,7 +139,7 @@
           <div class="commoditySetCouponAlert" v-show="isCouponList">
             <ul>
               <li v-for="(coupon,index) in couponList">
-                <router-link :to="{path:'userCoupon/details',query:{id:coupon.couponId}}">
+                <router-link :to="{path:'userCoupon/details',query:{projectId:projectId,id:coupon.couponId}}">
                   <div class="left">
                     <strong class="Price"><b>￥</b>{{coupon.faceValue / 1000}}</strong>
                     <span class="txt">订单满{{coupon.orderMoney / 1000}}元</span>

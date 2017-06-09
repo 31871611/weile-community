@@ -103,6 +103,7 @@ fetch.interceptors.request.use(function(config) {
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
   // 状态码：错误...失效 _d.encryptCode == 1000 ?
+  // 到了第二天登录、或切换环境（本地与现网projectId=1）的时候就会报1000
   // 重新请求游客接口...
   if(_d.resultCode == 1000){
     // 删除状态

@@ -33,12 +33,7 @@
     </article>
 
     <footer>
-      <div class="footerCart">
-        <div class="total">
-          合计：<b>￥0.00</b><em>(已选{{floatShoppingNum}}件)</em>
-        </div>
-        <div class="next">下一步</div>
-      </div>
+      <footer-cart ref="footerCart"></footer-cart>
     </footer>
 
   </div>
@@ -68,48 +63,20 @@ import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue';
 import modalToast from '../common/modalToast.vue';
 import carCount from '../common/carCount.vue';
+import footerCart from '../common/footerCart.vue'
 
 export default {
-  name: 'sale',
+  name: 'fullDiscount',
   data() {
     return{
       projectId:simplestorage.get('projectId'),
       lists:'',
-      isData:false,
-      floatShoppingNum:0
+      isData:false
     }
   },
   mounted() {
 
     this.init();
-
-    /*
-    // 没有这个接口
-    let _this = this;
-    this.$http.post('/commodity/getCommodityCarInfo', {
-      "projectId":simplestorage.get('projectId'),
-      "distributionCommunityId":_this.distributionCommunityId
-    },{
-      "encryptType":0
-    }).then(function(res) {
-      console.log(res);
-      if (res.resultCode != 0) {
-        alert(res.msg);
-        return false;
-      }
-      //_this.lists = res.data;
-      //console.log(JSON.stringify(_this.lists))
-
-    }).catch(function(error) {
-      console.log(error)
-    })
-    */
-
-
-
-
-
-
 
   },
   methods: {
@@ -155,6 +122,12 @@ export default {
 
     },
     /************************************************************************************************/
+    // 未登录修改底部购物车值
+    shoppingNum:function(num){
+      if(simplestorage.get('HLXK_UserId') == -1){
+        this.$refs.footerCart.selectNum = num;
+      }
+    },
     // 修改列表中已添加购物车值
     modifyShopCarCount:function(type,list,index){
       let _this = this;
@@ -163,16 +136,15 @@ export default {
       }else if(type == 'del'){
         Vue.set(_this.lists[index],'shopCarCount',_this.lists[index]['shopCarCount'] - 1);
       }
+      // 加载购物车信息...未登录没在这
+      _this.$refs.footerCart.init()
     },
-    // 修改底部购物车值
-    shoppingNum:function(num){
-      this.floatShoppingNum = num;
-    }
   },
   components: {
     notData,
     modalToast,
-    carCount
+    carCount,
+    footerCart
   }
 }
 </script>

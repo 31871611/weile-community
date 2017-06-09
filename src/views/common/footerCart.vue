@@ -98,7 +98,6 @@ export default {
 
         //获取缓存购物车商品信息
         _this.selectNum = cart.getAmount();
-        alert(1)
 
       }
 

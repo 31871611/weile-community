@@ -8,7 +8,7 @@
           <img :src="defaultAd" alt="">
         </div>
         <!-- 轮播 -->
-        <slider v-else @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
+        <slider v-show="adLists.length > 0" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
         <!-- 选择小区 -->
         <div class="quartersShow">
@@ -378,6 +378,7 @@ export default {
           // 显示无便利提示图标
           _this.isStore = true;
           /* 清空... */
+          _this.adLists = [];
           // 公告消息
           _this.announcement = false;
           // 精选列表
