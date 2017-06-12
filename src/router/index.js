@@ -12,7 +12,7 @@ import userApplyBack from '@/views/userOrderDetails/userApplyBack'          // �
 import userAddress from '@/views/userAddress/userAddress'               // 我的地址
 import userAddressAdd from '@/views/userAddress/addAddress'             // 添加、修改地址
 import userCoupon from '@/views/userCoupon/userCoupon'                  // 我的优惠券
-import couponDetails from '@/views/userCoupon/couponDetails'            // 优惠券详情
+import userCouponDetails from '@/views/userCoupon/userCouponDetails'            // 优惠券详情
 import invalidCoupon from '@/views/userCoupon/invalidCoupon'            // 失效优惠券
 
 Vue.use(Router)
@@ -29,6 +29,15 @@ const router = new Router({
         pageTitle: '首页'
       },
       children:[
+        {
+          // 选择小区
+          path: 'quartersList',
+          //name: 'selectQuarters',
+          component: resolve => require(['@/views/index/selectQuarters'], resolve),
+          meta:{
+            pageTitle: '选择小区'
+          }
+        },
         {
           // 公告消息
           path: 'noticeList',
@@ -137,6 +146,15 @@ const router = new Router({
       component: resolve => require(['@/views/commodity/commodity'], resolve),
       meta:{
         pageTitle: '商品详情页'
+      }
+    },
+    {
+      // 优惠券详情
+      path: '/couponDetails',
+      component: resolve => require(['@/views/userCoupon/couponDetails'], resolve),
+      meta:{
+        requireAuth: true,
+        pageTitle: '优惠券详情'
       }
     },
     {
@@ -252,7 +270,7 @@ const router = new Router({
             {
               // 优惠券详情
               path: 'details',
-              component: couponDetails,
+              component: userCouponDetails,
               meta:{
                 requireAuth: true,
                 pageTitle: '优惠券详情'

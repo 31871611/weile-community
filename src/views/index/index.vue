@@ -12,7 +12,8 @@
 
         <!-- 选择小区 -->
         <div class="quartersShow">
-          <div class="txt" @click="goSelectQuarters(true)">{{textCurrentQuarters}} ></div>
+          <router-link class="txt" :to="{path:'quartersList',query:{projectId:projectId}}">{{textCurrentQuarters}} ></router-link>
+          <!--<div class="txt" @click="goSelectQuarters(true)">{{textCurrentQuarters}} ></div>-->
           <div class="map"><i></i></div>
         </div>
 
@@ -532,6 +533,7 @@ export default {
     backHome:function(){
       this.isToContent = false;
     },
+    // 关闭优惠券弹窗
     exitCoupon:function(){
       this.isCoupon = false;
     },

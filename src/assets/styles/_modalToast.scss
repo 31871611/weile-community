@@ -5,15 +5,15 @@
 
 // 黑色框简单提示
 .modalToast{
-  @include display-flex();
-  @include align-items();
-  @include justify-content(center);
+  //@include display-flex();
+  //@include align-items();
+  //@include justify-content(center);
   position: fixed;
-  left:0;
-  top:0;
-  width:100%;
-  height:100%;
+  left:50%;
+  top:50%;
   z-index: 100;
+  // translate3d
+  @include translate3D(-50%,-50%,0);
   .box{
     padding: pxTorem(15px) pxTorem(25px);
     @include border-radius(pxTorem(8px));

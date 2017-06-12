@@ -139,7 +139,7 @@
           <div class="commoditySetCouponAlert" v-show="isCouponList">
             <ul>
               <li v-for="(coupon,index) in couponList">
-                <router-link :to="{path:'userCoupon/details',query:{projectId:projectId,id:coupon.couponId}}">
+                <router-link :to="{path:'/couponDetails',query:{projectId:projectId,id:coupon.couponId}}">
                   <div class="left">
                     <strong class="Price"><b>￥</b>{{coupon.faceValue / 1000}}</strong>
                     <span class="txt">订单满{{coupon.orderMoney / 1000}}元</span>
@@ -242,7 +242,6 @@
 
     </footer>
   </div>
-
 
 </div>
 </template>
@@ -473,7 +472,7 @@ export default {
         simplestorage.set('checkCommodityId', id);
         return false;
       }
-      let checkCommodityId = simplestorage.get('checkCommodityId');
+      let checkCommodityId = simplestorage.get('checkCommodityId').toString();
       if(checkCommodityId.indexOf(id) == -1){
         // 有值添加
         simplestorage.set('checkCommodityId', checkCommodityId + ',' + id);
@@ -499,7 +498,7 @@ export default {
         },{
           "encryptType":1
         }).then(function(res) {
-          console.log(res)
+          //console.log(res)
           if (res.resultCode == 0) {
             _this.shoppingNum = res.data.totalCount
             //$('#shopPrice').text((list.totalMoney/1000).toFixed(2));

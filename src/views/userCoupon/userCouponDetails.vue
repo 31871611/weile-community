@@ -135,7 +135,7 @@ import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
 
 export default {
-  name: 'couponDetails',
+  name: 'userCouponDetails',
   data() {
     return{
       projectId:simplestorage.get('projectId'),
@@ -157,11 +157,11 @@ export default {
         icon:'loading',
         time:0
       });
-      // 获取数据列表...只有请求地址.传的参数，与我的优惠券不同
-      this.$http.post('/community/getStoreCouponDetail', {
+      // 获取数据列表
+      this.$http.post('/community/getMyStoreCouponDetail', {
         "projectId":simplestorage.get('projectId'),
         "communityId": simplestorage.get('HLXK_DISTRIBUTION').id,
-        "couponId":_this.$route.query.id
+        "userCardId":this.$route.query.id
       },{
         "encryptType":1
       }).then(function(res){

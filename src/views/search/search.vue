@@ -20,6 +20,8 @@
             <li v-for="(list,index) in lists" v-bind:key="index">
               <router-link class="photo" :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">
                 <img :src="list.url" alt="">
+                <i class="activity" v-if="list.isActivity == 1">活动</i>
+                <i class="goIng" v-if="list.isFlashSale != 0">抢购中</i>
               </router-link>
               <div class="box">
                 <router-link :to="{path:'commodity',query: { id: list.commodityId,projectId:projectId }}">

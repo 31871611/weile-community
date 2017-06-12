@@ -34,7 +34,7 @@ export default {
         // 判断用户是否登录
         simplestorage.set('HLXK_UserId', data.userInfo.userId);
         // 返回页面
-        _this.$router.replace(_this.url);
+        //_this.$router.replace(_this.url);
 
       } else {
         alert(res.msg)

@@ -101,7 +101,8 @@
           <div class="availableCouponAlert" v-if="coupon.isAlert">
             <h2>订单可用优惠券弹窗</h2>
             <ul>
-              <li v-for="(list,index) in lists.couponList" v-if="list.orderMoney < lists.payAmount" @click="selectCoupon(index,list.faceValue,list.userCardId)">
+              <!-- v-if="list.orderMoney < lists.payAmount" -->
+              <li v-for="(list,index) in lists.couponList" @click="selectCoupon(index,list.faceValue,list.userCardId)">
                 <label>
                   <span :class="{'select':index == coupon.index}">{{list.faceValue / 1000}}元优惠券</span>
                   <i class="radio" :class="{'select':index == coupon.index}"></i>

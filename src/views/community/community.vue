@@ -45,6 +45,7 @@ export default {
 
 */
 //    opModal.toast({
+//      icon:'loading',
 //      txt:'提示',
 //      time:999
 //    })

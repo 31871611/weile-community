@@ -29,7 +29,7 @@
             <li v-for="(list,index) in cartGoodsList.goodsList" v-if="list.quantity" v-bind:key="index">
 
               <div class="shoppingCheck">
-                <input type="checkbox" :id="'id' + list.goodsId" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" v-if="list.status !== 0" />
+                <input type="checkbox" :id="'id' + list.goodsId" name="checkSingle" :value="list.goodsId" v-model="checkCommodityId" />
                 <label :for="'id' + list.goodsId"></label>
               </div>
 
@@ -409,7 +409,7 @@ export default {
       let _this = this;
       let jsonStr = "[";
 
-      if(_this.isLogin){
+//      if(_this.isLogin){
 
         // 只有选中状态需要
         for(let i = 0;i < _this.checkCommodityId.length;i++){
@@ -429,26 +429,26 @@ export default {
           });
         }
 
-      }else{
-        let HLXK_SHOPPING = simplestorage.get('HLXK_SHOPPING');
-
-        _this.checkCommodityId.forEach(function(value,i){
-          HLXK_SHOPPING.forEach(function(goodsList){
-            if(value == goodsList.id){
-              if (i != 0) {
-                jsonStr += ","
-              }
-              if(str == "pay"){
-                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + ",price:" + goodsList.price +"}"
-              }else{
-                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + "}"
-              }
-            }
-          });
-
-        })
-
-      }
+//      }else{
+//        let HLXK_SHOPPING = simplestorage.get('HLXK_SHOPPING');
+//
+//        _this.checkCommodityId.forEach(function(value,i){
+//          HLXK_SHOPPING.forEach(function(goodsList){
+//            if(value == goodsList.id){
+//              if (i != 0) {
+//                jsonStr += ","
+//              }
+//              if(str == "pay"){
+//                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + ",price:" + goodsList.price +"}"
+//              }else{
+//                jsonStr += "{goodsId:" + goodsList.id + ",amount:" + goodsList.amount + "}"
+//              }
+//            }
+//          });
+//
+//        })
+//
+//      }
 
       jsonStr += "]";
       return jsonStr;
@@ -519,18 +519,18 @@ export default {
           });
 
           ////////////////////////////////////////////////// 失效状态 ////////////////
-          this.lists.cartGoodsList.forEach(function(goods){
-            goods.goodsList.forEach(function(list){
-              if(list.status == 0){
-                arr.forEach(function(item,index){
-                  // 移除失效id
-                  if(list.goodsId == item){
-                    _this.checkCommodityId.splice(index, 1);
-                  }
-                });
-              }
-            })
-          })
+//          this.lists.cartGoodsList.forEach(function(goods){
+//            goods.goodsList.forEach(function(list){
+//              if(list.status == 0){
+//                arr.forEach(function(item,index){
+//                  // 移除失效id
+//                  if(list.goodsId == item){
+//                    _this.checkCommodityId.splice(index, 1);
+//                  }
+//                });
+//              }
+//            })
+//          })
 
         }
       }
@@ -548,9 +548,10 @@ export default {
 
       this.lists.cartGoodsList.forEach(function(goods){
         goods.goodsList.forEach(function(list){
-          if(list.status == 1){
+          // 非失效
+//          if(list.status == 1){
             len += 1;
-          }
+//          }
         })
       })
 
@@ -581,9 +582,9 @@ export default {
         _this.lists.cartGoodsList.forEach(function(item){
           item.goodsList.forEach(function(goodsList){
             // 上架商品.选中
-            if(goodsList.status == 1){
+//            if(goodsList.status == 1){
               _this.checkCommodityId.push(goodsList.goodsId);
-            }
+//            }
           })
         });
         // 全选值
@@ -745,7 +746,6 @@ export default {
           }).then(function(res) {
             //console.log(res);
             if (res.resultCode == 0) {
-              console.log(_this.getCheckGoods('pay'));
               // 去结算页面
               _this.$router.push({ path: '/payorder', query: {
                 "goodsInfo": _this.getCheckGoods('pay'),

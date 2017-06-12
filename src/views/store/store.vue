@@ -13,7 +13,7 @@
       <div class="scrollNotice">
         <i></i>
         <div ref="scrollConter">
-          <span class="begin">便利店配送时间：17:00-21:00。联系电话：0371-55372728。配送小区：{{distributionCommunityName}}</span>
+          <span class="begin">{{storeBaseInfo}}</span>
           <span class="end"></span>
         </div>
       </div>
@@ -125,6 +125,7 @@ export default {
       distributionCommunityName:simplestorage.get('HLXK_DISTRIBUTION').name,
       distributionCommunityId:simplestorage.get('HLXK_DISTRIBUTION').id,
       isLogin:simplestorage.get('HLXK_UserId') != -1,
+      storeBaseInfo:'',                               // 滚动条信息
       lists:'',                                       // 便利店列表
       currentIndex:'',                                // 分类索引
       isStore:false                                   // 无便利店，显示图标
@@ -132,17 +133,42 @@ export default {
   },
   mounted() {
 
-    this.getList();               //获取列表
-    //this.getCommodityCarInfo();   // 获取购物车数量和金额
-
-    // 滚动公告
-    this.$nextTick(function(){
-      this.scrollLeft();
-    });
-
+    this.getList();                        // 获取列表
+    this.getStoreBaseInfo();               // 获取公告数据
 
   },
   methods: {
+    // 获取公告数据
+    getStoreBaseInfo:function(){
+      let _this = this;
+
+      // 加载滚动条信息
+      this.$http.post('/community/getStoreBaseInfo', {
+        "projectId":simplestorage.get('projectId'),
+        "distributionCommunityId":_this.distributionCommunityId
+      },{
+        "encryptType":1
+      }).then(function(res) {
+        //console.log(res);
+        if(res.resultCode == 0){
+          _this.storeBaseInfo = res.data.storeBaseInfo;
+
+          // 滚动公告
+          _this.$nextTick(function(){
+            _this.scrollLeft();
+          });
+
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+        }
+      }).catch(function(error) {
+        console.log(error)
+      })
+
+    },
+    // 滚动公告
     scrollLeft:function(){
       let scrollConter = this.$refs.scrollConter;
       let begin = scrollConter.querySelector('.begin');
@@ -205,59 +231,6 @@ export default {
         console.log(error)
       })
     },
-    // 获取购物车数量和金额
-    getCommodityCarInfo:function(){
-      let _this = this;
-
-      if(_this.isLogin){
-
-        // 没有发现这个接口.......app没有这个功能....
-        this.$http.post('/commodity/getCommodityCarInfo', {
-          "projectId":simplestorage.get('projectId'),
-          "distributionCommunityId":_this.distributionCommunityId
-        },{
-          "encryptType":0
-        }).then(function(res) {
-          console.log(res);
-          if (res.resultCode != 0) {
-            alert(res.msg);
-            return false;
-          }
-          //_this.lists = res.data;
-          //console.log(JSON.stringify(_this.lists))
-
-        }).catch(function(error) {
-          console.log(error)
-        })
-
-      }else{
-
-        // 未登录，把商品提交，这是什么接口?
-        var cart = common.cart;
-        var jsonStr = cart.queryAllJsonStr();
-        request({
-          type: 'POST',
-          url: '/storeCart/getCartInfoByGoodsInfo',
-          data: {
-            goodsInfo: jsonStr,
-            checkGoodsInfo: jsonStr
-          },
-          showLoader: false,
-          success: function (data, textStatus, jqXHR) {
-            if (data.code === 0) {
-              var data = data.data.list;
-              $total.text(data.totalCount);
-              $carNum.text(data.totalCount);
-              var totalPrice = data.totalMoney / 1000
-              $totalPrice.text(totalPrice.toFixed(2));
-            } else {
-              $.toast(data.msg);
-            }
-          }
-        });
-
-      }
-    },
     // 切换分类
     selectMenu:function(index){
       let contentList = this.$refs.contentList;
@@ -267,7 +240,6 @@ export default {
       // 滚动值清0
       contentList.scrollTop = 0;
     },
-
     /************************************************************************************************/
     // 修改列表中已添加购物车值
     modifyShopCarCount:function(type,list,index,parentIndex){
@@ -282,12 +254,7 @@ export default {
     // 修改底部购物车值
     shoppingNum:function(num){
       this.$refs.appnav.shoppingNum = num;
-    },
-    toShopping:function(){
-      // 下一步---去购物车
-      this.$router.push({ path: '/shopping'})
-    },
-
+    }
   },
   components: {
     appNav,
