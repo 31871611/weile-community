@@ -627,6 +627,13 @@ export default {
     del:function(){
       let _this = this;
 
+      if(_this.checkCommodityId.length <= 0){
+        _this.$refs.modalToast.toast({
+          txt:'请选择商品'
+        });
+        return false;
+      }
+
       opModal.alert({
         content:"确认删除选中的商品吗？",
         ok:"确定",
