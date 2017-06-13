@@ -12,8 +12,8 @@
 
         <!-- 选择小区 -->
         <div class="quartersShow">
-          <router-link class="txt" :to="{path:'quartersList',query:{projectId:projectId}}">{{textCurrentQuarters}} ></router-link>
-          <!--<div class="txt" @click="goSelectQuarters(true)">{{textCurrentQuarters}} ></div>-->
+          <!--<router-link class="txt" :to="{path:'quartersList',query:{projectId:projectId}}">{{textCurrentQuarters}} ></router-link>-->
+          <div class="txt" @click="goSelectQuarters(true)">{{textCurrentQuarters}} ></div>
           <div class="map"><i></i></div>
         </div>
 

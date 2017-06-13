@@ -29,15 +29,15 @@ const router = new Router({
         pageTitle: '首页'
       },
       children:[
-        {
-          // 选择小区
-          path: 'quartersList',
-          //name: 'selectQuarters',
-          component: resolve => require(['@/views/index/selectQuarters'], resolve),
-          meta:{
-            pageTitle: '选择小区'
-          }
-        },
+        //{
+        //  // 选择小区
+        //  path: 'quartersList',
+        //  //name: 'selectQuarters',
+        //  component: resolve => require(['@/views/index/selectQuarters'], resolve),
+        //  meta:{
+        //    pageTitle: '选择小区'
+        //  }
+        //},
         {
           // 公告消息
           path: 'noticeList',

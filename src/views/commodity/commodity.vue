@@ -195,10 +195,10 @@
         <!-- 抢购已开始为显示这里 -->
         <div class="commodityFooterNormal" v-if="list.flashSaleInventory > 0">
           <router-link to="/shopping" class="shopping">
-            <div><b v-show="shoppingNum">{{shoppingNum}}</b></div>
+            <div id="end"><b v-show="shoppingNum">{{shoppingNum}}</b></div>
             <span>购物车</span>
           </router-link>
-          <div class="add" @click="addCar()">
+          <div class="add" @click="addCar($event)">
             加入购物车
           </div>
           <!-- 抢购 -->
@@ -219,10 +219,10 @@
       <!-- 正常商品.抢购未开始 -->
       <div class="commodityFooterNormal" v-else>
         <router-link to="/shopping" class="shopping">
-          <div><b v-show="shoppingNum">{{shoppingNum}}</b></div>
+          <div id="end"><b v-show="shoppingNum">{{shoppingNum}}</b></div>
           <span>购物车</span>
         </router-link>
-        <div class="add" @click="addCar()">
+        <div class="add" @click="addCar($event)">
           加入购物车
         </div>
         <div class="pay" @click="pay()">
@@ -250,6 +250,8 @@ import simplestorage from 'simplestorage.js'
 import cart from '../../plugins/cart'
 import modalToast from '../common/modalToast.vue'
 import {opModal} from '../../plugins/common'
+import $ from 'jquery'
+import flyer from '../../plugins/jquery.fly.min'
 
 let timer;
 
@@ -479,8 +481,30 @@ export default {
       }
 
     },
+    // 加入购物车动画
+    addAnimate:function(target){
+
+      var offset = $("#end").offset();
+      let flyer = $('<div style="width: 8px;height: 8px;background: #00bb9c;border-radius: 50%;"></div>');			// 飞入效果
+      flyer.fly({
+        start: {
+          left: target.pageX,			//开始位置（必填）#fly元素会被设置成position: fixed
+          top: target.pageY			  //开始位置（必填）
+        },
+        end: {
+          left: offset.left + 10,		//结束位置（必填）
+          top: offset.top + 10,			//结束位置（必填）
+          width: 0,					    //结束时宽度
+          height: 0					    //结束时高度
+        },
+        onEnd: function(){				//结束回调
+          this.destory();		      //移除dom
+        }
+      });
+
+    },
     // 加入购物车
-    addCar:function(){
+    addCar:function(event){
       let _this = this;
 
       // 保存购物车选中值
@@ -501,11 +525,11 @@ export default {
           //console.log(res)
           if (res.resultCode == 0) {
             _this.shoppingNum = res.data.totalCount
-            //$('#shopPrice').text((list.totalMoney/1000).toFixed(2));
             _this.$refs.modalToast.toast({
               txt:'加入购物车成功'
             });
             // 加入购物车动画
+            _this.addAnimate(event)
 
           }else if(res.resultCode === 8002){
             //用户未认证
@@ -582,13 +606,11 @@ export default {
             _this.$refs.modalToast.toast({
               txt:'超过商品的抢购数量'
             });
-            //$shopCarCount.removeClass('beat loading');
             return false;
           }else if( _this.goodsNum > _this.list.flashSaleInventory){
             _this.$refs.modalToast.toast({
               txt:'商品库存不足'
             });
-            //$shopCarCount.removeClass('beat loading');
             return false;
           }
         }else{
@@ -597,17 +619,16 @@ export default {
             _this.$refs.modalToast.toast({
               txt:'超过商品的抢购数量'
             });
-            //$shopCarCount.removeClass('beat loading');
             return false;
           }
           if(numbCount > parseInt(_this.list.inventory)){
             _this.$refs.modalToast.toast({
               txt:'商品库存不足'
             });
-            //$shopCarCount.removeClass('beat loading');
             return false;
           }
         }
+
         // 添加到本地缓存中
         cart.increase(_this.list.commodityId,_this.goodsNum);
 
@@ -621,23 +642,27 @@ export default {
         },{
           "encryptType":1
         }).then(function(res) {
-          console.log(res);
+          //console.log(res);
           if (res.resultCode != 0) {
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
             return false;
           }
+
+          // 购物车动画
+          _this.addAnimate(event)
+
+          _this.$refs.modalToast.toast({
+            txt:'加入购物车成功'
+          });
+
           _this.shoppingNum = res.data.totalCount
           //console.log(JSON.stringify(_this.lists))
         }).catch(function(error) {
           console.log(error)
         })
-        //$shopCarCount.removeClass('beat loading');
-        _this.$refs.modalToast.toast({
-          txt:'加入购物车成功'
-        });
-        //add2cart('.plus','#toShopCar'); // 购物车动画
+
       }
     },
     // 立即购买、团购
