@@ -837,7 +837,7 @@ export default {
       // 保存选中值
       simplestorage.set('checkCommodityId', this.checkCommodityId.toString());
 
-      // 重新获取没选中数据
+      // 重新获取选中数据
       this.getCheckShopping();
 
     }

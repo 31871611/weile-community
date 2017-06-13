@@ -479,23 +479,30 @@ router.beforeEach((to, from, next) => {
     })
   }
 
+  // 是否登录
+  function toLogin(){
+
+    // 是否需要登录 && userid == -1 ，去我的登录页面
+    if(to.meta.requireAuth && simplestorage.get('HLXK_UserId') == -1){
+      next({
+        path: '/login',
+        query: {
+          url: to.fullPath,
+          projectId:simplestorage.get('projectId')
+        }
+      })
+    }else{
+      next()
+    }
+
+  }
+
 
   // 选择小区页或登录页
   function go(){
     // 是否有小区信息
     if(simplestorage.get('HLXK_DISTRIBUTION') || to.path == '/selectQuarters'){
-      // 是否需要登录 && userid == -1 ，去我的登录页面
-      if(to.meta.requireAuth && simplestorage.get('HLXK_UserId') == -1){
-        next({
-          path: '/login',
-          query: {
-            url: to.fullPath,
-            projectId:simplestorage.get('projectId')
-          }
-        })
-      }else{
-        next()
-      }
+      toLogin();
     }else{
       // 去选择小区
       next({

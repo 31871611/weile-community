@@ -207,39 +207,40 @@
           </ul>
         </div>
 
-        <!-- 领取优惠券弹窗 -->
-        <div class="opacity" v-if="isCoupon"></div>
-        <div class="indexSetCouponAlert" v-if="isCoupon">
-          <div class="box">
-            <div class="bg"></div>
-            <div class="list">
-              <ul>
-                <li v-for="(list,index) in coupon.dataList">
-                  <a href="javascript:;">
-                    <div class="left">
-                      <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
-                    </div>
-                    <div class="right">
-                      <!--可用券-->
-                      <i class="steVoucher"></i>
-                      <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
-                      <span class="txt">(不含运费)可用</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <p class="hint">优惠券已放入您的帐户，请在[我的]页面查看</p>
-            <i class="exit" @click="exitCoupon()"></i>
-          </div>
-        </div>
-
       </div>
     </article>
     <footer>
       <app-nav ref="appnav" :select-class="'home'"></app-nav>
     </footer>
 
+  </div>
+
+
+  <!-- 领取优惠券弹窗 -->
+  <div class="opacity" v-if="isCoupon"></div>
+  <div class="indexSetCouponAlert" v-if="isCoupon">
+    <div class="box">
+      <div class="bg"></div>
+      <div class="list">
+        <ul>
+          <li v-for="(list,index) in coupon.dataList">
+            <a href="javascript:;">
+              <div class="left">
+                <strong class="Price"><b>￥</b>{{list.faceValue / 1000}}</strong>
+              </div>
+              <div class="right">
+                <!--可用券-->
+                <i class="steVoucher"></i>
+                <span class="txt">订单满{{list.orderMoney / 1000}}元</span>
+                <span class="txt">(不含运费)可用</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <p class="hint">优惠券已放入您的帐户，请在[我的]页面查看</p>
+      <i class="exit" @click="exitCoupon()"></i>
+    </div>
   </div>
 
   <!-- 小区列表 -->
@@ -280,7 +281,6 @@
       </article>
     </div>
   </transition>
-
 
 
   <modal-toast ref="modalToast"></modal-toast>
@@ -406,7 +406,7 @@ export default {
       })
     },
     // 获取首页菜单
-    getNav:function(id,callback){
+    getNav:function(id){
       let _this = this;
       let distributionCommunityId = id || simplestorage.get('HLXK_DISTRIBUTION').id;
 
@@ -421,9 +421,6 @@ export default {
         if(res.resultCode == 0){
           _this.nav = res.data;
           //console.log(res.data);
-
-          // 修改小区后
-          callback && callback();
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -519,17 +516,16 @@ export default {
         _this.isSelectQuarters = false;
       });
       // 修改后小区信息后.重新获取菜单
-      _this.getNav(data.id,function(){
-        // 关闭列表弹窗
-        _this.isSelectQuarters = false;
-      })
+      _this.getNav(data.id)
+      // 获取优惠券
+      _this.getCoupon(data.id)
     },
     // 广告自定义html
     toContent:function(html){
       this.isToContent = true;
       this.toContentHtml = html;
     },
-    // 选择小区返回
+    // 广告自定义html.返回
     backHome:function(){
       this.isToContent = false;
     },

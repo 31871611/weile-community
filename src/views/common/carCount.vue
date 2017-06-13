@@ -391,6 +391,8 @@ export default {
     // 加入购物车动画
     addAnimate:function(target){
 
+      console.log(document.getElementById('end'))
+
       var offset = $("#end").offset();
       let flyer = $('<div style="width: 8px;height: 8px;background: #00bb9c;border-radius: 50%;"></div>');			// 飞入效果
       flyer.fly({
@@ -408,6 +410,23 @@ export default {
           this.destory();		      //移除dom
         }
       });
+
+      function offsetXY(element){
+        var left = element.offsetLeft;         //得到第一层距离
+        var top = element.offsetTop;
+        var parent = element.offsetParent;    //得到第一个父元素
+
+        while (parent !== null){            //如果还有上一级父元素
+          left += parent.offsetLeft;         //把本层距离累加
+          top += parent.offsetTop;
+          parent = parent.offsetParent;     //得到本层的父元素
+        }                                   //然后继续循环
+
+        return {
+          left:left,
+          top:top
+        };
+      }
 
     },
     // 保存购物车选中值
