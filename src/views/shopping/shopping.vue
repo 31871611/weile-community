@@ -71,20 +71,20 @@
 
       <div class="footerCart" v-if="isDel">
         <div class="box" @click="checkAll()">
-          <input id="delAll" type="checkbox" v-model="checkedAllModel" />
+          <div class="checkAll" :class="{'select':checkedAllModel}"></div>
+          <!--<input id="delAll" type="checkbox" v-model="checkedAllModel" />-->
           <label for="">全选</label>
         </div>
         <div class="next del" @click="del">删除</div>
       </div>
       <div class="footerCart" v-else>
         <div class="box" @click="checkAll()">
-          <input id="checkAll1" type="checkbox" v-model="checkedAllModel" />
+          <div class="checkAll" :class="{'select':checkedAllModel}"></div>
+          <!--<input id="checkAll1" type="checkbox" v-model="checkedAllModel" />-->
           <label for="">全选</label>
           <div class="total">
-
             <span v-if="lists.totalMoney">合计:<b>￥{{lists.totalMoney / 1000 | price}}</b></span>
             <span v-else>合计：<b>￥0.00</b></span>
-
             <em v-if="lists.discountMoney">已优惠￥{{lists.discountMoney / 1000}}</em>
           </div>
         </div>
@@ -498,7 +498,7 @@ export default {
     // 进入加载上次选中情况
     loadCheck:function(){
       let _this = this;
-      let checkCommodityId = simplestorage.get('checkCommodityId');
+      let checkCommodityId = simplestorage.get('checkCommodityId').toString();
 
       // 第一次checkCommodityId还没这个字段？undefined.有问题....
       // 非第一次，用户不选择商品、去结算删除，后checkCommodityId == ''

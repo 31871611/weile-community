@@ -96,6 +96,18 @@
     background: #fbfbfb;
     @include border1px(#e6e6e6,top);
   }
+  .checkAll{
+    width: pxTorem(36px);
+    height: pxTorem(36px);
+    display: block;
+    margin:0 pxTorem(16px) 0 pxTorem(24px);
+    content: '\20';
+    @extend %icoRem;
+    background-image: url("../images/icon_shoppingtrolley_circle_n@2x.png");
+    &.select{
+      background-image: url("../images/icon_shoppingtrolley_selet_p@2x.png");
+    }
+  }
   input[type='checkbox']{
     width: pxTorem(36px);
     height: pxTorem(36px);
