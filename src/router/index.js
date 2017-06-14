@@ -194,8 +194,7 @@ const router = new Router({
       name: 'success',
       component: resolve => require(['@/views/payResult/success'], resolve),
       meta:{
-        requireAuth: true,
-        pageTitle: '支付成功'
+        requireAuth: true
       }
     },
     {
