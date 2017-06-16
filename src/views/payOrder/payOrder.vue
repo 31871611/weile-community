@@ -255,10 +255,6 @@ export default {
       })
 
     },
-    // 修改地址
-    modifyAddress:function(){
-
-    },
     // 留言
     commentsFocus:function(){
       if(this.comments == "点击添加留言"){
@@ -290,24 +286,24 @@ export default {
       // 关闭优惠券弹窗
       this.coupon.isAlert = !this.coupon.isAlert
     },
+    // 获取支付商品json
+    getPayJson:function(){
+      let _this = this;
+
+      let jsonStr = "[";
+      _this.lists.goodsList.forEach(function(value,index){
+        if (index != 0) {
+          jsonStr += ","
+        }
+        jsonStr += "{goodsId:" + value.goodsId + ",amount:" + value.amount + ",price:" + value.price + ",isNewUserGood:" + value.isNewUserGood + "}"
+      })
+      jsonStr += "]";
+      return jsonStr;
+
+    },
     // 提交
     submit:function(){
       let _this = this;
-
-/*
-      var payAmount = +$this.data('payamount');
-      if( payAmount <= 0 ) return $.toast('抱歉，无法下单');
-      if($this.attr('disabled')) return;
-      $this.attr('disabled', 'disabled');
-
-      var consignee = $('#consignee').val();			收货人
-      var address = $('#address').val();				小区+详细地址
-      var mobile = $('#mobile').val();				手机号
-      if(consignee==""||address==""||mobile==""){
-        $.toast('请选择配送地址');
-        return;
-      }
-*/
 
       if(_this.address == ""){
         _this.$refs.modalToast.toast({
@@ -333,10 +329,10 @@ export default {
         "mobile": _this.address.mobile,                                   // 手机号
         "expectedTimeType": 1,                                            // 不知道是什么，写死的，1
         "payMethod": 2,                                                   // 不知道是什么，写死的，2
-        "isGroupBuyingOrder":_this.isGroupBuyingOrder,       // 是否团购：1是，0否
-        "goodsInfo": _this.goodsInfo,                        // 商品信息
+        "isGroupBuyingOrder":_this.isGroupBuyingOrder,                    // 是否团购：1是，0否
+        "goodsInfo": _this.getPayJson(),                                  // 商品信息
         "comments": comments,                                             // 留言
-        "isFlashOrder":_this.isFlashOrder,                   // 是否抢购商品：1是，0否
+        "isFlashOrder":_this.isFlashOrder,                                // 是否抢购商品：1是，0否
         "userCardPackageId": _this.coupon.userCardId
       },{
         "encryptType":1

@@ -4,11 +4,8 @@
   <div class="wrap">
     <article class="main">
       <div class="mainScroll index">
-        <div class="defaultAd" v-if="adLists.length == 0">
-          <img :src="defaultAd" alt="">
-        </div>
         <!-- 轮播 -->
-        <slider v-show="adLists.length > 0" @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
+        <slider @toContent="toContent" :items="adLists" :width="640" :height="240" :speed="5000"></slider>
 
         <!-- 选择小区 -->
         <div class="quartersShow">
@@ -379,7 +376,19 @@ export default {
           // 显示无便利提示图标
           _this.isStore = true;
           /* 清空... */
-          _this.adLists = [];
+          _this.adLists = [
+            {
+              "image":'./static/images/defaultAd.png',
+              "advInfoId":500056,
+              "content":"javascript:;",
+              "imageId":500205,
+              "name":"无记录",
+              "positionId":1,
+              "sortIndex":1,
+              "thematicType":0,
+              "type":1
+            }
+          ];
           // 公告消息
           _this.announcement = false;
           // 精选列表
