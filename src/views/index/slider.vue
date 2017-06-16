@@ -142,6 +142,22 @@ export default {
       // 如果仅有一个滑块，则只渲染dom，不使用滑块其他功能
       if(this.itemsLength < 2){
         this.autoPlay = this.pagination = false
+
+        //保存滑块容器dom对象
+        this.sliedrWrap = this.$el.getElementsByTagName('ul')[0]
+
+        //保存滑块单元dom对象数组
+        this.itemsDom = this.sliedrWrap.getElementsByTagName('li')
+
+        // 过渡动画设置 动画结束后图片的相应位置
+        this.setTrans(this.itemsDom[0], 0, 0)
+
+        // 在滑块容器上卸载事件
+        this.removeListener()
+
+        // 清空自动播放
+        this.play(false)
+
       }else{
         this.itemsDomLength = this.itemsLength === 2 ? 4 : this.itemsLength
 
@@ -156,6 +172,9 @@ export default {
 
         // 在滑块容器上监听事件
         this.addListener()
+
+        // 显示分页
+        this.pagination = true;
 
         // 自动播放
         this.autoPlay ? this.play(true) : ''
@@ -306,6 +325,12 @@ export default {
       this.sliedrWrap.addEventListener('touchstart', this.startHandler)
       this.sliedrWrap.addEventListener('touchmove', this.moveHandler)
       this.sliedrWrap.addEventListener('touchend', this.endHandler)
+    },
+    removeListener(){
+      // 卸载事件监听
+      this.sliedrWrap.removeEventListener('touchstart', this.startHandler)
+      this.sliedrWrap.removeEventListener('touchmove', this.moveHandler)
+      this.sliedrWrap.removeEventListener('touchend', this.endHandler)
     },
     // 显示广告图文
     toContent:function(html){
