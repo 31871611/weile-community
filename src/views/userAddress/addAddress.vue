@@ -33,7 +33,7 @@
 
         <transition name="SlideRightLeft">
           <ul class="userSelectAddress" v-show="isSelectQuarters">
-            <li class="select" v-for="(list,index) in quartersLists">
+            <li class="select" v-for="(list,index) in quartersLists" v-if="list.isShow == 1 || list.isShow == null">
               <label @click="selectCurrentQuarters(list.name,list.id)">
                 <i class="map"></i>
                 <span>{{list.name}}</span>
