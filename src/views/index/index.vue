@@ -254,7 +254,7 @@
       <article class="main">
         <div class="mainScroll selectQuarters">
           <ul>
-            <li v-for="(list, index) in quartersLists" @click="selectCurrentQuarters(list)">{{list.name}}</li>
+            <li v-for="(list, index) in quartersLists" v-if="list.isShow == 1 || list.isShow == null" @click="selectCurrentQuarters(list)">{{list.name}}</li>
           </ul>
         </div>
       </article>
