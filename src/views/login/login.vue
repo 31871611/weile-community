@@ -128,9 +128,23 @@ export default {
       }).then(function(res) {
         //console.log(res)
         if(res.resultCode == 0){
+          
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
+
+          // 倒记时
+          t = setInterval(function(){
+            if(num == 0){
+              _this.codeTxt = '获取验证码';
+              _this.isCode = false;
+              clearTimeout(t);
+            }else{
+              num--;
+              _this.codeTxt = num + 's';
+            }
+          },1000)
+
         }else{
           // 错误提示
           _this.$refs.modalToast.toast({
@@ -147,17 +161,7 @@ export default {
         return false;
       })
 
-      // 倒记时
-      t = setInterval(function(){
-        if(num == 0){
-          _this.codeTxt = '获取验证码';
-          _this.isCode = false;
-          clearTimeout(t);
-        }else{
-          num--;
-          _this.codeTxt = num + 's';
-        }
-      },1000)
+
 
     },
     // 登录
