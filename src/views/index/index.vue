@@ -296,6 +296,7 @@ import slider from './slider.vue';
 import appNav from '../common/appNav.vue';
 import carCount from '../common/carCount.vue';
 import modalToast from '../common/modalToast.vue';
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'home',
@@ -412,6 +413,10 @@ export default {
         callback && callback();
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 获取首页菜单
@@ -437,6 +442,10 @@ export default {
         }
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 获取优惠券
@@ -464,6 +473,10 @@ export default {
         }
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     },
@@ -506,6 +519,10 @@ export default {
           _this.isSelectQuarters = is;
         }).catch(function(error) {
           console.log(error)
+          opModal.toast({
+            txt:'连接超时！'
+          })
+          return false;
         })
       }else{
         // 关闭列表弹窗

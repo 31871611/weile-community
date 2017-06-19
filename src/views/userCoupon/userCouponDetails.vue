@@ -133,6 +133,7 @@
 */
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'userCouponDetails',
@@ -181,6 +182,10 @@ export default {
         _this.$refs.modalToast.is = false;
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     }

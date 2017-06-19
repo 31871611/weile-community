@@ -30,6 +30,7 @@ import cryptoUtils from '@/utils/cryptoUtils'
 import modalToast from '../common/modalToast.vue'
 import cart from '../../plugins/cart'
 import appNav from '../common/appNav.vue';
+import {opModal} from '../../plugins/common'
 
 
 export default {
@@ -90,6 +91,10 @@ export default {
         }
       }).catch(function (error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     },
@@ -136,6 +141,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
       // 倒记时
@@ -217,6 +226,10 @@ export default {
         _this.$refs.modalToast.is = false;
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 提交本地缓存到购物车
@@ -251,6 +264,10 @@ export default {
           }
         }).catch(function(error) {
           console.log(error)
+          opModal.toast({
+            txt:'连接超时！'
+          })
+          return false;
         })
 
       //////////////////////////////////////////

@@ -60,6 +60,7 @@
 <script>
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'userAddAddress',
@@ -127,6 +128,10 @@ export default {
         //console.log(res.data);
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       });
 
     },
@@ -169,6 +174,10 @@ export default {
 //        });
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 修改地址
@@ -205,6 +214,10 @@ export default {
 //        });
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 地址提交

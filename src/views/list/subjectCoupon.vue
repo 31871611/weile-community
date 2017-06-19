@@ -45,6 +45,7 @@
 <script>
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'subjectCoupon',
@@ -79,6 +80,10 @@ export default {
 
     }).catch(function(error) {
       console.log(error)
+      opModal.toast({
+        txt:'连接超时！'
+      })
+      return false;
     })
 
   },
@@ -108,6 +113,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     }

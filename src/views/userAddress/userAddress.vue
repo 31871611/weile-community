@@ -65,6 +65,7 @@ import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue'
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'userAddress',
@@ -112,6 +113,10 @@ export default {
         _this.$refs.modalToast.is = false;
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 只选择地址不修改

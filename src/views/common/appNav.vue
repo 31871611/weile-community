@@ -16,6 +16,7 @@
 import simplestorage from 'simplestorage.js'
 //import Bus from '../../plugins/bus'
 import cart from '../../plugins/cart'
+import {opModal} from '../../plugins/common'
 
 export default {
   //name: 'appNav',
@@ -61,6 +62,10 @@ export default {
           _this.shoppingNum = res.data.cartGoodsNum;
         }).catch(function(error) {
           console.log(error)
+          opModal.toast({
+            txt:'连接超时！'
+          })
+          return false;
         })
       }else{
         //获取缓存购物车商品信息

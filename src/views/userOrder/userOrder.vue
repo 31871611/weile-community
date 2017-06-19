@@ -108,6 +108,7 @@
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
 import notData from '../common/notData.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'userOrder',
@@ -196,6 +197,10 @@ export default {
         //console.log(JSON.stringify(_this.lists));
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     }
   },

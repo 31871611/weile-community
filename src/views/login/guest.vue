@@ -3,6 +3,7 @@
 </template>
 <script>
 import simplestorage from 'simplestorage.js'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'guest',
@@ -37,10 +38,17 @@ export default {
         //_this.$router.replace(_this.url);
 
       } else {
-        alert(res.msg)
+        opModal.toast({
+          txt:res.msg
+        })
+        return false;
       }
     }).catch(function (error) {
       console.log(error)
+      opModal.toast({
+        txt:'连接超时！'
+      })
+      return false;
     })
 
   },

@@ -61,6 +61,7 @@ import simplestorage from 'simplestorage.js'
 import carCount from '../common/carCount.vue';
 import cart from '../../plugins/cart'
 import footerCart from '../common/footerCart.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'subject',
@@ -96,6 +97,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     /************************************************************************************************/

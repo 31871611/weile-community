@@ -158,6 +158,7 @@
 */
 import simplestorage from 'simplestorage.js'
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'payOrder',
@@ -227,6 +228,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     },
@@ -252,6 +257,10 @@ export default {
         //console.log(JSON.stringify(_this.address));
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     },
@@ -337,7 +346,7 @@ export default {
       },{
         "encryptType":1
       }).then(function(res){
-        console.log(res);
+        //console.log(res);
         if(res.resultCode == 0){
           let orderId = res.data.orderId;
           let url = location.protocol + '//' + location.host + '/#/success?projectId='+ _this.projectId +'&id=' + orderId;
@@ -377,6 +386,10 @@ export default {
 
           }).catch(function(error) {
             console.log(error)
+            opModal.toast({
+              txt:'连接超时！'
+            })
+            return false;
           })
 
         }else{
@@ -386,6 +399,10 @@ export default {
         }
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     }

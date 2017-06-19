@@ -64,6 +64,7 @@ import notData from '../common/notData.vue';
 import modalToast from '../common/modalToast.vue';
 import carCount from '../common/carCount.vue';
 import footerCart from '../common/footerCart.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'fullDiscount',
@@ -118,6 +119,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     },

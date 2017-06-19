@@ -45,6 +45,7 @@
 <script>
 import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'userHome',
@@ -92,6 +93,10 @@ export default {
         }
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 跳转到外部url

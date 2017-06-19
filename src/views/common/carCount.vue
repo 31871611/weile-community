@@ -180,6 +180,10 @@ export default {
 
         }).catch(function(error) {
           console.log(error)
+          opModal.toast({
+            txt:'连接超时！'
+          })
+          return false;
         })
 
       } else {
@@ -333,6 +337,10 @@ export default {
 
           }).catch(function(error) {
             console.log(error)
+            opModal.toast({
+              txt:'连接超时！'
+            })
+            return false;
           })
 
         }

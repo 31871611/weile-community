@@ -213,6 +213,10 @@ export default {
         //console.log(JSON.stringify(_this.list));
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 取消订单
@@ -253,6 +257,10 @@ export default {
             }
           }).catch(function(error) {
             console.log(error)
+            opModal.toast({
+              txt:'连接超时！'
+            })
+            return false;
           })
 
         },
@@ -302,6 +310,10 @@ export default {
             }
           }).catch(function(error) {
             console.log(error)
+            opModal.toast({
+              txt:'连接超时！'
+            })
+            return false;
           })
 
         },
@@ -349,6 +361,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     }

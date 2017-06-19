@@ -116,6 +116,7 @@ import simplestorage from 'simplestorage.js'
 import appNav from '../common/appNav.vue';
 import carCount from '../common/carCount.vue';
 import modalToast from '../common/modalToast.vue'
+import {opModal} from '../../plugins/common'
 
 export default {
   name: 'store',
@@ -165,6 +166,10 @@ export default {
         }
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
 
     },
@@ -229,6 +234,10 @@ export default {
 
       }).catch(function(error) {
         console.log(error)
+        opModal.toast({
+          txt:'连接超时！'
+        })
+        return false;
       })
     },
     // 切换分类

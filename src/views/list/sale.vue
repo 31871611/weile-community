@@ -41,6 +41,7 @@ import Vue from 'vue'
 import simplestorage from 'simplestorage.js'
 import notData from '../common/notData.vue';
 import modalToast from '../common/modalToast.vue';
+import {opModal} from '../../plugins/common'
 
 let timer = [];
 
@@ -90,6 +91,10 @@ export default {
       }
     }).catch(function(error) {
       console.log(error)
+      opModal.toast({
+        txt:'连接超时！'
+      })
+      return false;
     })
   },
   beforeDestroy:function(){
