@@ -25,7 +25,8 @@ export default {
     }
 
     _this.$http.post('/community/touristLogin', {
-      "projectId":simplestorage.get('projectId')
+      "projectId":simplestorage.get('projectId'),
+      'sessionid':simplestorage.get('HLXK_SessionId')
     }).then(function (res) {
       //console.log(res)
       let data = res.data || {};
@@ -35,7 +36,7 @@ export default {
         // 判断用户是否登录
         simplestorage.set('HLXK_UserId', data.userInfo.userId);
         // 返回页面
-        //_this.$router.replace(_this.url);
+        _this.$router.replace(_this.url);
 
       } else {
         opModal.toast({

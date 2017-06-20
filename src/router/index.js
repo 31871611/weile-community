@@ -401,22 +401,23 @@ router.beforeEach((to, from, next) => {
     */
     // 回来还是在微信、没有openid（还没保存）
     if(to.query.userInfo && !simplestorage.get('HLXK_OPENID')){
-        let wxUserInfo = JSON.parse(to.query.userInfo);
-        //console.log(JSON.stringify(to.query.userInfo));
-        if(typeof wxUserInfo == "object" && wxUserInfo.openid){
-          // 保存openid
-          simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
-          // 保存assess_token失效时间7200秒.2个小时就失效？
 
-          // 保存用户信息
-          simplestorage.set('HLXK_UserInfo', wxUserInfo);
-          // 保存sessionId
-          simplestorage.set('HLXK_SessionId', to.query.sessionId);
+      let wxUserInfo = JSON.parse(to.query.userInfo);
+      //console.log(JSON.stringify(to.query.userInfo));
+      if(typeof wxUserInfo == "object" && wxUserInfo.openid){
+        // 保存openid
+        simplestorage.set('HLXK_OPENID', wxUserInfo.openid);
+        // 保存assess_token失效时间7200秒.2个小时就失效？
 
-          // 去游客或登录
-          isLogin();
+        // 保存用户信息
+        simplestorage.set('HLXK_UserInfo', wxUserInfo);
+        // 保存sessionId
+        simplestorage.set('HLXK_SessionId', to.query.sessionId);
 
-        }
+        // 去游客或登录
+        isLogin();
+
+      }
     }else{
       // 跳转去获取openid
       if(process.env.NODE_ENV == "development"){
@@ -460,7 +461,8 @@ router.beforeEach((to, from, next) => {
   function guestLogin(){
     //alert('游客')
     fetch.post('/community/touristLogin', {
-      "projectId":simplestorage.get('projectId')
+      "projectId":simplestorage.get('projectId'),
+      'sessionid':simplestorage.get('HLXK_SessionId')
     }).then(function (res) {
       //console.log(res)
       let data = res.data || {};

@@ -1,11 +1,11 @@
 import { VERSION } from './config'
 import Promise from 'es6-promise'
 Promise.polyfill()
+import simplestorage from 'simplestorage.js'
 import axios from 'axios'
 import router from '../router'
 import qs from 'qs'
 import Fingerprint from 'fingerprintjs'
-import simplestorage from 'simplestorage.js'
 import cryptoUtils from './cryptoUtils'
 
 let isProduction = process.env.NODE_ENV === 'production'
@@ -114,21 +114,20 @@ fetch.interceptors.response.use(function(response) {
     // 清空sessionId.不会过期
     //simplestorage.deleteKey('HLXK_SessionId')
 
-    // 清空SESSION
-    simplestorage.deleteKey('HLXK_SESSION')
-    // 清空KEY
-    simplestorage.deleteKey('HLXK_KEY')
-    // 清空用户登录状态.与SESSION关联在一起的
-    simplestorage.deleteKey('HLXK_UserId')
+    // 清空SESSION.跳转去游客会获取新值
+    //simplestorage.deleteKey('HLXK_SESSION')
+    // 清空KEY.跳转去游客会获取新值
+    //simplestorage.deleteKey('HLXK_KEY')
+    // 清空用户登录状态.与SESSION关联在一起的.跳转去游客会获取新值
+    //simplestorage.deleteKey('HLXK_UserId')
 
     // 提示
-    alert('状态异常' + location.href);
+    //alert('状态异常' + location.href);
     // 跳转去游客登录页面获取后在跳回
     router.replace({
       path: 'guest',
       query: {redirect: router.currentRoute.fullPath}
     })
-    return false;
   }
   let key = _d.key || simplestorage.get('HLXK_KEY')
   return decryptData(response.data, key)

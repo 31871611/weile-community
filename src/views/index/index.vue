@@ -501,6 +501,14 @@ export default {
     goSelectQuarters:function(is){
       let _this = this;
       if(is){
+        //显示列表弹窗
+        _this.isSelectQuarters = is;
+        // 显示加载中
+        _this.$refs.modalToast.toast({
+          txt:'加载中',
+          icon:'loading',
+          time:0
+        });
         // 获取小区列表
         this.$http.post('/community/getDistributionCommunityList', {
           "projectId":simplestorage.get('projectId')
@@ -515,8 +523,8 @@ export default {
           }
           _this.quartersLists = res.data;
           //console.log(res.data);
-          //显示列表弹窗
-          _this.isSelectQuarters = is;
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
         }).catch(function(error) {
           console.log(error)
           opModal.toast({

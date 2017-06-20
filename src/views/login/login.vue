@@ -115,8 +115,7 @@ export default {
         return false;
       }
 
-      _this.codeTxt = num + 's';
-      _this.isCode = true;
+
       // 请求验证码
       this.$http.post('/community/getVerificationCode',{
         "telephone":_this.telephone,
@@ -127,11 +126,10 @@ export default {
         "encryptType":0
       }).then(function(res) {
         //console.log(res)
-        if(res.resultCode == 0){
-          
-          _this.$refs.modalToast.toast({
-            txt:res.msg
-          });
+        if(res.code == 0){
+
+          _this.codeTxt = num + 's';
+          _this.isCode = true;
 
           // 倒记时
           t = setInterval(function(){
@@ -144,6 +142,11 @@ export default {
               _this.codeTxt = num + 's';
             }
           },1000)
+
+
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
 
         }else{
           // 错误提示
@@ -203,10 +206,7 @@ export default {
           simplestorage.set('HLXK_KEY', data.key);
           // 用于判断用户是否登录
           simplestorage.set('HLXK_UserId', data.userInfo.userId);
-          // 保存登录时间
-          //simplestorage.set('HLXK_LOGIN_TIME', new Date().getTime());
-          // 是否认证 //当前小区的认证状态：0未验证、1已验证、2等待业主验证、3等待物业验证
-          //simplestorage.set('HLXK_AUTH',data.authorizationStatus);
+
           // 查询本地缓存数据
           let goodsInfo = cart.queryAll();
           if(goodsInfo.length > 0){
