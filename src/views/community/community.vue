@@ -39,11 +39,7 @@ export default {
     }
   },
   mounted() {
-/*
-
-    // openid没有失效时间，一个微信对应不同的公众号有不同的openid的
-
-*/
+    
 //    opModal.toast({
 //      icon:'loading',
 //      txt:'提示',
@@ -57,7 +53,9 @@ export default {
 //      })
 //    },3000)
 
-//    console.log(new Parabola())
+
+
+    console.log(this.$router.currentRoute.fullPath)
 
 
   },
