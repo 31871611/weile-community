@@ -56,7 +56,9 @@ export default {
         }).then(function(res) {
           //console.log(res)
           if (res.resultCode != 0) {
-            alert(res.msg);
+            opModal.toast({
+              txt:res.msg
+            })
             return false;
           }
           _this.shoppingNum = res.data.cartGoodsNum;

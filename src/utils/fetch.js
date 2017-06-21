@@ -102,32 +102,18 @@ fetch.interceptors.request.use(function(config) {
 // response interceptor
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
-  // 状态码：错误...失效 _d.encryptCode == 1000 ?
-  // 到了第二天登录、或切换环境（本地与现网projectId=1）的时候就会报1000
-  // 重新请求游客接口...
+  // 第二天登录、或切换环境（本地与现网projectId=1）的时候就会报1000
   if(_d.resultCode == 1000){
-    // 删除状态
-    // 清空小区id.清空会重新选择小区
-    //simplestorage.deleteKey('HLXK_DISTRIBUTION')
-    // 清空openid.唯一的不会过期
-    //simplestorage.deleteKey('HLXK_OPENID')
-    // 清空sessionId.不会过期
-    //simplestorage.deleteKey('HLXK_SessionId')
 
-    // 清空SESSION.跳转去游客会获取新值
-    //simplestorage.deleteKey('HLXK_SESSION')
-    // 清空KEY.跳转去游客会获取新值
-    //simplestorage.deleteKey('HLXK_KEY')
-    // 清空用户登录状态.与SESSION关联在一起的.跳转去游客会获取新值
-    //simplestorage.deleteKey('HLXK_UserId')
-
-    // 提示
-    //alert('状态异常' + location.href);
     // 跳转去游客登录页面获取后在跳回
     router.replace({
       path: 'guest',
-      query: {redirect: router.currentRoute.fullPath}
+      query: {
+        url: router.currentRoute.fullPath,
+        projectId:simplestorage.get('projectId')
+      }
     })
+
   }
   let key = _d.key || simplestorage.get('HLXK_KEY')
   return decryptData(response.data, key)

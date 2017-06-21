@@ -42,7 +42,6 @@ export default {
         opModal.toast({
           txt:res.msg
         })
-        return false;
       }
     }).catch(function (error) {
       console.log(error)
