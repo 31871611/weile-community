@@ -51,3 +51,17 @@ simpleStorage
 选择小区显示
 购物车全选
 
+
+    // 清空小区id.清空会重新选择小区
+    //simplestorage.deleteKey('HLXK_DISTRIBUTION')
+    // 清空openid.唯一的不会过期
+    //simplestorage.deleteKey('HLXK_OPENID')
+    // 清空sessionId.不会过期
+    //simplestorage.deleteKey('HLXK_SessionId')
+
+    // 清空SESSION.跳转去游客会获取新值
+    //simplestorage.deleteKey('HLXK_SESSION')
+    // 清空KEY.跳转去游客会获取新值
+    //simplestorage.deleteKey('HLXK_KEY')
+    // 清空用户登录状态.与SESSION关联在一起的.跳转去游客会获取新值
+    //simplestorage.deleteKey('HLXK_UserId')
