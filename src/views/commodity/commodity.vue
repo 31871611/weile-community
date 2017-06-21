@@ -323,7 +323,7 @@ export default {
       "encryptType":1
     }).then(function(res) {
       //console.log(res.data);
-      if (res.resultCode != 0) {
+      if (res.resultCode == 0) {
         _this.couponList = res.data;
         //console.log(JSON.stringify(_this.couponList));
       }else if(res.resultCode == 1000){
@@ -410,7 +410,7 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
             _this.$refs.modalToast.toast({
               txt:'领取成功'
             });

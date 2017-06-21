@@ -106,7 +106,7 @@ export default {
           // 隐藏加载中
           _this.$refs.modalToast.is = false;
           _this.lists = res.data.data;
-          console.log(JSON.stringify(_this.lists));
+          //console.log(JSON.stringify(_this.lists));
           // 无数据
           if(_this.lists.length <= 0){
             _this.isData = true;

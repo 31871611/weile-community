@@ -201,7 +201,7 @@ export default {
         "encryptType":1
       }).then(function(res) {
         //console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
           _this.list = res.data;
           // 隐藏加载中
           _this.$refs.modalToast.is = false;
@@ -250,7 +250,7 @@ export default {
             "encryptType":1
           }).then(function(res) {
             //console.log(res);
-            if(res.resultCode != 0){
+            if(res.resultCode == 0){
               // 隐藏加载中
               _this.$refs.modalToast.is = false;
               // 返回我的订单 || 我的团购
@@ -312,7 +312,7 @@ export default {
             "encryptType":1
           }).then(function(res) {
             //console.log(res);
-            if(res.resultCode != 0){
+            if(res.resultCode == 0){
               // 隐藏加载中
               _this.$refs.modalToast.is = false;
               // 返回我的订单 || 我的团购

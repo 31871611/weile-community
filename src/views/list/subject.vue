@@ -88,7 +88,7 @@ export default {
         "encryptType":1
       }).then(function(res){
         //console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
           _this.lists = res.data;
           //console.log(JSON.stringify(_this.lists));
         }else if(res.resultCode == 1000){
