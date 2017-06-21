@@ -102,19 +102,6 @@ fetch.interceptors.request.use(function(config) {
 // response interceptor
 fetch.interceptors.response.use(function(response) {
   let _d = response.data || {}
-  // 第二天登录、或切换环境（本地与现网projectId=1）的时候就会报1000
-  if(_d.resultCode == 1000){
-
-    // 跳转去游客登录页面获取后在跳回
-    router.replace({
-      path: 'guest',
-      query: {
-        url: router.currentRoute.fullPath,
-        projectId:simplestorage.get('projectId')
-      }
-    })
-
-  }
   let key = _d.key || simplestorage.get('HLXK_KEY')
   return decryptData(response.data, key)
 }, function(error) {

@@ -403,6 +403,14 @@ export default {
           // 商品推荐
           _this.recommendList = false;
 
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -435,6 +443,14 @@ export default {
         if(res.resultCode == 0){
           _this.nav = res.data;
           //console.log(res.data);
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -466,6 +482,14 @@ export default {
             // 显示弹窗
             _this.isCoupon = true;
           }
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -515,14 +539,23 @@ export default {
         },{
           "encryptType":1
         }).then(function(res){
-          if(res.resultCode != 0){
+          if(res.resultCode == 0){
+            _this.quartersLists = res.data;
+            //console.log(res.data);
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
-          _this.quartersLists = res.data;
-          //console.log(res.data);
+
           // 隐藏加载中
           _this.$refs.modalToast.is = false;
         }).catch(function(error) {

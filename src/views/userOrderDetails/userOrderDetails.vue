@@ -202,15 +202,24 @@ export default {
       }).then(function(res) {
         //console.log(res);
         if(res.resultCode != 0){
+          _this.list = res.data;
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+          //console.log(JSON.stringify(_this.list));
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
-        _this.list = res.data;
-        // 隐藏加载中
-        _this.$refs.modalToast.is = false;
-        //console.log(JSON.stringify(_this.list));
+
       }).catch(function(error) {
         console.log(error)
         opModal.toast({
@@ -242,19 +251,28 @@ export default {
           }).then(function(res) {
             //console.log(res);
             if(res.resultCode != 0){
+              // 隐藏加载中
+              _this.$refs.modalToast.is = false;
+              // 返回我的订单 || 我的团购
+              if(_this.list.isGroupBuyingOrder){
+                _this.$router.push({ path: 'userOrder', query: { group: 1 }})
+              }else{
+                _this.$router.push('userOrder');
+              }
+            }else if(res.resultCode == 1000){
+              _this.$router.replace({
+                path: '/guest',
+                query: {
+                  url: _this.$router.currentRoute.fullPath,
+                  projectId:simplestorage.get('projectId')
+                }
+              })
+            }else{
               _this.$refs.modalToast.toast({
                 txt:res.msg
               });
-              return false;
             }
-            // 隐藏加载中
-            _this.$refs.modalToast.is = false;
-            // 返回我的订单 || 我的团购
-            if(_this.list.isGroupBuyingOrder){
-              _this.$router.push({ path: 'userOrder', query: { group: 1 }})
-            }else{
-              _this.$router.push('userOrder');
-            }
+
           }).catch(function(error) {
             console.log(error)
             opModal.toast({
@@ -293,21 +311,30 @@ export default {
           },{
             "encryptType":1
           }).then(function(res) {
-            console.log(res);
+            //console.log(res);
             if(res.resultCode != 0){
+              // 隐藏加载中
+              _this.$refs.modalToast.is = false;
+              // 返回我的订单 || 我的团购
+              if(_this.list.isGroupBuyingOrder){
+                _this.$router.push({ path: 'userOrder', query: { group: 1 }})
+              }else{
+                _this.$router.push('userOrder');
+              }
+            }else if(res.resultCode == 1000){
+              _this.$router.replace({
+                path: '/guest',
+                query: {
+                  url: _this.$router.currentRoute.fullPath,
+                  projectId:simplestorage.get('projectId')
+                }
+              })
+            }else{
               _this.$refs.modalToast.toast({
                 txt:res.msg
               });
-              return false;
             }
-            // 隐藏加载中
-            _this.$refs.modalToast.is = false;
-            // 返回我的订单 || 我的团购
-            if(_this.list.isGroupBuyingOrder){
-              _this.$router.push({ path: 'userOrder', query: { group: 1 }})
-            }else{
-              _this.$router.push('userOrder');
-            }
+
           }).catch(function(error) {
             console.log(error)
             opModal.toast({
@@ -353,6 +380,14 @@ export default {
           location.href = res.data.payUrl;
           // 隐藏加载中
           _this.$refs.modalToast.is = false;
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg

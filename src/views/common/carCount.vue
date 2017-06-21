@@ -166,6 +166,8 @@ export default {
               path: '/login',
               projectId:simplestorage.get('projectId')
             })
+          }else if(res.resultCode == 1000){
+
           }else{
             opModal.toast({
               txt:res.msg
@@ -329,6 +331,8 @@ export default {
               return false;
             }else if(res.resultCode === 8004 || res.resultCode === 8005){
               _this.$router.push({ path: '/login'})
+            }else if(res.resultCode == 1000){
+
             }else{
               opModal.toast({
                 txt:res.msg

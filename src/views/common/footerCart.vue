@@ -78,6 +78,8 @@ export default {
               cart.removeAll();
               // 显示购物车数据
               _this.initPoint();
+            }else if(res.resultCode == 1000){
+
             }else{
               opModal.toast({
                 txt:res.msg
@@ -121,17 +123,18 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+            // 加载购物车数据
+            _this.lists = res.data;
+            // 选中数据
+            _this.getCheckShopping()
+          }else if(res.resultCode == 1000){
+
+          }else{
             opModal.toast({
               txt:res.msg
             })
-            return false;
           }
-          // 加载购物车数据
-          _this.lists = res.data;
-          // 选中数据
-          _this.getCheckShopping()
-
 
         }).catch(function(error) {
           console.log(error)
@@ -156,11 +159,14 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+
+          }else if(res.resultCode == 1000){
+
+          }else{
             opModal.toast({
               txt:res.msg
             })
-            return false;
           }
           // 加载购物车数据
           //_this.lists = res.data;
@@ -196,17 +202,18 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+            // 数量
+            _this.selectNum = res.data.goodsNum
+            // 价格
+            _this.totalPrice = res.data.totalMoney
+          }else if(res.resultCode == 1000){
+
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
-
-          // 数量
-          _this.selectNum = res.data.goodsNum
-          // 价格
-          _this.totalPrice = res.data.totalMoney
 
         }).catch(function(error) {
           console.log(error)
@@ -229,18 +236,19 @@ export default {
         },{
           "encryptType":1
         }).then(function(res) {
-          console.log(res);
-          if (res.resultCode != 0) {
+          //console.log(res);
+          if (res.resultCode == 0) {
+            // 数量
+            _this.selectNum = res.data.goodsNum
+            // 价格
+            _this.totalPrice = res.data.totalMoney
+          }else if(res.resultCode == 1000){
+
+          }else{
             opModal.toast({
               txt:res.msg
             })
-            return false;
           }
-
-          // 数量
-          _this.selectNum = res.data.goodsNum
-          // 价格
-          _this.totalPrice = res.data.totalMoney
 
         }).catch(function(error) {
           console.log(error)

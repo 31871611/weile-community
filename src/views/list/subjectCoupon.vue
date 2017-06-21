@@ -68,9 +68,17 @@ export default {
     },{
       "encryptType":1
     }).then(function(res){
-      console.log(res);
+      //console.log(res);
       if(res.resultCode == 0){
         _this.lists = res.data;
+      }else if(res.resultCode == 1000){
+        _this.$router.replace({
+          path: '/guest',
+          query: {
+            url: _this.$router.currentRoute.fullPath,
+            projectId:simplestorage.get('projectId')
+          }
+        })
       }else{
         _this.$refs.modalToast.toast({
           txt:res.msg
@@ -100,16 +108,24 @@ export default {
       },{
         "encryptType":1
       }).then(function(res) {
-        console.log(res);
-        if (res.resultCode != 0) {
+        //console.log(res);
+        if (res.resultCode == 0) {
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
         }
-        _this.$refs.modalToast.toast({
-          txt:'领取成功'
-        });
 
       }).catch(function(error) {
         console.log(error)

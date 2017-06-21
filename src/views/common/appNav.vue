@@ -55,13 +55,16 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res)
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+            _this.shoppingNum = res.data.cartGoodsNum;
+          }else if(res.resultCode == 1000){
+
+          }else{
             opModal.toast({
               txt:res.msg
             })
-            return false;
           }
-          _this.shoppingNum = res.data.cartGoodsNum;
+
         }).catch(function(error) {
           console.log(error)
           opModal.toast({

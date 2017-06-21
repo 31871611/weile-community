@@ -282,20 +282,29 @@ export default {
       "encryptType":1
     }).then(function(res) {
       //console.log(res.data);
-      if (res.resultCode != 0) {
+      if (res.resultCode == 0) {
+        //console.log(JSON.stringify(res.data));
+        _this.list = res.data;
+        // 图文详情
+        if(_this.list.images.length > 0) _this.imagesList = _this.list.images;
+        // 计算倒记时
+        _this.computeTime(_this.list.nowTime,_this.list.startTime,_this.list.endTime);
+        // 获取购物车数
+        _this.getCartGoodsNum();
+      }else if(res.resultCode == 1000){
+        _this.$router.replace({
+          path: '/guest',
+          query: {
+            url: _this.$router.currentRoute.fullPath,
+            projectId:simplestorage.get('projectId')
+          }
+        })
+      }else{
         _this.$refs.modalToast.toast({
           txt:res.msg
         });
-        return false;
       }
-      //console.log(JSON.stringify(res.data));
-      _this.list = res.data;
-      // 图文详情
-      if(_this.list.images.length > 0) _this.imagesList = _this.list.images;
-      // 计算倒记时
-      _this.computeTime(_this.list.nowTime,_this.list.startTime,_this.list.endTime);
-      // 获取购物车数
-      _this.getCartGoodsNum();
+
 
     }).catch(function(error) {
       console.log(error)
@@ -315,13 +324,21 @@ export default {
     }).then(function(res) {
       //console.log(res.data);
       if (res.resultCode != 0) {
+        _this.couponList = res.data;
+        //console.log(JSON.stringify(_this.couponList));
+      }else if(res.resultCode == 1000){
+        _this.$router.replace({
+          path: '/guest',
+          query: {
+            url: _this.$router.currentRoute.fullPath,
+            projectId:simplestorage.get('projectId')
+          }
+        })
+      }else{
         _this.$refs.modalToast.toast({
           txt:res.msg
         });
-        return false;
       }
-      _this.couponList = res.data;
-      //console.log(JSON.stringify(_this.couponList));
 
     }).catch(function(error) {
       console.log(error)
@@ -395,15 +412,23 @@ export default {
           //console.log(res);
           if (res.resultCode != 0) {
             _this.$refs.modalToast.toast({
+              txt:'领取成功'
+            });
+            //_this.couponList = res.data;
+            //console.log(JSON.stringify(_this.couponList));
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
+            _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
-          _this.$refs.modalToast.toast({
-            txt:'领取成功'
-          });
-          //_this.couponList = res.data;
-          //console.log(JSON.stringify(_this.couponList));
 
         }).catch(function(error) {
           console.log(error)
@@ -595,6 +620,14 @@ export default {
                 'projectId':_this.projectId
               }
             });
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
           } else {
             _this.$refs.modalToast.toast({
               txt:res.msg
@@ -678,22 +711,32 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+
+            // 购物车动画
+            _this.addAnimate(event)
+
+            _this.$refs.modalToast.toast({
+              txt:'加入购物车成功'
+            });
+
+            _this.shoppingNum = res.data.totalCount
+            //console.log(JSON.stringify(_this.lists))
+
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
 
-          // 购物车动画
-          _this.addAnimate(event)
-
-          _this.$refs.modalToast.toast({
-            txt:'加入购物车成功'
-          });
-
-          _this.shoppingNum = res.data.totalCount
-          //console.log(JSON.stringify(_this.lists))
         }).catch(function(error) {
           console.log(error)
           opModal.toast({
@@ -782,6 +825,14 @@ export default {
                 'projectId':_this.projectId
               }
             });
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
           } else {
             _this.$refs.modalToast.toast({
               txt:res.msg

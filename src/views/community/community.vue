@@ -39,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    
+
 //    opModal.toast({
 //      icon:'loading',
 //      txt:'提示',

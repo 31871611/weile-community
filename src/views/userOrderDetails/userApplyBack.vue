@@ -115,22 +115,31 @@ export default {
       },{
         "encryptType":1
       }).then(function(res) {
-        console.log(res);
-        if(res.resultCode != 0){
+        //console.log(res);
+        if(res.resultCode == 0){
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+          // 提示申请退单成功
+          _this.$refs.modalToast.toast({
+            txt:'申请退单成功'
+          });
+          setTimeout(function(){
+            _this.$router.back();
+          },1000)
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
-        // 隐藏加载中
-        _this.$refs.modalToast.is = false;
-        // 提示申请退单成功
-        _this.$refs.modalToast.toast({
-          txt:'申请退单成功'
-        });
-        setTimeout(function(){
-          _this.$router.back();
-        },1000)
+
       }).catch(function(error) {
         console.log(error)
         opModal.toast({

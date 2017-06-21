@@ -228,6 +228,14 @@ export default {
               cart.removeAll();
               // 显示购物车数据
               _this.initPoint();
+            }else if(res.resultCode == 1000){
+              _this.$router.replace({
+                path: '/guest',
+                query: {
+                  url: _this.$router.currentRoute.fullPath,
+                  projectId:simplestorage.get('projectId')
+                }
+              })
             }else{
               _this.$refs.modalToast.toast({
                 txt:res.msg
@@ -267,29 +275,39 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+
+            if(res.data.cartGoodsList.length > 0){
+              // 显示数据列表
+              _this.isLists = true;
+              // 加载购物车数据
+              _this.lists = res.data;
+              // 设置为上一次选中状态
+              _this.loadCheck()
+              //_this.checkAll()
+              // 修改底部的值
+              _this.$refs.appnav.shoppingNum = res.data.totalCount;
+            }else{
+              // 显示无数据
+              _this.isNotData = true;
+            }
+            // 隐藏加载中
+            _this.$refs.modalToast.is = false;
+            // console.log(JSON.stringify(_this.lists))
+
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
-          if(res.data.cartGoodsList.length > 0){
-            // 显示数据列表
-            _this.isLists = true;
-            // 加载购物车数据
-            _this.lists = res.data;
-            // 设置为上一次选中状态
-            _this.loadCheck()
-            //_this.checkAll()
-            // 修改底部的值
-            _this.$refs.appnav.shoppingNum = res.data.totalCount;
-          }else{
-            // 显示无数据
-            _this.isNotData = true;
-          }
-          // 隐藏加载中
-          _this.$refs.modalToast.is = false;
-          // console.log(JSON.stringify(_this.lists))
 
         }).catch(function(error) {
           console.log(error)
@@ -314,27 +332,37 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+
+            if(res.data.cartGoodsList.length > 0){
+              // 显示数据列表
+              _this.isLists = true;
+              // 加载购物车数据
+              _this.lists = res.data;
+              // 设置为上一次选中状态
+              _this.loadCheck()
+              //_this.checkAll()
+            }else{
+              // 显示无数据
+              _this.isNotData = true;
+            }
+            // 隐藏加载中
+            _this.$refs.modalToast.is = false;
+            //console.log(JSON.stringify(_this.lists))
+
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
-          if(res.data.cartGoodsList.length > 0){
-            // 显示数据列表
-            _this.isLists = true;
-            // 加载购物车数据
-            _this.lists = res.data;
-            // 设置为上一次选中状态
-            _this.loadCheck()
-            //_this.checkAll()
-          }else{
-            // 显示无数据
-            _this.isNotData = true;
-          }
-          // 隐藏加载中
-          _this.$refs.modalToast.is = false;
-          //console.log(JSON.stringify(_this.lists))
 
         }).catch(function(error) {
           console.log(error)
@@ -364,19 +392,30 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+
+            // 加载购物车数据
+            _this.lists = res.data;
+            // console.log(JSON.stringify(_this.lists))
+
+            // 是否全选
+            _this.isAll()
+
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
 
-          // 加载购物车数据
-          _this.lists = res.data;
-          // console.log(JSON.stringify(_this.lists))
 
-          // 是否全选
-          _this.isAll()
 
         }).catch(function(error) {
           console.log(error)
@@ -400,18 +439,29 @@ export default {
           "encryptType":1
         }).then(function(res) {
           //console.log(res);
-          if (res.resultCode != 0) {
+          if (res.resultCode == 0) {
+
+            // 加载购物车数据
+            _this.lists = res.data;
+            //console.log(JSON.stringify(_this.lists))
+            // 是否全选
+            _this.isAll()
+
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
+          }else{
             _this.$refs.modalToast.toast({
               txt:res.msg
             });
-            return false;
           }
 
-          // 加载购物车数据
-          _this.lists = res.data;
-          //console.log(JSON.stringify(_this.lists))
-          // 是否全选
-          _this.isAll()
+
 
         }).catch(function(error) {
           console.log(error)
@@ -682,20 +732,30 @@ export default {
             },{
               "encryptType":1
             }).then(function(res) {
-              console.log(res);
-              if (res.resultCode != 0) {
+              //console.log(res);
+              if (res.resultCode == 0) {
+
+                // 加载购物车数据
+                _this.lists = res.data;
+                // 修改底部的值
+                _this.$refs.appnav.shoppingNum = res.data.totalCount;
+                // 隐藏加载中
+                _this.$refs.modalToast.is = false;
+                _this.checkCommodityId = [];
+
+              }else if(res.resultCode == 1000){
+                _this.$router.replace({
+                  path: '/guest',
+                  query: {
+                    url: _this.$router.currentRoute.fullPath,
+                    projectId:simplestorage.get('projectId')
+                  }
+                })
+              }else{
                 _this.$refs.modalToast.toast({
                   txt:res.msg
                 });
-                return false;
               }
-              // 加载购物车数据
-              _this.lists = res.data;
-              // 修改底部的值
-              _this.$refs.appnav.shoppingNum = res.data.totalCount;
-              // 隐藏加载中
-              _this.$refs.modalToast.is = false;
-              _this.checkCommodityId = [];
 
             }).catch(function(error) {
               console.log(error)
@@ -720,22 +780,32 @@ export default {
             },{
               "encryptType":1
             }).then(function(res) {
-              console.log(res);
-              if (res.resultCode != 0) {
+              //console.log(res);
+              if (res.resultCode == 0) {
+
+                // 加载购物车数据
+                _this.lists = res.data;
+                // 修改底部的值
+                _this.$refs.appnav.shoppingNum = res.data.totalCount;
+                // 隐藏加载中
+                _this.$refs.modalToast.is = false;
+                //console.log(JSON.stringify(_this.lists))
+
+                _this.checkCommodityId = [];
+
+              }else if(res.resultCode == 1000){
+                _this.$router.replace({
+                  path: '/guest',
+                  query: {
+                    url: _this.$router.currentRoute.fullPath,
+                    projectId:simplestorage.get('projectId')
+                  }
+                })
+              }else{
                 _this.$refs.modalToast.toast({
                   txt:res.msg
                 });
-                return false;
               }
-              // 加载购物车数据
-              _this.lists = res.data;
-              // 修改底部的值
-              _this.$refs.appnav.shoppingNum = res.data.totalCount;
-              // 隐藏加载中
-              _this.$refs.modalToast.is = false;
-              //console.log(JSON.stringify(_this.lists))
-
-              _this.checkCommodityId = [];
 
             }).catch(function(error) {
               console.log(error)
@@ -793,6 +863,14 @@ export default {
                 txt:res.msg
               });
               return false;
+            }else if(res.resultCode == 1000){
+              _this.$router.replace({
+                path: '/guest',
+                query: {
+                  url: _this.$router.currentRoute.fullPath,
+                  projectId:simplestorage.get('projectId')
+                }
+              })
             }else{
               _this.$refs.modalToast.toast({
                 txt:res.msg

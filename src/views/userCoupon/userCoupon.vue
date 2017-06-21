@@ -107,25 +107,34 @@ export default {
       "encryptType":1
     }).then(function(res){
       //console.log(res);
-      if(res.resultCode != 0){
+      if(res.resultCode == 0){
+
+        _this.failNum = res.data.failNum;
+        _this.lists = res.data.list;
+        //console.log(JSON.stringify(res.data));
+        // 隐藏加载中
+        _this.$refs.modalToast.is = false;
+        if(res.data.list.length > 0){
+          // 显示列表数据
+          _this.is = true;
+        }else{
+          // 显示没数据提示
+          _this.isNotData = true;
+        }
+
+      }else if(res.resultCode == 1000){
+        _this.$router.replace({
+          path: '/guest',
+          query: {
+            url: _this.$router.currentRoute.fullPath,
+            projectId:simplestorage.get('projectId')
+          }
+        })
+      }else{
         _this.$refs.modalToast.toast({
           txt:res.msg
         });
-        return false;
       }
-      _this.failNum = res.data.failNum;
-      _this.lists = res.data.list;
-      //console.log(JSON.stringify(res.data));
-      // 隐藏加载中
-      _this.$refs.modalToast.is = false;
-      if(res.data.list.length > 0){
-        // 显示列表数据
-        _this.is = true;
-      }else{
-        // 显示没数据提示
-        _this.isNotData = true;
-      }
-
 
     }).catch(function(error) {
       console.log(error)

@@ -102,20 +102,29 @@ export default {
         "encryptType":1
       }).then(function(res){
         console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+          _this.lists = res.data.data;
+          console.log(JSON.stringify(_this.lists));
+          // 无数据
+          if(_this.lists.length <= 0){
+            _this.isData = true;
+          }
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
-        // 隐藏加载中
-        _this.$refs.modalToast.is = false;
-        _this.lists = res.data.data;
-        console.log(JSON.stringify(_this.lists));
-        // 无数据
-        if(_this.lists.length <= 0){
-          _this.isData = true;
-        }
+
 
       }).catch(function(error) {
         console.log(error)

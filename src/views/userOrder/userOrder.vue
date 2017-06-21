@@ -161,40 +161,50 @@ export default {
         "encryptType":1
       }).then(function(res) {
         //console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
+
+          if(res.data.length == 0 && _this.status == status ){
+            //console.log('无数据，不在加载')
+          }else {
+            // 切换分类选中样式
+            _this.status = status;
+            if (res.data.length == 0) {
+              //console.log('第一条就没数据');
+              // 隐藏数据列表
+              _this.is = false;
+              // 显示无数据提示
+              _this.isNotData = true;
+            } else {
+              // 隐藏无数据提示
+              _this.isNotData = false;
+              // 显示数据
+              _this.is = true;
+              //_this.lists = res.data;
+              _this.lists = _this.lists.concat(res.data);
+              // 下一页
+              _this.pageIndex++;
+              // 开启加载
+              _this.isLoad = false;
+            }
+          }
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+          //console.log(JSON.stringify(_this.lists));
+
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
 
-        if(res.data.length == 0 && _this.status == status ){
-            //console.log('无数据，不在加载')
-        }else {
-          // 切换分类选中样式
-          _this.status = status;
-          if (res.data.length == 0) {
-            //console.log('第一条就没数据');
-            // 隐藏数据列表
-            _this.is = false;
-            // 显示无数据提示
-            _this.isNotData = true;
-          } else {
-            // 隐藏无数据提示
-            _this.isNotData = false;
-            // 显示数据
-            _this.is = true;
-            //_this.lists = res.data;
-            _this.lists = _this.lists.concat(res.data);
-            // 下一页
-            _this.pageIndex++;
-            // 开启加载
-            _this.isLoad = false;
-          }
-        }
-        // 隐藏加载中
-        _this.$refs.modalToast.is = false;
-        //console.log(JSON.stringify(_this.lists));
       }).catch(function(error) {
         console.log(error)
         opModal.toast({

@@ -148,6 +148,14 @@ export default {
             txt:res.msg
           });
 
+        }else if(res.code == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           // 错误提示
           _this.$refs.modalToast.toast({
@@ -219,6 +227,14 @@ export default {
             // 跳转到相关页面
             _this.$router.push(_this.url);
           }
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           // 登录错误提示
           _this.$refs.modalToast.toast({
@@ -252,7 +268,7 @@ export default {
         },{
           "encryptType":1
         }).then(function(res) {
-          console.log(res);
+          //console.log(res);
           if (res.resultCode == 0) {
             // 删除本地缓存
             cart.removeAll();
@@ -260,6 +276,14 @@ export default {
             _this.$refs.appnav.shoppingNum = res.data.totalCount;
             // 跳转
             callback();
+          }else if(res.resultCode == 1000){
+            _this.$router.replace({
+              path: '/guest',
+              query: {
+                url: _this.$router.currentRoute.fullPath,
+                projectId:simplestorage.get('projectId')
+              }
+            })
           }else{
             _this.$refs.modalToast.toast({
               txt:res.msg

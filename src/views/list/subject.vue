@@ -87,15 +87,23 @@ export default {
       },{
         "encryptType":1
       }).then(function(res){
-        console.log(res);
+        //console.log(res);
         if(res.resultCode != 0){
+          _this.lists = res.data;
+          //console.log(JSON.stringify(_this.lists));
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           opModal.toast({
             txt:res.msg
           })
-          return false;
         }
-        _this.lists = res.data;
-        //console.log(JSON.stringify(_this.lists));
 
       }).catch(function(error) {
         console.log(error)

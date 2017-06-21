@@ -167,19 +167,28 @@ export default {
         "encryptType":1
       }).then(function(res){
         //console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
+          // 显示列表
+          _this.is = true;
+
+          _this.lists = res.data;
+          //console.log(JSON.stringify(res.data));
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
-        // 显示列表
-        _this.is = true;
 
-        _this.lists = res.data;
-        //console.log(JSON.stringify(res.data));
-        // 隐藏加载中
-        _this.$refs.modalToast.is = false;
       }).catch(function(error) {
         console.log(error)
         opModal.toast({

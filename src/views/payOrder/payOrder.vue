@@ -211,20 +211,30 @@ export default {
         "encryptType":1
       }).then(function(res){
         //console.log(res);
-        if(res.resultCode != 0){
+        if(res.resultCode == 0){
+
+          _this.lists = res.data;
+          // 优惠券
+          if(_this.lists.couponList.length > 0){
+            _this.coupon.is = true;
+            _this.coupon.price = _this.lists.couponList[0].faceValue
+            _this.coupon.userCardId = _this.lists.couponList[0].userCardId
+          }
+          //console.log(JSON.stringify(_this.lists));
+
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
           });
-          return false;
         }
-        _this.lists = res.data;
-        // 优惠券
-        if(_this.lists.couponList.length > 0){
-          _this.coupon.is = true;
-          _this.coupon.price = _this.lists.couponList[0].faceValue
-          _this.coupon.userCardId = _this.lists.couponList[0].userCardId
-        }
-        //console.log(JSON.stringify(_this.lists));
 
       }).catch(function(error) {
         console.log(error)
@@ -249,6 +259,14 @@ export default {
         //console.log(res);
         if(res.resultCode == 0){
           _this.address = res.data;
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg
@@ -378,6 +396,14 @@ export default {
               location.href = res.data.payUrl;
               // 隐藏加载中
               _this.$refs.modalToast.is = false;
+            }else if(res.resultCode == 1000){
+              _this.$router.replace({
+                path: '/guest',
+                query: {
+                  url: _this.$router.currentRoute.fullPath,
+                  projectId:simplestorage.get('projectId')
+                }
+              })
             }else{
               _this.$refs.modalToast.toast({
                 txt:res.msg
@@ -392,6 +418,14 @@ export default {
             return false;
           })
 
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
         }else{
           _this.$refs.modalToast.toast({
             txt:res.msg

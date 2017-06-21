@@ -139,57 +139,68 @@ export default {
         "encryptType":1
       }).then(function(res) {
         //console.log(res);
-        if (res.resultCode != 0) {
-          _this.$refs.modalToast.toast({
-            txt:res.msg
-          });
-          return false;
-        }
-        let length = res.data.data.length;
-        /*
+        if (res.resultCode == 0) {
 
-          有数据.长度 > 0
-          无数据.分第一次无数据、加载到无数据
-          第一次_this.pageIndex，后面的就++，已不等于1
+          let length = res.data.data.length;
+          /*
 
-        */
-        if(_this.pageIndex == 1 && length == 0){
-          // 第一次无数据
-          // 隐藏加载中
-          _this.$refs.modalToast.is = false;
-          // 显示无数据提示
-          _this.isNotData = true;
-          // 隐藏列表
-          _this.is = false;
+           有数据.长度 > 0
+           无数据.分第一次无数据、加载到无数据
+           第一次_this.pageIndex，后面的就++，已不等于1
+
+           */
+          if(_this.pageIndex == 1 && length == 0){
+            // 第一次无数据
+            // 隐藏加载中
+            _this.$refs.modalToast.is = false;
+            // 显示无数据提示
+            _this.isNotData = true;
+            // 隐藏列表
+            _this.is = false;
+            // 隐藏历史列表
+            _this.isSearchRecord = false;
+            // 隐藏底部购物车栏
+            _this.isFooterCart = false;
+            return false;
+          }
+          // 隐藏无数据提示
+          _this.isNotData = false;
           // 隐藏历史列表
           _this.isSearchRecord = false;
-          // 隐藏底部购物车栏
-          _this.isFooterCart = false;
-          return false;
-        }
-        // 隐藏无数据提示
-        _this.isNotData = false;
-        // 隐藏历史列表
-        _this.isSearchRecord = false;
-        // 显示列表
-        _this.is = true;
-        // 显示底部购物车栏
-        _this.isFooterCart = true;
-        // 后面的加载
-        if(length > 0){
-          // 有数据
-          // 数据
-          _this.lists = _this.lists.concat(res.data.data);
-          // 开启加载
-          _this.isLoad = false;
-          // 下一页
-          _this.pageIndex ++;
-        }
+          // 显示列表
+          _this.is = true;
+          // 显示底部购物车栏
+          _this.isFooterCart = true;
+          // 后面的加载
+          if(length > 0){
+            // 有数据
+            // 数据
+            _this.lists = _this.lists.concat(res.data.data);
+            // 开启加载
+            _this.isLoad = false;
+            // 下一页
+            _this.pageIndex ++;
+          }
           // 后面加载到无数据
           //console.log('加载到无数据')
 
-        // 隐藏加载中
-        _this.$refs.modalToast.is = false;
+          // 隐藏加载中
+          _this.$refs.modalToast.is = false;
+
+        }else if(res.resultCode == 1000){
+          _this.$router.replace({
+            path: '/guest',
+            query: {
+              url: _this.$router.currentRoute.fullPath,
+              projectId:simplestorage.get('projectId')
+            }
+          })
+        }else{
+          _this.$refs.modalToast.toast({
+            txt:res.msg
+          });
+        }
+
       }).catch(function(error) {
         console.log(error)
         opModal.toast({

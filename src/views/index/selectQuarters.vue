@@ -61,6 +61,14 @@ export default {
 
         // 隐藏加载中
         _this.$refs.modalToast.is = false;
+      }else if(res.resultCode == 1000){
+        _this.$router.replace({
+          path: '/guest',
+          query: {
+            url: _this.$router.currentRoute.fullPath,
+            projectId:simplestorage.get('projectId')
+          }
+        })
       }else{
         _this.$refs.modalToast.toast({
           txt:res.msg
