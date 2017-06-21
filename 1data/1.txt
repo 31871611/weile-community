@@ -51,7 +51,7 @@ simpleStorage
 选择小区显示
 购物车全选
 
-
+openid没有失效时间，一个微信对应不同的公众号有不同的openid的
     // 清空小区id.清空会重新选择小区
     //simplestorage.deleteKey('HLXK_DISTRIBUTION')
     // 清空openid.唯一的不会过期
