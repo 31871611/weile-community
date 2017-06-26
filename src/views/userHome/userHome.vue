@@ -23,7 +23,7 @@
           <!--<li><a href=""><div class="myauth">我的授权</div></a></li>-->
           <!--<li><a href=""><div>我的达人</div></a></li>-->
           <!--<li><a href=""><div>我的服务</div></a></li>-->
-          <li><router-link :to="{path:'userCoupon',query:{projectId,projectId}}"><div class="mycoupon">我的优惠券</div></router-link></li>
+          <li><router-link :to="{path:'userCoupon',query:{projectId,projectId}}"><div class="mycoupon">优惠券</div></router-link></li>
           <li><router-link :to="{path:'userOrder',query:{projectId,projectId}}"><div class="myorder">我的订单</div></router-link></li>
           <li><router-link :to="{path:'/userOrder',query:{group:1,projectId,projectId}}"><div class="mygroupbuy">我的团购</div></router-link></li>
           <li><router-link :to="{path:'userAddress',query:{projectId,projectId}}"><div class="myreceiptaddress">收货地址</div></router-link></li>
