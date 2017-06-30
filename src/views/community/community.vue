@@ -58,6 +58,15 @@ export default {
     console.log(this.$router.currentRoute.fullPath)
 
 
+    this.$http.post('/community/checkVerificationCode', {
+      "projectId":simplestorage.get('projectId')
+    }).then(function (res) {
+      console.log(res)
+    }).catch(function (error) {
+      console.log(error)
+    })
+
+
   },
   methods: {
     // 跳转到外部url
