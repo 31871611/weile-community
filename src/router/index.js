@@ -4,6 +4,8 @@ import simplestorage from 'simplestorage.js'
 import Router from 'vue-router'
 import fetch from '../utils/fetch'
 import Home from '@/views/index/index'                                        // 首页
+//import shopping from '@/views/shopping/shopping'                              // 购物车
+const shopping = () => import('@/views/shopping/shopping')       // 异步
 import noticeList from '@/views/notice/list'                                 // 公告消息列表
 import noticeDetails from '@/views/notice/details'                                 // 公告消息详情
 import userOrder from '@/views/userOrder/userOrder'                           // 我的订单
@@ -14,6 +16,7 @@ import userAddressAdd from '@/views/userAddress/addAddress'             // 添�
 import userCoupon from '@/views/userCoupon/userCoupon'                  // 我的优惠券
 import userCouponDetails from '@/views/userCoupon/userCouponDetails'            // 优惠券详情
 import invalidCoupon from '@/views/userCoupon/invalidCoupon'            // 失效优惠券
+
 
 Vue.use(Router)
 
@@ -134,7 +137,7 @@ const router = new Router({
       // 购物车
       path: '/shopping',
       name: 'shopping',
-      component: resolve => require(['@/views/shopping/shopping'], resolve),
+      component: shopping,
       meta:{
         pageTitle: '购物车'
       }
@@ -327,7 +330,7 @@ const router = new Router({
     },
     {
       path: '*',
-      component: Home
+      redirect: '/'
     }
   ]
 })
